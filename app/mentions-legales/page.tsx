@@ -17,10 +17,12 @@ export default function MentionsLegalesPage() {
             Éditeur du site
           </h2>
           <p className="text-brand-gray leading-relaxed">
-            CVpass<br />
-            [Nom de la société ou du porteur de projet à compléter]<br />
-            [Adresse à compléter]<br />
-            [Email de contact à compléter]
+            CVpass — VertexLab SASU<br />
+            Représentant légal : Giovanni Russo<br />
+            198 boulevard Ange Martin, 13190 Allauch<br />
+            <a href="mailto:contact@cvpass.fr" className="text-brand-green hover:underline">
+              contact@cvpass.fr
+            </a>
           </p>
         </section>
 
@@ -30,7 +32,7 @@ export default function MentionsLegalesPage() {
           </h2>
           <p className="text-brand-gray leading-relaxed">
             Vercel Inc.<br />
-            440 N Barranca Ave #4133, Covina, CA 91723, États-Unis<br />
+            340 Pine Street Suite 1002, San Francisco, CA 94104, États-Unis<br />
             <a
               href="https://vercel.com"
               className="text-brand-green hover:underline"
