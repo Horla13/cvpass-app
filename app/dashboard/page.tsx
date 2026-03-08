@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { ErrorMessage } from "@/components/ui/ErrorMessage";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -19,11 +20,13 @@ export default function DashboardPage() {
   const [step, setStep] = useState<1 | 2>(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
+  const [errorInfo, setErrorInfo] = useState<{ message: string; upgradeUrl?: string } | null>(null);
 
   const handleAnalyze = async () => {
     if (!cvText || !jobOffer.trim()) return;
     setIsAnalyzing(true);
     setError("");
+    setErrorInfo(null);
 
     try {
       const res = await fetch("/api/analyze", {
@@ -32,10 +35,21 @@ export default function DashboardPage() {
         body: JSON.stringify({ cvText, jobOffer }),
       });
 
+      if (res.status === 402) {
+        setErrorInfo({
+          message: "Vous avez utilisé votre analyse gratuite. Passez Pro pour continuer.",
+          upgradeUrl: "/pricing",
+        });
+        setIsAnalyzing(false);
+        return;
+      }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Erreur lors de l'analyse");
+        setErrorInfo({ message: data.error ?? "Erreur lors de l'analyse. Réessayez." });
+        setIsAnalyzing(false);
+        return;
       }
+      setErrorInfo(null);
 
       const data = await res.json();
       setAnalysis(data);
@@ -118,6 +132,10 @@ export default function DashboardPage() {
               </Button>
             </div>
           </Card>
+
+          {errorInfo && (
+            <ErrorMessage message={errorInfo.message} upgradeUrl={errorInfo.upgradeUrl} />
+          )}
 
           {isAnalyzing && (
             <div className="flex justify-center py-12">
