@@ -1,0 +1,84 @@
+import { create } from "zustand";
+
+export interface Gap {
+  id: string;
+  section: string;
+  texte_original: string;
+  texte_suggere: string;
+  raison: string;
+  status: "pending" | "accepted" | "ignored";
+}
+
+interface Analysis {
+  score_avant: number;
+  gaps: Omit<Gap, "status">[];
+  resume: string;
+}
+
+interface CVPassStore {
+  cvText: string;
+  jobOffer: string;
+  gaps: Gap[];
+  score_avant: number;
+  scoreActuel: number;
+  resume: string;
+  setCvText: (text: string) => void;
+  setJobOffer: (offer: string) => void;
+  setAnalysis: (analysis: Analysis) => void;
+  acceptGap: (id: string) => void;
+  ignoreGap: (id: string) => void;
+  reset: () => void;
+}
+
+function recalculateScore(score_avant: number, gaps: Gap[]): number {
+  const total = gaps.length;
+  if (total === 0) return score_avant;
+  const accepted = gaps.filter((g) => g.status === "accepted").length;
+  return Math.round(score_avant + (accepted / total) * (100 - score_avant));
+}
+
+export const useStore = create<CVPassStore>((set, get) => ({
+  cvText: "",
+  jobOffer: "",
+  gaps: [],
+  score_avant: 0,
+  scoreActuel: 0,
+  resume: "",
+
+  setCvText: (text) => set({ cvText: text }),
+  setJobOffer: (offer) => set({ jobOffer: offer }),
+
+  setAnalysis: (analysis) => {
+    const gaps: Gap[] = analysis.gaps.map((g) => ({ ...g, status: "pending" }));
+    set({
+      score_avant: analysis.score_avant,
+      scoreActuel: analysis.score_avant,
+      gaps,
+      resume: analysis.resume,
+    });
+  },
+
+  acceptGap: (id) => {
+    const gaps = get().gaps.map((g) =>
+      g.id === id ? { ...g, status: "accepted" as const } : g
+    );
+    set({ gaps, scoreActuel: recalculateScore(get().score_avant, gaps) });
+  },
+
+  ignoreGap: (id) => {
+    const gaps = get().gaps.map((g) =>
+      g.id === id ? { ...g, status: "ignored" as const } : g
+    );
+    set({ gaps });
+  },
+
+  reset: () =>
+    set({
+      cvText: "",
+      jobOffer: "",
+      gaps: [],
+      score_avant: 0,
+      scoreActuel: 0,
+      resume: "",
+    }),
+}));
