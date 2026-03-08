@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
+import { canAnalyze } from "@/lib/billing";
 
 const SYSTEM_PROMPT = `Tu es un expert en recrutement français.
 Tu reçois un CV et une offre d'emploi.
@@ -27,6 +28,15 @@ export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  // Vérification quota freemium
+  const billing = await canAnalyze(userId);
+  if (!billing.allowed) {
+    return NextResponse.json(
+      { error: "quota_exceeded", upgradeUrl: "/pricing" },
+      { status: 402 }
+    );
   }
 
   let body: { cvText?: string; jobOffer?: string };
