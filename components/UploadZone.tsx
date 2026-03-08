@@ -10,8 +10,9 @@ interface UploadZoneProps {
 export function UploadZone({ onSuccess }: UploadZoneProps) {
   const setCvText = useStore((s) => s.setCvText);
   const [isDragging, setIsDragging] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error" | "image_pdf">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [extractedText, setExtractedText] = useState("");
 
   const processFile = useCallback(
     async (file: File) => {
@@ -37,6 +38,14 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
           throw new Error(data.error || "Erreur lors de l'analyse");
         }
         const { text } = await res.json();
+
+        // Détection PDF image : texte quasi-vide malgré un fichier de taille normale
+        if (text.trim().length < 100 && file.size > 50 * 1024) {
+          setExtractedText(text);
+          setStatus("image_pdf");
+          return;
+        }
+
         setCvText(text);
         setStatus("success");
         onSuccess();
@@ -133,6 +142,42 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
           >
             Réessayer
           </button>
+        </div>
+      )}
+
+      {status === "image_pdf" && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="text-4xl">⚠️</div>
+          <p className="text-orange-600 font-medium text-center">
+            Votre CV est au format image
+          </p>
+          <p className="text-brand-gray text-sm text-center max-w-xs">
+            Les outils RH ne peuvent pas lire ce type de fichier.
+            Exportez votre CV en PDF texte depuis Word, LibreOffice ou Google Docs.
+          </p>
+          <div className="flex flex-col gap-2 mt-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setCvText(extractedText);
+                setStatus("success");
+                onSuccess();
+              }}
+              className="text-brand-gray text-xs underline hover:text-brand-black"
+            >
+              Continuer quand même
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setStatus("idle");
+                setErrorMsg("");
+              }}
+              className="text-brand-green text-sm underline"
+            >
+              Choisir un autre fichier
+            </button>
+          </div>
         </div>
       )}
     </div>
