@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -113,17 +114,16 @@ export default function DashboardPage() {
                 size="lg"
                 className="ml-auto shrink-0"
               >
-                {isAnalyzing ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Analyse en cours...
-                  </span>
-                ) : (
-                  "Analyser mon CV"
-                )}
+                {isAnalyzing ? "Analyse en cours..." : "Analyser mon CV"}
               </Button>
             </div>
           </Card>
+
+          {isAnalyzing && (
+            <div className="flex justify-center py-12">
+              <LoadingSpinner size="lg" message="Analyse en cours par l'IA…" />
+            </div>
+          )}
         </main>
       </div>
     </PageTransition>

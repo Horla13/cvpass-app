@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { CoverLetterEditor } from "@/components/CoverLetterEditor";
 import { Card } from "@/components/ui/Card";
 import { PageTransition } from "@/components/PageTransition";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function CoverLetterPage() {
   const router = useRouter();
@@ -98,6 +99,12 @@ export default function CoverLetterPage() {
           </p>
         </div>
 
+        {isGenerating && (
+          <div className="flex justify-center py-12">
+            <LoadingSpinner size="lg" message="Génération de votre lettre de motivation…" />
+          </div>
+        )}
+
         {!coverLetter ? (
           <Card className="p-12 text-center">
             <div className="text-5xl mb-4">✉️</div>
@@ -114,14 +121,7 @@ export default function CoverLetterPage() {
               disabled={isGenerating}
               className="inline-flex items-center gap-2 bg-brand-green text-white px-8 py-3 rounded-md font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isGenerating ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Génération en cours...
-                </>
-              ) : (
-                "Générer ma lettre de motivation"
-              )}
+              {isGenerating ? "Génération en cours..." : "Générer ma lettre de motivation"}
             </button>
           </Card>
         ) : (
