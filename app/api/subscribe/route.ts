@@ -1,0 +1,64 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+
+export async function POST(req: NextRequest) {
+  let body: { email?: string; source?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Corps invalide" }, { status: 400 });
+  }
+
+  const { email, source } = body;
+
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    return NextResponse.json({ error: "Adresse email invalide." }, { status: 400 });
+  }
+
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  const BREVO_LIST_ID = parseInt(process.env.BREVO_LIST_ID ?? "3", 10);
+
+  if (!BREVO_API_KEY) {
+    console.error("BREVO_API_KEY is not set");
+    return NextResponse.json({ error: "Configuration serveur manquante." }, { status: 500 });
+  }
+
+  try {
+    const response = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "api-key": BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        email,
+        listIds: [BREVO_LIST_ID],
+        updateEnabled: true,
+        attributes: {
+          SOURCE: source ?? "Unknown",
+          SIGNUP_DATE: new Date().toISOString().split("T")[0],
+        },
+      }),
+    });
+
+    if (response.ok || response.status === 201 || response.status === 204) {
+      return NextResponse.json({ success: true, message: "Inscription réussie !" });
+    }
+
+    const data = await response.json().catch(() => ({}));
+    if (data.code === "duplicate_parameter") {
+      return NextResponse.json({ success: true, message: "Vous êtes déjà inscrit !" });
+    }
+
+    console.error("Brevo API error:", data);
+    return NextResponse.json(
+      { error: data.message ?? "Erreur lors de l'inscription." },
+      { status: response.status }
+    );
+  } catch (err) {
+    console.error("Network error:", err);
+    return NextResponse.json({ error: "Erreur de connexion au service email." }, { status: 500 });
+  }
+}
