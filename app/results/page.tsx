@@ -9,6 +9,7 @@ import { CVPreview } from "@/components/CVPreview";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { AppHeader } from "@/components/AppHeader";
+import { PageTransition } from "@/components/PageTransition";
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -71,10 +72,11 @@ export default function ResultsPage() {
   if (!cvText) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AppHeader />
+    <PageTransition>
+      <div className="min-h-screen bg-gray-50">
+        <AppHeader />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* COLONNE GAUCHE — Score et résumé */}
           <div className="lg:col-span-1 space-y-4">
@@ -183,7 +185,8 @@ export default function ResultsPage() {
             <CVPreview cvText={cvText} acceptedGaps={acceptedGaps} />
           </div>
         </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </PageTransition>
   );
 }

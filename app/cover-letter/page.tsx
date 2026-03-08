@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { AppHeader } from "@/components/AppHeader";
 import { CoverLetterEditor } from "@/components/CoverLetterEditor";
 import { Card } from "@/components/ui/Card";
+import { PageTransition } from "@/components/PageTransition";
 
 export default function CoverLetterPage() {
   const router = useRouter();
@@ -84,9 +85,10 @@ export default function CoverLetterPage() {
   if (!cvText) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AppHeader />
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+    <PageTransition>
+      <div className="min-h-screen bg-gray-50">
+        <AppHeader />
+        <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-brand-black">
             Lettre de motivation
@@ -147,7 +149,8 @@ export default function CoverLetterPage() {
             </div>
           </Card>
         )}
-      </main>
-    </div>
+        </main>
+      </div>
+    </PageTransition>
   );
 }

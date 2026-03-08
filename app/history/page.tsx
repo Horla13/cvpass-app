@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { Card } from "@/components/ui/Card";
 import { ScoreCircle } from "@/components/ScoreCircle";
+import { PageTransition } from "@/components/PageTransition";
 
 interface CoverLetter {
   id: string;
@@ -51,9 +52,10 @@ export default function HistoryPage() {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AppHeader />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+    <PageTransition>
+      <div className="min-h-screen bg-gray-50">
+        <AppHeader />
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="text-2xl font-bold text-brand-black mb-6">
           Historique des candidatures
         </h1>
@@ -193,7 +195,8 @@ export default function HistoryPage() {
             )}
           </div>
         )}
-      </main>
-    </div>
+        </main>
+      </div>
+    </PageTransition>
   );
 }
