@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { UploadZone } from "@/components/UploadZone";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { AppHeader } from "@/components/AppHeader";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -46,13 +47,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-brand-black text-lg">CVpass</span>
-          <span className="text-brand-gray text-sm">Analyse de CV</span>
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="max-w-2xl mx-auto px-6 py-10 space-y-6">
         {/* Étape 1 — Upload */}

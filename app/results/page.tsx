@@ -8,6 +8,7 @@ import { SuggestionCard } from "@/components/SuggestionCard";
 import { CVPreview } from "@/components/CVPreview";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { AppHeader } from "@/components/AppHeader";
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -71,19 +72,7 @@ export default function ResultsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-brand-black text-lg">CVpass</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.push("/dashboard")}
-          >
-            ← Nouvelle analyse
-          </Button>
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -145,6 +134,12 @@ export default function ResultsPage() {
                 Acceptez au moins une suggestion pour télécharger
               </p>
             )}
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="text-sm text-brand-gray hover:text-brand-black underline w-full text-center"
+            >
+              ← Nouvelle analyse
+            </button>
           </div>
 
           {/* COLONNE CENTRE — Suggestions */}

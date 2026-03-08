@@ -61,7 +61,7 @@ export function AppHeader() {
               </Link>
             ))}
           </nav>
-          <UserButton afterSignOutUrl="/login" />
+          <UserButton />
         </div>
       </div>
     </header>

@@ -1,13 +1,9 @@
+import { AppHeader } from "@/components/AppHeader";
+
 export default function MentionsLegalesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="max-w-3xl mx-auto">
-          <a href="/" className="font-bold text-brand-black text-lg hover:text-brand-green transition-colors">
-            CVpass
-          </a>
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="max-w-3xl mx-auto px-6 py-12 space-y-10">
         <h1 className="text-3xl font-bold text-brand-black">Mentions légales</h1>
