@@ -28,8 +28,8 @@ describe("extractTextFromBuffer", () => {
     // Elle peut throw autre chose si le buffer est invalide, c'est OK
     try {
       await extractTextFromBuffer(buffer, "cv.pdf");
-    } catch (e: any) {
-      expect(e.message).not.toContain("Format non supporté");
+    } catch (e: unknown) {
+      expect((e as Error).message).not.toContain("Format non supporté");
     }
   });
 
@@ -40,8 +40,8 @@ describe("extractTextFromBuffer", () => {
     const buffer = Buffer.from("fake-docx-content");
     try {
       await extractTextFromBuffer(buffer, "cv.docx");
-    } catch (e: any) {
-      expect(e.message).not.toContain("Format non supporté");
+    } catch (e: unknown) {
+      expect((e as Error).message).not.toContain("Format non supporté");
     }
   });
 });

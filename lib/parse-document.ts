@@ -5,7 +5,7 @@ export async function extractTextFromBuffer(
   const ext = filename.split(".").pop()?.toLowerCase();
 
   if (ext === "pdf") {
-    const pdfParse = (await import("pdf-parse")).default;
+    const pdfParse = (await import("pdf-parse")) as unknown as (buffer: Buffer) => Promise<{ text: string }>;
     const data = await pdfParse(buffer);
     return data.text;
   }
