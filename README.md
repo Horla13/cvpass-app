@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CVpass — Optimisation de CV par IA
 
-## Getting Started
+Optimisez votre CV pour les systèmes ATS en 4 étapes : uploadez votre CV, collez une offre d'emploi, acceptez les suggestions IA en 1 clic, téléchargez le PDF optimisé.
 
-First, run the development server:
+## Stack technique
+
+| Composant | Technologie |
+|---|---|
+| Frontend | Next.js 14 (App Router), TypeScript, Tailwind CSS |
+| Auth | Clerk |
+| Base de données | Supabase (PostgreSQL) |
+| IA | OpenAI GPT-4o mini |
+| PDF parsing | pdf-parse (PDF), mammoth (DOCX) |
+| PDF generation | @react-pdf/renderer |
+| Déploiement | Vercel |
+
+## Démarrage local
+
+### Prérequis
+
+- Node.js 18+
+- Comptes créés sur : [Clerk](https://clerk.com), [Supabase](https://supabase.com), [OpenAI](https://platform.openai.com)
+
+### Installation
+
+```bash
+git clone <votre-repo>
+cd app
+npm install
+cp .env.example .env.local
+```
+
+Remplissez `.env.local` avec vos clés API.
+
+### Base de données Supabase
+
+Dans le dashboard Supabase → SQL Editor, exécutez le contenu de :
+```
+supabase/migrations/001_analyses.sql
+```
+
+### Lancement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Application disponible sur http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Déploiement sur Vercel
 
-## Learn More
+1. Poussez votre code sur GitHub
+2. Connectez le repo sur [vercel.com](https://vercel.com)
+3. Configuration :
+   - **Framework Preset** : Next.js
+   - **Root Directory** : `app/`
+4. Ajoutez toutes les variables d'environnement de `.env.example` dans les settings Vercel
+5. Déployez
 
-To learn more about Next.js, take a look at the following resources:
+## Variables d'environnement
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Voir `.env.example` pour la liste complète. Variables requises :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` + `CLERK_SECRET_KEY` — Dashboard Clerk
+- `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` + `SUPABASE_SERVICE_ROLE_KEY` — Dashboard Supabase → Settings → API
+- `OPENAI_API_KEY` — platform.openai.com → API Keys
 
-## Deploy on Vercel
+## Architecture RGPD
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Les CVs uploadés sont traités **en mémoire uniquement** (Zustand)
+- **Aucun CV n'est stocké** en base de données
+- Seules les métadonnées d'analyse (scores, nb suggestions) sont persistées dans Supabase
+- Les CVs sont transmis à OpenAI API pour analyse (OpenAI n'utilise pas les données API pour l'entraînement)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Structure du projet
+
+```
+app/
+├── app/
+│   ├── (auth)/login/      # Page connexion Clerk
+│   ├── (auth)/signup/     # Page inscription Clerk
+│   ├── dashboard/         # Upload CV + saisie offre
+│   ├── results/           # Résultats + éditeur suggestions
+│   ├── mentions-legales/  # Page légale RGPD
+│   └── api/
+│       ├── parse-cv/      # Extraction texte PDF/DOCX
+│       ├── analyze/       # Analyse IA GPT-4o mini
+│       ├── generate-pdf/  # Génération PDF optimisé
+│       └── save-analysis/ # Sauvegarde métadonnées Supabase
+├── components/
+│   ├── ui/                # Button, Badge, Card
+│   ├── pdf/               # CVDocument (@react-pdf/renderer)
+│   ├── UploadZone.tsx
+│   ├── ScoreCircle.tsx
+│   ├── SuggestionCard.tsx
+│   └── CVPreview.tsx
+└── lib/
+    ├── store.ts           # Zustand store (état global)
+    ├── openai.ts
+    ├── supabase.ts
+    └── parse-document.ts
+```
