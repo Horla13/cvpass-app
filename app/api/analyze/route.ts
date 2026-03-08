@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { openai } from "@/lib/openai";
+import { getOpenAI } from "@/lib/openai";
 
 const SYSTEM_PROMPT = `Tu es un expert en recrutement français.
 Tu reçois un CV et une offre d'emploi.
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
   const userMessage = `CV :\n${cvText}\n\n---\nOffre d'emploi :\n${jobOffer}`;
 
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },

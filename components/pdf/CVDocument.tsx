@@ -27,7 +27,7 @@ interface CVDocumentProps {
 export function CVDocument({ cvText, acceptedGaps }: CVDocumentProps) {
   let finalText = cvText;
   for (const gap of acceptedGaps) {
-    finalText = finalText.replace(gap.texte_original, gap.texte_suggere);
+    finalText = finalText.replaceAll(gap.texte_original, gap.texte_suggere);
   }
 
   const lines = finalText.split("\n");
