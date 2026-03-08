@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendAnalysisEmail } from "@/lib/brevo";
 
 export const dynamic = "force-dynamic";
 
@@ -41,11 +42,27 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error("Supabase insert error:", error);
-    // Ne pas bloquer l'utilisateur pour une erreur de sauvegarde
     return NextResponse.json(
       { error: "Erreur de sauvegarde (non bloquant)" },
       { status: 500 }
     );
+  }
+
+  // Email post-analyse — fire-and-forget
+  if (score_avant !== undefined && score_apres !== undefined && job_title) {
+    (async () => {
+      try {
+        const clerk = await clerkClient();
+        const user = await clerk.users.getUser(userId);
+        const email = user.emailAddresses[0]?.emailAddress;
+        const firstName = user.firstName ?? "là";
+        if (email) {
+          await sendAnalysisEmail(email, firstName, score_avant, score_apres, job_title);
+        }
+      } catch (e) {
+        console.error("Email post-analyse error:", e);
+      }
+    })();
   }
 
   return NextResponse.json({ success: true });
