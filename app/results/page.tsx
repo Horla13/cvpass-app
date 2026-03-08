@@ -134,6 +134,14 @@ export default function ResultsPage() {
                 Acceptez au moins une suggestion pour télécharger
               </p>
             )}
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full"
+              onClick={() => router.push("/cover-letter")}
+            >
+              ✉ Générer ma lettre de motivation
+            </Button>
             <button
               onClick={() => router.push("/dashboard")}
               className="text-sm text-brand-gray hover:text-brand-black underline w-full text-center"

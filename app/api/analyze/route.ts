@@ -8,6 +8,7 @@ Tu dois identifier exactement les mots-clés et compétences présents dans l'of
 Pour chaque gap identifié, propose une reformulation concrète et précise de la phrase du CV concernée.
 Retourne UNIQUEMENT un JSON valide, sans markdown, sans commentaires, structuré ainsi :
 {
+  "job_title": string (titre exact du poste extrait de l'offre, ex: "Développeur React Senior"),
   "score_avant": number (0-100),
   "resume": string (2 phrases max résumant les axes d'amélioration principaux),
   "gaps": [
@@ -68,7 +69,9 @@ export async function POST(req: NextRequest) {
       throw new Error("Format de réponse IA invalide");
     }
 
-    return NextResponse.json(analysis);
+    const jobTitle = typeof analysis.job_title === "string" ? analysis.job_title : "";
+
+    return NextResponse.json({ ...analysis, job_title: jobTitle });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Erreur lors de l'analyse IA";
     console.error("Analyze error:", e);

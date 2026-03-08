@@ -37,6 +37,20 @@ export default function DashboardPage() {
 
       const data = await res.json();
       setAnalysis(data);
+
+      // Fire-and-forget: save analysis metadata including job_title
+      fetch("/api/save-analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          score_avant: data.score_avant,
+          score_apres: data.score_avant, // sera mis à jour au download
+          nb_suggestions: data.gaps?.length ?? 0,
+          nb_acceptees: 0,
+          job_title: data.job_title ?? "",
+        }),
+      }).catch(() => {}); // fire-and-forget, non bloquant
+
       router.push("/results");
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Une erreur est survenue.";

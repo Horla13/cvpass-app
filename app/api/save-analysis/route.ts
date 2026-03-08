@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     score_apres?: number;
     nb_suggestions?: number;
     nb_acceptees?: number;
+    job_title?: string;
   };
   try {
     body = await req.json();
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }
 
-  const { score_avant, score_apres, nb_suggestions, nb_acceptees } = body;
+  const { score_avant, score_apres, nb_suggestions, nb_acceptees, job_title } = body;
 
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
     score_apres,
     nb_suggestions,
     nb_acceptees,
+    job_title,
   });
 
   if (error) {
