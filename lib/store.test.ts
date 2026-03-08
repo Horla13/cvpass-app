@@ -120,3 +120,29 @@ describe("CVpass store — gap status management", () => {
     expect(state.scoreActuel).toBe(0);
   });
 });
+
+describe("CVpass store — cover letter", () => {
+  test("coverLetter is empty string by default", () => {
+    act(() => {
+      useStore.getState().reset();
+    });
+    expect(useStore.getState().coverLetter).toBe("");
+  });
+
+  test("setCoverLetter updates the store", () => {
+    act(() => {
+      useStore.getState().setCoverLetter("Ma lettre de motivation...");
+    });
+    expect(useStore.getState().coverLetter).toBe("Ma lettre de motivation...");
+  });
+
+  test("reset clears coverLetter", () => {
+    act(() => {
+      useStore.getState().setCoverLetter("Une lettre");
+    });
+    act(() => {
+      useStore.getState().reset();
+    });
+    expect(useStore.getState().coverLetter).toBe("");
+  });
+});

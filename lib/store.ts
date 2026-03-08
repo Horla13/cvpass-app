@@ -22,11 +22,13 @@ interface CVPassStore {
   score_avant: number;
   scoreActuel: number;
   resume: string;
+  coverLetter: string;
   setCvText: (text: string) => void;
   setJobOffer: (offer: string) => void;
   setAnalysis: (analysis: Analysis) => void;
   acceptGap: (id: string) => void;
   ignoreGap: (id: string) => void;
+  setCoverLetter: (text: string) => void;
   reset: () => void;
 }
 
@@ -44,6 +46,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
   score_avant: 0,
   scoreActuel: 0,
   resume: "",
+  coverLetter: "",
 
   setCvText: (text) => set({ cvText: text }),
   setJobOffer: (offer) => set({ jobOffer: offer }),
@@ -72,6 +75,8 @@ export const useStore = create<CVPassStore>((set, get) => ({
     set({ gaps });
   },
 
+  setCoverLetter: (text) => set({ coverLetter: text }),
+
   reset: () =>
     set({
       cvText: "",
@@ -80,5 +85,6 @@ export const useStore = create<CVPassStore>((set, get) => ({
       score_avant: 0,
       scoreActuel: 0,
       resume: "",
+      coverLetter: "",
     }),
 }));
