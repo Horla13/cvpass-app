@@ -127,6 +127,7 @@ export function LandingPage() {
         <div className="nav-right">
           <a href="#features" className="nav-link">Fonctionnalités</a>
           <a href="#pricing" className="nav-link">Tarifs</a>
+          <Link href="/blog" className="nav-link">Blog</Link>
           <Show when="signed-out">
             <SignInButton mode="modal">
               <button className="btn btn-outline">Connexion</button>
