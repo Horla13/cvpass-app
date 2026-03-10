@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
 import { canAnalyze } from "@/lib/billing";
 
@@ -30,8 +30,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  // Vérification quota freemium
-  const billing = await canAnalyze(userId);
+  // Récupérer l'email pour vérifier l'accès anticipé
+  const clerk = await clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const email = user.emailAddresses[0]?.emailAddress;
+
+  // Vérification quota freemium (early access = illimité)
+  const billing = await canAnalyze(userId, email);
   if (!billing.allowed) {
     return NextResponse.json(
       { error: "quota_exceeded", upgradeUrl: "/pricing" },

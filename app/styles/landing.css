@@ -91,12 +91,6 @@
 /* ── CONTAINER ── */
 .landing-root .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
 
-/* ── BETA BANNER ── */
-.landing-root .beta-banner {
-  background: #f0fdf4; border-bottom: 1px solid #bbf7d0;
-  padding: 10px 40px; text-align: center;
-  font-size: 13.5px; font-weight: 500; color: #166534;
-}
 
 /* ══════════════════════════════════════
    HERO — 2 colonnes
@@ -551,8 +545,6 @@
   .landing-root nav, .landing-root footer { padding: 0 20px; }
   .landing-root footer { flex-direction: column; gap: 16px; padding: 24px 20px; }
   .landing-root .container { padding: 0 20px; }
-  .landing-root .beta-banner { padding: 10px 20px; font-size: 13px; }
-
   /* Hero 1 colonne */
   .landing-root .hero { padding: 56px 0 60px; }
   .landing-root .hero-layout { grid-template-columns: 1fr; gap: 40px; }

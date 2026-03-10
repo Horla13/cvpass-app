@@ -14,7 +14,6 @@ export default function AccesRefuse() {
       }}
     >
       <div style={{ textAlign: "center", maxWidth: "480px" }}>
-        <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🔒</div>
         <h1
           style={{
             fontSize: "1.5rem",
@@ -23,7 +22,7 @@ export default function AccesRefuse() {
             marginBottom: "0.75rem",
           }}
         >
-          Accès réservé aux bêta-testeurs
+          Cette page n&apos;est pas accessible
         </h1>
         <p
           style={{
@@ -33,7 +32,7 @@ export default function AccesRefuse() {
             lineHeight: "1.6",
           }}
         >
-          Le lancement public arrive bientôt.
+          Connectez-vous pour accéder à CVpass.
         </p>
         <Link
           href="/"

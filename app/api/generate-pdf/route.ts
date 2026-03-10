@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { canUsePremiumFeature } from "@/lib/billing";
 import { renderToBuffer, DocumentProps } from "@react-pdf/renderer";
 import { CVDocument } from "@/components/pdf/CVDocument";
 import React from "react";
@@ -9,6 +10,18 @@ export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  // Vérifier accès premium (early access ou abonnement mensuel)
+  const clerk = await clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const email = user.emailAddresses[0]?.emailAddress;
+  const allowed = await canUsePremiumFeature(userId, email);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "quota_exceeded", upgradeUrl: "/pricing" },
+      { status: 402 }
+    );
   }
 
   let body: { cvText?: string; acceptedGaps?: Gap[] };

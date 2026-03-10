@@ -26,8 +26,8 @@ const FAQ_ITEMS = [
     a: "Oui. L'IA s'adapte à l'offre que vous collez, qu'il s'agisse d'un poste en marketing, informatique, finance, RH ou autre.",
   },
   {
-    q: "La bêta est vraiment gratuite ?",
-    a: "Oui, complètement. Pas de carte de crédit, pas d'engagement. Vous obtenez un accès complet pendant la phase bêta.",
+    q: "CVpass est vraiment gratuit ?",
+    a: "Oui, votre première analyse est gratuite, sans carte de crédit. Pour un accès illimité, découvrez nos offres payantes.",
   },
 ];
 
@@ -142,10 +142,6 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* BETA BANNER */}
-      <div className="beta-banner">
-        CVpass est en cours de développement — Inscrivez-vous pour recevoir votre accès en priorité à l&apos;ouverture de la bêta.
-      </div>
 
       {/* HERO — 2 colonnes */}
       <section className="hero">
@@ -499,7 +495,7 @@ export function LandingPage() {
       <section className="testi-section">
         <div className="container">
           <div className="fade-up" style={{ textAlign: "center" }}>
-            <div className="eyebrow">Témoignages bêta</div>
+            <div className="eyebrow">Témoignages</div>
             <h2 className="section-title">Ils ont testé CVpass.</h2>
           </div>
           <div className="testi-grid">
@@ -553,12 +549,9 @@ export function LandingPage() {
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
             <h2>Votre prochain entretien<br />commence ici.</h2>
-            <p style={{ fontSize: "1.05rem", fontWeight: 600, color: "#16a34a", margin: "1.25rem 0 0.4rem" }}>
-              Les 50 places bêta sont complètes.
-            </p>
-            <p style={{ color: "#6b7280", marginBottom: "1.5rem", fontSize: "14px" }}>
-              Lancement public bientôt — restez connectés.
-            </p>
+            <Link href="/signup" className="btn btn-green" style={{ fontSize: "1.05rem", marginTop: "1.25rem", marginBottom: "1rem" }}>
+              Analyser mon CV gratuitement →
+            </Link>
             <p className="cta-note">Gratuit · Sans carte de crédit · Résiliation en 1 clic</p>
           </div>
         </div>

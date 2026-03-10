@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
+import { canUsePremiumFeature } from "@/lib/billing";
 
 const SYSTEM_PROMPT = `Tu es un expert en rédaction de lettres de motivation françaises.
 À partir du CV et de l'offre d'emploi fournis, rédige une lettre de motivation professionnelle en français.
@@ -30,6 +31,18 @@ export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  // Vérifier accès premium (early access ou abonnement mensuel)
+  const clerk = await clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const email = user.emailAddresses[0]?.emailAddress;
+  const allowed = await canUsePremiumFeature(userId, email);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "quota_exceeded", upgradeUrl: "/pricing" },
+      { status: 402 }
+    );
   }
 
   let body: { cvText?: string; jobOffer?: string };
