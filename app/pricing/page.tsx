@@ -23,7 +23,7 @@ const plans = [
   {
     id: "pass48h",
     tier: "Pass 48h",
-    price: "4",
+    price: "2",
     priceSuffix: ",90 €",
     description: "Pour optimiser 3 ou 4 candidatures en urgence. Sans abonnement, sans renouvellement caché.",
     features: [
@@ -40,7 +40,7 @@ const plans = [
   {
     id: "monthly",
     tier: "Recherche Active",
-    price: "19",
+    price: "14",
     priceSuffix: ",90 €/mois",
     description: "Pour une recherche sur plusieurs semaines. Résiliable à tout moment, sans condition.",
     features: [

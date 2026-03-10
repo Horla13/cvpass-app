@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "CVpass — Optimisez votre CV pour les ATS",
   description:
     "CVpass analyse votre CV face à une offre d'emploi et propose des corrections en 1 clic.",
+  icons: {
+    icon: "/icon",
+    apple: "/icon",
+  },
 };
 
 export default function RootLayout({

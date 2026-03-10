@@ -383,7 +383,7 @@ export function LandingPage() {
             <div className="price-card featured fade-up">
               <div className="featured-tag">Le plus populaire</div>
               <div className="price-tier">Pass 48h</div>
-              <div className="price-amount">4<span className="sm">,90€</span></div>
+              <div className="price-amount">2<span className="sm">,90€</span></div>
               <div className="price-desc">Pour optimiser 3 ou 4 candidatures en urgence. Sans abonnement, sans renouvellement caché.</div>
               <div className="price-feats">
                 <div className="pf"><span className="ck">✓</span> Scans illimités pendant 48h</div>
@@ -397,7 +397,7 @@ export function LandingPage() {
             </div>
             <div className="price-card fade-up">
               <div className="price-tier">Recherche Active</div>
-              <div className="price-amount">19<span className="sm">,90€/mois</span></div>
+              <div className="price-amount">14<span className="sm">,90€/mois</span></div>
               <div className="price-desc">Pour une recherche sur plusieurs semaines. Résiliable à tout moment, sans condition.</div>
               <div className="price-feats">
                 <div className="pf"><span className="ck">✓</span> Tout du Pass 48h</div>
