@@ -55,6 +55,8 @@ Règles :
 - Omets les champs vides (string vide) sauf nom.
 - missions doit être un tableau de strings (une mission par élément).
 - Si un champ est absent du CV, laisse le tableau vide ou omets la clé.
+- Les missions et compétences ne doivent JAMAIS commencer par "Je" ou "J'ai". Utilise toujours un verbe d'action à l'infinitif ou au participe passé. Exemple : "Géré" au lieu de "J'ai géré", "Assurer" au lieu de "J'assure", "Développer" au lieu de "Je développe".
+- La date de naissance ne doit PAS apparaître dans les informations : elle n'est pas obligatoire sur un CV français moderne. Place uniquement dans informations les éléments pratiques comme le permis de conduire, la mobilité géographique, le statut (travailleur handicapé, etc.).
 - Retourne UNIQUEMENT le JSON brut, sans markdown, sans \`\`\`json, sans texte avant ou après.`;
 
 export async function restructureWithGPT(cvText: string, acceptedGaps: Gap[]): Promise<CVData> {
