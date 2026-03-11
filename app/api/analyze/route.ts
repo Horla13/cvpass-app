@@ -51,15 +51,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  // Rate limiting: 5 req/hour/user
-  const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
-  if (!rateLimitOk) {
-    return NextResponse.json(
-      { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
-      { status: 429 }
-    );
-  }
-
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
@@ -70,6 +61,17 @@ export async function POST(req: NextRequest) {
       { error: "quota_exceeded", code: "quota_exceeded", upgradeUrl: "/pricing" },
       { status: 402 }
     );
+  }
+
+  // Rate limiting: free users only (5 req/hour). Premium & early access = illimité.
+  if (!billing.isPremium) {
+    const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
+    if (!rateLimitOk) {
+      return NextResponse.json(
+        { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
+        { status: 429 }
+      );
+    }
   }
 
   let rawBody: unknown;

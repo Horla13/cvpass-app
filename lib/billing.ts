@@ -2,6 +2,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export interface BillingResult {
   allowed: boolean;
+  isPremium?: boolean; // true = pas de rate limiting applicable
   reason?: "quota_exceeded";
 }
 
@@ -53,7 +54,7 @@ export async function canAnalyze(userId: string, email?: string): Promise<Billin
     const admin = getSupabaseAdmin();
 
     if (email && (await isEarlyAccess(email))) {
-      return { allowed: true };
+      return { allowed: true, isPremium: true };
     }
 
     const { count } = await admin
@@ -61,7 +62,7 @@ export async function canAnalyze(userId: string, email?: string): Promise<Billin
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId);
 
-    if ((count ?? 0) < 1) return { allowed: true };
+    if ((count ?? 0) < 1) return { allowed: true, isPremium: false };
 
     const { data: sub } = await admin
       .from("subscriptions")
@@ -75,11 +76,11 @@ export async function canAnalyze(userId: string, email?: string): Promise<Billin
       const expired = !sub.pass_expires_at || new Date(sub.pass_expires_at) <= new Date();
       return expired
         ? { allowed: false, reason: "quota_exceeded" }
-        : { allowed: true };
+        : { allowed: true, isPremium: true };
     }
 
     if (sub.plan === "monthly" && sub.status === "active") {
-      return { allowed: true };
+      return { allowed: true, isPremium: true };
     }
 
     return { allowed: false, reason: "quota_exceeded" };
