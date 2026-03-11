@@ -202,22 +202,35 @@ export default function ResultsPage() {
         }
       }
 
-      // Build final CV text client-side
+      // Build final CV text client-side — best-effort string replacement
+      // (GPT fallback below via acceptedGaps ensures modifications apply even if match fails)
       let finalCvText = cvText;
       for (const gap of acceptedGaps) {
         const orig = gap.texte_original?.trim();
-        if (orig && finalCvText.includes(orig)) {
+        if (!orig) continue;
+        // Try exact match, then normalized-whitespace match
+        if (finalCvText.includes(orig)) {
           finalCvText = finalCvText.replace(orig, gap.texte_suggere);
+        } else {
+          // Normalize consecutive whitespace/newlines for a second attempt
+          const origNorm = orig.replace(/\s+/g, " ");
+          const cvNorm = finalCvText.replace(/\s+/g, " ");
+          if (cvNorm.includes(origNorm)) {
+            finalCvText = cvNorm.replace(origNorm, gap.texte_suggere);
+          }
+          // If still not found, GPT will handle it via acceptedGaps list below
         }
       }
 
-      // Pass analysisId so server can reuse stored cv_json on subsequent downloads
+      // Pass both the (pre-modified) cvText AND the explicit acceptedGaps list.
+      // GPT uses both signals: the already-applied replacements in cvText
+      // AND the acceptedGaps list as a reliable fallback when replacements didn't match.
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cvText: finalCvText,
-          acceptedGaps: [],
+          acceptedGaps,
           analysisId: savedId,
         }),
       });
@@ -252,22 +265,31 @@ export default function ResultsPage() {
 
   const handleAcceptGap = (id: string) => {
     acceptGap(id);
+    setAnalysisId(null); // invalidate cache so next PDF download includes this change
     posthog?.capture("suggestion_accepted");
   };
 
   const handleIgnoreGap = (id: string) => {
     ignoreGap(id);
+    setAnalysisId(null); // invalidate cache so next PDF download includes this change
     posthog?.capture("suggestion_ignored");
   };
 
   if (!cvText) return null;
 
-  // Build final CV text for email
+  // Build final CV text for email — same best-effort replacement as handleDownload
   let finalCvTextForEmail = cvText;
   for (const gap of acceptedGaps) {
     const orig = gap.texte_original?.trim();
-    if (orig && finalCvTextForEmail.includes(orig)) {
+    if (!orig) continue;
+    if (finalCvTextForEmail.includes(orig)) {
       finalCvTextForEmail = finalCvTextForEmail.replace(orig, gap.texte_suggere);
+    } else {
+      const origNorm = orig.replace(/\s+/g, " ");
+      const cvNorm = finalCvTextForEmail.replace(/\s+/g, " ");
+      if (cvNorm.includes(origNorm)) {
+        finalCvTextForEmail = cvNorm.replace(origNorm, gap.texte_suggere);
+      }
     }
   }
 
@@ -334,7 +356,7 @@ export default function ResultsPage() {
                   <EmailSender
                     type="cv"
                     cvText={finalCvTextForEmail}
-                    acceptedGaps={[]}
+                    acceptedGaps={acceptedGaps}
                     defaultEmail={userEmail}
                   />
                 )}
