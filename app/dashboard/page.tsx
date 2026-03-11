@@ -140,11 +140,6 @@ export default function DashboardPage() {
         {/* Personalized header */}
         <div className="bg-white border-b border-gray-100">
           <div className="max-w-2xl mx-auto px-6 py-8">
-            <div className="flex items-center gap-2 mb-1">
-              <Link href="/dashboard" className="text-xl font-bold text-brand-black">
-                CV<span className="text-[#16a34a]">pass</span>
-              </Link>
-            </div>
             <h1 className="text-2xl font-bold text-brand-black leading-tight flex items-center gap-2">
               Bonjour {firstName}
               <svg width="24" height="24" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
