@@ -43,7 +43,7 @@ export async function DELETE(request: NextRequest) {
       const { error: clErr } = await supabaseAdmin
         .from("cover_letters")
         .delete()
-        .in("analysis_id", ids);
+        .in("analyse_id", ids);
 
       if (clErr) {
         console.error("History delete-all cover_letters error:", clErr);
@@ -79,7 +79,7 @@ export async function DELETE(request: NextRequest) {
   const { error: clErr } = await supabaseAdmin
     .from("cover_letters")
     .delete()
-    .eq("analysis_id", id);
+    .eq("analyse_id", id);
 
   if (clErr) {
     console.error("History delete cover_letters error:", clErr);
