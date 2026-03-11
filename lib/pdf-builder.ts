@@ -314,7 +314,18 @@ export async function buildLetterPdfBuffer(
   }
 
   // ── Letter body ───────────────────────────────────────────────────────────
+  // Strip trailing sender name from body to avoid duplicate signature
   const paragraphs = content.split("\n");
+  if (senderName) {
+    for (let i = paragraphs.length - 1; i >= 0; i--) {
+      if (paragraphs[i].trim() === "") continue;
+      if (paragraphs[i].trim() === senderName.trim()) {
+        paragraphs.splice(i, 1);
+      }
+      break;
+    }
+  }
+
   for (const para of paragraphs) {
     const trimmed = para.trim();
     letterContent.push({
@@ -342,14 +353,6 @@ export async function buildLetterPdfBuffer(
     pageSize: "A4" as const,
     pageMargins: [60, 60, 60, 60] as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 11, lineHeight: 1.6 },
-    footer: () => ({
-      text: "Généré par CVpass • cvpass.fr",
-      font: "Helvetica",
-      fontSize: 8,
-      color: "#d1d5db",
-      alignment: "center",
-      margin: [0, 10, 0, 0],
-    }),
     content: letterContent,
   };
 

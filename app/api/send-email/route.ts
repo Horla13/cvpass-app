@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { createClient } from "@supabase/supabase-js";
 import { canUsePremiumFeature } from "@/lib/billing";
 import { Gap } from "@/lib/store";
 import { restructureWithGPT, buildCvPdfBuffer, buildLetterPdfBuffer, CVData } from "@/lib/pdf-builder";
@@ -83,7 +84,29 @@ export async function POST(req: NextRequest) {
       }
 
       const senderName = [user.firstName, user.lastName].filter(Boolean).join(" ") || undefined;
-      const buffer = await buildLetterPdfBuffer(letterContent, { senderName, senderEmail: userEmail });
+
+      // Fetch city/phone from latest cv_json
+      let senderCity: string | undefined;
+      let senderPhone: string | undefined;
+      const supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+      const { data: latestAnalysis } = await supabaseAdmin
+        .from("analyses")
+        .select("cv_json")
+        .eq("user_id", userId)
+        .not("cv_json", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      if (latestAnalysis?.cv_json) {
+        const cvJson = latestAnalysis.cv_json as { contact?: { telephone?: string; ville?: string } };
+        senderCity = cvJson.contact?.ville;
+        senderPhone = cvJson.contact?.telephone;
+      }
+
+      const buffer = await buildLetterPdfBuffer(letterContent, { senderName, senderEmail: userEmail, senderCity, senderPhone });
       const base64 = buffer.toString("base64");
 
       const subject = "Ta lettre de motivation générée par CVpass";
