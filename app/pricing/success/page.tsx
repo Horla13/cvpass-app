@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import { AppHeader } from "@/components/AppHeader";
 
-export default function PricingSuccessPage() {
+function TrackCheckout() {
   const posthog = usePostHog();
   const searchParams = useSearchParams();
 
@@ -15,9 +15,16 @@ export default function PricingSuccessPage() {
     posthog?.capture("stripe_checkout_completed", { plan: plan ?? "unknown" });
   }, [posthog, searchParams]);
 
+  return null;
+}
+
+export default function PricingSuccessPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader />
+      <Suspense fallback={null}>
+        <TrackCheckout />
+      </Suspense>
       <main className="max-w-lg mx-auto px-6 py-24 text-center">
         <div className="text-5xl mb-6">🎉</div>
         <h1 className="text-3xl font-bold text-brand-black mb-4">
