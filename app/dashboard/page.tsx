@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { usePostHog } from "posthog-js/react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { UploadZone } from "@/components/UploadZone";
@@ -47,6 +48,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const { user } = useUser();
   const firstName = user?.firstName ?? "toi";
+  const posthog = usePostHog();
 
   const cvText = useStore((s) => s.cvText);
   const jobOffer = useStore((s) => s.jobOffer);
@@ -111,6 +113,11 @@ export default function DashboardPage() {
 
       const data = await res.json();
       setAnalysis(data);
+      posthog?.capture("analysis_completed", {
+        score_avant: data.score_avant,
+        nb_suggestions: data.gaps?.length ?? 0,
+        job_title: data.job_title ?? "",
+      });
 
       fetch("/api/save-analysis", {
         method: "POST",
@@ -218,7 +225,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="p-6">
-              <UploadZone onSuccess={() => setStep(2)} />
+              <UploadZone onSuccess={() => { setStep(2); posthog?.capture("cv_uploaded"); }} />
             </div>
           </div>
 

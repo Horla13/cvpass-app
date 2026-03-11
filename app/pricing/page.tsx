@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 import { AppHeader } from "@/components/AppHeader";
 
 const plans = [
@@ -57,6 +58,7 @@ const plans = [
 
 export default function PricingPage() {
   const router = useRouter();
+  const posthog = usePostHog();
   const [loading, setLoading] = useState<string | null>(null);
 
   async function handlePlanClick(planId: string) {
@@ -65,6 +67,7 @@ export default function PricingPage() {
       return;
     }
 
+    posthog?.capture("stripe_checkout_started", { plan: planId });
     setLoading(planId);
     try {
       const res = await fetch("/api/stripe/checkout", {

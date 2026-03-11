@@ -1,7 +1,20 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 import { AppHeader } from "@/components/AppHeader";
 
 export default function PricingSuccessPage() {
+  const posthog = usePostHog();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const plan = searchParams.get("plan");
+    posthog?.capture("stripe_checkout_completed", { plan: plan ?? "unknown" });
+  }, [posthog, searchParams]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <AppHeader />
