@@ -153,7 +153,7 @@ export function LandingPage() {
                 <span className="hero-badge-dot"></span>
                 La seule fonctionnalité qui manquait en France
               </div>
-              <h1>Corrigez votre CV<br />en <em>1 clic.</em></h1>
+              <h1>Votre CV est refusé par les ATS<br />avant même d&apos;être lu.</h1>
               <div className="diff-callout">
                 <span className="diff-item diff-bad">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -165,7 +165,7 @@ export function LandingPage() {
                   CVpass les <strong>corrige automatiquement</strong>
                 </span>
               </div>
-              <p className="hero-sub">Collez votre offre d&apos;emploi, uploadez votre CV. CVpass réécrit chaque point faible en un clic et génère un PDF parfait pour les recruteurs.</p>
+              <p className="hero-sub">CVpass vous dit exactement pourquoi — et le corrige en 30 secondes. Score ATS avant/après, suggestions précises, réécriture automatique. Gratuit pour commencer.</p>
               <div className="hero-actions">
                 <Show when="signed-out">
                   <SignUpButton mode="modal">

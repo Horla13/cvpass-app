@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { canUsePremiumFeature } from "@/lib/billing";
 import { buildLetterPdfBuffer, LetterMeta } from "@/lib/pdf-builder";
 
@@ -41,12 +41,7 @@ export async function POST(req: NextRequest) {
     let senderCity: string | undefined;
     let senderPhone: string | undefined;
 
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    const { data: latestAnalysis } = await supabaseAdmin
+    const { data: latestAnalysis } = await getSupabaseAdmin()
       .from("analyses")
       .select("cv_json")
       .eq("user_id", userId)

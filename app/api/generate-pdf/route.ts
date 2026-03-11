@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { createClient } from "@supabase/supabase-js";
 import { canUsePremiumFeature } from "@/lib/billing";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
 import { restructureWithGPT, buildCvPdfBuffer, CVData } from "@/lib/pdf-builder";
 
@@ -33,25 +33,41 @@ export async function POST(req: NextRequest) {
 
   const { cvText, acceptedGaps = [], cvJson, analysisId } = body;
 
-  if (!cvText && !cvJson) {
+  if (!cvText && !cvJson && !analysisId) {
     return NextResponse.json({ error: "Texte ou JSON du CV requis" }, { status: 400 });
   }
 
   try {
-    // Use provided cvJson (from history) or restructure with GPT
-    const cvData: CVData = cvJson ?? (await restructureWithGPT(cvText!, acceptedGaps));
+    let cvData: CVData | null = cvJson ?? null;
 
-    // Save cv_json to the analysis row if we have an id
-    if (analysisId) {
-      const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
-      await supabaseAdmin
+    // If analysisId provided, try to reuse stored cv_json (avoids a GPT call)
+    if (!cvData && analysisId) {
+      const { data } = await getSupabaseAdmin()
         .from("analyses")
-        .update({ cv_json: cvData })
+        .select("cv_json")
         .eq("id", analysisId)
-        .eq("user_id", userId);
+        .eq("user_id", userId)
+        .single();
+      if (data?.cv_json) {
+        cvData = data.cv_json as CVData;
+      }
+    }
+
+    // Fall back to GPT if we have no cv_json yet
+    if (!cvData) {
+      if (!cvText) {
+        return NextResponse.json({ error: "Texte du CV requis" }, { status: 400 });
+      }
+      cvData = await restructureWithGPT(cvText, acceptedGaps);
+
+      // Persist cv_json for future downloads
+      if (analysisId) {
+        await getSupabaseAdmin()
+          .from("analyses")
+          .update({ cv_json: cvData })
+          .eq("id", analysisId)
+          .eq("user_id", userId);
+      }
     }
 
     const buffer = await buildCvPdfBuffer(cvData);

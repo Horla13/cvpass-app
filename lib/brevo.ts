@@ -58,18 +58,21 @@ export async function sendWelcomeEmail(
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
   await sendEmail({
     to: [{ email, name: firstName }],
-    subject: "Bienvenue sur CVpass 🎉",
+    subject: "Bienvenue sur CVpass 🎉 — analysez votre premier CV maintenant",
     htmlContent: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111827;">
-        <h1 style="color:#16a34a;">Bienvenue, ${firstName} !</h1>
-        <p>Votre compte CVpass est prêt. Vous bénéficiez d'<strong>1 analyse CV gratuite</strong> pour commencer.</p>
-        <p>CVpass analyse votre CV face à une offre d'emploi et réécrit chaque point faible pour passer les filtres ATS.</p>
-        <a href="${appUrl}/dashboard"
-           style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:12px 24px;border-radius:8px;text-decoration:none;margin:16px 0;">
-          Analyser mon CV →
-        </a>
-        <p style="color:#6b7280;font-size:12px;margin-top:32px;">
-          CVpass — VertexLab SASU ·
+        <h2 style="color:#16a34a;margin-bottom:8px;">Bienvenue, ${firstName} !</h2>
+        <p style="margin-top:0;">Votre compte CVpass est prêt.</p>
+        <p>En 2 minutes, découvrez votre score ATS et obtenez des suggestions précises pour décrocher plus d'entretiens.</p>
+        <div style="margin:28px 0;">
+          <a href="${appUrl}/dashboard"
+             style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+            Analyser mon CV maintenant →
+          </a>
+        </div>
+        <p style="color:#6b7280;font-size:12px;margin-top:40px;border-top:1px solid #f3f4f6;padding-top:16px;">
+          L'équipe CVpass<br/>
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> ·
           <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a>
         </p>
       </div>

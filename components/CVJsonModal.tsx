@@ -15,14 +15,19 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/history?id=${analysisId}`)
+    const controller = new AbortController();
+    fetch(`/api/history?id=${analysisId}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data) => {
         if (data.error) throw new Error(data.error);
         setCvJson(data.analysis?.cv_json ?? null);
       })
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : "Erreur"))
+      .catch((e: unknown) => {
+        if (e instanceof Error && e.name === "AbortError") return;
+        setError(e instanceof Error ? e.message : "Erreur");
+      })
       .finally(() => setLoading(false));
+    return () => controller.abort();
   }, [analysisId]);
 
   const handleDownload = async () => {

@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export async function DELETE(request: NextRequest) {
   const { userId } = await auth();
@@ -20,14 +20,9 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "id manquant" }, { status: 400 });
   }
 
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
   if (id === "all") {
     // Get all analysis ids for this user
-    const { data: userAnalyses, error: fetchErr } = await supabaseAdmin
+    const { data: userAnalyses, error: fetchErr } = await getSupabaseAdmin()
       .from("analyses")
       .select("id")
       .eq("user_id", userId);
@@ -40,7 +35,7 @@ export async function DELETE(request: NextRequest) {
     const ids = (userAnalyses ?? []).map((a: { id: string }) => a.id);
 
     if (ids.length > 0) {
-      const { error: clErr } = await supabaseAdmin
+      const { error: clErr } = await getSupabaseAdmin()
         .from("cover_letters")
         .delete()
         .in("analyse_id", ids);
@@ -51,7 +46,7 @@ export async function DELETE(request: NextRequest) {
       }
     }
 
-    const { error: anErr } = await supabaseAdmin
+    const { error: anErr } = await getSupabaseAdmin()
       .from("analyses")
       .delete()
       .eq("user_id", userId);
@@ -65,7 +60,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   // Single deletion — verify ownership first
-  const { data: analysis, error: fetchErr } = await supabaseAdmin
+  const { data: analysis, error: fetchErr } = await getSupabaseAdmin()
     .from("analyses")
     .select("id")
     .eq("id", id)
@@ -76,7 +71,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "Analyse introuvable" }, { status: 404 });
   }
 
-  const { error: clErr } = await supabaseAdmin
+  const { error: clErr } = await getSupabaseAdmin()
     .from("cover_letters")
     .delete()
     .eq("analyse_id", id);
@@ -86,7 +81,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "Erreur lors de la suppression" }, { status: 500 });
   }
 
-  const { error: anErr } = await supabaseAdmin
+  const { error: anErr } = await getSupabaseAdmin()
     .from("analyses")
     .delete()
     .eq("id", id)
@@ -106,15 +101,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
   // Single analysis fetch (for CV preview modal)
   const id = request.nextUrl.searchParams.get("id");
   if (id) {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from("analyses")
       .select("id, cv_json")
       .eq("id", id)
@@ -128,7 +118,7 @@ export async function GET(request: NextRequest) {
   }
 
   // List
-  const { data: analyses, error } = await supabaseAdmin
+  const { data: analyses, error } = await getSupabaseAdmin()
     .from("analyses")
     .select(`
       id,

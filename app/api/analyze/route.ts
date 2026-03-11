@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
 import { canAnalyze } from "@/lib/billing";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const BodySchema = z.object({
+  cvText: z.string().min(1, "CV requis").max(50_000, "CV trop long (max 50 000 caractères)").trim(),
+  jobOffer: z.string().min(1, "Offre d'emploi requise").max(10_000, "Offre trop longue (max 10 000 caractères)").trim(),
+});
 
 const SYSTEM_PROMPT = `Tu es un expert ATS et recruteur senior français avec 15 ans d'expérience.
 Tu reçois un CV et une offre d'emploi. Ta mission : maximiser les chances que ce CV passe les filtres ATS et attire l'attention du recruteur.
@@ -44,33 +51,41 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  // Récupérer l'email pour vérifier l'accès anticipé
+  // Rate limiting: 5 req/hour/user
+  const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
+  if (!rateLimitOk) {
+    return NextResponse.json(
+      { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
+      { status: 429 }
+    );
+  }
+
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
 
-  // Vérification quota freemium (early access = illimité)
   const billing = await canAnalyze(userId, email);
   if (!billing.allowed) {
     return NextResponse.json(
-      { error: "quota_exceeded", upgradeUrl: "/pricing" },
+      { error: "quota_exceeded", code: "quota_exceeded", upgradeUrl: "/pricing" },
       { status: 402 }
     );
   }
 
-  let body: { cvText?: string; jobOffer?: string };
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
+    return NextResponse.json({ error: "Corps de requête invalide", code: "invalid_body" }, { status: 400 });
   }
 
-  const { cvText, jobOffer } = body;
-
-  if (!cvText || !jobOffer) {
-    return NextResponse.json({ error: "CV et offre requis" }, { status: 400 });
+  const parsed = BodySchema.safeParse(rawBody);
+  if (!parsed.success) {
+    const message = parsed.error.issues[0]?.message ?? "Données invalides";
+    return NextResponse.json({ error: message, code: "validation_error" }, { status: 400 });
   }
 
+  const { cvText, jobOffer } = parsed.data;
   const userMessage = `CV :\n${cvText}\n\n---\nOffre d'emploi :\n${jobOffer}`;
 
   try {
@@ -102,8 +117,15 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ...analysis, job_title: jobTitle });
   } catch (e: unknown) {
+    const isTimeout = e instanceof Error && e.message.toLowerCase().includes("timed out");
+    if (isTimeout) {
+      return NextResponse.json(
+        { error: "L'analyse prend trop de temps. Réessaie dans quelques instants.", code: "timeout" },
+        { status: 504 }
+      );
+    }
     const msg = e instanceof Error ? e.message : "Erreur lors de l'analyse IA";
     console.error("Analyze error:", e);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json({ error: msg, code: "internal_error" }, { status: 500 });
   }
 }

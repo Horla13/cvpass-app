@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { useShallow } from "zustand/react/shallow";
+import { usePostHog } from "posthog-js/react";
 import { useStore } from "@/lib/store";
 import { ScoreCircle } from "@/components/ScoreCircle";
 import { SuggestionCard } from "@/components/SuggestionCard";
@@ -11,6 +13,55 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
+
+function ScoreContext({ score }: { score: number }) {
+  let icon: string;
+  let text: string;
+  let colorClass: string;
+
+  if (score < 50) {
+    icon = "⛔";
+    text = "Score critique — la majorité des ATS rejettent les CVs en dessous de 60/100";
+    colorClass = "text-red-600 bg-red-50 border-red-200";
+  } else if (score < 70) {
+    icon = "⚠️";
+    text = "Score moyen — encore des efforts pour passer les filtres ATS";
+    colorClass = "text-orange-600 bg-orange-50 border-orange-200";
+  } else if (score <= 85) {
+    icon = "✅";
+    text = "Bon score — votre CV passe la plupart des ATS";
+    colorClass = "text-green-700 bg-green-50 border-green-200";
+  } else {
+    icon = "🏆";
+    text = "Excellent score — votre CV est optimisé pour les ATS";
+    colorClass = "text-green-700 bg-green-50 border-green-200";
+  }
+
+  return (
+    <p className={`text-xs px-3 py-2 rounded-lg border ${colorClass} leading-snug mt-2`}>
+      {icon} {text}
+    </p>
+  );
+}
+
+function LinkedInShare({ scoreAvant, scoreApres }: { scoreAvant: number; scoreApres: number }) {
+  const text = `Mon CV est passé de ${scoreAvant} à ${scoreApres}/100 grâce à CVpass 🚀\nOptimisez votre CV pour les ATS en moins de 5 minutes : https://cvpass.fr`;
+  const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://cvpass.fr")}&summary=${encodeURIComponent(text)}`;
+
+  return (
+    <a
+      href={linkedInUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 justify-center w-full py-2.5 rounded-xl border border-[#0077b5] text-[#0077b5] text-sm font-semibold hover:bg-[#0077b5] hover:text-white transition-colors"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Partager sur LinkedIn
+    </a>
+  );
+}
 
 function EmailSender({
   type,
@@ -28,6 +79,7 @@ function EmailSender({
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState("");
+  const posthog = usePostHog();
 
   const handleSend = async () => {
     setSending(true);
@@ -43,6 +95,7 @@ function EmailSender({
         throw new Error(d.error ?? "Erreur d'envoi");
       }
       setSent(true);
+      posthog?.capture("email_sent", { type });
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : "Erreur");
     } finally {
@@ -94,16 +147,25 @@ export default function ResultsPage() {
   const router = useRouter();
   const { user } = useUser();
   const userEmail = user?.emailAddresses[0]?.emailAddress ?? "";
+  const posthog = usePostHog();
 
-  const cvText = useStore((s) => s.cvText);
-  const gaps = useStore((s) => s.gaps);
-  const score_avant = useStore((s) => s.score_avant);
-  const scoreActuel = useStore((s) => s.scoreActuel);
-  const resume = useStore((s) => s.resume);
-  const acceptGap = useStore((s) => s.acceptGap);
-  const ignoreGap = useStore((s) => s.ignoreGap);
+  const { cvText, gaps, score_avant, scoreActuel, resume, acceptGap, ignoreGap } = useStore(
+    useShallow((s) => ({
+      cvText: s.cvText,
+      gaps: s.gaps,
+      score_avant: s.score_avant,
+      scoreActuel: s.scoreActuel,
+      resume: s.resume,
+      acceptGap: s.acceptGap,
+      ignoreGap: s.ignoreGap,
+    }))
+  );
+
   const [isDownloading, setIsDownloading] = useState(false);
   const [analysisId, setAnalysisId] = useState<string | null>(null);
+  const [showUnsavedWarning, setShowUnsavedWarning] = useState(true);
+  const [pdfDownloaded, setPdfDownloaded] = useState(false);
+  const [downloadError, setDownloadError] = useState<{ message: string; upgradeUrl?: string } | null>(null);
 
   useEffect(() => {
     if (!cvText) router.push("/dashboard");
@@ -112,29 +174,30 @@ export default function ResultsPage() {
   const pendingGaps = gaps.filter((g) => g.status === "pending");
   const acceptedGaps = gaps.filter((g) => g.status === "accepted");
 
-  const [downloadError, setDownloadError] = useState<{ message: string; upgradeUrl?: string } | null>(null);
-
   const handleDownload = async () => {
     setIsDownloading(true);
     setDownloadError(null);
     try {
-      // Save analysis and capture id
-      const saveRes = await fetch("/api/save-analysis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          score_avant,
-          score_apres: scoreActuel,
-          nb_suggestions: gaps.length,
-          nb_acceptees: acceptedGaps.length,
-        }),
-      }).catch(() => null);
+      let savedId = analysisId;
 
-      let savedId: string | null = null;
-      if (saveRes?.ok) {
-        const saveData = await saveRes.json().catch(() => ({}));
-        savedId = saveData.id ?? null;
-        if (savedId) setAnalysisId(savedId);
+      // Save analysis only once (first download)
+      if (!savedId) {
+        const saveRes = await fetch("/api/save-analysis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            score_avant,
+            score_apres: scoreActuel,
+            nb_suggestions: gaps.length,
+            nb_acceptees: acceptedGaps.length,
+          }),
+        }).catch(() => null);
+
+        if (saveRes?.ok) {
+          const saveData = await saveRes.json().catch(() => ({}));
+          savedId = saveData.id ?? null;
+          if (savedId) setAnalysisId(savedId);
+        }
       }
 
       // Build final CV text client-side
@@ -146,6 +209,7 @@ export default function ResultsPage() {
         }
       }
 
+      // Pass analysisId so server can reuse stored cv_json on subsequent downloads
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -173,6 +237,10 @@ export default function ResultsPage() {
       a.download = "cv-optimise-cvpass.pdf";
       a.click();
       URL.revokeObjectURL(url);
+
+      setPdfDownloaded(true);
+      setShowUnsavedWarning(false);
+      posthog?.capture("pdf_downloaded", { score_avant, score_apres: scoreActuel, nb_accepted: acceptedGaps.length });
     } catch (e: unknown) {
       setDownloadError({ message: e instanceof Error ? e.message : "Erreur inattendue." });
     } finally {
@@ -180,9 +248,19 @@ export default function ResultsPage() {
     }
   };
 
+  const handleAcceptGap = (id: string) => {
+    acceptGap(id);
+    posthog?.capture("suggestion_accepted");
+  };
+
+  const handleIgnoreGap = (id: string) => {
+    ignoreGap(id);
+    posthog?.capture("suggestion_ignored");
+  };
+
   if (!cvText) return null;
 
-  // Build final CV text for email (same logic as download)
+  // Build final CV text for email
   let finalCvTextForEmail = cvText;
   for (const gap of acceptedGaps) {
     const orig = gap.texte_original?.trim();
@@ -196,6 +274,15 @@ export default function ResultsPage() {
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
 
+        {/* Unsaved warning banner — hidden after PDF download */}
+        {showUnsavedWarning && (
+          <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center">
+            <p className="text-xs text-amber-700">
+              ⚠️ Ne fermez pas cette page — vos modifications ne sont pas sauvegardées
+            </p>
+          </div>
+        )}
+
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* COLONNE GAUCHE — Score et résumé */}
@@ -206,11 +293,7 @@ export default function ResultsPage() {
                   <ScoreCircle score={score_avant} label="Avant" size="sm" />
                   <ScoreCircle score={scoreActuel} label="Maintenant" size="lg" />
                 </div>
-                <p className="text-xs text-brand-gray italic text-center mt-2">
-                  Votre CV est{" "}
-                  {scoreActuel < 40 ? "peu visible" : scoreActuel < 70 ? "moyennement visible" : "bien visible"}{" "}
-                  pour ce poste
-                </p>
+                <ScoreContext score={scoreActuel} />
               </Card>
 
               <Card className="p-4">
@@ -252,6 +335,16 @@ export default function ResultsPage() {
                 )}
               </div>
 
+              {/* LinkedIn share — shown after first download */}
+              {pdfDownloaded && (
+                <Card className="p-4 space-y-2">
+                  <p className="text-xs text-brand-gray text-center leading-relaxed">
+                    Mon CV est passé de <strong>{score_avant}</strong> à <strong>{scoreActuel}/100</strong> grâce à CVpass 🚀
+                  </p>
+                  <LinkedInShare scoreAvant={score_avant} scoreApres={scoreActuel} />
+                </Card>
+              )}
+
               {downloadError && (
                 <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 text-center">
                   {downloadError.message}
@@ -277,9 +370,6 @@ export default function ResultsPage() {
               >
                 ← Nouvelle analyse
               </button>
-
-              {/* Suppress unused var warning */}
-              {analysisId && <span className="hidden">{analysisId}</span>}
             </div>
 
             {/* COLONNE CENTRE — Suggestions */}
@@ -295,7 +385,7 @@ export default function ResultsPage() {
                 </Card>
               ) : (
                 pendingGaps.map((gap) => (
-                  <SuggestionCard key={gap.id} gap={gap} onAccept={acceptGap} onIgnore={ignoreGap} />
+                  <SuggestionCard key={gap.id} gap={gap} onAccept={handleAcceptGap} onIgnore={handleIgnoreGap} />
                 ))
               )}
             </div>
