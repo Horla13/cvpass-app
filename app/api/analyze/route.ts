@@ -63,15 +63,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Rate limiting: free users only (5 req/hour). Premium & early access = illimité.
-  if (!billing.isPremium) {
-    const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
-    if (!rateLimitOk) {
-      return NextResponse.json(
-        { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
-        { status: 429 }
-      );
-    }
+  // Rate limiting: 5 req/hour pour tous les utilisateurs (anti-abus)
+  const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
+  if (!rateLimitOk) {
+    return NextResponse.json(
+      { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
+      { status: 429 }
+    );
   }
 
   let rawBody: unknown;
