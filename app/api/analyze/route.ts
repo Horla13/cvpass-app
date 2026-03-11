@@ -3,26 +3,40 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
 import { canAnalyze } from "@/lib/billing";
 
-const SYSTEM_PROMPT = `Tu es un expert en recrutement français.
-Tu reçois un CV et une offre d'emploi.
-Tu dois identifier exactement les mots-clés et compétences présents dans l'offre mais absents ou mal formulés dans le CV.
-Pour chaque gap identifié, propose une reformulation concrète et précise de la phrase du CV concernée.
-Retourne UNIQUEMENT un JSON valide, sans markdown, sans commentaires, structuré ainsi :
+const SYSTEM_PROMPT = `Tu es un expert ATS et recruteur senior français avec 15 ans d'expérience.
+Tu reçois un CV et une offre d'emploi. Ta mission : maximiser les chances que ce CV passe les filtres ATS et attire l'attention du recruteur.
+
+SCORING — calcule score_avant selon ces critères stricts :
+- 0-30 : mots-clés critiques de l'offre quasi absents du CV
+- 31-50 : quelques mots-clés présents mais compétences clés mal formulées
+- 51-70 : bon fond mais formulations trop génériques, manque de chiffres et de verbes d'action
+- 71-85 : CV solide avec quelques ajustements à faire
+- 86-100 : excellent match, réserver à un CV quasi parfait pour ce poste
+
+GAPS — identifie entre 4 et 8 gaps, classés du plus impactant au moins impactant.
+Pour chaque gap tu DOIS :
+- Intégrer les mots-clés exacts de l'offre dans texte_suggere
+- Ajouter des verbes d'action forts (piloté, développé, optimisé, déployé...)
+- Quantifier si le contexte le permet (%, €, nombre de personnes, délai)
+- Enrichir avec des compétences implicites vraisemblables si le contexte du CV le justifie (ex: si le candidat a géré une équipe, on peut ajouter la méthodo Agile si l'offre la demande)
+
+LANGUE — toutes les reformulations doivent être en français, y compris les termes techniques quand une traduction courante existe.
+
+Retourne UNIQUEMENT un JSON valide, sans markdown, sans commentaires :
 {
-  "job_title": string (titre exact du poste extrait de l'offre, ex: "Développeur React Senior"),
-  "score_avant": number (0-100),
-  "resume": string (2 phrases max résumant les axes d'amélioration principaux),
+  "job_title": string (titre exact du poste extrait de l'offre),
+  "score_avant": number (0-100, selon les critères ci-dessus),
+  "resume": string (2 phrases max : 1 point fort du CV, 1 axe d'amélioration principal),
   "gaps": [
     {
-      "id": string (identifiant court unique, ex: "g1", "g2"),
+      "id": string (ex: "g1", "g2" — classé par ordre d'impact décroissant),
       "section": string (ex: "Expérience", "Compétences", "Formation", "Profil"),
-      "texte_original": string (phrase exacte du CV à améliorer),
-      "texte_suggere": string (reformulation avec mots-clés de l'offre intégrés),
-      "raison": string (max 1 phrase expliquant pourquoi cette reformulation)
+      "texte_original": string (phrase du CV à améliorer, ou "" si c'est une compétence absente à ajouter),
+      "texte_suggere": string (reformulation complète avec mots-clés de l'offre et verbes d'action),
+      "raison": string (1 phrase : pourquoi ce changement augmente le score ATS)
     }
   ]
-}
-Identifie entre 3 et 8 gaps pertinents. Ne pas inventer de contenu, reformuler uniquement ce qui existe dans le CV.`;
+}`;
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -66,8 +80,8 @@ export async function POST(req: NextRequest) {
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userMessage },
       ],
-      temperature: 0.3,
-      max_tokens: 2000,
+      temperature: 0.2,
+      max_tokens: 3500,
       response_format: { type: "json_object" },
     });
 

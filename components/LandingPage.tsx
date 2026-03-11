@@ -7,7 +7,7 @@ import "../app/styles/landing.css";
 const FAQ_ITEMS = [
   {
     q: "CVpass stocke-t-il mon CV ?",
-    a: "Non. Votre CV est traité en mémoire et supprimé automatiquement après 24h. Aucune donnée personnelle n'est conservée au-delà de votre session.",
+    a: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Il disparaît automatiquement à la fermeture de votre onglet. Aucune donnée personnelle n'est conservée au-delà de votre session.",
   },
   {
     q: "Ça marche avec les CVs Canva ?",
@@ -181,7 +181,7 @@ export function LandingPage() {
                 <div className="social-counter-avatars">
                   <span>MC</span><span>AT</span><span>SF</span>
                 </div>
-                <span>Déjà <strong>{counterValue}</strong> candidats sur la liste d&apos;attente</span>
+                <span>Déjà <strong>{counterValue}</strong> candidats nous font confiance</span>
               </div>
               <p className="hero-note"><b>Gratuit</b> · Sans carte de crédit · Sans engagement</p>
             </div>
