@@ -49,9 +49,13 @@ export default function ResultsPage() {
       }).catch(() => {});
 
       // Appliquer les suggestions côté client (même logique que CVPreview)
+      // Guard: skip if texte_original is empty or not found (évite insertion en tête)
       let finalCvText = cvText;
       for (const gap of acceptedGaps) {
-        finalCvText = finalCvText.replace(gap.texte_original, gap.texte_suggere);
+        const orig = gap.texte_original?.trim();
+        if (orig && finalCvText.includes(orig)) {
+          finalCvText = finalCvText.replace(orig, gap.texte_suggere);
+        }
       }
 
       const res = await fetch("/api/generate-pdf", {

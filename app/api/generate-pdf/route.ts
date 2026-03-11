@@ -5,6 +5,109 @@ import { Gap } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
+/** Detect a section heading: ALL-CAPS, 3–50 chars, contains at least one letter */
+function isHeadingLine(line: string): boolean {
+  const t = line.trim();
+  return (
+    t.length >= 3 &&
+    t.length <= 50 &&
+    t === t.toUpperCase() &&
+    /[A-ZÀÂÉÈÊËÏÎÔÙÛÜÇ]/.test(t)
+  );
+}
+
+/** Build pdfmake content array from CV plain text */
+function buildContent(text: string): unknown[] {
+  const lines = text.split("\n");
+  const content: unknown[] = [];
+
+  // Locate first heading to isolate the header block
+  let firstHeadingIdx = lines.findIndex((l) => isHeadingLine(l));
+  if (firstHeadingIdx === -1) firstHeadingIdx = Math.min(4, lines.length);
+
+  // ── Header block (name + contact) ────────────────────────────────────────
+  const headerLines = lines.slice(0, firstHeadingIdx).filter((l) => l.trim());
+  if (headerLines.length > 0) {
+    // First non-empty line = full name
+    content.push({
+      text: headerLines[0].trim(),
+      font: "Helvetica",
+      fontSize: 18,
+      bold: true,
+      color: "#111827",
+      margin: [0, 0, 0, 4],
+    });
+    // Remaining header lines = contact info
+    for (const line of headerLines.slice(1)) {
+      content.push({
+        text: line.trim(),
+        font: "Helvetica",
+        fontSize: 9,
+        color: "#6b7280",
+        margin: [0, 0, 0, 2],
+      });
+    }
+    // Thin separator below header
+    content.push({
+      canvas: [
+        {
+          type: "line",
+          x1: 0, y1: 0,
+          x2: 495, y2: 0,
+          lineWidth: 1,
+          lineColor: "#e5e7eb",
+        },
+      ],
+      margin: [0, 8, 0, 0],
+    });
+  }
+
+  // ── Body (sections + content) ─────────────────────────────────────────────
+  for (let i = firstHeadingIdx; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      content.push({ text: " ", margin: [0, 2] });
+      continue;
+    }
+
+    if (isHeadingLine(trimmed)) {
+      // Section title: green, bold, with separator below
+      content.push({
+        text: trimmed,
+        font: "Helvetica",
+        fontSize: 11,
+        bold: true,
+        color: "#16a34a",
+        margin: [0, 12, 0, 3],
+      });
+      content.push({
+        canvas: [
+          {
+            type: "line",
+            x1: 0, y1: 0,
+            x2: 495, y2: 0,
+            lineWidth: 0.5,
+            lineColor: "#d1d5db",
+          },
+        ],
+        margin: [0, 0, 0, 4],
+      });
+    } else {
+      content.push({
+        text: line,
+        font: "Helvetica",
+        fontSize: 10,
+        color: "#111827",
+        margin: [0, 1],
+      });
+    }
+  }
+
+  return content;
+}
+
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
@@ -35,15 +138,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Appliquer les suggestions acceptées
+    // Apply accepted suggestions — guard against empty texte_original
+    // (empty string replace would prepend text to the document)
     let finalText = cvText;
     for (const gap of acceptedGaps) {
-      if (gap.texte_original) {
-        finalText = finalText.replaceAll(gap.texte_original, gap.texte_suggere);
+      const orig = gap.texte_original?.trim();
+      if (orig && finalText.includes(orig)) {
+        finalText = finalText.replace(orig, gap.texte_suggere);
       }
     }
 
-    // Générer le PDF avec pdfmake v0.3.x (100% Node.js, sans DOMMatrix)
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const pdfmake = require("pdfmake");
     pdfmake.setFonts({
@@ -56,27 +160,19 @@ export async function POST(req: NextRequest) {
     });
     pdfmake.setUrlAccessPolicy(() => false);
 
-    const lines = finalText.split("\n");
-    const content = lines.map((line: string) => {
-      const trimmed = line.trim();
-      if (!trimmed) return { text: " ", margin: [0, 2] };
-      // Détecter les titres de section (ligne courte en majuscules)
-      const isHeading = trimmed === trimmed.toUpperCase() && trimmed.length < 40 && trimmed.length > 2;
-      return {
-        text: line,
-        font: "Helvetica",
-        fontSize: isHeading ? 11 : 10,
-        bold: isHeading,
-        margin: isHeading ? [0, 8, 0, 2] : [0, 1],
-        color: "#111827",
-      };
-    });
-
     const docDefinition = {
       pageSize: "A4" as const,
-      pageMargins: [50, 50, 50, 50] as [number, number, number, number],
+      pageMargins: [40, 40, 40, 50] as [number, number, number, number],
       defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
-      content,
+      footer: (_currentPage: number, _pageCount: number) => ({
+        text: "Optimisé par CVpass • cvpass.fr",
+        font: "Helvetica",
+        fontSize: 8,
+        color: "#d1d5db",
+        alignment: "center",
+        margin: [0, 0, 0, 20],
+      }),
+      content: buildContent(finalText),
     };
 
     const buffer: Buffer = await pdfmake.createPdf(docDefinition).getBuffer();

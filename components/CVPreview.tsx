@@ -10,7 +10,10 @@ interface CVPreviewProps {
 export function CVPreview({ cvText, acceptedGaps }: CVPreviewProps) {
   let displayText = cvText;
   for (const gap of acceptedGaps) {
-    displayText = displayText.replace(gap.texte_original, gap.texte_suggere);
+    const orig = gap.texte_original?.trim();
+    if (orig && displayText.includes(orig)) {
+      displayText = displayText.replace(orig, gap.texte_suggere);
+    }
   }
 
   return (
