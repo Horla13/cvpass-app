@@ -1,12 +1,30 @@
 import { NextResponse, NextRequest } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { canUsePremiumFeature } from "@/lib/billing";
+
+async function assertPremium(userId: string): Promise<true | NextResponse> {
+  const clerk = await clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const email = user.emailAddresses[0]?.emailAddress;
+  const allowed = await canUsePremiumFeature(userId, email);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "PREMIUM_REQUIRED", message: "Accédez à tout votre historique de candidatures avec un pass CVpass." },
+      { status: 403 }
+    );
+  }
+  return true;
+}
 
 export async function DELETE(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
+
+  const premiumCheck = await assertPremium(userId);
+  if (premiumCheck !== true) return premiumCheck;
 
   let body: { id?: string };
   try {
@@ -100,6 +118,9 @@ export async function GET(request: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
+
+  const premiumCheck = await assertPremium(userId);
+  if (premiumCheck !== true) return premiumCheck;
 
   // Single analysis fetch (for CV preview modal)
   const id = request.nextUrl.searchParams.get("id");

@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
-}
-
-function getAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
 }
 
 export async function POST(req: NextRequest) {
@@ -35,7 +28,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Signature invalide" }, { status: 400 });
   }
 
-  const admin = getAdmin();
+  const admin = getSupabaseAdmin();
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
@@ -83,6 +76,20 @@ export async function POST(req: NextRequest) {
       .from("subscriptions")
       .update({ status: "canceled", updated_at: new Date().toISOString() })
       .eq("stripe_subscription_id", sub.id);
+  }
+
+  if (event.type === "invoice.payment_succeeded") {
+    const invoice = event.data.object as Stripe.Invoice;
+    const subscriptionId =
+      invoice.parent?.type === "subscription_details"
+        ? (invoice.parent.subscription_details?.subscription as string)
+        : undefined;
+    if (subscriptionId) {
+      await admin
+        .from("subscriptions")
+        .update({ status: "active", updated_at: new Date().toISOString() })
+        .eq("stripe_subscription_id", subscriptionId);
+    }
   }
 
   if (event.type === "invoice.payment_failed") {

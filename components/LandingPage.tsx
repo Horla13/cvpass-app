@@ -469,7 +469,8 @@ export function LandingPage() {
                 <div className="pf"><span className="pf-icon ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></span> <strong>Réécriture IA des bullet points</strong></div>
                 <div className="pf"><span className="pf-icon ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></span> Match offres illimité</div>
                 <div className="pf"><span className="pf-icon ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></span> Export PDF sans watermark</div>
-                <div className="pf off"><span className="pf-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Historique des CVs</div>
+                <div className="pf"><span className="pf-icon ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></span> Lettre de motivation IA</div>
+                <div className="pf"><span className="pf-icon ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></span> Historique des CVs</div>
               </div>
               <Link href="/pricing" className="btn-full green" style={{ display: "block", textAlign: "center" }}>Choisir ce Pass</Link>
             </div>

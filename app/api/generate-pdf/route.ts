@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { canUsePremiumFeature } from "@/lib/billing";
+import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
 import { restructureWithGPT, buildCvPdfBuffer, CVData } from "@/lib/pdf-builder";
@@ -13,14 +14,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
+  const { allowed: rateLimitOk } = await checkRateLimitWith(`generate-pdf:${userId}`, 20, "1 h");
+  if (!rateLimitOk) {
+    return NextResponse.json(
+      { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
+      { status: 429 }
+    );
+  }
+
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
   const allowed = await canUsePremiumFeature(userId, email);
   if (!allowed) {
     return NextResponse.json(
-      { error: "quota_exceeded", upgradeUrl: "/pricing" },
-      { status: 402 }
+      { error: "PREMIUM_REQUIRED", message: "Exportez votre CV optimisé en PDF avec un pass CVpass." },
+      { status: 403 }
     );
   }
 

@@ -63,12 +63,16 @@ export default function DashboardPage() {
   const [analyses, setAnalyses] = useState<HistoryAnalysis[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [historyLocked, setHistoryLocked] = useState(false);
 
   useEffect(() => {
     fetch("/api/history")
-      .then((r) => r.json())
+      .then((r) => {
+        if (r.status === 403) { setHistoryLocked(true); return null; }
+        return r.json();
+      })
       .then((data) => {
-        if (data.error) return;
+        if (!data || data.error) return;
         const list: HistoryAnalysis[] = data.analyses ?? [];
         setAnalyses(list);
         const total = list.length;
@@ -173,6 +177,11 @@ export default function DashboardPage() {
                 <StatSkeleton />
                 <StatSkeleton />
               </>
+            ) : historyLocked ? (
+              <div className="col-span-3 bg-white rounded-2xl border border-gray-200 p-4 flex items-center justify-between gap-3">
+                <p className="text-sm text-brand-gray">L&apos;historique est réservé aux membres pass48h et monthly.</p>
+                <Link href="/pricing" className="shrink-0 text-xs font-semibold text-brand-green hover:text-green-700 transition-colors">Voir les offres →</Link>
+              </div>
             ) : (
               <>
                 <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
@@ -281,7 +290,7 @@ export default function DashboardPage() {
           )}
 
           {/* Dernière analyse */}
-          {!statsLoading && lastAnalysis && (
+          {!statsLoading && !historyLocked && lastAnalysis && (
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-brand-gray mb-0.5 font-medium uppercase tracking-wide">Dernière candidature</p>

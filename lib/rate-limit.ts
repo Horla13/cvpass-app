@@ -1,27 +1,41 @@
-import { Ratelimit } from "@upstash/ratelimit";
+import { Ratelimit, type Duration } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-let _ratelimit: Ratelimit | null = null;
+const _limiters = new Map<string, Ratelimit>();
 
-export function getRateLimit(): Ratelimit | null {
+function getLimiter(requests: number, window: Duration): Ratelimit | null {
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
     return null;
   }
-  if (!_ratelimit) {
-    _ratelimit = new Ratelimit({
-      redis: new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      }),
-      limiter: Ratelimit.slidingWindow(5, "1 h"),
-      analytics: false,
-    });
+  const key = `${requests}:${window}`;
+  if (!_limiters.has(key)) {
+    _limiters.set(
+      key,
+      new Ratelimit({
+        redis: new Redis({
+          url: process.env.UPSTASH_REDIS_REST_URL,
+          token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        }),
+        limiter: Ratelimit.slidingWindow(requests, window),
+        analytics: false,
+      })
+    );
   }
-  return _ratelimit;
+  return _limiters.get(key)!;
 }
 
+// Default: 5 req/h — used by /api/analyze
 export async function checkRateLimit(identifier: string): Promise<{ allowed: boolean }> {
-  const rl = getRateLimit();
+  return checkRateLimitWith(identifier, 5, "1 h");
+}
+
+// Configurable rate limit for any route
+export async function checkRateLimitWith(
+  identifier: string,
+  requests: number,
+  window: Duration
+): Promise<{ allowed: boolean }> {
+  const rl = getLimiter(requests, window);
   if (!rl) return { allowed: true }; // degrade gracefully if not configured
   const { success } = await rl.limit(identifier);
   return { allowed: success };

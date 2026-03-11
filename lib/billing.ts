@@ -30,11 +30,19 @@ export async function canUsePremiumFeature(userId: string, email?: string): Prom
     const admin = getSupabaseAdmin();
     const { data: sub } = await admin
       .from("subscriptions")
-      .select("plan, status")
+      .select("plan, status, pass_expires_at")
       .eq("user_id", userId)
       .single();
 
-    return !!(sub && sub.plan === "monthly" && sub.status === "active");
+    if (!sub) return false;
+
+    if (sub.plan === "monthly" && sub.status === "active") return true;
+
+    if (sub.plan === "pass48h") {
+      return !!(sub.pass_expires_at && new Date(sub.pass_expires_at) > new Date());
+    }
+
+    return false;
   } catch {
     return false; // Fail closed: if Supabase is down, block premium features
   }

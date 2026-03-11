@@ -9,6 +9,7 @@ import { CoverLetterEditor } from "@/components/CoverLetterEditor";
 import { Card } from "@/components/ui/Card";
 import { PageTransition } from "@/components/PageTransition";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { PremiumModal } from "@/components/PremiumModal";
 
 export default function CoverLetterPage() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function CoverLetterPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [premiumModal, setPremiumModal] = useState<"letter" | null>(null);
 
   // No CV in state — ask user to analyze first
   if (!cvText) {
@@ -65,6 +67,10 @@ export default function CoverLetterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cvText, jobOffer }),
       });
+      if (res.status === 403) {
+        setPremiumModal("letter");
+        return;
+      }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Erreur lors de la génération");
@@ -104,8 +110,8 @@ export default function CoverLetterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ letterContent: content }),
     });
-    if (res.status === 402) {
-      setError("L'export PDF est une fonctionnalité premium. Voir /pricing.");
+    if (res.status === 403) {
+      setPremiumModal("letter");
       return;
     }
     if (!res.ok) {
@@ -124,6 +130,9 @@ export default function CoverLetterPage() {
 
   return (
     <PageTransition>
+      {premiumModal && (
+        <PremiumModal feature={premiumModal} onClose={() => setPremiumModal(null)} />
+      )}
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
         <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
+import { PremiumModal } from "@/components/PremiumModal";
 
 function ScoreContext({ score }: { score: number }) {
   let icon: string;
@@ -165,7 +166,8 @@ export default function ResultsPage() {
   const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [showUnsavedWarning, setShowUnsavedWarning] = useState(true);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
-  const [downloadError, setDownloadError] = useState<{ message: string; upgradeUrl?: string } | null>(null);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [premiumModal, setPremiumModal] = useState<"pdf" | "letter" | null>(null);
 
   useEffect(() => {
     if (!cvText) router.push("/dashboard");
@@ -220,13 +222,13 @@ export default function ResultsPage() {
         }),
       });
 
-      if (res.status === 402) {
-        setDownloadError({ message: "L'export PDF est une fonctionnalité premium.", upgradeUrl: "/pricing" });
+      if (res.status === 403) {
+        setPremiumModal("pdf");
         return;
       }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setDownloadError({ message: data.error ?? "Erreur lors de la génération du PDF." });
+        setDownloadError(data.error ?? "Erreur lors de la génération du PDF.");
         return;
       }
 
@@ -242,7 +244,7 @@ export default function ResultsPage() {
       setShowUnsavedWarning(false);
       posthog?.capture("pdf_downloaded", { score_avant, score_apres: scoreActuel, nb_accepted: acceptedGaps.length });
     } catch (e: unknown) {
-      setDownloadError({ message: e instanceof Error ? e.message : "Erreur inattendue." });
+      setDownloadError(e instanceof Error ? e.message : "Erreur inattendue.");
     } finally {
       setIsDownloading(false);
     }
@@ -271,6 +273,9 @@ export default function ResultsPage() {
 
   return (
     <PageTransition>
+      {premiumModal && (
+        <PremiumModal feature={premiumModal} onClose={() => setPremiumModal(null)} />
+      )}
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
 
@@ -347,10 +352,7 @@ export default function ResultsPage() {
 
               {downloadError && (
                 <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 text-center">
-                  {downloadError.message}
-                  {downloadError.upgradeUrl && (
-                    <a href={downloadError.upgradeUrl} className="ml-2 underline font-medium">Voir les offres →</a>
-                  )}
+                  {downloadError}
                 </div>
               )}
 

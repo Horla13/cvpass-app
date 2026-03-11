@@ -21,7 +21,10 @@ export async function POST(req: NextRequest) {
 
   const allowed = await canUsePremiumFeature(userId, userEmail);
   if (!allowed) {
-    return NextResponse.json({ error: "quota_exceeded", upgradeUrl: "/pricing" }, { status: 402 });
+    return NextResponse.json(
+      { error: "PREMIUM_REQUIRED", message: "Exportez votre CV optimisé en PDF avec un pass CVpass." },
+      { status: 403 }
+    );
   }
 
   let body: {
