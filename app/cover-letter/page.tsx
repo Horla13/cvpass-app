@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { AppHeader } from "@/components/AppHeader";
@@ -21,9 +21,37 @@ export default function CoverLetterPage() {
   const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (!cvText) router.push("/dashboard");
-  }, [cvText, router]);
+  // No CV in state — ask user to analyze first
+  if (!cvText) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen bg-gray-50">
+          <AppHeader />
+          <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16 flex flex-col items-center text-center gap-6">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M22 7l-10 7L2 7" />
+            </svg>
+            <div>
+              <h1 className="text-xl font-bold text-brand-black mb-2">Aucun CV analysé</h1>
+              <p className="text-sm text-brand-gray max-w-xs mx-auto">
+                Analysez d&apos;abord votre CV avec une offre d&apos;emploi pour générer une lettre de motivation personnalisée.
+              </p>
+            </div>
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="inline-flex items-center gap-2 bg-brand-green text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition-colors"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+              Analyser mon CV
+            </button>
+          </main>
+        </div>
+      </PageTransition>
+    );
+  }
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -91,72 +119,73 @@ export default function CoverLetterPage() {
     URL.revokeObjectURL(url);
   };
 
-  if (!cvText) return null;
-
   return (
     <PageTransition>
       <div className="min-h-screen bg-gray-50">
         <AppHeader />
         <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-brand-black">
-            Lettre de motivation
-          </h1>
-          <p className="text-brand-gray text-sm mt-1">
-            Générée à partir de votre CV et de l&apos;offre d&apos;emploi analysée.
-          </p>
-        </div>
-
-        {isGenerating && (
-          <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" message="Génération de votre lettre de motivation…" />
-          </div>
-        )}
-
-        {!coverLetter ? (
-          <Card className="p-12 text-center">
-            <div className="text-5xl mb-4">✉️</div>
-            <h2 className="font-semibold text-brand-black mb-2">
-              Prêt à générer votre lettre
-            </h2>
-            <p className="text-brand-gray text-sm mb-6 max-w-sm mx-auto">
-              CVpass va rédiger une lettre de motivation personnalisée
-              en français, adaptée au poste et à votre profil.
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-brand-black">
+              Lettre de motivation
+            </h1>
+            <p className="text-brand-gray text-sm mt-1">
+              Générée à partir de votre CV et de l&apos;offre d&apos;emploi analysée.
             </p>
-            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating}
-              className="inline-flex items-center gap-2 bg-brand-green text-white px-8 py-3 rounded-md font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isGenerating ? "Génération en cours..." : "Générer ma lettre de motivation"}
-            </button>
-          </Card>
-        ) : (
-          <Card className="p-6">
-            {savedId && (
-              <div className="mb-4 text-sm text-brand-green font-medium">
-                ✓ Lettre sauvegardée dans votre historique
-              </div>
-            )}
-            {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
-            <CoverLetterEditor
-              initialContent={coverLetter}
-              onSave={handleSave}
-              onDownloadPdf={handleDownloadPdf}
-              isSaving={isSaving}
-            />
-            <div className="mt-4 pt-4 border-t border-gray-100">
+          </div>
+
+          {isGenerating && (
+            <div className="flex justify-center py-12">
+              <LoadingSpinner size="lg" message="Génération de votre lettre de motivation…" />
+            </div>
+          )}
+
+          {!coverLetter ? (
+            <Card className="p-12 text-center">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 opacity-70">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M22 7l-10 7L2 7" />
+              </svg>
+              <h2 className="font-semibold text-brand-black mb-2">
+                Prêt à générer votre lettre
+              </h2>
+              <p className="text-brand-gray text-sm mb-6 max-w-sm mx-auto">
+                CVpass va rédiger une lettre de motivation personnalisée
+                en français, adaptée au poste et à votre profil.
+              </p>
+              {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
               <button
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className="text-sm text-brand-gray hover:text-brand-black underline disabled:opacity-50"
+                className="inline-flex items-center gap-2 bg-brand-green text-white px-8 py-3 rounded-md font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isGenerating ? "Régénération..." : "Régénérer une nouvelle version"}
+                {isGenerating ? "Génération en cours..." : "Générer ma lettre de motivation"}
               </button>
-            </div>
-          </Card>
-        )}
+            </Card>
+          ) : (
+            <Card className="p-6">
+              {savedId && (
+                <div className="mb-4 text-sm text-brand-green font-medium">
+                  ✓ Lettre sauvegardée dans votre historique
+                </div>
+              )}
+              {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+              <CoverLetterEditor
+                initialContent={coverLetter}
+                onSave={handleSave}
+                onDownloadPdf={handleDownloadPdf}
+                isSaving={isSaving}
+              />
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <button
+                  onClick={handleGenerate}
+                  disabled={isGenerating}
+                  className="text-sm text-brand-gray hover:text-brand-black underline disabled:opacity-50"
+                >
+                  {isGenerating ? "Régénération..." : "Régénérer une nouvelle version"}
+                </button>
+              </div>
+            </Card>
+          )}
         </main>
       </div>
     </PageTransition>

@@ -69,11 +69,12 @@ function AnalysisCard({ analysis, onDelete }: AnalysisCardProps) {
   async function handleDelete() {
     setDeleting(true);
     try {
-      await fetch("/api/history", {
+      const res = await fetch("/api/history", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: analysis.id }),
       });
+      if (!res.ok) throw new Error("Erreur lors de la suppression");
       onDelete(analysis.id);
     } catch {
       setDeleting(false);
@@ -212,11 +213,12 @@ export default function HistoryPage() {
     if (deleteAllState === "confirm") {
       setDeleteAllState("deleting");
       try {
-        await fetch("/api/history", {
+        const res = await fetch("/api/history", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id: "all" }),
         });
+        if (!res.ok) throw new Error("Erreur lors de la suppression");
         setAnalyses([]);
         setDeleteAllState("idle");
       } catch {
