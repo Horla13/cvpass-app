@@ -99,10 +99,10 @@ export default function CoverLetterPage() {
   };
 
   const handleDownloadPdf = async (content: string) => {
-    const res = await fetch("/api/generate-pdf", {
+    const res = await fetch("/api/generate-letter-pdf", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cvText: content, acceptedGaps: [] }),
+      body: JSON.stringify({ letterContent: content }),
     });
     if (res.status === 402) {
       setError("L'export PDF est une fonctionnalité premium. Voir /pricing.");

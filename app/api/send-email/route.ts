@@ -82,7 +82,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Contenu de la lettre requis" }, { status: 400 });
       }
 
-      const buffer = await buildLetterPdfBuffer(letterContent);
+      const senderName = [user.firstName, user.lastName].filter(Boolean).join(" ") || undefined;
+      const buffer = await buildLetterPdfBuffer(letterContent, { senderName, senderEmail: userEmail });
       const base64 = buffer.toString("base64");
 
       const subject = "Ta lettre de motivation générée par CVpass";

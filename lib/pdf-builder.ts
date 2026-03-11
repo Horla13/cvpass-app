@@ -235,7 +235,18 @@ export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
   return pdfmake.createPdf(docDefinition).getBuffer();
 }
 
-export async function buildLetterPdfBuffer(content: string): Promise<Buffer> {
+export interface LetterMeta {
+  senderName?: string;
+  senderEmail?: string;
+  senderCity?: string;
+  senderPhone?: string;
+  jobTitle?: string;
+}
+
+export async function buildLetterPdfBuffer(
+  content: string,
+  meta: LetterMeta = {}
+): Promise<Buffer> {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const pdfmake = require("pdfmake");
   pdfmake.setFonts({
@@ -248,19 +259,98 @@ export async function buildLetterPdfBuffer(content: string): Promise<Buffer> {
   });
   pdfmake.setUrlAccessPolicy(() => false);
 
-  const lines = content.split("\n").map((line: string) => ({
-    text: line || " ",
+  const { senderName, senderEmail, senderCity, senderPhone, jobTitle } = meta;
+
+  // Format date in French
+  const today = new Date();
+  const dateStr = today.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const cityStr = senderCity ?? "";
+  const dateLabel = cityStr ? `${cityStr}, le ${dateStr}` : `Le ${dateStr}`;
+
+  const letterContent: unknown[] = [];
+
+  // ── Sender block (top-left) ───────────────────────────────────────────────
+  if (senderName || senderEmail || senderCity || senderPhone) {
+    const senderLines: string[] = [];
+    if (senderName) senderLines.push(senderName);
+    if (senderCity) senderLines.push(senderCity);
+    if (senderEmail) senderLines.push(senderEmail);
+    if (senderPhone) senderLines.push(senderPhone);
+
+    letterContent.push({
+      text: senderLines.join("\n"),
+      font: "Helvetica",
+      fontSize: 11,
+      color: "#111827",
+      lineHeight: 1.6,
+      margin: [0, 0, 0, 24],
+    });
+  }
+
+  // ── Date (right-aligned) ──────────────────────────────────────────────────
+  letterContent.push({
+    text: dateLabel,
     font: "Helvetica",
     fontSize: 11,
     color: "#111827",
-    margin: [0, line.trim() ? 1 : 4],
-  }));
+    alignment: "right",
+    margin: [0, 0, 0, 24],
+  });
+
+  // ── Subject ───────────────────────────────────────────────────────────────
+  if (jobTitle) {
+    letterContent.push({
+      text: `Objet : Candidature au poste de ${jobTitle}`,
+      font: "Helvetica",
+      fontSize: 11,
+      bold: true,
+      color: "#111827",
+      margin: [0, 0, 0, 24],
+    });
+  }
+
+  // ── Letter body ───────────────────────────────────────────────────────────
+  const paragraphs = content.split("\n");
+  for (const para of paragraphs) {
+    const trimmed = para.trim();
+    letterContent.push({
+      text: trimmed || " ",
+      font: "Helvetica",
+      fontSize: 11,
+      color: "#111827",
+      lineHeight: 1.6,
+      margin: [0, trimmed ? 0 : 6, 0, 0],
+    });
+  }
+
+  // ── Signature ─────────────────────────────────────────────────────────────
+  if (senderName) {
+    letterContent.push({
+      text: senderName,
+      font: "Helvetica",
+      fontSize: 11,
+      color: "#111827",
+      margin: [0, 32, 0, 0],
+    });
+  }
 
   const docDefinition = {
     pageSize: "A4" as const,
     pageMargins: [60, 60, 60, 60] as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 11, lineHeight: 1.6 },
-    content: lines,
+    footer: () => ({
+      text: "Généré par CVpass • cvpass.fr",
+      font: "Helvetica",
+      fontSize: 8,
+      color: "#d1d5db",
+      alignment: "center",
+      margin: [0, 10, 0, 0],
+    }),
+    content: letterContent,
   };
 
   return pdfmake.createPdf(docDefinition).getBuffer();
