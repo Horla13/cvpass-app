@@ -1,23 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { UploadZone } from "@/components/UploadZone";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 
+interface HistoryAnalysis {
+  id: string;
+  created_at: string;
+  job_title: string | null;
+  score_avant: number;
+  score_apres: number;
+  nb_suggestions: number;
+  nb_acceptees: number;
+}
+
+interface Stats {
+  total: number;
+  bestScore: number;
+  totalAccepted: number;
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+function StatSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-4 animate-pulse">
+      <div className="h-7 bg-gray-200 rounded w-12 mb-2" />
+      <div className="h-3 bg-gray-200 rounded w-20" />
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const router = useRouter();
+  const { user } = useUser();
+  const firstName = user?.firstName ?? "toi";
+
   const cvText = useStore((s) => s.cvText);
   const jobOffer = useStore((s) => s.jobOffer);
   const setJobOffer = useStore((s) => s.setJobOffer);
   const setAnalysis = useStore((s) => s.setAnalysis);
+
   const [step, setStep] = useState<1 | 2>(1);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
   const [errorInfo, setErrorInfo] = useState<{ message: string; upgradeUrl?: string } | null>(null);
+
+  const [analyses, setAnalyses] = useState<HistoryAnalysis[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/history")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.error) return;
+        const list: HistoryAnalysis[] = data.analyses ?? [];
+        setAnalyses(list);
+        const total = list.length;
+        const bestScore = list.length > 0 ? Math.max(...list.map((a) => a.score_apres)) : 0;
+        const totalAccepted = list.reduce((sum, a) => sum + (a.nb_acceptees ?? 0), 0);
+        setStats({ total, bestScore, totalAccepted });
+      })
+      .catch(() => {})
+      .finally(() => setStatsLoading(false));
+  }, []);
+
+  const lastAnalysis = analyses.length > 0 ? analyses[0] : null;
 
   const handleAnalyze = async () => {
     if (!cvText || !jobOffer.trim()) return;
@@ -76,23 +137,75 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-[#f8fafc]">
         <AppHeader />
 
-        {/* Hero header */}
+        {/* Personalized header */}
         <div className="bg-white border-b border-gray-100">
           <div className="max-w-2xl mx-auto px-6 py-8">
-            <div className="inline-flex items-center gap-2 bg-green-50 text-brand-green text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
-              Nouvelle analyse
+            <div className="flex items-center gap-2 mb-1">
+              <Link href="/dashboard" className="text-xl font-bold text-brand-black">
+                CV<span className="text-[#16a34a]">pass</span>
+              </Link>
             </div>
-            <h1 className="text-2xl font-bold text-brand-black leading-tight">
-              Optimisez votre CV pour ce poste
+            <h1 className="text-2xl font-bold text-brand-black leading-tight flex items-center gap-2">
+              Bonjour {firstName}
+              <svg width="24" height="24" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+                <path d="M22 11c0-3.314 2.686-6 6-6 3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6-3.314 0-6-2.686-6-6V11z" fill="#FCEA2B"/>
+                <path d="M10 22c0-3.314 2.686-6 6-6 3.314 0 6 2.686 6 6v9c0 3.314-2.686 6-6 6-3.314 0-6-2.686-6-6v-9z" fill="#FCEA2B"/>
+                <path d="M34 22c0-3.314 2.686-6 6-6 3.314 0 6 2.686 6 6v9c0 3.314-2.686 6-6 6-3.314 0-6-2.686-6-6v-9z" fill="#FCEA2B"/>
+                <path d="M46 31c0-3.314 2.686-6 6-6 3.314 0 6 2.686 6 6v9c0 3.314-2.686 6-6 6-3.314 0-6-2.686-6-6v-9z" fill="#FCEA2B"/>
+                <path d="M10 40c0 14.36 11.64 26 26 26s26-11.64 26-26H10z" fill="#F4AA41"/>
+                <ellipse cx="36" cy="40" rx="26" ry="8" fill="#FCEA2B"/>
+                <path d="M22 31v-9c0-3.314-2.686-6-6-6-3.314 0-6 2.686-6 6v9c0 .356.031.705.09 1.044C11.378 33.597 13.544 35 16 35c3.314 0 6-2.686 6-6z" fill="#FCEA2B"/>
+              </svg>
             </h1>
-            <p className="text-brand-gray text-sm mt-1.5">
-              Uploadez votre CV, collez l&apos;offre — l&apos;IA identifie les gaps et réécrit chaque point faible.
-            </p>
+            <p className="text-brand-gray text-sm mt-1">Prêt à optimiser ton CV ?</p>
           </div>
         </div>
 
         <main className="max-w-2xl mx-auto px-6 py-8 space-y-4">
+
+          {/* Stats rapides */}
+          <div className="grid grid-cols-3 gap-3">
+            {statsLoading ? (
+              <>
+                <StatSkeleton />
+                <StatSkeleton />
+                <StatSkeleton />
+              </>
+            ) : (
+              <>
+                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-brand-black">{stats?.total ?? 0}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
+                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-brand-gray">Analyses</span>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-brand-black">{stats?.bestScore ?? 0}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
+                      <circle cx="12" cy="8" r="6" />
+                      <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-brand-gray">Meilleur score</span>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-brand-black">{stats?.totalAccepted ?? 0}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-brand-gray">Suggestions acceptées</span>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Étape 1 — Upload */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -165,17 +278,60 @@ export default function DashboardPage() {
             <ErrorMessage message={errorInfo.message} upgradeUrl={errorInfo.upgradeUrl} />
           )}
 
-          {/* Tips */}
-          {step === 1 && (
-            <div className="flex items-start gap-3 px-4 py-3 bg-green-50 rounded-xl border border-green-100">
-              <svg className="text-brand-green mt-0.5 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
-              </svg>
-              <p className="text-xs text-green-800 leading-relaxed">
-                <strong>Conseil :</strong> Utilisez un PDF exporté depuis Word ou Google Docs — les CVs Canva sont souvent illisibles par les ATS.
-              </p>
+          {/* Dernière analyse */}
+          {!statsLoading && lastAnalysis && (
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex items-center justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-brand-gray mb-0.5 font-medium uppercase tracking-wide">Dernière candidature</p>
+                <p className="text-sm font-semibold text-brand-black truncate">
+                  {lastAnalysis.job_title ?? "Poste non précisé"}
+                </p>
+                <p className="text-xs text-brand-gray mt-0.5">
+                  Score {lastAnalysis.score_apres} · {formatDate(lastAnalysis.created_at)}
+                </p>
+              </div>
+              <Link
+                href="/history"
+                className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-[#16a34a] hover:text-green-700 transition-colors min-h-[44px] px-2"
+              >
+                Voir l&apos;historique
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </Link>
             </div>
           )}
+
+          {/* Tips */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+              <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 3.5-2 5.5-2.5 6.5h-9C7 14.5 5 12.5 5 9a7 7 0 017-7z" />
+              </svg>
+              <p className="text-xs text-green-800 leading-relaxed">
+                <strong>Adapte ton CV</strong> à chaque offre
+              </p>
+            </div>
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+              <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <p className="text-xs text-green-800 leading-relaxed">
+                <strong>Évite les CV Canva</strong> pour les ATS
+              </p>
+            </div>
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+              <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <p className="text-xs text-green-800 leading-relaxed">
+                <strong>Vise un score ATS</strong> supérieur à 75
+              </p>
+            </div>
+          </div>
+
         </main>
       </div>
     </PageTransition>
