@@ -39,7 +39,6 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
         }
         const { text } = await res.json();
 
-        // Détection PDF image : texte quasi-vide malgré un fichier de taille normale
         if (text.trim().length < 100 && file.size > 50 * 1024) {
           setExtractedText(text);
           setStatus("image_pdf");
@@ -81,20 +80,21 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
 
   return (
     <div
-      onDragOver={(e) => {
-        e.preventDefault();
-        setIsDragging(true);
-      }}
+      onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
-      className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-colors ${
-        status === "idle" || status === "loading"
-          ? "cursor-pointer"
-          : ""
+      className={`relative rounded-xl border-2 border-dashed transition-all duration-200 ${
+        status === "idle" || status === "loading" ? "cursor-pointer" : ""
       } ${
         isDragging
+          ? "border-brand-green bg-green-50 scale-[1.01]"
+          : status === "success"
           ? "border-brand-green bg-green-50"
-          : "border-gray-300 hover:border-brand-green"
+          : status === "error"
+          ? "border-red-300 bg-red-50"
+          : status === "image_pdf"
+          ? "border-orange-300 bg-orange-50"
+          : "border-gray-200 hover:border-brand-green hover:bg-gray-50"
       }`}
     >
       {(status === "idle" || status === "loading") && (
@@ -106,80 +106,135 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
         />
       )}
 
-      {status === "idle" && (
-        <>
-          <div className="text-4xl mb-3">📄</div>
-          <p className="text-brand-black font-medium">Déposez votre CV ici</p>
-          <p className="text-brand-gray text-sm mt-1">ou cliquez pour parcourir</p>
-          <p className="text-brand-gray text-xs mt-3">PDF ou DOCX — Max 5 Mo</p>
-        </>
-      )}
+      <div className="flex flex-col items-center justify-center py-10 px-6 text-center gap-3">
 
-      {status === "loading" && (
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-brand-green border-t-transparent rounded-full animate-spin" />
-          <p className="text-brand-gray text-sm">Analyse du CV en cours...</p>
-        </div>
-      )}
+        {/* IDLE */}
+        {status === "idle" && (
+          <>
+            <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <line x1="9" y1="15" x2="15" y2="15"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-brand-black">
+                Déposez votre CV ici
+              </p>
+              <p className="text-xs text-brand-gray mt-1">
+                ou <span className="text-brand-green font-medium">cliquez pour parcourir</span>
+              </p>
+            </div>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="px-2.5 py-1 bg-gray-100 rounded-full text-xs text-brand-gray font-medium">PDF</span>
+              <span className="px-2.5 py-1 bg-gray-100 rounded-full text-xs text-brand-gray font-medium">DOCX</span>
+              <span className="text-gray-300 text-xs">·</span>
+              <span className="text-xs text-brand-gray">Max 5 Mo</span>
+            </div>
+          </>
+        )}
 
-      {status === "success" && (
-        <div className="flex flex-col items-center gap-2">
-          <div className="text-4xl">✅</div>
-          <p className="text-brand-black font-medium">CV reçu et analysé</p>
-          <p className="text-brand-gray text-sm">
-            Vous pouvez maintenant coller l&apos;offre d&apos;emploi
-          </p>
-        </div>
-      )}
+        {/* LOADING */}
+        {status === "loading" && (
+          <>
+            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+              <div className="w-5 h-5 border-2 border-brand-green border-t-transparent rounded-full animate-spin" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-brand-black">Lecture du CV…</p>
+              <p className="text-xs text-brand-gray mt-1">Extraction du contenu en cours</p>
+            </div>
+          </>
+        )}
 
-      {status === "error" && (
-        <div className="flex flex-col items-center gap-2">
-          <div className="text-4xl">❌</div>
-          <p className="text-red-600 font-medium">{errorMsg}</p>
-          <button
-            onClick={handleReset}
-            className="text-brand-green text-sm underline mt-1"
-          >
-            Réessayer
-          </button>
-        </div>
-      )}
-
-      {status === "image_pdf" && (
-        <div className="flex flex-col items-center gap-3">
-          <div className="text-4xl">⚠️</div>
-          <p className="text-orange-600 font-medium text-center">
-            Votre CV est au format image
-          </p>
-          <p className="text-brand-gray text-sm text-center max-w-xs">
-            Les outils RH ne peuvent pas lire ce type de fichier.
-            Exportez votre CV en PDF texte depuis Word, LibreOffice ou Google Docs.
-          </p>
-          <div className="flex flex-col gap-2 mt-1">
+        {/* SUCCESS */}
+        {status === "success" && (
+          <>
+            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-brand-black">CV chargé avec succès</p>
+              <p className="text-xs text-brand-gray mt-1">Collez maintenant l&apos;offre d&apos;emploi ci-dessous</p>
+            </div>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setCvText(extractedText);
-                setStatus("success");
-                onSuccess();
-              }}
-              className="text-brand-gray text-xs underline hover:text-brand-black"
+              onClick={handleReset}
+              className="text-xs text-brand-gray hover:text-brand-green underline underline-offset-2 transition-colors cursor-pointer"
             >
-              Continuer quand même
+              Changer de fichier
             </button>
+          </>
+        )}
+
+        {/* ERROR */}
+        {status === "error" && (
+          <>
+            <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-red-600">{errorMsg}</p>
+            </div>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setStatus("idle");
-                setErrorMsg("");
-              }}
-              className="text-brand-green text-sm underline"
+              onClick={handleReset}
+              className="text-sm text-brand-green font-medium hover:underline cursor-pointer"
             >
-              Choisir un autre fichier
+              Réessayer
             </button>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+
+        {/* IMAGE PDF */}
+        {status === "image_pdf" && (
+          <>
+            <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div className="max-w-xs">
+              <p className="text-sm font-semibold text-orange-700">CV au format image détecté</p>
+              <p className="text-xs text-brand-gray mt-1.5 leading-relaxed">
+                Les ATS ne peuvent pas lire ce fichier. Exportez votre CV en PDF texte depuis Word, LibreOffice ou Google Docs.
+              </p>
+            </div>
+            <div className="flex flex-col items-center gap-2 mt-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setStatus("idle");
+                  setErrorMsg("");
+                }}
+                className="text-sm text-brand-green font-medium hover:underline cursor-pointer"
+              >
+                Choisir un autre fichier
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCvText(extractedText);
+                  setStatus("success");
+                  onSuccess();
+                }}
+                className="text-xs text-brand-gray hover:text-brand-black underline underline-offset-2 cursor-pointer"
+              >
+                Continuer quand même
+              </button>
+            </div>
+          </>
+        )}
+
+      </div>
     </div>
   );
 }
