@@ -100,7 +100,7 @@ export async function DELETE(request: NextRequest) {
   return NextResponse.json({ success: true });
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -111,6 +111,23 @@ export async function GET() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  // Single analysis fetch (for CV preview modal)
+  const id = request.nextUrl.searchParams.get("id");
+  if (id) {
+    const { data, error } = await supabaseAdmin
+      .from("analyses")
+      .select("id, cv_json")
+      .eq("id", id)
+      .eq("user_id", userId)
+      .single();
+
+    if (error || !data) {
+      return NextResponse.json({ error: "Analyse introuvable" }, { status: 404 });
+    }
+    return NextResponse.json({ analysis: data });
+  }
+
+  // List
   const { data: analyses, error } = await supabaseAdmin
     .from("analyses")
     .select(`

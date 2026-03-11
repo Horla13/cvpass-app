@@ -31,14 +31,18 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const { error } = await supabaseAdmin.from("analyses").insert({
-    user_id: userId,
-    score_avant,
-    score_apres,
-    nb_suggestions,
-    nb_acceptees,
-    job_title,
-  });
+  const { data, error } = await supabaseAdmin
+    .from("analyses")
+    .insert({
+      user_id: userId,
+      score_avant,
+      score_apres,
+      nb_suggestions,
+      nb_acceptees,
+      job_title,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     console.error("Supabase insert error:", error);
@@ -65,5 +69,5 @@ export async function POST(req: NextRequest) {
     })();
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, id: data?.id });
 }

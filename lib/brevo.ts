@@ -4,6 +4,7 @@ interface EmailPayload {
   to: { email: string; name?: string }[];
   subject: string;
   htmlContent: string;
+  attachment?: { name: string; content: string }[];
 }
 
 async function sendEmail(payload: EmailPayload): Promise<void> {
@@ -33,6 +34,21 @@ async function sendEmail(payload: EmailPayload): Promise<void> {
     const err = await res.text();
     console.error("Brevo email error:", err);
   }
+}
+
+export async function sendEmailWithAttachment(
+  to: string,
+  firstName: string,
+  subject: string,
+  htmlContent: string,
+  attachment: { name: string; content: string }
+): Promise<void> {
+  await sendEmail({
+    to: [{ email: to, name: firstName }],
+    subject,
+    htmlContent,
+    attachment: [attachment],
+  });
 }
 
 export async function sendWelcomeEmail(

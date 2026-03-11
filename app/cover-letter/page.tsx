@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { useStore } from "@/lib/store";
 import { AppHeader } from "@/components/AppHeader";
 import { CoverLetterEditor } from "@/components/CoverLetterEditor";
@@ -11,6 +12,8 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function CoverLetterPage() {
   const router = useRouter();
+  const { user } = useUser();
+  const userEmail = user?.emailAddresses[0]?.emailAddress ?? "";
   const cvText = useStore((s) => s.cvText);
   const jobOffer = useStore((s) => s.jobOffer);
   const coverLetter = useStore((s) => s.coverLetter);
@@ -174,6 +177,7 @@ export default function CoverLetterPage() {
                 onSave={handleSave}
                 onDownloadPdf={handleDownloadPdf}
                 isSaving={isSaving}
+                defaultEmail={userEmail}
               />
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <button

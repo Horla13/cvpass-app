@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
+import { CVJsonModal } from "@/components/CVJsonModal";
 
 interface CoverLetter {
   id: string;
@@ -57,9 +58,10 @@ function SkeletonCard() {
 interface AnalysisCardProps {
   analysis: Analysis;
   onDelete: (id: string) => void;
+  onView: (id: string) => void;
 }
 
-function AnalysisCard({ analysis, onDelete }: AnalysisCardProps) {
+function AnalysisCard({ analysis, onDelete, onView }: AnalysisCardProps) {
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -138,6 +140,13 @@ function AnalysisCard({ analysis, onDelete }: AnalysisCardProps) {
 
       {/* Footer */}
       <div className="flex items-center gap-3 flex-wrap">
+        <button
+          onClick={() => onView(analysis.id)}
+          className="text-xs font-semibold text-[#16a34a] hover:text-green-700 transition-colors underline underline-offset-2"
+        >
+          Voir le CV optimisé
+        </button>
+        <span className="text-xs text-gray-300">·</span>
         <span className="text-xs text-brand-gray">
           {analysis.nb_acceptees} / {analysis.nb_suggestions} suggestions acceptées
         </span>
@@ -187,6 +196,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleteAllState, setDeleteAllState] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [viewId, setViewId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/history")
@@ -203,6 +213,10 @@ export default function HistoryPage() {
 
   function handleDelete(id: string) {
     setAnalyses((prev) => prev.filter((a) => a.id !== id));
+  }
+
+  function handleView(id: string) {
+    setViewId(id);
   }
 
   async function handleDeleteAll() {
@@ -231,6 +245,7 @@ export default function HistoryPage() {
     <PageTransition>
       <div className="min-h-screen bg-[#f8fafc]">
         <AppHeader />
+        {viewId && <CVJsonModal analysisId={viewId} onClose={() => setViewId(null)} />}
 
         <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
           {/* Header */}
@@ -309,6 +324,7 @@ export default function HistoryPage() {
                     key={analysis.id}
                     analysis={analysis}
                     onDelete={handleDelete}
+                    onView={handleView}
                   />
                 ))}
               </div>
