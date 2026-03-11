@@ -344,14 +344,6 @@ export async function POST(req: NextRequest) {
       pageSize: "A4" as const,
       pageMargins: [40, 40, 40, 50] as [number, number, number, number],
       defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
-      footer: () => ({
-        text: "Optimisé par CVpass • cvpass.fr",
-        font: "Helvetica",
-        fontSize: 8,
-        color: "#d1d5db",
-        alignment: "center",
-        margin: [0, 10, 0, 0],
-      }),
       content: buildContent(cvData),
     };
 
