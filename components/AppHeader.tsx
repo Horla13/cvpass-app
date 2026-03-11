@@ -8,8 +8,6 @@ import { useState } from "react";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Analyser" },
-  { href: "/history", label: "Historique" },
-  { href: "/cover-letter", label: "Lettre de motivation" },
 ];
 
 export function AppHeader() {
