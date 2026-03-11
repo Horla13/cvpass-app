@@ -1,112 +1,298 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { canUsePremiumFeature } from "@/lib/billing";
+import { getOpenAI } from "@/lib/openai";
 import { Gap } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
-/** Detect a section heading: ALL-CAPS, 3–50 chars, contains at least one letter */
-function isHeadingLine(line: string): boolean {
-  const t = line.trim();
-  return (
-    t.length >= 3 &&
-    t.length <= 50 &&
-    t === t.toUpperCase() &&
-    /[A-ZÀÂÉÈÊËÏÎÔÙÛÜÇ]/.test(t)
-  );
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+interface Experience {
+  poste: string;
+  entreprise: string;
+  lieu?: string;
+  periode?: string;
+  missions: string[];
 }
 
-/** Build pdfmake content array from CV plain text */
-function buildContent(text: string): unknown[] {
-  const lines = text.split("\n");
+interface Formation {
+  diplome: string;
+  etablissement?: string;
+  periode?: string;
+}
+
+interface CVData {
+  nom: string;
+  titre?: string;
+  contact?: { email?: string; telephone?: string; ville?: string };
+  profil?: string;
+  experiences: Experience[];
+  formation: Formation[];
+  competences: string[];
+  centres_interet: string[];
+  informations: string[];
+}
+
+// ─── GPT restructuring ───────────────────────────────────────────────────────
+
+const SYSTEM_PROMPT = `Tu es un expert en rédaction de CV ATS.
+À partir du texte brut d'un CV et d'une liste de modifications acceptées, restructure et retourne un objet JSON strict avec cette structure exacte :
+
+{
+  "nom": "string",
+  "titre": "string",
+  "contact": { "email": "string", "telephone": "string", "ville": "string" },
+  "profil": "string",
+  "experiences": [
+    { "poste": "string", "entreprise": "string", "lieu": "string", "periode": "string", "missions": ["string"] }
+  ],
+  "formation": [
+    { "diplome": "string", "etablissement": "string", "periode": "string" }
+  ],
+  "competences": ["string"],
+  "centres_interet": ["string"],
+  "informations": ["string"]
+}
+
+Règles :
+- Intègre les modifications acceptées dans les bonnes sections en remplaçant les phrases originales correspondantes.
+- Omets les champs vides (string vide) sauf nom.
+- missions doit être un tableau de strings (une mission par élément).
+- Si un champ est absent du CV, laisse le tableau vide ou omets la clé.
+- Retourne UNIQUEMENT le JSON brut, sans markdown, sans \`\`\`json, sans texte avant ou après.`;
+
+async function restructureWithGPT(cvText: string, acceptedGaps: Gap[]): Promise<CVData> {
+  const openai = getOpenAI();
+
+  const userMessage = `CV BRUT :\n${cvText}\n\nMODIFICATIONS ACCEPTÉES :\n${
+    acceptedGaps.length > 0
+      ? acceptedGaps
+          .map((g) => `• Remplacer : "${g.texte_original}"\n  Par : "${g.texte_suggere}"`)
+          .join("\n")
+      : "Aucune"
+  }`;
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    temperature: 0.1,
+    max_tokens: 2000,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userMessage },
+    ],
+  });
+
+  const raw = response.choices[0]?.message?.content ?? "{}";
+  return JSON.parse(raw) as CVData;
+}
+
+// ─── pdfmake content builders ─────────────────────────────────────────────────
+
+function sectionTitle(label: string): unknown[] {
+  return [
+    {
+      text: label.toUpperCase(),
+      font: "Helvetica",
+      fontSize: 11,
+      bold: true,
+      color: "#16a34a",
+      margin: [0, 14, 0, 3],
+    },
+    {
+      canvas: [
+        { type: "line", x1: 0, y1: 0, x2: 495, y2: 0, lineWidth: 0.5, lineColor: "#d1d5db" },
+      ],
+      margin: [0, 0, 0, 5],
+    },
+  ];
+}
+
+function buildContent(cv: CVData): unknown[] {
   const content: unknown[] = [];
 
-  // Locate first heading to isolate the header block
-  let firstHeadingIdx = lines.findIndex((l) => isHeadingLine(l));
-  if (firstHeadingIdx === -1) firstHeadingIdx = Math.min(4, lines.length);
+  // ── En-tête ──────────────────────────────────────────────────────────────
+  content.push({
+    text: cv.nom || "CV",
+    font: "Helvetica",
+    fontSize: 22,
+    bold: true,
+    color: "#111827",
+    margin: [0, 0, 0, 4],
+  });
 
-  // ── Header block (name + contact) ────────────────────────────────────────
-  const headerLines = lines.slice(0, firstHeadingIdx).filter((l) => l.trim());
-  if (headerLines.length > 0) {
-    // First non-empty line = full name
+  if (cv.titre) {
     content.push({
-      text: headerLines[0].trim(),
+      text: cv.titre,
       font: "Helvetica",
-      fontSize: 18,
-      bold: true,
-      color: "#111827",
-      margin: [0, 0, 0, 4],
-    });
-    // Remaining header lines = contact info
-    for (const line of headerLines.slice(1)) {
-      content.push({
-        text: line.trim(),
-        font: "Helvetica",
-        fontSize: 9,
-        color: "#6b7280",
-        margin: [0, 0, 0, 2],
-      });
-    }
-    // Thin separator below header
-    content.push({
-      canvas: [
-        {
-          type: "line",
-          x1: 0, y1: 0,
-          x2: 495, y2: 0,
-          lineWidth: 1,
-          lineColor: "#e5e7eb",
-        },
-      ],
-      margin: [0, 8, 0, 0],
+      fontSize: 13,
+      color: "#16a34a",
+      margin: [0, 0, 0, 6],
     });
   }
 
-  // ── Body (sections + content) ─────────────────────────────────────────────
-  for (let i = firstHeadingIdx; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
+  // Contact line
+  const contactParts: string[] = [];
+  if (cv.contact?.email) contactParts.push(cv.contact.email);
+  if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
+  if (cv.contact?.ville) contactParts.push(cv.contact.ville);
+  if (contactParts.length > 0) {
+    content.push({
+      text: contactParts.join("  |  "),
+      font: "Helvetica",
+      fontSize: 10,
+      color: "#6b7280",
+      margin: [0, 0, 0, 6],
+    });
+  }
 
-    if (!trimmed) {
-      content.push({ text: " ", margin: [0, 2] });
-      continue;
-    }
+  // Header separator
+  content.push({
+    canvas: [
+      { type: "line", x1: 0, y1: 0, x2: 495, y2: 0, lineWidth: 1.5, lineColor: "#16a34a" },
+    ],
+    margin: [0, 0, 0, 0],
+  });
 
-    if (isHeadingLine(trimmed)) {
-      // Section title: green, bold, with separator below
+  // ── Profil ────────────────────────────────────────────────────────────────
+  if (cv.profil) {
+    content.push(...sectionTitle("Profil"));
+    content.push({
+      text: cv.profil,
+      font: "Helvetica",
+      fontSize: 10,
+      color: "#111827",
+      lineHeight: 1.5,
+      margin: [0, 0, 0, 2],
+    });
+  }
+
+  // ── Expériences ───────────────────────────────────────────────────────────
+  if (cv.experiences?.length > 0) {
+    content.push(...sectionTitle("Expériences professionnelles"));
+    for (const exp of cv.experiences) {
+      // Row: poste (bold) + periode (right-aligned)
       content.push({
-        text: trimmed,
-        font: "Helvetica",
-        fontSize: 11,
-        bold: true,
-        color: "#16a34a",
-        margin: [0, 12, 0, 3],
-      });
-      content.push({
-        canvas: [
+        columns: [
           {
-            type: "line",
-            x1: 0, y1: 0,
-            x2: 495, y2: 0,
-            lineWidth: 0.5,
-            lineColor: "#d1d5db",
+            text: exp.poste || "",
+            font: "Helvetica",
+            fontSize: 10,
+            bold: true,
+            color: "#111827",
+          },
+          {
+            text: exp.periode || "",
+            font: "Helvetica",
+            fontSize: 9,
+            color: "#6b7280",
+            alignment: "right",
           },
         ],
-        margin: [0, 0, 0, 4],
+        margin: [0, 4, 0, 1],
       });
-    } else {
+      // Entreprise + lieu
+      const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" — ");
+      if (subline) {
+        content.push({
+          text: subline,
+          font: "Helvetica",
+          fontSize: 9,
+          color: "#6b7280",
+          margin: [0, 0, 0, 2],
+        });
+      }
+      // Missions
+      for (const mission of exp.missions ?? []) {
+        content.push({
+          text: `– ${mission}`,
+          font: "Helvetica",
+          fontSize: 10,
+          color: "#111827",
+          margin: [8, 0, 0, 1],
+        });
+      }
+    }
+  }
+
+  // ── Formation ─────────────────────────────────────────────────────────────
+  if (cv.formation?.length > 0) {
+    content.push(...sectionTitle("Formation"));
+    for (const f of cv.formation) {
       content.push({
-        text: line,
+        columns: [
+          {
+            text: f.diplome || "",
+            font: "Helvetica",
+            fontSize: 10,
+            bold: true,
+            color: "#111827",
+          },
+          {
+            text: f.periode || "",
+            font: "Helvetica",
+            fontSize: 9,
+            color: "#6b7280",
+            alignment: "right",
+          },
+        ],
+        margin: [0, 4, 0, 1],
+      });
+      if (f.etablissement) {
+        content.push({
+          text: f.etablissement,
+          font: "Helvetica",
+          fontSize: 9,
+          color: "#6b7280",
+          margin: [0, 0, 0, 2],
+        });
+      }
+    }
+  }
+
+  // ── Compétences ───────────────────────────────────────────────────────────
+  if (cv.competences?.length > 0) {
+    content.push(...sectionTitle("Compétences"));
+    content.push({
+      text: cv.competences.join("  •  "),
+      font: "Helvetica",
+      fontSize: 10,
+      color: "#111827",
+      margin: [0, 0, 0, 2],
+    });
+  }
+
+  // ── Centres d'intérêt ─────────────────────────────────────────────────────
+  if (cv.centres_interet?.length > 0) {
+    content.push(...sectionTitle("Centres d'intérêt"));
+    content.push({
+      text: cv.centres_interet.join("  •  "),
+      font: "Helvetica",
+      fontSize: 10,
+      color: "#111827",
+      margin: [0, 0, 0, 2],
+    });
+  }
+
+  // ── Informations supplémentaires ──────────────────────────────────────────
+  if (cv.informations?.length > 0) {
+    content.push(...sectionTitle("Informations"));
+    for (const info of cv.informations) {
+      content.push({
+        text: info,
         font: "Helvetica",
         fontSize: 10,
         color: "#111827",
-        margin: [0, 1],
+        margin: [0, 1, 0, 1],
       });
     }
   }
 
   return content;
 }
+
+// ─── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -138,16 +324,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Apply accepted suggestions — guard against empty texte_original
-    // (empty string replace would prepend text to the document)
-    let finalText = cvText;
-    for (const gap of acceptedGaps) {
-      const orig = gap.texte_original?.trim();
-      if (orig && finalText.includes(orig)) {
-        finalText = finalText.replace(orig, gap.texte_suggere);
-      }
-    }
+    // Step 1 — GPT restructures CV into clean JSON
+    const cvData = await restructureWithGPT(cvText, acceptedGaps);
 
+    // Step 2 — Generate PDF with pdfmake
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const pdfmake = require("pdfmake");
     pdfmake.setFonts({
@@ -164,15 +344,15 @@ export async function POST(req: NextRequest) {
       pageSize: "A4" as const,
       pageMargins: [40, 40, 40, 50] as [number, number, number, number],
       defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
-      footer: (_currentPage: number, _pageCount: number) => ({
+      footer: () => ({
         text: "Optimisé par CVpass • cvpass.fr",
         font: "Helvetica",
         fontSize: 8,
         color: "#d1d5db",
         alignment: "center",
-        margin: [0, 0, 0, 20],
+        margin: [0, 10, 0, 0],
       }),
-      content: buildContent(finalText),
+      content: buildContent(cvData),
     };
 
     const buffer: Buffer = await pdfmake.createPdf(docDefinition).getBuffer();
