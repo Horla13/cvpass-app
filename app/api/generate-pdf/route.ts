@@ -1,34 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { canUsePremiumFeature } from "@/lib/billing";
-import React from "react";
 import { Gap } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
-
-function applyDOMMatrixPolyfill() {
-  if (typeof globalThis.DOMMatrix === "undefined") {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (globalThis as any).DOMMatrix = class DOMMatrix {
-      a=1;b=0;c=0;d=1;e=0;f=0;
-      m11=1;m12=0;m13=0;m14=0;m21=0;m22=1;m23=0;m24=0;
-      m31=0;m32=0;m33=1;m34=0;m41=0;m42=0;m43=0;m44=1;
-      is2D=true;isIdentity=true;
-      constructor(_init?: string | number[]) {}
-      static fromMatrix() { return new DOMMatrix(); }
-      multiply() { return this; }
-      translate() { return this; }
-      scale() { return this; }
-      rotate() { return this; }
-      inverse() { return this; }
-      flipX() { return this; }
-      flipY() { return this; }
-      toFloat32Array() { return new Float32Array(16); }
-      toFloat64Array() { return new Float64Array(16); }
-      toString() { return "matrix(1, 0, 0, 1, 0, 0)"; }
-    };
-  }
-}
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -55,24 +30,65 @@ export async function POST(req: NextRequest) {
   }
 
   const { cvText, acceptedGaps = [] } = body;
-
   if (!cvText) {
     return NextResponse.json({ error: "Texte du CV requis" }, { status: 400 });
   }
 
   try {
-    // Polyfill must run BEFORE the dynamic import of @react-pdf/renderer
-    applyDOMMatrixPolyfill();
+    // Appliquer les suggestions acceptées
+    let finalText = cvText;
+    for (const gap of acceptedGaps) {
+      if (gap.texte_original) {
+        finalText = finalText.replaceAll(gap.texte_original, gap.texte_suggere);
+      }
+    }
 
-    // Dynamic imports so the polyfill is applied before the module loads
-    const [{ renderToBuffer }, { CVDocument }] = await Promise.all([
-      import("@react-pdf/renderer"),
-      import("@/components/pdf/CVDocument"),
-    ]);
+    // Générer le PDF avec pdfmake (100% Node.js, sans DOMMatrix)
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const PdfPrinter = require("pdfmake/build/pdfmake.js");
+    const fonts = {
+      Helvetica: {
+        normal: "Helvetica",
+        bold: "Helvetica-Bold",
+        italics: "Helvetica-Oblique",
+        bolditalics: "Helvetica-BoldOblique",
+      },
+    };
 
-    const element = React.createElement(CVDocument, { cvText, acceptedGaps });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const buffer = await renderToBuffer(element as any);
+    const printer = new PdfPrinter(fonts);
+
+    const lines = finalText.split("\n");
+    const content = lines.map((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) return { text: " ", margin: [0, 2] };
+      // Détecter les titres de section (ligne courte en majuscules)
+      const isHeading = trimmed === trimmed.toUpperCase() && trimmed.length < 40 && trimmed.length > 2;
+      return {
+        text: line,
+        font: "Helvetica",
+        fontSize: isHeading ? 11 : 10,
+        bold: isHeading,
+        margin: isHeading ? [0, 8, 0, 2] : [0, 1],
+        color: "#111827",
+      };
+    });
+
+    const docDefinition = {
+      pageSize: "A4" as const,
+      pageMargins: [50, 50, 50, 50] as [number, number, number, number],
+      defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
+      content,
+    };
+
+    const pdfDoc = printer.createPdfKitDocument(docDefinition);
+    const chunks: Buffer[] = [];
+
+    const buffer = await new Promise<Buffer>((resolve, reject) => {
+      pdfDoc.on("data", (chunk: Buffer) => chunks.push(chunk));
+      pdfDoc.on("end", () => resolve(Buffer.concat(chunks)));
+      pdfDoc.on("error", reject);
+      pdfDoc.end();
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

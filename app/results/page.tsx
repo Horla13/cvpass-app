@@ -31,10 +31,12 @@ export default function ResultsPage() {
   const pendingGaps = gaps.filter((g) => g.status === "pending");
   const acceptedGaps = gaps.filter((g) => g.status === "accepted");
 
+  const [downloadError, setDownloadError] = useState<{ message: string; upgradeUrl?: string } | null>(null);
+
   const handleDownload = async () => {
     setIsDownloading(true);
+    setDownloadError(null);
     try {
-      // Sauvegarder les métadonnées
       await fetch("/api/save-analysis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -44,16 +46,23 @@ export default function ResultsPage() {
           nb_suggestions: gaps.length,
           nb_acceptees: acceptedGaps.length,
         }),
-      }).catch(() => {}); // Ne pas bloquer si la sauvegarde échoue
+      }).catch(() => {});
 
-      // Générer et télécharger le PDF
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cvText, acceptedGaps }),
       });
 
-      if (!res.ok) throw new Error("Erreur lors de la génération du PDF");
+      if (res.status === 402) {
+        setDownloadError({ message: "L'export PDF est une fonctionnalité premium.", upgradeUrl: "/pricing" });
+        return;
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setDownloadError({ message: data.error ?? "Erreur lors de la génération du PDF." });
+        return;
+      }
 
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -63,7 +72,7 @@ export default function ResultsPage() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (e: unknown) {
-      console.error("Download error:", e);
+      setDownloadError({ message: e instanceof Error ? e.message : "Erreur inattendue." });
     } finally {
       setIsDownloading(false);
     }
@@ -135,6 +144,14 @@ export default function ResultsPage() {
               <p className="text-xs text-brand-gray text-center">
                 Acceptez au moins une suggestion pour télécharger
               </p>
+            )}
+            {downloadError && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 text-center">
+                {downloadError.message}
+                {downloadError.upgradeUrl && (
+                  <a href={downloadError.upgradeUrl} className="ml-2 underline font-medium">Voir les offres →</a>
+                )}
+              </div>
             )}
             <Button
               variant="secondary"

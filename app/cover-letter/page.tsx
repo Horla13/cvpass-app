@@ -73,7 +73,15 @@ export default function CoverLetterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ cvText: content, acceptedGaps: [] }),
     });
-    if (!res.ok) return;
+    if (res.status === 402) {
+      setError("L'export PDF est une fonctionnalité premium. Voir /pricing.");
+      return;
+    }
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Erreur lors de la génération du PDF.");
+      return;
+    }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
