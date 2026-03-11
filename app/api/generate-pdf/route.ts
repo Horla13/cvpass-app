@@ -43,22 +43,21 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Générer le PDF avec pdfmake (100% Node.js, sans DOMMatrix)
+    // Générer le PDF avec pdfmake v0.3.x (100% Node.js, sans DOMMatrix)
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const PdfPrinter = require("pdfmake/build/pdfmake.js");
-    const fonts = {
+    const pdfmake = require("pdfmake");
+    pdfmake.setFonts({
       Helvetica: {
         normal: "Helvetica",
         bold: "Helvetica-Bold",
         italics: "Helvetica-Oblique",
         bolditalics: "Helvetica-BoldOblique",
       },
-    };
-
-    const printer = new PdfPrinter(fonts);
+    });
+    pdfmake.setUrlAccessPolicy(() => false);
 
     const lines = finalText.split("\n");
-    const content = lines.map((line) => {
+    const content = lines.map((line: string) => {
       const trimmed = line.trim();
       if (!trimmed) return { text: " ", margin: [0, 2] };
       // Détecter les titres de section (ligne courte en majuscules)
@@ -80,15 +79,7 @@ export async function POST(req: NextRequest) {
       content,
     };
 
-    const pdfDoc = printer.createPdfKitDocument(docDefinition);
-    const chunks: Buffer[] = [];
-
-    const buffer = await new Promise<Buffer>((resolve, reject) => {
-      pdfDoc.on("data", (chunk: Buffer) => chunks.push(chunk));
-      pdfDoc.on("end", () => resolve(Buffer.concat(chunks)));
-      pdfDoc.on("error", reject);
-      pdfDoc.end();
-    });
+    const buffer: Buffer = await pdfmake.createPdf(docDefinition).getBuffer();
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
