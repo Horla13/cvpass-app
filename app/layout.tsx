@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { frFR } from "@clerk/localizations";
 import localFont from "next/font/local";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import "./globals.css";
@@ -62,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClerkProvider>
+        <ClerkProvider localization={frFR}>
           <PostHogProvider>
             {children}
           </PostHogProvider>
