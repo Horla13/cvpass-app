@@ -48,10 +48,16 @@ export default function ResultsPage() {
         }),
       }).catch(() => {});
 
+      // Appliquer les suggestions côté client (même logique que CVPreview)
+      let finalCvText = cvText;
+      for (const gap of acceptedGaps) {
+        finalCvText = finalCvText.replace(gap.texte_original, gap.texte_suggere);
+      }
+
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvText, acceptedGaps }),
+        body: JSON.stringify({ cvText: finalCvText, acceptedGaps: [] }),
       });
 
       if (res.status === 402) {
