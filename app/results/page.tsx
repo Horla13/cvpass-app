@@ -7,6 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 import { usePostHog } from "posthog-js/react";
 import { useStore } from "@/lib/store";
 import { ScoreCircle } from "@/components/ScoreCircle";
+import { ScoreGauge } from "@/components/ScoreGauge";
 import { SuggestionCard } from "@/components/SuggestionCard";
 import { CVPreview } from "@/components/CVPreview";
 import { Button } from "@/components/ui/Button";
@@ -298,7 +299,7 @@ export default function ResultsPage() {
       {premiumModal && (
         <PremiumModal feature={premiumModal} onClose={() => setPremiumModal(null)} />
       )}
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         <AppHeader />
 
         {/* Unsaved warning banner — hidden after PDF download */}
@@ -310,20 +311,40 @@ export default function ResultsPage() {
           </div>
         )}
 
+        {/* Progress bar */}
+        <div className="sticky top-[60px] z-30 bg-white border-b border-gray-100 px-6 py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <span className="text-sm text-brand-gray font-display">
+              {acceptedGaps.length}/{gaps.length} suggestions acceptées
+            </span>
+            <div className="flex-1 mx-4 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-brand-green rounded-full transition-all duration-500"
+                style={{ width: `${(acceptedGaps.length / Math.max(gaps.length, 1)) * 100}%` }}
+              />
+            </div>
+            <span className="text-sm font-display font-bold">
+              Score: <span className="text-red-500">{score_avant}</span>
+              {" → "}
+              <span className="text-brand-green">{scoreActuel}</span>
+            </span>
+          </div>
+        </div>
+
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* COLONNE GAUCHE — Score et résumé */}
             <div className="lg:col-span-1 space-y-4">
-              <Card className="p-6">
-                <h2 className="font-semibold text-brand-black mb-6 text-center">Visibilité ATS</h2>
+              <Card className="p-6 rounded-[14px]">
+                <h2 className="font-display font-semibold text-brand-black mb-6 text-center">Visibilité ATS</h2>
                 <div className="flex justify-center items-end gap-8 mb-4">
-                  <ScoreCircle score={score_avant} label="Avant" size="sm" />
-                  <ScoreCircle score={scoreActuel} label="Maintenant" size="lg" />
+                  <ScoreGauge score={score_avant} label="Avant" size={80} strokeWidth={5} animate={false} />
+                  <ScoreGauge score={scoreActuel} label="Maintenant" size={140} strokeWidth={7} />
                 </div>
                 <ScoreContext score={scoreActuel} />
               </Card>
 
-              <Card className="p-4">
+              <Card className="p-4 rounded-[14px]">
                 <p className="text-sm font-medium text-brand-black mb-2">
                   {pendingGaps.length > 0
                     ? `${pendingGaps.length} suggestion${pendingGaps.length > 1 ? "s" : ""} en attente`
@@ -364,7 +385,7 @@ export default function ResultsPage() {
 
               {/* LinkedIn share — shown after first download */}
               {pdfDownloaded && (
-                <Card className="p-4 space-y-2">
+                <Card className="p-4 space-y-2 rounded-[14px]">
                   <p className="text-xs text-brand-gray text-center leading-relaxed">
                     Mon CV est passé de <strong>{score_avant}</strong> à <strong>{scoreActuel}/100</strong> grâce à CVpass 🚀
                   </p>
@@ -398,9 +419,9 @@ export default function ResultsPage() {
 
             {/* COLONNE CENTRE — Suggestions */}
             <div className="lg:col-span-1 space-y-4">
-              <h2 className="font-semibold text-brand-black">Suggestions d&apos;amélioration</h2>
+              <h2 className="font-display font-semibold text-brand-black">Suggestions d&apos;amélioration</h2>
               {pendingGaps.length === 0 ? (
-                <Card className="p-6 text-center">
+                <Card className="p-6 text-center rounded-[14px]">
                   <p className="text-brand-gray text-sm">
                     {gaps.length === 0
                       ? "Aucune suggestion générée."
@@ -416,7 +437,7 @@ export default function ResultsPage() {
 
             {/* COLONNE DROITE — Aperçu CV */}
             <div className="lg:col-span-1">
-              <h2 className="font-semibold text-brand-black mb-4">Aperçu de votre CV</h2>
+              <h2 className="font-display font-semibold text-brand-black mb-4">Aperçu de votre CV</h2>
               <CVPreview cvText={cvText} acceptedGaps={acceptedGaps} />
             </div>
           </div>
