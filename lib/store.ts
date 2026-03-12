@@ -6,6 +6,8 @@ export interface Gap {
   texte_original: string;
   texte_suggere: string;
   raison: string;
+  impact?: "high" | "medium" | "low";
+  category?: "titre" | "accroche" | "experience" | "competence" | "formation";
   status: "pending" | "accepted" | "ignored";
 }
 

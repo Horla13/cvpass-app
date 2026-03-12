@@ -173,7 +173,11 @@ export default function ResultsPage() {
     if (!cvText) router.push("/dashboard");
   }, [cvText, router]);
 
-  const pendingGaps = gaps.filter((g) => g.status === "pending");
+  const impactOrder = { high: 0, medium: 1, low: 2 } as const;
+  const sortByImpact = (a: { impact?: string }, b: { impact?: string }) =>
+    (impactOrder[(a.impact as keyof typeof impactOrder)] ?? 1) - (impactOrder[(b.impact as keyof typeof impactOrder)] ?? 1);
+
+  const pendingGaps = gaps.filter((g) => g.status === "pending").sort(sortByImpact);
   const acceptedGaps = gaps.filter((g) => g.status === "accepted");
 
   const handleDownload = async () => {
