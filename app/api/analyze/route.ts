@@ -23,23 +23,40 @@ SCORING — calcule score_avant selon ces critères stricts :
 GAPS — identifie entre 4 et 8 gaps, classés du plus impactant au moins impactant.
 Pour chaque gap tu DOIS :
 - Intégrer les mots-clés exacts de l'offre dans texte_suggere
-- Ajouter des verbes d'action forts (piloté, développé, optimisé, déployé...)
+- Formuler avec des noms d'action (Gestion, Pilotage, Développement, Optimisation) ou à l'infinitif (Piloter, Développer, Optimiser, Déployer)
 - Quantifier si le contexte le permet (%, €, nombre de personnes, délai)
 - Enrichir avec des compétences implicites vraisemblables si le contexte du CV le justifie (ex: si le candidat a géré une équipe, on peut ajouter la méthodo Agile si l'offre la demande)
 
 LANGUE — toutes les reformulations doivent être en français, y compris les termes techniques quand une traduction courante existe.
 
-RÈGLE ABSOLUE SUR LA RÉDACTION :
-Les suggestions de réécriture (texte_suggere) ne doivent JAMAIS contenir "Je", "J'ai", "Je suis", "J'ai pu", "J'ai développé" ou toute autre formulation à la première personne.
-Un CV professionnel français s'écrit toujours sans sujet.
-Utilise systématiquement :
-- L'infinitif : "Gérer", "Assurer", "Développer", "Optimiser"
-- Ou le participe passé : "Géré", "Assuré", "Développé", "Optimisé"
-Exemples :
-❌ "J'ai géré une équipe de 5 personnes" → ✅ "Géré une équipe de 5 personnes"
-❌ "J'ai développé une vigilance constante" → ✅ "Développé une vigilance constante sur les chantiers VRD"
-❌ "Je suis capable de lire les plans" → ✅ "Lecture et interprétation des plans d'exécution"
-Cette règle s'applique à TOUTES les suggestions sans exception.
+RÈGLE ABSOLUE SUR LA RÉDACTION DES MISSIONS CV :
+Sur un CV français professionnel, les missions s'écrivent de deux façons uniquement :
+
+OPTION A — Nom d'action (PRÉFÉRÉ) :
+Commence par un nom qui décrit l'action.
+✅ "Gestion d'une équipe de 5 personnes"
+✅ "Optimisation des procédures de sécurité"
+✅ "Réalisation des travaux VRD"
+✅ "Suivi et respect des délais de chantier"
+✅ "Relation client et gestion des priorités"
+
+OPTION B — Infinitif (acceptable) :
+Commence par un verbe à l'infinitif.
+✅ "Gérer une équipe de 5 personnes"
+✅ "Assurer le respect des consignes"
+✅ "Réaliser les travaux dans les délais"
+
+INTERDIT — ne JAMAIS utiliser :
+❌ Verbe conjugué : "Gérait", "A géré", "Gère"
+❌ Participe passé en début de phrase : "Géré une équipe", "Optimisé les délais"
+❌ Première personne : "Je", "J'ai", "J'", "Je suis"
+
+Exemples de transformation :
+"J'ai géré une équipe" → ✅ "Gestion d'une équipe de 5 personnes"
+"Géré les chantiers VRD" → ✅ "Gestion des chantiers VRD"
+"Optimisé la sécurité sur le chantier" → ✅ "Optimisation de la sécurité chantier"
+"Je suis capable de lire les plans" → ✅ "Lecture et interprétation des plans d'exécution"
+Cette règle s'applique à TOUTES les suggestions (texte_suggere) sans exception.
 
 Retourne UNIQUEMENT un JSON valide, sans markdown, sans commentaires :
 {
