@@ -85,7 +85,7 @@ export default function PricingPage() {
         body: JSON.stringify({ plan: planId }),
       });
 
-      if (res.status === 401) {
+      if (res.status === 401 || res.status === 403) {
         router.push("/login?redirect=/pricing");
         return;
       }
