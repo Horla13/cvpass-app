@@ -15,7 +15,7 @@ export function AppHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="bg-white/92 backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04]">
+    <header className="bg-white/[0.92] backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04]">
       <div className="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-6">
 
         {/* Logo */}

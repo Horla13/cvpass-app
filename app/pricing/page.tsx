@@ -231,8 +231,9 @@ export default function PricingPage() {
             <p className="text-[13px] text-gray-400">© 2026 VertexLab SASU. Tous droits réservés.</p>
           </div>
           <div className="flex gap-6">
+            <Link href="/blog" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Blog</Link>
             <Link href="/mentions-legales" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Mentions légales</Link>
-            <a href="#" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Politique de confidentialité</a>
+            <Link href="/mentions-legales" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Politique de confidentialité</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Contact</a>
           </div>
         </div>

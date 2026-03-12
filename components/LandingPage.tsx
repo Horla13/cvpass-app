@@ -11,7 +11,8 @@ import { KeywordGapTable } from "@/components/KeywordGapTable";
 import { ScoreGauge } from "@/components/ScoreGauge";
 
 export function LandingPage() {
-  const [counterValue, setCounterValue] = useState("plus de 15");
+  const [counterValue, setCounterValue] = useState("plus de 1 200");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,13 +43,15 @@ export function LandingPage() {
   return (
     <div className="bg-white text-brand-black overflow-x-hidden">
       {/* ── 1. NAV ── */}
-      <nav className="sticky top-0 z-50 bg-white/92 backdrop-blur-[16px] border-b border-black/[0.04]">
+      <nav className="sticky top-0 z-50 bg-white/[0.92] backdrop-blur-[16px] border-b border-black/[0.04]">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between h-[60px] px-8">
           <div className="font-display text-[21px] font-extrabold tracking-[-0.8px]">
             <span className="text-brand-black">CV</span>
             <span className="text-brand-green">pass</span>
           </div>
-          <div className="flex items-center gap-7">
+
+          {/* Desktop nav */}
+          <div className="hidden sm:flex items-center gap-7">
             <a href="#features" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Fonctionnalités</a>
             <a href="#pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</a>
             <Show when="signed-out">
@@ -63,7 +66,43 @@ export function LandingPage() {
               <Link href="/dashboard" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
             </Show>
           </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="sm:hidden p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Menu"
+          >
+            {mobileOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="sm:hidden border-t border-gray-100 bg-white px-8 py-4 space-y-3">
+            <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
+            <a href="#pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</a>
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Connexion</button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Mon espace &rarr;</Link>
+            </Show>
+          </div>
+        )}
       </nav>
 
       {/* ── 2. HERO ── */}
@@ -111,9 +150,6 @@ export function LandingPage() {
                 <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
             </Show>
-            <a href="#features" className="text-sm font-semibold text-brand-gray hover:text-brand-black transition-colors">
-              Voir la démo &darr;
-            </a>
           </div>
 
           {/* Proof stats */}
@@ -566,8 +602,9 @@ export function LandingPage() {
             <span className="text-[13px] text-gray-400 ml-2">© 2026 VertexLab SASU. Tous droits réservés.</span>
           </div>
           <div className="flex items-center gap-6">
+            <Link href="/blog" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Blog</Link>
             <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Mentions légales</Link>
-            <Link href="/privacy" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Politique de confidentialité</Link>
+            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Politique de confidentialité</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Contact</a>
           </div>
         </div>

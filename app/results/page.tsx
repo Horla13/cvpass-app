@@ -6,7 +6,6 @@ import { useUser } from "@clerk/nextjs";
 import { useShallow } from "zustand/react/shallow";
 import { usePostHog } from "posthog-js/react";
 import { useStore } from "@/lib/store";
-import { ScoreCircle } from "@/components/ScoreCircle";
 import { ScoreGauge } from "@/components/ScoreGauge";
 import { SuggestionCard } from "@/components/SuggestionCard";
 import { CVPreview } from "@/components/CVPreview";

@@ -33,8 +33,8 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
             </span>
           </button>
           <div
-            className={`text-sm text-brand-gray leading-relaxed overflow-hidden transition-all duration-400 ${
-              openIndex === i ? "max-h-[200px] pb-5" : "max-h-0"
+            className={`text-sm text-brand-gray leading-relaxed overflow-hidden transition-all duration-300 ${
+              openIndex === i ? "max-h-[500px] pb-5" : "max-h-0"
             }`}
           >
             {item.answer}

@@ -29,7 +29,11 @@ export function KeywordGapTable({ rows }: KeywordGapTableProps) {
           >
             {row.hasBefore ? "✓" : "✗"}
           </span>
-          <span className="text-center font-bold text-brand-green">
+          <span
+            className={`text-center font-bold ${
+              row.hasAfter ? "text-brand-green" : "text-red-500"
+            }`}
+          >
             {row.hasAfter ? "✓" : "✗"}
           </span>
         </div>

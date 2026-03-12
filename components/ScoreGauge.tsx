@@ -51,7 +51,14 @@ export function ScoreGauge({
   }, [score, animate]);
 
   return (
-    <div className={cn("flex flex-col items-center gap-2", className)}>
+    <div
+      className={cn("flex flex-col items-center gap-2", className)}
+      role="meter"
+      aria-valuenow={displayScore}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={label || "Score ATS"}
+    >
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           <circle
