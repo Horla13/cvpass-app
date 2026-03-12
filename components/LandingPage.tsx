@@ -11,9 +11,32 @@ import { KeywordGapTable } from "@/components/KeywordGapTable";
 import { ScoreGauge } from "@/components/ScoreGauge";
 
 export function LandingPage() {
-  const [counterValue, setCounterValue] = useState("plus de 1 200");
+  const [counterValue, setCounterValue] = useState("+1 200");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const router = useRouter();
+
+  async function handlePlanClick(planId: string) {
+    if (planId === "free") { router.push("/signup"); return; }
+    setLoadingPlan(planId);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planId }),
+      });
+      if (res.status === 401 || res.status === 403) {
+        router.push("/login?redirect=/pricing");
+        return;
+      }
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {
+      router.push("/pricing");
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -466,7 +489,7 @@ export function LandingPage() {
                   { text: "Export PDF", included: false },
                 ]}
                 cta="Commencer gratuitement"
-                onCtaClick={() => router.push("/signup")}
+                onCtaClick={() => handlePlanClick("free")}
               />
             </div>
             <div className="fade-up d2">
@@ -484,7 +507,8 @@ export function LandingPage() {
                   { text: "Lettre de motivation IA", included: true },
                 ]}
                 cta="Choisir ce Pass"
-                onCtaClick={() => router.push("/pricing")}
+                onCtaClick={() => handlePlanClick("pass48h")}
+                loading={loadingPlan === "pass48h"}
               />
             </div>
             <div className="fade-up d3">
@@ -501,7 +525,8 @@ export function LandingPage() {
                   { text: "Sans engagement", included: true },
                 ]}
                 cta="Choisir ce Plan"
-                onCtaClick={() => router.push("/pricing")}
+                onCtaClick={() => handlePlanClick("monthly")}
+                loading={loadingPlan === "monthly"}
               />
             </div>
           </div>
