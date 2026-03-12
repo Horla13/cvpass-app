@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ["var(--font-plus-jakarta)", "sans-serif"],
+        body: ["var(--font-dm-sans)", "sans-serif"],
+      },
       colors: {
         brand: {
           green: "#16a34a",
