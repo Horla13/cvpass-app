@@ -37,7 +37,7 @@ function formatDate(iso: string): string {
 
 function StatSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-4 animate-pulse">
+    <div className="bg-white rounded-[14px] border border-[#e5e7eb] p-4 animate-pulse">
       <div className="h-7 bg-gray-200 rounded w-12 mb-2" />
       <div className="h-3 bg-gray-200 rounded w-20" />
     </div>
@@ -145,13 +145,13 @@ export default function DashboardPage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#f8fafc]">
+      <div className="min-h-screen bg-white">
         <AppHeader />
 
         {/* Personalized header */}
         <div className="bg-white border-b border-gray-100">
           <div className="max-w-2xl mx-auto px-6 py-8">
-            <h1 className="text-2xl font-bold text-brand-black leading-tight flex items-center gap-2">
+            <h1 className="text-2xl font-display font-bold text-brand-black leading-tight flex items-center gap-2">
               Bonjour {firstName}
               <svg width="24" height="24" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
                 <path d="M22 11c0-3.314 2.686-6 6-6 3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6-3.314 0-6-2.686-6-6V11z" fill="#FCEA2B"/>
@@ -178,15 +178,15 @@ export default function DashboardPage() {
                 <StatSkeleton />
               </>
             ) : historyLocked ? (
-              <div className="col-span-3 bg-white rounded-2xl border border-gray-200 p-4 flex items-center justify-between gap-3">
+              <div className="col-span-3 bg-white rounded-[14px] border border-[#e5e7eb] p-4 flex items-center justify-between gap-3">
                 <p className="text-sm text-brand-gray">L&apos;historique est réservé aux membres pass48h et monthly.</p>
                 <Link href="/pricing" className="shrink-0 text-xs font-semibold text-brand-green hover:text-green-700 transition-colors">Voir les offres →</Link>
               </div>
             ) : (
               <>
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                <div className="bg-white rounded-[14px] border border-[#e5e7eb] p-4 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-brand-black">{stats?.total ?? 0}</span>
+                    <span className="text-2xl font-display font-bold text-brand-black">{stats?.total ?? 0}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
                       <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
                     </svg>
@@ -194,9 +194,9 @@ export default function DashboardPage() {
                   <span className="text-xs text-brand-gray">Analyses</span>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                <div className="bg-white rounded-[14px] border border-[#e5e7eb] p-4 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-brand-black">{stats?.bestScore ?? 0}</span>
+                    <span className="text-2xl font-display font-bold text-brand-black">{stats?.bestScore ?? 0}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
                       <circle cx="12" cy="8" r="6" />
                       <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
@@ -205,9 +205,9 @@ export default function DashboardPage() {
                   <span className="text-xs text-brand-gray">Meilleur score</span>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col gap-1">
+                <div className="bg-white rounded-[14px] border border-[#e5e7eb] p-4 flex flex-col gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-brand-black">{stats?.totalAccepted ?? 0}</span>
+                    <span className="text-2xl font-display font-bold text-brand-black">{stats?.totalAccepted ?? 0}</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" opacity="0.6">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -219,7 +219,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Étape 1 — Upload */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
                 step >= 1 ? "bg-brand-green text-white" : "bg-gray-100 text-gray-400"
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                 ) : "1"}
               </div>
               <div>
-                <p className="text-sm font-semibold text-brand-black">Uploadez votre CV</p>
+                <p className="text-sm font-display font-semibold text-brand-black">Uploadez votre CV</p>
                 <p className="text-xs text-brand-gray">PDF ou DOCX, jusqu&apos;à 5 Mo</p>
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Étape 2 — Offre */}
-          <div className={`bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition-all duration-300 ${
+          <div className={`bg-white rounded-[14px] border border-[#e5e7eb] shadow-sm overflow-hidden transition-all duration-300 ${
             step === 1 ? "opacity-50 pointer-events-none" : "opacity-100"
           }`}>
             <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100">
@@ -249,7 +249,7 @@ export default function DashboardPage() {
                 2
               </div>
               <div>
-                <p className="text-sm font-semibold text-brand-black">Collez l&apos;offre d&apos;emploi</p>
+                <p className="text-sm font-display font-semibold text-brand-black">Collez l&apos;offre d&apos;emploi</p>
                 <p className="text-xs text-brand-gray">Welcome to the Jungle, LinkedIn, APEC, Indeed…</p>
               </div>
             </div>
@@ -266,7 +266,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleAnalyze}
                 disabled={!cvText || !jobOffer.trim() || isAnalyzing}
-                className="w-full py-3.5 rounded-xl bg-brand-green text-white font-semibold text-sm hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
+                className="w-full py-3.5 rounded-[10px] bg-brand-black text-white font-display font-bold text-sm hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
               >
                 {isAnalyzing ? (
                   <>
@@ -291,7 +291,7 @@ export default function DashboardPage() {
 
           {/* Dernière analyse */}
           {!statsLoading && !historyLocked && lastAnalysis && (
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex items-center justify-between gap-3">
+            <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-sm p-4 flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-brand-gray mb-0.5 font-medium uppercase tracking-wide">Dernière candidature</p>
                 <p className="text-sm font-semibold text-brand-black truncate">
@@ -316,7 +316,7 @@ export default function DashboardPage() {
 
           {/* Tips */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-[10px] px-3 py-3">
               <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 3.5-2 5.5-2.5 6.5h-9C7 14.5 5 12.5 5 9a7 7 0 017-7z" />
               </svg>
@@ -324,7 +324,7 @@ export default function DashboardPage() {
                 <strong>Adapte ton CV</strong> à chaque offre
               </p>
             </div>
-            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-[10px] px-3 py-3">
               <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
@@ -332,7 +332,7 @@ export default function DashboardPage() {
                 <strong>Évite les CV Canva</strong> pour les ATS
               </p>
             </div>
-            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-xl px-3 py-3">
+            <div className="flex items-start gap-2.5 bg-green-50 border border-green-100 rounded-[10px] px-3 py-3">
               <svg className="shrink-0 mt-0.5 text-green-700" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <circle cx="12" cy="12" r="10" />
                 <circle cx="12" cy="12" r="3" />
