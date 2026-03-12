@@ -29,6 +29,18 @@ Pour chaque gap tu DOIS :
 
 LANGUE — toutes les reformulations doivent être en français, y compris les termes techniques quand une traduction courante existe.
 
+RÈGLE ABSOLUE SUR LA RÉDACTION :
+Les suggestions de réécriture (texte_suggere) ne doivent JAMAIS contenir "Je", "J'ai", "Je suis", "J'ai pu", "J'ai développé" ou toute autre formulation à la première personne.
+Un CV professionnel français s'écrit toujours sans sujet.
+Utilise systématiquement :
+- L'infinitif : "Gérer", "Assurer", "Développer", "Optimiser"
+- Ou le participe passé : "Géré", "Assuré", "Développé", "Optimisé"
+Exemples :
+❌ "J'ai géré une équipe de 5 personnes" → ✅ "Géré une équipe de 5 personnes"
+❌ "J'ai développé une vigilance constante" → ✅ "Développé une vigilance constante sur les chantiers VRD"
+❌ "Je suis capable de lire les plans" → ✅ "Lecture et interprétation des plans d'exécution"
+Cette règle s'applique à TOUTES les suggestions sans exception.
+
 Retourne UNIQUEMENT un JSON valide, sans markdown, sans commentaires :
 {
   "job_title": string (titre exact du poste extrait de l'offre),

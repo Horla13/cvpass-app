@@ -63,7 +63,7 @@ Règles :
 - Omets les champs vides (string vide) sauf nom.
 - missions doit être un tableau de strings (une mission par élément).
 - Si un champ est absent du CV, laisse le tableau vide ou omets la clé.
-- Les missions et compétences ne doivent JAMAIS commencer par "Je" ou "J'ai". Utilise toujours un verbe d'action à l'infinitif ou au participe passé. Exemple : "Géré" au lieu de "J'ai géré", "Assurer" au lieu de "J'assure", "Développer" au lieu de "Je développe".
+- RÈGLE ABSOLUE : les missions, compétences, profil et TOUTES les sections du CV ne doivent JAMAIS contenir "Je", "J'ai", "Je suis", "J'ai pu", "J'ai développé" ou toute autre formulation à la première personne. Un CV professionnel français s'écrit toujours sans sujet. Utilise systématiquement un verbe d'action à l'infinitif ("Gérer", "Assurer", "Développer") ou au participe passé ("Géré", "Assuré", "Développé"). Exemples : "J'ai géré une équipe" → "Géré une équipe" ; "Je suis capable de lire les plans" → "Lecture et interprétation des plans". Cette règle s'applique à TOUTES les sections sans exception.
 - La date de naissance ne doit PAS apparaître dans les informations : elle n'est pas obligatoire sur un CV français moderne. Place uniquement dans informations les éléments pratiques comme le permis de conduire, la mobilité géographique, le statut (travailleur handicapé, etc.).
 - Retourne UNIQUEMENT le JSON brut, sans markdown, sans \`\`\`json, sans texte avant ou après.`;
 
