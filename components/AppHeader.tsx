@@ -15,13 +15,13 @@ export function AppHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="bg-white sticky top-0 z-40 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+    <header className="bg-white/92 backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04]">
+      <div className="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-6">
 
         {/* Logo */}
-        <Link href="/dashboard" className="shrink-0 text-lg font-bold tracking-tight">
+        <Link href="/dashboard" className="shrink-0 font-display text-[21px] font-extrabold tracking-[-0.8px]">
           <span className="text-brand-black">CV</span>
-          <span className="text-[#16a34a]">pass</span>
+          <span className="text-brand-green">pass</span>
         </Link>
 
         {/* Navigation desktop */}
@@ -35,7 +35,7 @@ export function AppHeader() {
                 className={cn(
                   "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                   active
-                    ? "text-[#16a34a] underline underline-offset-4 decoration-[#16a34a]"
+                    ? "text-brand-green underline underline-offset-4 decoration-brand-green font-display"
                     : "text-brand-gray hover:text-brand-black"
                 )}
               >
