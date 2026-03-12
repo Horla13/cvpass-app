@@ -2,19 +2,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
+import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
+import { PricingCard } from "@/components/PricingCard";
+import { FAQAccordion } from "@/components/FAQAccordion";
+import { CTABanner } from "@/components/CTABanner";
 
 const plans = [
   {
     id: "free",
-    tier: "Découverte",
-    price: "0",
-    priceSuffix: " €",
-    description: "Analysez votre premier CV et découvrez votre score ATS — sans engagement, sans carte de crédit.",
+    name: "Gratuit",
+    description: "Pour voir ce qui bloque votre CV et comprendre pourquoi vous n'avez pas de réponse.",
+    priceMain: "0",
+    priceSuffix: "€",
     features: [
-      { text: "1 analyse de CV complète", included: true },
-      { text: "Score ATS détaillé", included: true },
+      { text: "1 analyse complète", included: true },
+      { text: "Score détaillé", included: true },
       { text: "3 problèmes identifiés", included: true },
+      { text: "Éditeur 1-clic", included: false },
       { text: "Réécriture IA", included: false },
       { text: "Export PDF", included: false },
     ],
@@ -23,36 +28,40 @@ const plans = [
   },
   {
     id: "pass48h",
-    tier: "Candidature Express",
-    price: "2",
-    priceSuffix: ",90 €",
-    description: "Décrochez cet entretien — analyses illimitées pendant 48h, réécriture IA complète, export PDF.",
+    name: "Pass 48h",
+    description: "Pour optimiser 3 ou 4 candidatures en urgence. Sans abonnement, sans renouvellement caché.",
+    priceMain: "2",
+    priceSuffix: ",90€",
     features: [
-      { text: "Analyses illimitées pendant 48h", included: true },
-      { text: "Réécriture IA des bullet points", included: true },
-      { text: "Export PDF propre", included: true },
-      { text: "Génération de lettres de motivation", included: true },
+      { text: "Scans illimités 48h", included: true },
+      { text: "Éditeur 1-clic complet", included: true, bold: true },
+      { text: "Réécriture IA bullet points", included: true, bold: true },
+      { text: "Match offres illimité", included: true },
+      { text: "Export PDF sans watermark", included: true },
+      { text: "Lettre de motivation IA", included: true },
       { text: "Historique des CVs", included: true },
-      { text: "Sans abonnement caché", included: true },
     ],
     cta: "Choisir ce Pass",
     highlighted: true,
+    guarantee: "Satisfait ou remboursé 7 jours",
   },
   {
     id: "monthly",
-    tier: "Recherche Intensive",
-    price: "14",
-    priceSuffix: ",90 €/mois",
-    description: "Postulez plus, décrochez plus — tout illimité, historique complet, lettres de motivation incluses.",
+    name: "Recherche Active",
+    description: "Pour une recherche sur plusieurs semaines. Résiliable à tout moment, sans condition.",
+    priceMain: "14",
+    priceSuffix: ",90€/mois",
     features: [
-      { text: "Tout de Candidature Express", included: true },
-      { text: "Historique illimité des CVs", included: true },
-      { text: "Lettres de motivation illimitées", included: true },
+      { text: "Tout du Pass 48h", included: true },
+      { text: "Historique illimité", included: true },
+      { text: "Génération lettres motivation", included: true },
+      { text: "Suivi de candidatures", included: true },
       { text: "Support prioritaire", included: true },
-      { text: "Résiliable à tout moment", included: true },
+      { text: "Sans engagement", included: true },
     ],
     cta: "Choisir ce Plan",
     highlighted: false,
+    guarantee: "Satisfait ou remboursé 7 jours",
   },
 ];
 
@@ -91,72 +100,143 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <AppHeader />
-      <main className="max-w-5xl mx-auto px-6 py-16">
-        <div className="text-center mb-4">
-          <h1 className="text-4xl font-bold text-brand-black mb-4">Choisissez votre plan</h1>
-          <p className="text-brand-gray text-lg">
-            Pas d&apos;abonnement forcé — payez uniquement quand vous en avez besoin.
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mt-12">
+      {/* Hero */}
+      <section className="py-20 px-8 text-center">
+        <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tighter text-brand-black mb-4">
+          Choisissez votre plan
+        </h1>
+        <p className="text-brand-gray text-lg max-w-md mx-auto">
+          Commencez gratuitement. Pas de carte bancaire requise.
+        </p>
+      </section>
+
+      {/* Pricing cards */}
+      <section className="max-w-[960px] mx-auto px-8 pb-20">
+        <div className="grid md:grid-cols-3 gap-5">
           {plans.map((plan) => (
-            <div
+            <PricingCard
               key={plan.id}
-              className={`bg-white rounded-2xl p-8 flex flex-col relative ${
-                plan.highlighted
-                  ? "ring-2 ring-brand-green shadow-lg"
-                  : "border border-gray-200"
-              }`}
-            >
-              {plan.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold text-white bg-brand-green px-4 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
-                  Le plus populaire
-                </span>
-              )}
-              <div className="text-xs font-bold tracking-widest uppercase text-brand-gray mb-3">
-                {plan.tier}
-              </div>
-              <div className="flex items-baseline mb-1">
-                <span className="text-5xl font-black text-brand-black leading-none">
-                  {plan.price}
-                </span>
-                <span className="text-brand-gray ml-0.5">{plan.priceSuffix}</span>
-              </div>
-              <p className="text-sm text-brand-gray leading-relaxed mt-2 mb-6 pb-6 border-b border-gray-100">
-                {plan.description}
-              </p>
-              <ul className="space-y-3 mb-8 flex-1">
-                {plan.features.map((f) => (
-                  <li key={f.text} className={`flex items-start gap-2 text-sm ${f.included ? "text-brand-gray" : "text-gray-300"}`}>
-                    <span className={`font-bold mt-0.5 flex-shrink-0 ${f.included ? "text-brand-green" : "text-gray-300"}`}>
-                      {f.included ? "✓" : "✕"}
-                    </span>
-                    {f.text}
-                  </li>
+              name={plan.name}
+              description={plan.description}
+              priceMain={plan.priceMain}
+              priceSuffix={plan.priceSuffix}
+              features={plan.features}
+              cta={plan.cta}
+              highlighted={plan.highlighted}
+              guarantee={plan.guarantee}
+              onCtaClick={() => handlePlanClick(plan.id)}
+              loading={loading === plan.id}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Comparison table */}
+      <section className="bg-[#fafafa] border-t border-b border-gray-100 py-24 px-8">
+        <div className="max-w-[960px] mx-auto">
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-brand-black text-center mb-12">
+            Comparaison détaillée
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="text-left py-3 px-4 font-display font-bold text-brand-black">Fonctionnalité</th>
+                  <th className="text-center py-3 px-4 font-display font-bold text-brand-gray">Gratuit</th>
+                  <th className="text-center py-3 px-4 font-display font-bold text-brand-green">Pass 48h</th>
+                  <th className="text-center py-3 px-4 font-display font-bold text-brand-gray">Recherche Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Score détaillé", "✓", "✓", "✓"],
+                  ["1 analyse complète", "✓", "—", "—"],
+                  ["3 problèmes identifiés", "✓", "—", "—"],
+                  ["Scans illimités", "✗", "48h", "✓"],
+                  ["Éditeur 1-clic complet", "✗", "✓", "✓"],
+                  ["Réécriture IA bullet points", "✗", "✓", "✓"],
+                  ["Match offres illimité", "✗", "✓", "✓"],
+                  ["Export PDF sans watermark", "✗", "✓", "✓"],
+                  ["Lettre de motivation IA", "✗", "1 par analyse", "✓"],
+                  ["Historique des CVs", "✗", "✓", "illimité"],
+                  ["Génération lettres (multi-offres)", "✗", "✗", "✓"],
+                  ["Suivi de candidatures", "✗", "✗", "✓"],
+                  ["Support prioritaire", "✗", "✗", "✓"],
+                ].map(([feature, ...vals], i) => (
+                  <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-[#fafafa]"}>
+                    <td className="py-3 px-4 font-medium text-brand-black">{feature}</td>
+                    {vals.map((v, j) => (
+                      <td key={j} className="text-center py-3 px-4">
+                        <span className={
+                          v === "✓" ? "text-brand-green font-bold" :
+                          v === "✗" ? "text-gray-300 font-bold" :
+                          "text-brand-gray text-xs"
+                        }>{v}</span>
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </ul>
-              <button
-                onClick={() => handlePlanClick(plan.id)}
-                disabled={loading === plan.id}
-                className={`w-full py-3 rounded-xl font-semibold text-sm transition-colors ${
-                  plan.highlighted
-                    ? "bg-brand-green text-white hover:bg-green-700"
-                    : "border-2 border-gray-200 text-brand-gray hover:border-brand-green hover:text-brand-green"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {loading === plan.id ? "Chargement…" : plan.cta}
-              </button>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust signals */}
+      <section className="py-12 px-8">
+        <div className="max-w-[700px] mx-auto flex flex-wrap items-center justify-center gap-8">
+          {[
+            { icon: "🔒", text: "Paiement sécurisé Stripe" },
+            { icon: "🇪🇺", text: "Conforme RGPD" },
+            { icon: "🗑️", text: "Données jamais stockées" },
+          ].map((s) => (
+            <div key={s.text} className="flex items-center gap-2 text-sm text-brand-gray">
+              <span className="text-lg">{s.icon}</span>
+              <span className="font-medium">{s.text}</span>
             </div>
           ))}
         </div>
+      </section>
 
-        <p className="text-center text-xs text-brand-gray mt-10">
-          Paiement sécurisé par Stripe · Résiliation à tout moment · TVA incluse
-        </p>
-      </main>
+      {/* FAQ */}
+      <section className="bg-[#fafafa] border-t border-gray-100 py-24 px-8">
+        <div className="max-w-[1100px] mx-auto">
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-brand-black text-center mb-12">
+            Questions fréquentes
+          </h2>
+          <FAQAccordion items={[
+            { question: "Comment fonctionne le Pass 48h ?", answer: "Le Pass 48h vous donne un accès complet pendant 48 heures à partir de l'achat. Scans illimités, éditeur 1-clic, réécriture IA, export PDF. Pas de renouvellement automatique." },
+            { question: "Puis-je me faire rembourser ?", answer: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." },
+            { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Il disparaît automatiquement à la fermeture de votre session. Conforme RGPD." },
+            { question: "Comment résilier Recherche Active ?", answer: "Vous pouvez résilier à tout moment depuis votre espace personnel. La résiliation est immédiate et sans condition. Vous conservez l'accès jusqu'à la fin de la période payée." },
+            { question: "Quels moyens de paiement acceptez-vous ?", answer: "Nous acceptons toutes les cartes bancaires (Visa, Mastercard, American Express) via notre partenaire Stripe. Le paiement est 100% sécurisé." },
+          ]} />
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <CTABanner />
+
+      {/* Footer */}
+      <footer className="bg-[#fafafa] border-t border-gray-100 py-12 px-8">
+        <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div>
+            <div className="font-display text-[21px] font-extrabold tracking-[-0.8px] mb-2">
+              <span className="text-brand-black">CV</span>
+              <span className="text-brand-green">pass</span>
+            </div>
+            <p className="text-[13px] text-gray-400">© 2026 VertexLab SASU. Tous droits réservés.</p>
+          </div>
+          <div className="flex gap-6">
+            <Link href="/mentions-legales" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Mentions légales</Link>
+            <a href="#" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Politique de confidentialité</a>
+            <a href="mailto:contact@cvpass.fr" className="text-[13px] text-brand-gray hover:text-brand-black transition-colors">Contact</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
