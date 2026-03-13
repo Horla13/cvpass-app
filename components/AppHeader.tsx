@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 
 const NAV_LINKS = [
+  { href: "/", label: "Accueil" },
   { href: "/analyze", label: "Analyser" },
   { href: "/pricing", label: "Tarifs" },
   { href: "/account", label: "Mon compte" },
@@ -30,7 +31,7 @@ export function AppHeader() {
       <div className="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-6">
 
         {/* Logo */}
-        <Link href="/analyze" className="shrink-0 font-display text-[21px] font-extrabold tracking-[-0.8px]">
+        <Link href="/" className="shrink-0 font-display text-[21px] font-extrabold tracking-[-0.8px]">
           <span className="text-brand-black">CV</span>
           <span className="text-brand-green">pass</span>
         </Link>

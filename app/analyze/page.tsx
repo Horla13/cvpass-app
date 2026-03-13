@@ -1,34 +1,18 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { usePostHog } from "posthog-js/react";
 import { useStore } from "@/lib/store";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
-import StepResumeSelect from "@/components/StepResumeSelect";
 import StepAnalysisType from "@/components/StepAnalysisType";
 import StepJobDescription from "@/components/StepJobDescription";
 import AnalyzingModal from "@/components/AnalyzingModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
 
-interface HistoryAnalysis {
-  id: string;
-  created_at: string;
-  job_title: string | null;
-  score_avant: number;
-  score_apres: number;
-  nb_suggestions: number;
-  nb_acceptees: number;
-}
-
-type Step = "resume-selection" | "type" | "jd" | "analyzing";
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("fr-FR");
-}
+type Step = "upload" | "type" | "jd" | "analyzing";
 
 export default function AnalyzePageWrapper() {
   return (
@@ -51,14 +35,14 @@ function AnalyzePage() {
 
   const searchParams = useSearchParams();
   const initialStep = searchParams.get("step") as Step | null;
-  const validSteps: Step[] = ["resume-selection", "type", "jd", "analyzing"];
   const [step, setStep] = useState<Step>(
-    initialStep && validSteps.includes(initialStep) ? initialStep : "resume-selection"
+    initialStep === "type" && cvText ? "type" : "upload"
   );
   const [analysisType, setAnalysisType] = useState<"ats" | "jd">("jd");
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedFilename, setSelectedFilename] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
 
   // Credits
   const [credits, setCredits] = useState(0);
@@ -66,17 +50,7 @@ function AnalyzePage() {
   const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [creditsNeeded, setCreditsNeeded] = useState(0);
 
-  // History (for resume list)
-  const [analyses, setAnalyses] = useState<HistoryAnalysis[]>([]);
-
-  // If we arrive with step=type but have cvText, skip resume-selection
-  useEffect(() => {
-    if (initialStep === "type" && cvText) {
-      setStep("type");
-    }
-  }, [initialStep, cvText]);
-
-  // Load credits + history on mount
+  // Load credits on mount
   useEffect(() => {
     fetch("/api/credits")
       .then((r) => r.json())
@@ -85,25 +59,7 @@ function AnalyzePage() {
         setUnlimited(d.unlimited ?? false);
       })
       .catch(() => {});
-
-    fetch("/api/history")
-      .then((r) => {
-        if (!r.ok) return null;
-        return r.json();
-      })
-      .then((data) => {
-        if (data?.analyses) setAnalyses(data.analyses);
-      })
-      .catch(() => {});
   }, []);
-
-  // Build resume list from history
-  const resumes = analyses.map((a) => ({
-    id: a.id,
-    filename: a.job_title ? `${a.job_title}` : "CV analysé",
-    date: formatDate(a.created_at),
-    analyzed: true,
-  }));
 
   // Upload a new CV
   const handleUpload = useCallback(async (file: File) => {
@@ -124,15 +80,6 @@ function AnalyzePage() {
       setIsUploading(false);
     }
   }, [setCvText, posthog]);
-
-  // Select existing resume (re-analyze)
-  const handleSelectResume = useCallback((id: string) => {
-    const analysis = analyses.find((a) => a.id === id);
-    if (analysis) {
-      setSelectedFilename(analysis.job_title || "CV précédent");
-      setStep("type");
-    }
-  }, [analyses]);
 
   // Choose analysis type
   const handleChooseType = (type: "ats" | "jd") => {
@@ -155,7 +102,7 @@ function AnalyzePage() {
   const runAnalysis = async (jobOffer: string, type: "ats" | "jd") => {
     if (!cvText) {
       alert("Veuillez d'abord uploader un CV.");
-      setStep("resume-selection");
+      setStep("upload");
       return;
     }
 
@@ -229,14 +176,49 @@ function AnalyzePage() {
         <AppHeader />
 
         <main className="max-w-5xl mx-auto px-6 py-12">
-          {/* Step: Select Resume */}
-          {step === "resume-selection" && (
-            <StepResumeSelect
-              resumes={resumes}
-              onSelect={handleSelectResume}
-              onUpload={handleUpload}
-              isUploading={isUploading}
-            />
+          {/* Step: Upload CV */}
+          {step === "upload" && (
+            <div className="max-w-[600px] mx-auto text-center">
+              <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] mb-2">
+                Uploadez votre CV
+              </h1>
+              <p className="text-brand-gray mb-8">
+                Choisissez votre CV au format PDF ou DOCX pour commencer l&apos;analyse.
+              </p>
+
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".pdf,.doc,.docx"
+                className="hidden"
+                onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])}
+              />
+
+              <button
+                onClick={() => fileRef.current?.click()}
+                disabled={isUploading}
+                className="w-full max-w-[400px] mx-auto border-2 border-dashed border-gray-300 rounded-xl p-10 text-center hover:border-brand-green/50 transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                <div className="flex flex-col items-center gap-3">
+                  {isUploading ? (
+                    <>
+                      <svg className="animate-spin h-8 w-8 text-brand-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+                      <span className="text-[15px] font-medium text-brand-gray">Upload en cours...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      <span className="text-[16px] font-semibold text-gray-700">Choisir mon CV (PDF ou DOCX)</span>
+                      <span className="text-[13px] text-brand-gray">Taille max : 5 Mo</span>
+                    </>
+                  )}
+                </div>
+              </button>
+            </div>
           )}
 
           {/* Step: Choose Analysis Type */}
@@ -246,7 +228,7 @@ function AnalyzePage() {
               unlimited={unlimited}
               filename={selectedFilename}
               onChoose={handleChooseType}
-              onBack={() => setStep("resume-selection")}
+              onBack={() => setStep("upload")}
             />
           )}
 
