@@ -768,40 +768,46 @@ export function LandingPage() {
       {/* ── 10. TESTIMONIALS ── */}
       <section className="py-24">
         <div className="max-w-[1100px] mx-auto px-8">
-          <div className="text-center mb-14 fade-up">
+          <div className="text-center mb-5 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              Ils ont amélioré leur CV avec CVpass
+              La confiance des chercheurs d&apos;emploi
             </h2>
+            <p className="text-brand-gray text-base mt-3 max-w-[520px] mx-auto">
+              Rejoignez ceux qui ont transformé leur recherche avec CVpass
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {[
-              { name: "Marie L.", role: "Chef de projet, Paris", initials: "ML", before: 41, after: 89, text: "Ce qui m'a bluffé c'est que l'outil ne me dit pas juste \"verbe trop faible\" — il me réécrit la phrase entière avec les bons mots. J'ai eu 3 réponses en une semaine." },
-              { name: "Thomas K.", role: "Développeur, Lyon", initials: "TK", before: 28, after: 84, text: "J'avais déjà essayé d'autres outils. Ça me donnait une liste de problèmes, je ne savais pas quoi faire. CVpass corrige lui-même — c'est une autre catégorie." },
-              { name: "Sophie C.", role: "Marketing, Bordeaux", initials: "SC", before: 52, after: 91, text: "Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste. Premier entretien 4 jours après." },
+              { name: "Marie L.", role: "Chef de projet", initials: "ML", color: "from-pink-400 to-rose-500", result: "Score : 41 → 89", text: "L'outil ne me dit pas juste \"verbe trop faible\" — il me réécrit la phrase entière avec les bons mots-clés. J'ai eu 3 réponses en une semaine." },
+              { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "3 entretiens en 1 semaine", text: "J'avais déjà essayé d'autres outils. Ça me donnait une liste de problèmes sans solution. CVpass corrige lui-même — c'est une autre catégorie." },
+              { name: "Sophie C.", role: "Responsable Marketing", initials: "SC", color: "from-amber-400 to-orange-500", result: "Poste décroché en 2 semaines", text: "Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste visé." },
             ].map((t, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[14px] p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
-                <div className="text-yellow-400 text-sm mb-3 tracking-wider">★★★★★</div>
-                <p className="text-[14px] text-gray-600 leading-relaxed mb-6 italic">
+              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+                {/* Avatar */}
+                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${t.color} mx-auto mb-4 flex items-center justify-center text-white text-[18px] font-bold shadow-md`}>
+                  {t.initials}
+                </div>
+                {/* Name & role */}
+                <div className="text-[15px] font-bold text-brand-black">{t.name}</div>
+                <div className="text-[13px] text-brand-gray mb-3">{t.role}</div>
+                {/* Verified badge */}
+                <div className="inline-flex items-center gap-1.5 border border-green-200 bg-green-50 rounded-full px-3 py-1 text-[12px] text-green-600 font-medium mb-3">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  Vérifié
+                </div>
+                {/* Result badge */}
+                <div className="block">
+                  <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-full px-3.5 py-1.5 text-[12px] text-blue-600 font-semibold mb-3">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 6l-9.5 9.5-5-5L1 18" /><polyline points="17 6 23 6 23 12" /></svg>
+                    {t.result}
+                  </span>
+                </div>
+                {/* Stars */}
+                <div className="text-yellow-400 text-[16px] mb-4 tracking-wider">★★★★★</div>
+                {/* Quote */}
+                <p className="text-[13.5px] text-gray-500 leading-relaxed italic">
                   &ldquo;{t.text}&rdquo;
                 </p>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center justify-center bg-red-50 text-red-400 text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    {t.before}
-                  </span>
-                  <span className="text-gray-300 text-xs">&rarr;</span>
-                  <span className="inline-flex items-center justify-center bg-green-50 text-brand-green text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    {t.after}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-green-100 to-green-200 border border-green-300 flex items-center justify-center text-[11px] font-bold text-brand-green">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <div className="text-[13px] font-bold text-brand-black">{t.name}</div>
-                    <div className="text-[12px] text-brand-gray">{t.role}</div>
-                  </div>
-                </div>
               </div>
             ))}
           </div>

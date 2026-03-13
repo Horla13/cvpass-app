@@ -13,68 +13,61 @@ const plans = [
   {
     id: "free",
     name: "Gratuit",
-    subtitle: "Pour découvrir",
-    priceMain: "0",
-    priceSuffix: "€",
+    subtitle: "Pour découvrir, sans engagement",
+    priceLabel: "Gratuit",
+    priceMain: null,
     priceDetail: "",
     features: [
-      { text: "2 crédits offerts", included: true, bold: true },
-      { text: "Score ATS détaillé", included: true },
-      { text: "Suggestions d'amélioration", included: true },
-      { text: "Éditeur CV avec corrections IA", included: false },
-      { text: "Export PDF sans filigrane", included: false },
+      "2 analyses génériques (à vie)",
+      "Vérification compatibilité ATS",
+      "Suggestions en lecture seule",
+      "Export PDF avec filigrane",
     ],
-    cta: "Commencer gratuitement",
+    cta: "Plan actuel",
+    ctaDisabled: true,
     highlighted: false,
-    color: "gray",
     badge: null,
+    icon: "⚡",
   },
   {
     id: "pass48h",
     name: "Coup de pouce",
-    subtitle: "3-4 candidatures",
-    priceMain: "2",
-    priceSuffix: ",90€",
+    subtitle: "Idéal pour postuler à cette offre rêvée",
+    priceLabel: null,
+    priceMain: "2,90€",
     priceDetail: "paiement unique",
     features: [
-      { text: "4 crédits à utiliser quand vous voulez", included: true, bold: true },
-      { text: "Éditeur CV avec corrections IA", included: true },
-      { text: "Export PDF propre (sans filigrane)", included: true },
-      { text: "Crédits sans expiration", included: true },
-      { text: "Match offre d'emploi inclus", included: true },
+      "4 crédits",
+      "Éditeur CV avec corrections IA",
+      "Export PDF propre (sans filigrane)",
+      "Crédits sans expiration",
     ],
     cta: "Acheter le pack",
+    ctaDisabled: false,
     highlighted: true,
-    color: "green",
     badge: "Le plus populaire",
+    icon: "🚀",
   },
   {
     id: "monthly",
     name: "Recherche Active",
-    subtitle: "Recherche intensive",
-    priceMain: "8",
-    priceSuffix: ",90€",
-    priceDetail: "le 1er mois, puis -5% chaque mois",
+    subtitle: "Scans illimités pendant 30 jours",
+    priceLabel: null,
+    priceMain: "8,90€",
+    priceDetail: "par mois",
     features: [
-      { text: "Scans illimités", included: true, bold: true },
-      { text: "Tout du Pack Coup de pouce", included: true },
-      { text: "Export PDF illimité", included: true },
-      { text: "Lettre de motivation IA", included: true },
-      { text: "Historique complet", included: true },
-      { text: "Crédits conservés après résiliation", included: true },
+      "Scans illimités",
+      "Éditeur CV avec corrections IA",
+      "Export PDF propre (sans filigrane)",
+      "Crédits conservés après résiliation",
     ],
-    cta: "Commencer à 8,90€/mois",
+    cta: "Commencer",
+    ctaDisabled: false,
     highlighted: false,
-    color: "blue",
     badge: "Meilleure valeur",
+    icon: "👑",
     loyaltyDiscount: true,
   },
-];
-
-const creditCosts = [
-  { action: "Analyse ATS générale", credits: 1, icon: "📊" },
-  { action: "Match offre d'emploi", credits: 2, icon: "🎯" },
-  { action: "Export PDF optimisé", credits: 1, icon: "📄" },
 ];
 
 export default function PricingPage() {
@@ -124,200 +117,186 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fb]">
+    <div className="min-h-screen bg-white">
       <AppHeader />
 
       {/* Hero */}
-      <section className="py-16 px-8 text-center">
-        <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tighter text-gray-900 mb-4">
-          Choisissez votre plan
+      <section className="pt-20 pb-6 px-8 text-center">
+        <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-5 py-2 text-[13px] text-green-700 font-medium mb-6">
+          <span>✨</span> Tarification simple et transparente
+        </div>
+        <h1 className="font-display text-[32px] md:text-[44px] font-extrabold tracking-[-1.5px] text-gray-900 mb-4 leading-tight">
+          Investissez dans votre carrière,<br className="hidden md:block" /> pas dans la complexité
         </h1>
-        <p className="text-gray-500 text-[16px] max-w-lg mx-auto mb-3">
-          Commencez avec 2 crédits gratuits. Achetez uniquement ce dont vous avez besoin.
+        <p className="text-brand-green font-semibold text-[15px] mb-3">
+          1 crédit = Analyse générale &nbsp;|&nbsp; 2 crédits = Match offre d&apos;emploi
         </p>
-        {credits !== null && (
+        <p className="text-gray-500 text-[15px] max-w-xl mx-auto">
+          Pas de frais cachés. Pas de surprises. Choisissez le plan qui correspond à votre rythme de recherche et payez uniquement pour ce dont vous avez besoin.
+        </p>
+      </section>
+
+      {/* Credits badge */}
+      {credits !== null && (
+        <div className="text-center pb-10">
           <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-[13px]">
             <span className="text-amber-500">&#9889;</span>
             <span className="font-semibold text-amber-700">
-              {unlimited ? "Accès illimité" : `${credits} crédit${credits !== 1 ? "s" : ""} disponible${credits !== 1 ? "s" : ""}`}
+              Votre solde : {unlimited ? "Accès illimité" : `${credits} crédit${credits !== 1 ? "s" : ""}`}
             </span>
           </div>
-        )}
-      </section>
-
-      {/* Credit costs explainer */}
-      <section className="max-w-[700px] mx-auto px-8 pb-10">
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h3 className="text-[13px] text-gray-400 font-medium uppercase tracking-wider mb-4 text-center">Coût par action</h3>
-          <div className="grid grid-cols-3 gap-4">
-            {creditCosts.map((item) => (
-              <div key={item.action} className="text-center">
-                <span className="text-[24px]">{item.icon}</span>
-                <p className="text-[13px] text-gray-700 font-medium mt-1">{item.action}</p>
-                <p className="text-[18px] font-bold text-amber-600 mt-0.5">
-                  {item.credits} crédit{item.credits > 1 ? "s" : ""}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
-      </section>
+      )}
 
       {/* Pricing cards */}
-      <section className="max-w-[1000px] mx-auto px-8 pb-20">
-        <div className="grid md:grid-cols-3 gap-5">
-          {plans.map((plan) => {
-            const borderColor = plan.highlighted
-              ? "border-green-300 shadow-[0_4px_20px_rgba(22,163,74,0.1)]"
-              : "border-gray-200 hover:border-gray-300 hover:shadow-sm";
-            const badgeColor = plan.color === "green"
-              ? "bg-green-500"
-              : plan.color === "blue"
-              ? "bg-blue-500"
-              : "bg-gray-400";
-            const ctaStyle = plan.highlighted
-              ? "bg-green-500 text-white hover:bg-green-600"
-              : plan.color === "blue"
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-white text-gray-800 border border-gray-200 hover:border-gray-400";
-            const checkColor = plan.color === "green"
-              ? "text-green-500"
-              : plan.color === "blue"
-              ? "text-blue-500"
-              : "text-green-500";
+      <section className="max-w-[1060px] mx-auto px-8 pb-20">
+        <div className="grid md:grid-cols-3 gap-6">
+          {plans.map((plan) => (
+            <div
+              key={plan.id}
+              className={cn(
+                "relative bg-white rounded-2xl border-2 p-8 transition-all",
+                plan.highlighted
+                  ? "border-green-300 shadow-[0_4px_24px_rgba(22,163,74,0.12)]"
+                  : plan.badge === "Meilleure valeur"
+                  ? "border-blue-200 shadow-sm"
+                  : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+              )}
+            >
+              {plan.badge && (
+                <div className={cn(
+                  "absolute -top-3.5 left-1/2 -translate-x-1/2 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap",
+                  plan.highlighted ? "bg-green-500" : "bg-blue-500"
+                )}>
+                  {plan.badge}
+                </div>
+              )}
 
-            return (
-              <div
-                key={plan.id}
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[20px]">{plan.icon}</span>
+                <h3 className="font-display text-[20px] font-bold text-gray-900">{plan.name}</h3>
+              </div>
+              <p className="text-[13px] text-gray-500 mb-5">{plan.subtitle}</p>
+
+              {/* Price */}
+              {plan.priceLabel ? (
+                <div className="mb-1">
+                  <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">{plan.priceLabel}</span>
+                </div>
+              ) : (
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">{plan.priceMain}</span>
+                </div>
+              )}
+              {plan.priceDetail && (
+                <p className="text-[13px] text-gray-400 mb-6">{plan.priceDetail}</p>
+              )}
+              {!plan.priceDetail && <div className="mb-6" />}
+
+              {/* Features */}
+              <ul className="space-y-3 mb-7">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
+                    <svg className={cn("mt-0.5 flex-shrink-0", plan.highlighted ? "text-green-500" : plan.id === "monthly" ? "text-blue-500" : "text-green-500")} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <button
+                onClick={() => handlePlanClick(plan.id)}
+                disabled={plan.ctaDisabled || loading === plan.id}
                 className={cn(
-                  "bg-white rounded-2xl border-2 p-7 relative transition-all",
-                  borderColor
+                  "w-full py-3.5 rounded-xl text-[14px] font-semibold transition-all disabled:cursor-not-allowed",
+                  plan.ctaDisabled
+                    ? "bg-gray-100 text-gray-400 border border-gray-200"
+                    : plan.highlighted
+                    ? "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200"
+                    : plan.id === "monthly"
+                    ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200"
+                    : "bg-white text-gray-800 border border-gray-200 hover:border-gray-400"
                 )}
               >
-                {plan.badge && (
-                  <div className={cn(
-                    "absolute -top-3 left-1/2 -translate-x-1/2 text-white px-3.5 py-1 rounded-full text-[11px] font-bold whitespace-nowrap",
-                    badgeColor
-                  )}>
-                    {plan.badge}
+                {loading === plan.id ? "Redirection..." : plan.cta}
+              </button>
+
+              {/* Loyalty discount visual */}
+              {"loyaltyDiscount" in plan && plan.loyaltyDiscount && (
+                <div className="mt-5 pt-4 border-t border-gray-100">
+                  <p className="text-[11px] text-blue-500 font-semibold uppercase tracking-wider mb-2.5">
+                    -5% chaque mois de fidélité
+                  </p>
+                  <div className="space-y-1.5">
+                    {[
+                      { month: "Mois 1", price: "8,90" },
+                      { month: "Mois 2", price: "8,46" },
+                      { month: "Mois 3", price: "8,03" },
+                      { month: "Mois 6+", price: "6,88" },
+                    ].map((row) => (
+                      <div key={row.month} className="flex items-center justify-between text-[11px]">
+                        <span className="text-gray-400">{row.month}</span>
+                        <span className="font-semibold text-gray-700">{row.price}&euro;</span>
+                      </div>
+                    ))}
                   </div>
-                )}
-
-                <p className="text-[12px] text-gray-400 font-medium uppercase tracking-wider">{plan.subtitle}</p>
-                <h3 className="font-display text-[20px] font-bold text-gray-900 mt-1 mb-1">{plan.name}</h3>
-
-                <div className="flex items-baseline mt-3 mb-1">
-                  <span className="font-display text-[40px] font-extrabold text-gray-900 tracking-tighter">{plan.priceMain}</span>
-                  <span className="text-[16px] text-gray-500 font-medium">{plan.priceSuffix}</span>
                 </div>
-                {plan.priceDetail && (
-                  <p className="text-[12px] text-gray-400 mb-5">{plan.priceDetail}</p>
-                )}
-                {!plan.priceDetail && <div className="mb-5" />}
-
-                <ul className="space-y-2.5 mb-6">
-                  {plan.features.map((f) => (
-                    <li key={f.text} className={cn(
-                      "flex items-start gap-2 text-[13px]",
-                      f.included ? "text-gray-600" : "text-gray-300"
-                    )}>
-                      <svg
-                        className={cn("mt-0.5 flex-shrink-0", f.included ? checkColor : "text-gray-300")}
-                        width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                      >
-                        {f.included
-                          ? <polyline points="20 6 9 17 4 12" />
-                          : <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
-                        }
-                      </svg>
-                      <span className={f.bold ? "font-semibold text-gray-800" : ""}>{f.text}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  onClick={() => handlePlanClick(plan.id)}
-                  disabled={loading === plan.id}
-                  className={cn(
-                    "w-full py-3 rounded-xl text-[14px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed",
-                    ctaStyle
-                  )}
-                >
-                  {loading === plan.id ? "Redirection..." : plan.cta}
-                </button>
-
-                {/* Loyalty discount visual for monthly plan */}
-                {"loyaltyDiscount" in plan && plan.loyaltyDiscount && (
-                  <div className="mt-5 pt-4 border-t border-gray-100">
-                    <p className="text-[11px] text-blue-500 font-semibold uppercase tracking-wider mb-2.5">
-                      -5% chaque mois de fidélité
-                    </p>
-                    <div className="space-y-1.5">
-                      {[
-                        { month: "Mois 1", price: "8,90", pct: 100 },
-                        { month: "Mois 2", price: "8,46", pct: 95 },
-                        { month: "Mois 3", price: "8,03", pct: 90 },
-                        { month: "Mois 4", price: "7,63", pct: 86 },
-                        { month: "Mois 5", price: "7,25", pct: 81 },
-                        { month: "Mois 6+", price: "6,88", pct: 77 },
-                      ].map((row) => (
-                        <div key={row.month} className="flex items-center gap-2">
-                          <span className="text-[11px] text-gray-400 w-14 shrink-0">{row.month}</span>
-                          <div className="flex-1 h-[6px] bg-gray-100 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
-                              style={{ width: `${row.pct}%` }}
-                            />
-                          </div>
-                          <span className="text-[11px] font-semibold text-gray-700 w-10 text-right">{row.price}&euro;</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Comparison table */}
-      <section className="bg-white border-t border-b border-gray-100 py-20 px-8">
+      <section className="bg-[#fafafa] border-t border-b border-gray-100 py-20 px-8">
         <div className="max-w-[960px] mx-auto">
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-10">
-            Comparaison détaillée
+          <h2 className="font-display text-[28px] md:text-[32px] font-extrabold tracking-tight text-gray-900 text-center mb-12">
+            Comparer toutes les fonctionnalités
           </h2>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm bg-white rounded-xl border border-gray-200 overflow-hidden">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 font-display font-bold text-gray-900">Fonctionnalité</th>
-                  <th className="text-center py-3 px-4 font-display font-bold text-gray-400">Gratuit</th>
-                  <th className="text-center py-3 px-4 font-display font-bold text-green-600">Coup de pouce</th>
-                  <th className="text-center py-3 px-4 font-display font-bold text-blue-600">Recherche Active <span className="text-[11px] font-normal text-gray-400">(dès 8,90&euro;)</span></th>
+                  <th className="text-left py-4 px-5 font-display font-bold text-gray-900">Fonctionnalité</th>
+                  <th className="text-center py-4 px-5 font-display font-bold text-gray-500">Gratuit</th>
+                  <th className="text-center py-4 px-5 font-display font-bold text-green-600">Coup de pouce</th>
+                  <th className="text-center py-4 px-5 font-display font-bold text-blue-600">Recherche Active</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  ["Crédits inclus", "2", "4", "Illimité"],
-                  ["Analyse ATS", "✓", "✓", "✓"],
-                  ["Match offre d'emploi", "✓", "✓", "✓"],
-                  ["Score détaillé par catégorie", "✓", "✓", "✓"],
-                  ["Éditeur CV avec corrections IA", "✗", "✓", "✓"],
-                  ["Export PDF sans filigrane", "✗", "✓", "✓"],
-                  ["Expiration des crédits", "Jamais", "Jamais", "—"],
-                  ["Lettre de motivation IA", "✗", "✗", "✓"],
-                  ["Historique complet", "✗", "✗", "✓"],
-                  ["Support prioritaire", "✗", "✗", "✓"],
+                  ["Prix", "0€", "2,90€", "8,90€/mois"],
+                  ["Idéal pour", "Découvrir", "Postuler à une offre", "Recherche intensive"],
+                  ["Scans", "2 (à vie)", "4 crédits", "Illimité"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
-                    <td className="py-3 px-4 font-medium text-gray-800">{feature}</td>
+                    <td className="py-3.5 px-5 font-medium text-gray-800">{feature}</td>
                     {vals.map((v, j) => (
-                      <td key={j} className="text-center py-3 px-4">
+                      <td key={j} className="text-center py-3.5 px-5 text-[13px] text-gray-600 font-medium">{v}</td>
+                    ))}
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan={4} className="py-2 px-5 text-center text-[12px] text-gray-400 bg-gray-50 border-y border-gray-100">
+                    Analyse générale : 1 crédit &middot; Match offre d&apos;emploi : 2 crédits
+                  </td>
+                </tr>
+                {[
+                  ["Édition", "Suggestions seules", "Éditeur IA", "Éditeur IA"],
+                  ["Export PDF", "Avec filigrane", "PDF propre", "PDF illimités"],
+                  ["Lettre de motivation IA", "—", "—", "✓"],
+                  ["Validité", "À vie", "Sans expiration", "30 jours/mois"],
+                ].map(([feature, ...vals], i) => (
+                  <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                    <td className="py-3.5 px-5 font-medium text-gray-800">{feature}</td>
+                    {vals.map((v, j) => (
+                      <td key={j} className="text-center py-3.5 px-5">
                         <span className={
                           v === "✓" ? "text-green-500 font-bold" :
-                          v === "✗" ? "text-gray-300 font-bold" :
-                          "text-gray-600 text-[13px]"
+                          v === "—" ? "text-gray-300" :
+                          "text-[13px] text-gray-600 font-medium"
                         }>{v}</span>
                       </td>
                     ))}
@@ -330,35 +309,35 @@ export default function PricingPage() {
       </section>
 
       {/* Trust signals */}
-      <section className="py-10 px-8">
-        <div className="max-w-[700px] mx-auto flex flex-wrap items-center justify-center gap-8">
-          {[
-            { icon: "🔒", text: "Paiement sécurisé Stripe" },
-            { icon: "🇪🇺", text: "Conforme RGPD" },
-            { icon: "🗑️", text: "CV jamais stocké" },
-            { icon: "💳", text: "Sans engagement" },
-          ].map((s) => (
-            <div key={s.text} className="flex items-center gap-2 text-sm text-gray-500">
-              <span className="text-lg">{s.icon}</span>
-              <span className="font-medium">{s.text}</span>
-            </div>
-          ))}
+      <section className="py-8 px-8 text-center">
+        <p className="text-[13px] text-gray-400 mb-4">
+          Paiement sécurisé par Stripe · Résiliez à tout moment · Sans engagement
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          <span className="inline-flex items-center gap-1.5 text-[13px] text-green-600 font-medium">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+            Pas de renouvellement surprise
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-[13px] text-green-600 font-medium">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+            Crédits sans expiration
+          </span>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-white border-t border-gray-100 py-20 px-8">
+      <section className="bg-[#fafafa] border-t border-gray-100 py-20 px-8">
         <div className="max-w-[1100px] mx-auto">
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-10">
             Questions fréquentes
           </h2>
           <FAQAccordion items={[
-            { question: "Comment fonctionnent les crédits ?", answer: "Chaque action consomme des crédits : 1 pour une analyse ATS, 2 pour un match offre d'emploi, 1 pour un export PDF. Les crédits achetés n'expirent jamais." },
+            { question: "Comment fonctionnent les crédits ?", answer: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." },
             { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 4 crédits utilisables quand vous voulez. Idéal pour 3-4 candidatures urgentes. Pas de renouvellement automatique, les crédits sont à vous." },
+            { question: "Comment fonctionne la réduction fidélité ?", answer: "Avec le plan Recherche Active, vous bénéficiez de -5% chaque mois. Mois 1 : 8,90€, Mois 2 : 8,46€... jusqu'à 6,88€ au mois 6+. La réduction est appliquée automatiquement." },
             { question: "Puis-je me faire rembourser ?", answer: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." },
-            { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Il disparaît automatiquement à la fermeture de votre session. Conforme RGPD." },
-            { question: "Comment résilier Recherche Active ?", answer: "Vous pouvez résilier à tout moment depuis votre espace personnel. La résiliation est immédiate et sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." },
-            { question: "Quels moyens de paiement acceptez-vous ?", answer: "Nous acceptons toutes les cartes bancaires (Visa, Mastercard, American Express) via notre partenaire Stripe. Le paiement est 100% sécurisé." },
+            { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." },
+            { question: "Comment résilier Recherche Active ?", answer: "Vous pouvez résilier à tout moment depuis votre espace personnel. Résiliation immédiate, sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." },
           ]} />
         </div>
       </section>
