@@ -710,15 +710,15 @@ export function LandingPage() {
             <div className="fade-up d1">
               <PricingCard
                 name="Gratuit"
-                description="Pour voir ce qui bloque votre CV."
+                description="Pour découvrir, sans engagement."
                 priceMain="0"
                 priceSuffix="€"
                 features={[
-                  { text: "1 analyse de CV", included: true },
-                  { text: "Score ATS détaillé", included: true },
-                  { text: "3 problèmes identifiés", included: true },
-                  { text: "Suggestions IA", included: false },
-                  { text: "Export PDF", included: false },
+                  { text: "2 analyses génériques (à vie)", included: true },
+                  { text: "Vérification compatibilité ATS", included: true },
+                  { text: "Suggestions en lecture seule", included: true },
+                  { text: "Éditeur CV avec corrections IA", included: false },
+                  { text: "Export PDF sans filigrane", included: false },
                 ]}
                 cta="Commencer gratuitement"
                 onCtaClick={() => handlePlanClick("free")}
@@ -726,19 +726,19 @@ export function LandingPage() {
             </div>
             <div className="fade-up d2">
               <PricingCard
-                name="Pass 48h"
-                description="Pour optimiser 3-4 candidatures en urgence."
+                name="Coup de pouce"
+                description="Idéal pour postuler à cette offre rêvée."
                 priceMain="2"
                 priceSuffix=",90€"
                 highlighted={true}
                 features={[
-                  { text: "Scans illimités 48h", included: true },
-                  { text: "Suggestions IA complètes", included: true, bold: true },
-                  { text: "Réécriture des bullet points", included: true, bold: true },
-                  { text: "Export PDF sans watermark", included: true },
-                  { text: "Lettre de motivation IA", included: true },
+                  { text: "4 crédits", included: true, bold: true },
+                  { text: "Éditeur CV avec corrections IA", included: true },
+                  { text: "Export PDF propre (sans filigrane)", included: true },
+                  { text: "Crédits sans expiration", included: true },
+                  { text: "Match offre d'emploi inclus", included: true },
                 ]}
-                cta="Choisir ce Pass"
+                cta="Acheter le pack"
                 onCtaClick={() => handlePlanClick("pass48h")}
                 loading={loadingPlan === "pass48h"}
               />
@@ -746,17 +746,17 @@ export function LandingPage() {
             <div className="fade-up d3">
               <PricingCard
                 name="Recherche Active"
-                description="Pour une recherche sur plusieurs semaines."
-                priceMain="14"
+                description="Scans illimités pendant 30 jours."
+                priceMain="8"
                 priceSuffix=",90€/mois"
                 features={[
-                  { text: "Tout du Pass 48h", included: true },
-                  { text: "Historique illimité", included: true },
-                  { text: "Suivi de candidatures", included: true },
-                  { text: "Support prioritaire", included: true },
-                  { text: "Sans engagement", included: true },
+                  { text: "Scans illimités", included: true, bold: true },
+                  { text: "Éditeur CV avec corrections IA", included: true },
+                  { text: "Export PDF illimité", included: true },
+                  { text: "Lettre de motivation IA", included: true },
+                  { text: "-5% chaque mois de fidélité", included: true },
                 ]}
-                cta="Choisir ce Plan"
+                cta="Commencer à 8,90€/mois"
                 onCtaClick={() => handlePlanClick("monthly")}
                 loading={loadingPlan === "monthly"}
               />
