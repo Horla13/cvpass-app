@@ -99,7 +99,7 @@ export const CREDIT_COSTS = {
 
 export type CreditAction = keyof typeof CREDIT_COSTS;
 
-export async function getUserCredits(userId: string): Promise<number> {
+export async function getUserCredits(userId: string, email?: string): Promise<number> {
   const admin = getSupabaseAdmin();
   const { data } = await admin
     .from("user_credits")
@@ -109,14 +109,15 @@ export async function getUserCredits(userId: string): Promise<number> {
 
   if (data) return data.balance;
 
-  // Auto-initialiser avec 100 crédits pour les early access
+  // Early access (beta_whitelist) → 100 crédits, sinon 2
+  const initialCredits = email && (await isEarlyAccess(email)) ? 100 : 2;
   const { data: inserted } = await admin
     .from("user_credits")
-    .upsert({ user_id: userId, balance: 100, lifetime_earned: 100 })
+    .upsert({ user_id: userId, balance: initialCredits, lifetime_earned: initialCredits })
     .select("balance")
     .single();
 
-  return inserted?.balance ?? 100;
+  return inserted?.balance ?? initialCredits;
 }
 
 export async function deductCredits(
