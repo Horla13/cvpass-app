@@ -259,7 +259,7 @@ export default function HistoryPage() {
               )}
             </div>
             <Link
-              href="/dashboard"
+              href="/analyze"
               className="inline-flex items-center gap-1.5 text-sm text-brand-gray hover:text-brand-black transition-colors min-h-[44px] px-2"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -307,7 +307,7 @@ export default function HistoryPage() {
                 <p className="text-sm text-brand-gray">Lance ta première analyse !</p>
               </div>
               <Link
-                href="/dashboard"
+                href="/analyze"
                 className="mt-2 inline-flex items-center gap-2 px-5 py-3 bg-[#16a34a] text-white text-sm font-semibold rounded-xl hover:bg-green-700 transition-colors min-h-[44px]"
               >
                 Analyser mon CV

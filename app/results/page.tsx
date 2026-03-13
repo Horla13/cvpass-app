@@ -931,7 +931,7 @@ export default function ResultsPage() {
   const [downloadError, setDownloadError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (gaps.length === 0 && score_avant === 0) router.push("/dashboard");
+    if (gaps.length === 0 && score_avant === 0) router.push("/analyze");
   }, [gaps.length, score_avant, router]);
 
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
@@ -1077,7 +1077,7 @@ export default function ResultsPage() {
         <div className="bg-white border-b border-gray-200 py-4">
           <div className="max-w-7xl mx-auto px-6 flex items-center gap-2">
             <button
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/analyze")}
               className="flex items-center gap-1.5 text-[13px] text-gray-400 hover:text-gray-600 mr-4 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>

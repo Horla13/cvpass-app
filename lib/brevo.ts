@@ -65,7 +65,7 @@ export async function sendWelcomeEmail(
         <p style="margin-top:0;">Votre compte CVpass est prêt.</p>
         <p>En 2 minutes, découvrez votre score ATS et obtenez des suggestions précises pour décrocher plus d'entretiens.</p>
         <div style="margin:28px 0;">
-          <a href="${appUrl}/dashboard"
+          <a href="${appUrl}/analyze"
              style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
             Analyser mon CV maintenant →
           </a>

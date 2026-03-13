@@ -44,7 +44,7 @@ export default function CoverLetterPage() {
               </p>
             </div>
             <button
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/analyze")}
               className="inline-flex items-center gap-2 bg-brand-green text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition-colors"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">

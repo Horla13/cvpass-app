@@ -4,6 +4,6 @@ import { LandingPage } from "@/components/LandingPage";
 
 export default async function HomePage() {
   const { userId } = await auth();
-  if (userId) redirect("/dashboard");
+  if (userId) redirect("/analyze");
   return <LandingPage />;
 }

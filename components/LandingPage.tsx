@@ -14,7 +14,6 @@ export function LandingPage() {
   const setCvText = useStore((s) => s.setCvText);
   const [counterValue, setCounterValue] = useState("+1 200");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,7 +63,7 @@ export function LandingPage() {
               <Link href="/signup" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/dashboard" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
+              <Link href="/analyze" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
             </Show>
           </div>
 
@@ -98,7 +97,7 @@ export function LandingPage() {
               <Link href="/signup" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Mon espace &rarr;</Link>
+              <Link href="/analyze" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Mon espace &rarr;</Link>
             </Show>
           </div>
         )}
@@ -142,75 +141,65 @@ export function LandingPage() {
               </Link>
             </Show>
             <Show when="signed-in">
-              {/* CV upload widget — like cvcomp */}
+              {/* Upload button — like cvcomp */}
               <input
                 ref={fileInputRef}
                 type="file"
                 accept=".pdf,.docx"
                 className="hidden"
-                onChange={(e) => {
+                onChange={async (e) => {
                   const f = e.target.files?.[0];
-                  if (f) setSelectedFile(f);
+                  if (!f) return;
+                  setIsUploading(true);
+                  try {
+                    const formData = new FormData();
+                    formData.append("file", f);
+                    const res = await fetch("/api/parse-cv", { method: "POST", body: formData });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    setCvText(data.text);
+                    router.push("/analyze?step=type");
+                  } catch {
+                    alert("Erreur lors de l'upload. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
+                  } finally {
+                    setIsUploading(false);
+                  }
                 }}
               />
-              {!selectedFile ? (
+              <div className="flex flex-col items-center gap-3">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-2.5 bg-white border-2 border-dashed border-gray-300 hover:border-brand-green text-gray-600 hover:text-brand-green px-7 py-3.5 rounded-[12px] text-[15px] font-display font-semibold transition-all"
+                  disabled={isUploading}
+                  className="inline-flex items-center gap-2.5 bg-brand-green text-white px-8 py-4 rounded-[12px] text-[16px] font-display font-bold hover:bg-green-600 hover:-translate-y-px transition-all disabled:opacity-50"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  {isUploading ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+                      Chargement...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      Uploader votre CV
+                      <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </>
+                  )}
+                </button>
+                <Link
+                  href="/analyze?step=resume-selection"
+                  className="inline-flex items-center gap-1.5 text-[14px] text-brand-gray hover:text-brand-black transition-colors"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
-                    <line x1="12" y1="18" x2="12" y2="12" />
-                    <line x1="9" y1="15" x2="15" y2="15" />
                   </svg>
-                  Choisir mon CV (PDF ou DOCX)
-                </button>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <div className="inline-flex items-center gap-2.5 bg-green-50 border border-green-200 text-green-800 px-5 py-3 rounded-[10px] text-[14px] font-medium">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                    </svg>
-                    {selectedFile.name}
-                    <button
-                      onClick={() => {
-                        setSelectedFile(null);
-                        if (fileInputRef.current) fileInputRef.current.value = "";
-                      }}
-                      className="ml-1 text-green-400 hover:text-green-700 transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                    </button>
-                  </div>
-                  <button
-                    onClick={async () => {
-                      setIsUploading(true);
-                      try {
-                        const formData = new FormData();
-                        formData.append("file", selectedFile);
-                        const res = await fetch("/api/parse-cv", { method: "POST", body: formData });
-                        if (!res.ok) throw new Error();
-                        const data = await res.json();
-                        setCvText(data.text);
-                        router.push("/analyze");
-                      } catch {
-                        alert("Erreur lors de l'upload. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
-                      } finally {
-                        setIsUploading(false);
-                      }
-                    }}
-                    disabled={isUploading}
-                    className="inline-flex items-center gap-2 bg-brand-green text-white px-6 py-3 rounded-[10px] text-[15px] font-display font-bold hover:bg-green-600 hover:-translate-y-px transition-all disabled:opacity-50"
-                  >
-                    {isUploading ? "Chargement..." : "Analyser maintenant"}
-                    {!isUploading && (
-                      <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    )}
-                  </button>
-                </div>
-              )}
+                  Ou sélectionner parmi vos CV uploadés
+                </Link>
+              </div>
             </Show>
           </div>
 

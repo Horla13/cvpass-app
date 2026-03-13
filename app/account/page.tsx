@@ -215,7 +215,7 @@ export default function AccountPage() {
                     <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
                       <p className="text-[16px] text-gray-400 mb-4">Aucune analyse pour le moment</p>
                       <Link
-                        href="/dashboard"
+                        href="/analyze"
                         className="inline-flex px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors"
                       >
                         Analyser mon CV

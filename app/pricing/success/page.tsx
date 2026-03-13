@@ -35,7 +35,7 @@ export default function PricingSuccessPage() {
           votre CV sans limite.
         </p>
         <Link
-          href="/dashboard"
+          href="/analyze"
           className="inline-block bg-brand-green text-white font-semibold px-8 py-3 rounded-xl hover:bg-green-700 transition-colors"
         >
           Analyser mon CV →
