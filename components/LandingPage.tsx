@@ -2,40 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Show } from "@clerk/nextjs";
 import { FAQAccordion } from "@/components/FAQAccordion";
-import { PricingCard } from "@/components/PricingCard";
 import { CTABanner } from "@/components/CTABanner";
 import { ScoreGauge } from "@/components/ScoreGauge";
 
 export function LandingPage() {
   const [counterValue, setCounterValue] = useState("+1 200");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
-  const router = useRouter();
-
-  async function handlePlanClick(planId: string) {
-    if (planId === "free") { router.push("/signup"); return; }
-    setLoadingPlan(planId);
-    try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId }),
-      });
-      if (res.status === 401 || res.status === 403) {
-        router.push("/login?redirect=/pricing");
-        return;
-      }
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch {
-      router.push("/pricing");
-    } finally {
-      setLoadingPlan(null);
-    }
-  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,7 +50,8 @@ export function LandingPage() {
           <div className="hidden sm:flex items-center gap-7">
             <a href="#how" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Comment ça marche</a>
             <a href="#features" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Fonctionnalités</a>
-            <a href="#pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</a>
+            <Link href="/pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</Link>
+            <Link href="/blog" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Blog</Link>
             <Show when="signed-out">
               <Link href="/login" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Connexion</Link>
               <Link href="/signup" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Analyser mon CV</Link>
@@ -109,7 +84,8 @@ export function LandingPage() {
           <div className="sm:hidden border-t border-gray-100 bg-white px-8 py-4 space-y-3">
             <a href="#how" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Comment ça marche</a>
             <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
-            <a href="#pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</a>
+            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</Link>
+            <Link href="/blog" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Blog</Link>
             <Show when="signed-out">
               <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Connexion</Link>
               <Link href="/signup" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</Link>
@@ -698,72 +674,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 9. PRICING ── */}
-      <section id="pricing" className="py-24 bg-[#fafafa]">
-        <div className="max-w-[1100px] mx-auto px-8">
-          <div className="text-center mb-14 fade-up">
-            <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
-              Commencez gratuitement
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[900px] mx-auto">
-            <div className="fade-up d1">
-              <PricingCard
-                name="Gratuit"
-                description="Pour découvrir, sans engagement."
-                priceMain="0"
-                priceSuffix="€"
-                features={[
-                  { text: "2 analyses génériques (à vie)", included: true },
-                  { text: "Vérification compatibilité ATS", included: true },
-                  { text: "Suggestions en lecture seule", included: true },
-                  { text: "Éditeur CV avec corrections IA", included: false },
-                  { text: "Export PDF sans filigrane", included: false },
-                ]}
-                cta="Commencer gratuitement"
-                onCtaClick={() => handlePlanClick("free")}
-              />
-            </div>
-            <div className="fade-up d2">
-              <PricingCard
-                name="Coup de pouce"
-                description="Idéal pour postuler à cette offre rêvée."
-                priceMain="2"
-                priceSuffix=",90€"
-                highlighted={true}
-                features={[
-                  { text: "4 crédits", included: true, bold: true },
-                  { text: "Éditeur CV avec corrections IA", included: true },
-                  { text: "Export PDF propre (sans filigrane)", included: true },
-                  { text: "Crédits sans expiration", included: true },
-                  { text: "Match offre d'emploi inclus", included: true },
-                ]}
-                cta="Acheter le pack"
-                onCtaClick={() => handlePlanClick("pass48h")}
-                loading={loadingPlan === "pass48h"}
-              />
-            </div>
-            <div className="fade-up d3">
-              <PricingCard
-                name="Recherche Active"
-                description="Scans illimités pendant 30 jours."
-                priceMain="8"
-                priceSuffix=",90€/mois"
-                features={[
-                  { text: "Scans illimités", included: true, bold: true },
-                  { text: "Éditeur CV avec corrections IA", included: true },
-                  { text: "Export PDF illimité", included: true },
-                  { text: "Lettre de motivation IA", included: true },
-                  { text: "-5% chaque mois de fidélité", included: true },
-                ]}
-                cta="Commencer à 8,90€/mois"
-                onCtaClick={() => handlePlanClick("monthly")}
-                loading={loadingPlan === "monthly"}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ── 10. TESTIMONIALS ── */}
       <section className="py-24">
