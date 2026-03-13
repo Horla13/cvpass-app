@@ -7,7 +7,6 @@ import { SignInButton, SignUpButton, Show } from "@clerk/nextjs";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { PricingCard } from "@/components/PricingCard";
 import { CTABanner } from "@/components/CTABanner";
-import { KeywordGapTable } from "@/components/KeywordGapTable";
 import { ScoreGauge } from "@/components/ScoreGauge";
 
 export function LandingPage() {
@@ -472,24 +471,88 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 7. KEYWORD GAP ── */}
+      {/* ── 7. COMPARISON TABLE ── */}
       <section className="py-24 bg-[#fafafa]">
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-14 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              CVpass détecte ce qui manque
+              Pourquoi choisir CVpass plutôt qu&apos;un{" "}
+              <span className="text-brand-green">scanner ATS classique</span> ?
             </h2>
+            <p className="text-brand-gray text-base max-w-[520px] mx-auto mt-4">
+              Comparez les fonctionnalités face aux alternatives du marché
+            </p>
           </div>
-          <div className="fade-up">
-            <KeywordGapTable
-              rows={[
-                { skill: "Gestion de projet Agile", hasBefore: false, hasAfter: true },
-                { skill: "Management d'équipe", hasBefore: true, hasAfter: true },
-                { skill: "KPI & reporting", hasBefore: false, hasAfter: true },
-                { skill: "Certification PMP", hasBefore: false, hasAfter: true },
-                { skill: "Budgétisation", hasBefore: true, hasAfter: true },
-              ]}
-            />
+
+          <div className="fade-up overflow-x-auto">
+            <table className="w-full border-collapse bg-white rounded-[14px] border border-[#e5e7eb] overflow-hidden text-left">
+              <thead>
+                <tr className="border-b border-[#e5e7eb]">
+                  <th className="px-6 py-4 text-[13px] font-bold text-brand-black w-[180px]">Fonctionnalité</th>
+                  <th className="px-6 py-4 bg-green-50/60 border-x border-green-100">
+                    <div className="flex items-center gap-2">
+                      <span className="font-display text-[15px] font-bold text-brand-green">CVpass</span>
+                      <span className="text-[10px] font-bold text-brand-green bg-green-100 px-2 py-0.5 rounded-full uppercase tracking-wide">Meilleur</span>
+                    </div>
+                  </th>
+                  <th className="px-6 py-4 text-[13px] font-bold text-gray-400">Jobscan</th>
+                  <th className="px-6 py-4 text-[13px] font-bold text-gray-400">Enhancv</th>
+                  <th className="px-6 py-4 text-[13px] font-bold text-gray-400">MyPerfectResume</th>
+                </tr>
+              </thead>
+              <tbody className="text-[13px]">
+                {[
+                  {
+                    feature: "Optimisation par offre",
+                    cvpass: "IA avancée qui adapte chaque suggestion au poste ciblé",
+                    jobscan: "Standard : focus sur la fréquence des mots-clés",
+                    enhancv: "Feedback générique, matching offre peu ciblé",
+                    myperfect: "Basique : templates génériques par secteur",
+                  },
+                  {
+                    feature: "Workflow d'édition",
+                    cvpass: "Accepter/Ignorer chaque suggestion directement dans le CV",
+                    jobscan: "\"Power Edit\" séparé du rapport d'analyse",
+                    enhancv: "Éditeur visuel où les suggestions ATS disparaissent souvent",
+                    myperfect: "Wizard linéaire, difficile de revenir en arrière",
+                  },
+                  {
+                    feature: "Expérience utilisateur",
+                    cvpass: "100% focus sur votre CV — zéro distraction",
+                    jobscan: "Distraction : job trackers, audits LinkedIn, upsells",
+                    enhancv: "Pousse les templates visuels et options payantes",
+                    myperfect: "Upselling agressif, paywalls multiples",
+                  },
+                  {
+                    feature: "Export PDF",
+                    cvpass: "PDF propre et ATS-friendly, toutes les modifications incluses",
+                    jobscan: "Bon, mais le formatage peut casser via Power Edit",
+                    enhancv: "PDF uniquement, les modifs de l'éditeur ne reflètent pas toujours le score",
+                    myperfect: "Téléchargement bloqué derrière un abonnement",
+                  },
+                  {
+                    feature: "Prix",
+                    cvpass: "Gratuit pour commencer, puis dès 2,90€",
+                    jobscan: "À partir de 49,95$/mois",
+                    enhancv: "À partir de 19,99$/mois",
+                    myperfect: "À partir de 24,95$/mois",
+                  },
+                ].map((row, i) => (
+                  <tr key={i} className={i < 4 ? "border-b border-[#e5e7eb]" : ""}>
+                    <td className="px-6 py-5 font-display font-bold text-brand-black text-[13.5px]">{row.feature}</td>
+                    <td className="px-6 py-5 bg-green-50/40 border-x border-green-100">
+                      <div className="flex items-start gap-2">
+                        <svg className="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span className="text-brand-black font-medium">{row.cvpass}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-gray-500">{row.jobscan}</td>
+                    <td className="px-6 py-5 text-gray-500">{row.enhancv}</td>
+                    <td className="px-6 py-5 text-gray-500">{row.myperfect}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
