@@ -109,14 +109,14 @@ export async function getUserCredits(userId: string): Promise<number> {
 
   if (data) return data.balance;
 
-  // Auto-initialiser avec 2 crédits pour les nouveaux utilisateurs
+  // Auto-initialiser avec 100 crédits pour les early access
   const { data: inserted } = await admin
     .from("user_credits")
-    .upsert({ user_id: userId, balance: 2, lifetime_earned: 2 })
+    .upsert({ user_id: userId, balance: 100, lifetime_earned: 100 })
     .select("balance")
     .single();
 
-  return inserted?.balance ?? 2;
+  return inserted?.balance ?? 100;
 }
 
 export async function deductCredits(
