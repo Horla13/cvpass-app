@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
 
 /* ─── Category config matching cvcomp ─── */
 const CATEGORY_MAP: Record<string, { label: string; color: string }> = {
-  experience: { label: "Impact & Results", color: "#f59e0b" },
-  competence: { label: "Skills & Keywords", color: "#8b5cf6" },
-  titre: { label: "Formatting & Style", color: "#3b82f6" },
-  accroche: { label: "Brevity & Clarity", color: "#10b981" },
+  experience: { label: "Impact & Résultats", color: "#f59e0b" },
+  competence: { label: "Compétences & Mots-clés", color: "#8b5cf6" },
+  titre: { label: "Mise en forme", color: "#3b82f6" },
+  accroche: { label: "Clarté & Concision", color: "#10b981" },
   formation: { label: "Formation", color: "#06b6d4" },
 };
 
@@ -29,9 +29,9 @@ function getCategoryScore(gaps: Gap[], category: string): number {
 }
 
 function getScoreLabel(score: number): { text: string; color: string } {
-  if (score >= 80) return { text: "Good", color: "text-green-500" };
-  if (score >= 60) return { text: "Needs Work", color: "text-amber-500" };
-  return { text: "Needs Work", color: "text-red-500" };
+  if (score >= 80) return { text: "Bon", color: "text-green-500" };
+  if (score >= 60) return { text: "À améliorer", color: "text-amber-500" };
+  return { text: "À améliorer", color: "text-red-500" };
 }
 
 /* ─── Score status badge ─── */
@@ -58,17 +58,17 @@ function CategoryRow({ label, score }: { label: string; score: number }) {
 
 /* ─── JD Match category config ─── */
 const JD_CATEGORY_MAP: Record<string, { label: string }> = {
-  keyword_match: { label: "Keyword Match" },
-  title_alignment: { label: "Title Alignment" },
-  impact_density: { label: "Impact Density" },
-  seniority_fit: { label: "Seniority Fit" },
-  relevancy: { label: "Relevancy" },
+  keyword_match: { label: "Mots-clés" },
+  title_alignment: { label: "Alignement du titre" },
+  impact_density: { label: "Densité d'impact" },
+  seniority_fit: { label: "Niveau d'expérience" },
+  relevancy: { label: "Pertinence" },
 };
 
 function getJdScoreLabel(score: number): { text: string; badgeClass: string } {
-  if (score >= 75) return { text: "Good", badgeClass: "bg-green-50 text-green-600 border-green-200" };
-  if (score >= 55) return { text: "Needs Work", badgeClass: "bg-amber-50 text-amber-600 border-amber-200" };
-  return { text: "Critical", badgeClass: "bg-red-50 text-red-500 border-red-200" };
+  if (score >= 75) return { text: "Bon", badgeClass: "bg-green-50 text-green-600 border-green-200" };
+  if (score >= 55) return { text: "À améliorer", badgeClass: "bg-amber-50 text-amber-600 border-amber-200" };
+  return { text: "Critique", badgeClass: "bg-red-50 text-red-500 border-red-200" };
 }
 
 function JdCategoryRow({ label, score }: { label: string; score: number }) {
@@ -105,21 +105,21 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
       {/* Part A: Keyword Gap */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="font-display text-[18px] font-bold text-gray-900">Part A: The Match (Keyword Gap)</h2>
-          <p className="text-[13px] text-gray-400 mt-1">Analysis of keyword alignment between your resume and the job description</p>
+          <h2 className="font-display text-[18px] font-bold text-gray-900">Partie A : Correspondance (Mots-clés)</h2>
+          <p className="text-[13px] text-gray-400 mt-1">Analyse de l&apos;alignement des mots-clés entre votre CV et l&apos;offre d&apos;emploi</p>
         </div>
 
         {/* Missing Hard Skills Table */}
         {jdMatch.missing_hard_skills.length > 0 && (
           <div className="px-6 py-5 border-b border-gray-100">
-            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Missing Hard Skills</h3>
+            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Compétences manquantes</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-[13px]">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Skill</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">In Resume</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">JD Mentions</th>
+                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Compétence</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Dans le CV</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Mentions offre</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -145,15 +145,15 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
         {/* Keyword Frequency Table */}
         {jdMatch.keyword_frequency.length > 0 && (
           <div className="px-6 py-5">
-            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Keyword Frequency</h3>
+            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Fréquence des mots-clés</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-[13px]">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Keyword</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">JD Count</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Resume Count</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Status</th>
+                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Mot-clé</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Offre</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">CV</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Statut</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -168,7 +168,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                           kw.status === "partial" ? "bg-amber-50 text-amber-600" :
                           "bg-red-50 text-red-500"
                         )}>
-                          {kw.status === "matched" ? "Matched" : kw.status === "partial" ? "Partial" : "Missing"}
+                          {kw.status === "matched" ? "Présent" : kw.status === "partial" ? "Partiel" : "Absent"}
                         </span>
                       </td>
                     </tr>
@@ -182,7 +182,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
       {/* Part B: Suggestions */}
       <div>
-        <h2 className="font-display text-[18px] font-bold text-gray-900 mb-4">Part B: Suggestions</h2>
+        <h2 className="font-display text-[18px] font-bold text-gray-900 mb-4">Partie B : Suggestions</h2>
         <div className="space-y-4">
           {gaps.map((gap) => (
             <div key={gap.id} className="bg-white rounded-xl border border-gray-200 px-5 py-5">
@@ -199,7 +199,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
               {/* Original */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Original:</p>
+                <p className="text-[11px] text-gray-400 font-medium mb-1">Actuel :</p>
                 <div className="bg-red-50 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-red-700 leading-relaxed">
                     {gap.texte_original || <span className="italic text-red-400">Absent du CV</span>}
@@ -209,7 +209,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
               {/* Suggested */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggested:</p>
+                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
                 <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
                 </div>
@@ -221,25 +221,25 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                 <div className="flex items-center gap-3">
                   <button onClick={() => onApplyInEditor(gap.id)} className="inline-flex items-center gap-1.5 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                    Apply in Resume Editor
+                    Appliquer dans l&apos;éditeur
                   </button>
                   <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                    Accept
+                    Accepter
                   </button>
                   <button onClick={() => onIgnore(gap.id)} className="text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors">
-                    Dismiss
+                    Ignorer
                   </button>
                 </div>
               )}
               {gap.status === "accepted" && (
                 <span className="inline-flex items-center gap-1.5 text-[13px] text-green-500 font-medium">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  Applied
+                  Appliqué
                 </span>
               )}
               {gap.status === "ignored" && (
-                <span className="text-[13px] text-gray-400 font-medium">Dismissed</span>
+                <span className="text-[13px] text-gray-400 font-medium">Ignoré</span>
               )}
             </div>
           ))}
@@ -313,7 +313,7 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="flex-shrink-0 mt-0.5">
                 <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
               </svg>
-              <p className="text-[13px] text-blue-700 leading-relaxed">Tip: {section.tip}</p>
+              <p className="text-[13px] text-blue-700 leading-relaxed">Conseil : {section.tip}</p>
             </div>
           )}
 
@@ -351,10 +351,10 @@ function JdQualityReport({ qualitySections }: { qualitySections: QualitySection[
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>
           <div>
             <h2 className="font-display text-[18px] font-bold text-gray-900">
-              Part B: Contextual Quality
+              Partie B : Qualité contextuelle
               <span className="ml-2 text-[11px] font-bold bg-purple-100 text-purple-600 rounded-full px-2.5 py-0.5 uppercase">Premium</span>
             </h2>
-            <p className="text-[13px] text-gray-400 mt-0.5">Advanced checks that analyze how well your resume contextually matches the role.</p>
+            <p className="text-[13px] text-gray-400 mt-0.5">Vérifications avancées analysant la correspondance contextuelle de votre CV avec le poste.</p>
           </div>
         </div>
       </div>
@@ -437,7 +437,7 @@ function CategorySection({
 
               {/* Original */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Original:</p>
+                <p className="text-[11px] text-gray-400 font-medium mb-1">Actuel :</p>
                 <div className="bg-red-50 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-red-700 leading-relaxed">
                     {gap.texte_original || <span className="italic text-red-400">Absent du CV</span>}
@@ -447,7 +447,7 @@ function CategorySection({
 
               {/* Suggested */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggested:</p>
+                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
                 <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
                 </div>
@@ -464,7 +464,7 @@ function CategorySection({
                     className="inline-flex items-center gap-1.5 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors"
                   >
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                    Apply in Resume Editor
+                    Appliquer dans l&apos;éditeur
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 15 12 9 6" /></svg>
                   </button>
                   <button
@@ -742,7 +742,7 @@ function CVEditor({
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500 flex-shrink-0">
           <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
         </svg>
-        <p className="text-[13px] text-blue-700">Click on highlighted text to view and accept/reject suggestions.</p>
+        <p className="text-[13px] text-blue-700">Cliquez sur le texte surligné pour voir et accepter/rejeter les suggestions.</p>
       </div>
 
       {/* Main layout: CV doc + sidebar */}
@@ -766,7 +766,7 @@ function CVEditor({
               {/* Header with navigation */}
               <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-[13px] text-blue-500 font-semibold">Add Keywords</span>
+                  <span className="text-[13px] text-blue-500 font-semibold">Ajouter des mots-clés</span>
                   <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full",
                     selectedGap.impact === "high" ? "bg-red-100 text-red-600" :
                     selectedGap.impact === "medium" ? "bg-amber-100 text-amber-600" :
@@ -777,7 +777,7 @@ function CVEditor({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[12px] text-gray-400">
-                    {currentNavIndex + 1} of {navigableGaps.length}
+                    {currentNavIndex + 1} sur {navigableGaps.length}
                   </span>
                   <button
                     onClick={() => navigateGap(-1)}
@@ -798,12 +798,12 @@ function CVEditor({
 
               {/* Section label */}
               <div className="px-5 py-2 border-b border-gray-50">
-                <span className="text-[12px] text-gray-400">Section: <span className="font-medium text-gray-600">{selectedGap.section}</span></span>
+                <span className="text-[12px] text-gray-400">Section : <span className="font-medium text-gray-600">{selectedGap.section}</span></span>
               </div>
 
               {/* Current */}
               <div className="px-5 pt-4">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Current</p>
+                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Actuel</p>
                 <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
                   <p className="text-[13px] text-red-700 leading-relaxed">
                     {selectedGap.texte_original || <span className="italic">Absent du CV</span>}
@@ -813,7 +813,7 @@ function CVEditor({
 
               {/* Suggested */}
               <div className="px-5 pt-4">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Suggested</p>
+                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Suggéré</p>
                 <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3">
                   <p className="text-[13px] text-green-800 leading-relaxed">{selectedGap.texte_suggere}</p>
                 </div>
@@ -821,7 +821,7 @@ function CVEditor({
 
               {/* Why */}
               <div className="px-5 pt-4 pb-5">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Why?</p>
+                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Pourquoi ?</p>
                 <p className="text-[13px] text-gray-500 leading-relaxed italic">{selectedGap.raison}</p>
               </div>
 
@@ -832,14 +832,14 @@ function CVEditor({
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                  Reject
+                  Rejeter
                 </button>
                 <button
                   onClick={() => { onAccept(selectedGap.id); navigateGap(1); }}
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-green-500 text-white rounded-xl text-[13px] font-semibold hover:bg-green-600 transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  Accept
+                  Accepter
                 </button>
               </div>
             </div>
@@ -848,12 +848,12 @@ function CVEditor({
           {/* No selection state */}
           {(!selectedGap || selectedGap.status !== "pending") && pendingGaps.length > 0 && (
             <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center">
-              <p className="text-[13px] text-gray-400">Click on highlighted text to review suggestions</p>
+              <p className="text-[13px] text-gray-400">Cliquez sur le texte surligné pour examiner les suggestions</p>
               <button
                 onClick={() => navigableGaps.length > 0 && setSelectedGapId(navigableGaps[0].id)}
                 className="mt-3 text-[13px] text-blue-500 font-semibold hover:text-blue-600"
               >
-                Start reviewing ({pendingGaps.length} suggestions)
+                Commencer la révision ({pendingGaps.length} suggestions)
               </button>
             </div>
           )}
@@ -862,8 +862,8 @@ function CVEditor({
           {pendingGaps.length === 0 && (
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" className="mx-auto mb-2"><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>
-              <p className="text-[14px] text-green-700 font-semibold">All suggestions reviewed!</p>
-              <p className="text-[12px] text-green-600 mt-1">Download your optimized CV below.</p>
+              <p className="text-[14px] text-green-700 font-semibold">Toutes les suggestions ont été traitées !</p>
+              <p className="text-[12px] text-green-600 mt-1">Téléchargez votre CV optimisé ci-dessous.</p>
             </div>
           )}
 
@@ -872,7 +872,7 @@ function CVEditor({
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="px-5 py-3 border-b border-gray-100">
                 <h3 className="font-display text-[14px] font-bold text-gray-800">
-                  Additional Suggestions ({unmatchableGaps.length})
+                  Suggestions supplémentaires ({unmatchableGaps.length})
                 </h3>
               </div>
               <div className="divide-y divide-gray-100">
@@ -882,10 +882,10 @@ function CVEditor({
                     <p className="text-[12px] text-gray-400 italic mb-2">{gap.raison}</p>
                     <div className="flex items-center gap-2">
                       <button onClick={() => onIgnore(gap.id)} className="text-[11px] text-gray-400 hover:text-gray-600 border border-gray-200 rounded-lg px-2.5 py-1">
-                        Dismiss
+                        Ignorer
                       </button>
                       <button onClick={() => onAccept(gap.id)} className="text-[11px] text-green-500 hover:text-green-600 border border-green-200 rounded-lg px-2.5 py-1">
-                        Accept
+                        Accepter
                       </button>
                     </div>
                   </div>
@@ -1040,12 +1040,12 @@ export default function ResultsPage() {
       });
 
       if (res.status === 402) {
-        setDownloadError("Insufficient credits to generate PDF.");
+        setDownloadError("Crédits insuffisants pour générer le PDF.");
         return;
       }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setDownloadError(data.error ?? "Error generating PDF.");
+        setDownloadError(data.error ?? "Erreur lors de la génération du PDF.");
         return;
       }
 
@@ -1060,7 +1060,7 @@ export default function ResultsPage() {
       setPdfDownloaded(true);
       posthog?.capture("pdf_downloaded", { score_avant, score_apres: scoreActuel, nb_accepted: acceptedGaps.length });
     } catch (e: unknown) {
-      setDownloadError(e instanceof Error ? e.message : "Unexpected error.");
+      setDownloadError(e instanceof Error ? e.message : "Erreur inattendue.");
     } finally {
       setIsDownloading(false);
     }
@@ -1081,7 +1081,7 @@ export default function ResultsPage() {
               className="flex items-center gap-1.5 text-[13px] text-gray-400 hover:text-gray-600 mr-4 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
-              Back
+              Retour
             </button>
 
             <div className={cn(
@@ -1093,9 +1093,9 @@ export default function ResultsPage() {
               <button onClick={() => setActiveTab("report")} className="flex flex-col">
                 <span className="flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /></svg>
-                  Resume Report
+                  Rapport CV
                 </span>
-                <span className="text-[11px] text-gray-400 font-normal block">View Score & Analysis</span>
+                <span className="text-[11px] text-gray-400 font-normal block">Score & Analyse</span>
               </button>
               {/* Match/Quality sub-tabs for JD mode */}
               {isJdMatch && activeTab === "report" && (
@@ -1108,7 +1108,7 @@ export default function ResultsPage() {
                         : "text-gray-400 hover:text-gray-600"
                     )}
                   >
-                    Match
+                    Correspondance
                   </button>
                   <button
                     onClick={() => { setActiveTab("report"); setReportSubTab("quality"); }}
@@ -1118,7 +1118,7 @@ export default function ResultsPage() {
                         : "text-gray-400 hover:text-gray-600"
                     )}
                   >
-                    Quality
+                    Qualité
                   </button>
                 </div>
               )}
@@ -1136,13 +1136,13 @@ export default function ResultsPage() {
               >
                 <span className="flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                  Resume Editor
+                  Éditeur CV
                 </span>
-                <span className="text-[11px] text-gray-400 font-normal block">Edit & Fix Instantly</span>
+                <span className="text-[11px] text-gray-400 font-normal block">Modifier & Corriger</span>
               </button>
               <div className="absolute -top-2 -right-2 flex items-center gap-1">
                 <span className="bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
-                  Must Try
+                  À essayer
                 </span>
                 {pendingGaps.length > 0 && (
                   <span className="bg-blue-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -1166,7 +1166,7 @@ export default function ResultsPage() {
                     <ScoreGauge score={scoreActuel} size={160} strokeWidth={8} />
                   </div>
                   <div className="text-center mb-5">
-                    <p className="text-[13px] text-gray-400">{isJdMatch ? "JD Match Rate" : "Resume Score"}</p>
+                    <p className="text-[13px] text-gray-400">{isJdMatch ? "Taux de correspondance" : "Score CV"}</p>
                     <ScoreStatusBadge score={scoreActuel} />
                   </div>
 
@@ -1196,7 +1196,7 @@ export default function ResultsPage() {
                     {/* Missing Keywords Tags */}
                     {jdMatch.missing_keywords_tags.length > 0 && (
                       <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                        <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">Missing Keywords</h3>
+                        <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">Mots-clés manquants</h3>
                         <div className="flex flex-wrap gap-2">
                           {jdMatch.missing_keywords_tags.map((kw, i) => (
                             <span key={i} className="bg-red-50 text-red-600 border border-red-200 rounded-full px-3 py-1 text-[12px] font-medium">
@@ -1213,7 +1213,7 @@ export default function ResultsPage() {
                         <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">
                           <span className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
-                            Strengths
+                            Points forts
                           </span>
                         </h3>
                         <ul className="space-y-2">
@@ -1233,7 +1233,7 @@ export default function ResultsPage() {
                         <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">
                           <span className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
-                            Areas to Improve
+                            Axes d&apos;amélioration
                           </span>
                         </h3>
                         <ul className="space-y-2">
@@ -1251,11 +1251,11 @@ export default function ResultsPage() {
                   /* ATS: Quick Summary */
                   resume && (
                     <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                      <h3 className="font-display text-[16px] font-bold text-gray-800 mb-4">Quick Summary</h3>
+                      <h3 className="font-display text-[16px] font-bold text-gray-800 mb-4">Résumé rapide</h3>
 
                       {criticalFixes.length > 0 && (
                         <div className="mb-4">
-                          <p className="text-[12px] font-bold text-red-500 uppercase tracking-wider mb-2">Critical Fixes</p>
+                          <p className="text-[12px] font-bold text-red-500 uppercase tracking-wider mb-2">Corrections critiques</p>
                           <ul className="space-y-1.5">
                             {criticalFixes.map((fix, i) => (
                               <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
@@ -1269,7 +1269,7 @@ export default function ResultsPage() {
 
                       {quickWins.length > 0 && (
                         <div>
-                          <p className="text-[12px] font-bold text-green-500 uppercase tracking-wider mb-2">Quick Wins</p>
+                          <p className="text-[12px] font-bold text-green-500 uppercase tracking-wider mb-2">Gains rapides</p>
                           <ul className="space-y-1.5">
                             {quickWins.map((win, i) => (
                               <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
@@ -1289,15 +1289,15 @@ export default function ResultsPage() {
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="text-[22px] font-bold text-amber-500">{pendingGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">Pending</p>
+                      <p className="text-[11px] text-gray-400 font-medium">En attente</p>
                     </div>
                     <div>
                       <p className="text-[22px] font-bold text-green-500">{acceptedGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">Accepted</p>
+                      <p className="text-[11px] text-gray-400 font-medium">Acceptées</p>
                     </div>
                     <div>
                       <p className="text-[22px] font-bold text-gray-400">{ignoredGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">Rejected</p>
+                      <p className="text-[11px] text-gray-400 font-medium">Rejetées</p>
                     </div>
                   </div>
                 </div>
@@ -1312,17 +1312,17 @@ export default function ResultsPage() {
                     {isDownloading ? (
                       <>
                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Generating...
+                        Génération...
                       </>
                     ) : (
                       <>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                        Download Optimized Resume
+                        Télécharger le CV optimisé
                       </>
                     )}
                   </button>
                   {acceptedGaps.length === 0 && (
-                    <p className="text-[12px] text-gray-400 text-center">Accept at least one suggestion to download</p>
+                    <p className="text-[12px] text-gray-400 text-center">Acceptez au moins une suggestion pour télécharger</p>
                   )}
                   {downloadError && (
                     <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center">
@@ -1332,7 +1332,7 @@ export default function ResultsPage() {
 
                   {pdfDownloaded && (
                     <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center space-y-2">
-                      <p className="text-[13px] text-green-700 font-medium">Resume downloaded!</p>
+                      <p className="text-[13px] text-green-700 font-medium">CV téléchargé !</p>
                       <a
                         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://cvpass.fr")}&summary=${encodeURIComponent(`Mon CV est passé de ${score_avant} à ${scoreActuel}/100 grâce à CVpass 🚀`)}`}
                         target="_blank"
@@ -1340,7 +1340,7 @@ export default function ResultsPage() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#0077b5] text-[#0077b5] text-[13px] font-semibold hover:bg-[#0077b5] hover:text-white transition-colors"
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                        Share on LinkedIn
+                        Partager sur LinkedIn
                       </a>
                     </div>
                   )}
@@ -1384,7 +1384,7 @@ export default function ResultsPage() {
 
                 {gaps.length === 0 && (
                   <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-                    <p className="text-gray-400 text-[15px]">No suggestions generated for this analysis.</p>
+                    <p className="text-gray-400 text-[15px]">Aucune suggestion générée pour cette analyse.</p>
                   </div>
                 )}
               </div>
@@ -1403,7 +1403,7 @@ export default function ResultsPage() {
                       className="px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors flex items-center gap-2 shadow-sm"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                      Apply All ({pendingGaps.length})
+                      Tout accepter ({pendingGaps.length})
                     </button>
                   )}
                   <button
@@ -1416,7 +1416,7 @@ export default function ResultsPage() {
                     ) : (
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                     )}
-                    Download PDF
+                    Télécharger PDF
                   </button>
                 </div>
               </div>
