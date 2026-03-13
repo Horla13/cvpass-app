@@ -500,557 +500,484 @@ function CategorySection({
   );
 }
 
-/* ─── CV Contact Info Extractor ─── */
-interface CVContactInfo {
-  name: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  linkedin?: string;
-  title?: string;
-}
-
-function extractContactInfo(text: string): CVContactInfo {
-  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-  const info: CVContactInfo = { name: lines[0] || "Candidat" };
-
-  const headerLines = lines.slice(0, 8);
-  for (const line of headerLines) {
-    if (!info.email) {
-      const m = line.match(/[\w.+-]+@[\w.-]+\.\w{2,}/);
-      if (m) info.email = m[0];
-    }
-    if (!info.phone) {
-      const m = line.match(/(?:\+?\d[\d\s.()-]{7,})/);
-      if (m) info.phone = m[0].trim();
-    }
-    if (!info.linkedin) {
-      const m = line.match(/linkedin\.com\/in\/[\w-]+/i);
-      if (m) info.linkedin = m[0];
-    }
-    if (!info.location) {
-      const m = line.match(/(?:\d{5}\s+\w+|\b(?:Paris|Lyon|Marseille|Toulouse|Nice|Nantes|Strasbourg|Montpellier|Bordeaux|Lille|Rennes|Reims|Le Havre|Saint-Étienne|Toulon)\b.*)/i);
-      if (m && !line.includes("@") && !/linkedin/i.test(line)) info.location = m[0].trim();
-    }
-  }
-
-  if (lines[1] && !lines[1].includes("@") && !/\d{5}/.test(lines[1]) && !/linkedin/i.test(lines[1]) && !/^\+?\d/.test(lines[1]) && lines[1].length < 80) {
-    info.title = lines[1];
-  }
-
-  return info;
-}
-
-/* ─── CV Section Parser ─── */
-interface CVSection {
-  type: "header" | "section-title" | "entry-title" | "sub-entry" | "bullet" | "text" | "blank" | "contact-line";
-  text: string;
-  rightText?: string;
-}
-
-function parseCVSections(text: string): CVSection[] {
-  const lines = text.split("\n");
-  const sections: CVSection[] = [];
-  const sectionKeywords = [
-    "EXPÉRIENCE", "EXPERIENCE", "EXPÉRIENCES", "FORMATION", "EDUCATION", "COMPÉTENCES", "COMPETENCES",
-    "SKILLS", "CENTRES D'INTÉRÊT", "CENTRES D'INTERET", "PROFIL", "PROFESSIONAL SUMMARY",
-    "RÉSUMÉ", "SUMMARY", "LANGUES", "LANGUAGES", "CERTIFICATIONS", "PROJETS", "PROJECTS",
-    "BÉNÉVOLAT", "VOLUNTEER", "RÉFÉRENCES", "REFERENCES", "OBJECTIF", "OBJECTIVE",
-    "INFORMATIONS", "CONTACT", "À PROPOS", "ABOUT",
-  ];
-
-  let isFirstNonBlank = true;
-  let headerLineCount = 0;
-  const maxHeaderLines = 6; // Skip contact info lines at top
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-
-    if (!trimmed) {
-      if (headerLineCount > 0 && headerLineCount < maxHeaderLines) {
-        headerLineCount++;
-        continue; // Skip blank lines in header area
-      }
-      sections.push({ type: "blank", text: "" });
-      continue;
-    }
-
-    // Detect section headings
-    const upper = trimmed.toUpperCase();
-    const isSection = sectionKeywords.some((kw) => upper === kw || upper.startsWith(kw + " ") || upper.startsWith(kw + ":"));
-    if (isSection || (trimmed === trimmed.toUpperCase() && trimmed.length > 2 && trimmed.length < 50 && !/^\d/.test(trimmed) && !trimmed.startsWith("·") && !trimmed.startsWith("-") && !trimmed.startsWith("•") && !/[@.]/.test(trimmed))) {
-      if (headerLineCount > 0 && headerLineCount < maxHeaderLines) {
-        // This is a section heading — end of header area
-      }
-      headerLineCount = maxHeaderLines; // Done with header
-      sections.push({ type: "section-title", text: trimmed });
-      isFirstNonBlank = false;
-      continue;
-    }
-
-    // First non-blank = name (header)
-    if (isFirstNonBlank) {
-      sections.push({ type: "header", text: trimmed });
-      isFirstNonBlank = false;
-      headerLineCount = 1;
-      continue;
-    }
-
-    // Skip contact info lines near top (they go in the dark header)
-    if (headerLineCount > 0 && headerLineCount < maxHeaderLines) {
-      const isContact = /[@+]/.test(trimmed) || /linkedin/i.test(trimmed) || /\d{5}/.test(trimmed) || /^\+?\d[\d\s.()-]{7,}$/.test(trimmed);
-      if (isContact || trimmed.length < 60) {
-        sections.push({ type: "contact-line", text: trimmed });
-        headerLineCount++;
-        continue;
-      }
-    }
-
-    // Bullet points
-    if (/^[·•\-–]\s/.test(trimmed)) {
-      sections.push({ type: "bullet", text: trimmed.replace(/^[·•\-–]\s*/, "") });
-      continue;
-    }
-
-    // Lines with dates on the right
-    const dateMatch = trimmed.match(/^(.+?)\s{2,}((?:Depuis|De|Du|Jan|Fév|Mar|Avr|Mai|Juin|Juil|Aoû|Sep|Oct|Nov|Déc|Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre|\d{4}|\d{2}\/\d{2}\/\d{4}).+)$/i);
-    if (dateMatch) {
-      sections.push({ type: "entry-title", text: dateMatch[1].trim(), rightText: dateMatch[2].trim() });
-      continue;
-    }
-
-    // Check for standalone date line
-    const isDateLine = /^(?:Depuis|De|Du|Jan|Fév|Mar|Avr|Mai|Juin|Juil|Aoû|Sep|Oct|Nov|Déc|Janvier|Février|Mars|Avril|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre|\d{4})/i.test(trimmed) && trimmed.length < 60;
-    if (isDateLine) {
-      const prevSection = sections[sections.length - 1];
-      if (prevSection && (prevSection.type === "entry-title" || prevSection.type === "sub-entry")) {
-        prevSection.rightText = trimmed;
-        continue;
-      }
-    }
-
-    // Entry title after a section heading or blank
-    const prevSection = sections[sections.length - 1];
-    if (prevSection?.type === "section-title" || prevSection?.type === "blank") {
-      if (trimmed.length < 80 && !trimmed.endsWith(".") && !trimmed.endsWith(",")) {
-        sections.push({ type: "entry-title", text: trimmed });
-        continue;
-      }
-    }
-
-    // Sub-entry (company name, location after entry-title)
-    if (prevSection?.type === "entry-title" && trimmed.length < 80 && !trimmed.endsWith(".")) {
-      sections.push({ type: "sub-entry", text: trimmed });
-      continue;
-    }
-
-    sections.push({ type: "text", text: trimmed });
-    isFirstNonBlank = false;
-  }
-
-  return sections;
-}
-
-/* ─── Editable Text Component ─── */
-function EditableText({
-  text,
-  className,
+/* ─── Inline Editable Field ─── */
+function InlineField({
+  value,
   onSave,
+  className,
+  placeholder,
   multiline = false,
 }: {
-  text: string;
+  value: string;
+  onSave: (v: string) => void;
   className?: string;
-  onSave: (newText: string) => void;
+  placeholder?: string;
   multiline?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(text);
-  const ref = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const [draft, setDraft] = useState(value);
+  const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  useEffect(() => { setValue(text); }, [text]);
+  useEffect(() => { setDraft(value); }, [value]);
   useEffect(() => { if (editing && ref.current) ref.current.focus(); }, [editing]);
 
+  const commit = () => {
+    setEditing(false);
+    if (draft.trim() !== value) onSave(draft.trim());
+  };
+
   if (editing) {
-    const shared = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-[13px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400";
+    const cls = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-inherit focus:outline-none focus:ring-2 focus:ring-blue-400";
     return multiline ? (
-      <textarea
-        ref={ref as React.RefObject<HTMLTextAreaElement>}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => { setEditing(false); if (value !== text) onSave(value); }}
-        onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); setEditing(false); if (value !== text) onSave(value); } }}
-        rows={3}
-        className={cn(shared, "resize-none")}
-      />
+      <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); } }} rows={3} className={cn(cls, "resize-none", className)} />
     ) : (
-      <input
-        ref={ref as React.RefObject<HTMLInputElement>}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => { setEditing(false); if (value !== text) onSave(value); }}
-        onKeyDown={(e) => { if (e.key === "Enter") { setEditing(false); if (value !== text) onSave(value); } }}
-        className={shared}
-      />
+      <input ref={ref as React.RefObject<HTMLInputElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter") commit(); }} className={cn(cls, className)} placeholder={placeholder} />
     );
   }
 
   return (
-    <span
-      onClick={() => setEditing(true)}
-      className={cn(className, "cursor-text hover:bg-blue-50/50 hover:outline hover:outline-1 hover:outline-blue-200 rounded-sm transition-all group relative")}
-    >
-      {text}
+    <span onClick={() => setEditing(true)} className={cn("cursor-text rounded-sm transition-all group relative inline border border-transparent hover:border-dashed hover:border-gray-300", className)}>
+      {value || <span className="text-gray-300 italic">{placeholder ?? "Cliquez pour éditer"}</span>}
+      <span className="opacity-0 group-hover:opacity-60 ml-1 text-gray-400 text-[11px] inline-block align-middle">&#9998;</span>
     </span>
   );
 }
 
-/* ─── Suggestion Popup (inline tooltip) ─── */
-function SuggestionPopup({
-  gap,
+/* ─── Add Button ─── */
+function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="flex items-center gap-1.5 text-[12px] text-green-600 hover:text-green-700 font-medium mt-2 transition-colors">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+      {label}
+    </button>
+  );
+}
+
+/* ─── Delete Button ─── */
+function DeleteBtn({ onClick, size = "sm" }: { onClick: () => void; size?: "sm" | "md" }) {
+  return (
+    <button onClick={onClick} className={cn("text-gray-300 hover:text-red-500 transition-colors flex-shrink-0", size === "md" ? "p-1" : "")}>
+      <svg width={size === "md" ? 16 : 12} height={size === "md" ? 16 : 12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+    </button>
+  );
+}
+
+/* ─── Section title ─── */
+function SectionTitle({ title }: { title: string }) {
+  return (
+    <div className="mt-6 mb-2 first:mt-0">
+      <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{title}</h2>
+    </div>
+  );
+}
+
+/* ─── Suggestion Panel (right side, like cvcomp) ─── */
+function SuggestionPanel({
+  gaps,
+  currentIndex,
+  onNavigate,
   onAccept,
   onIgnore,
-  position,
+  onAcceptAll,
 }: {
-  gap: Gap;
-  onAccept: () => void;
-  onIgnore: () => void;
-  position: { top: number; left: number };
+  gaps: Gap[];
+  currentIndex: number;
+  onNavigate: (idx: number) => void;
+  onAccept: (id: string) => void;
+  onIgnore: (id: string) => void;
+  onAcceptAll: () => void;
 }) {
+  const pendingGaps = gaps.filter((g) => g.status === "pending");
+  const current = pendingGaps[currentIndex];
+
+  if (pendingGaps.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center">
+        <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+        </div>
+        <p className="text-[15px] font-semibold text-gray-800">Toutes les suggestions ont été traitées</p>
+        <p className="text-[13px] text-gray-400 mt-1">Vous pouvez continuer à éditer votre CV manuellement.</p>
+      </div>
+    );
+  }
+
+  if (!current) return null;
+
+  const sectionLabel = current.section || CATEGORY_MAP[current.category ?? ""]?.label || "Suggestion";
+
   return (
-    <div
-      className="fixed z-50 w-[360px] bg-white rounded-xl border border-gray-200 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
-      style={{ top: position.top + 8, left: Math.min(position.left, window.innerWidth - 380) }}
-    >
-      {/* Original — strikethrough red */}
-      <div className="px-4 pt-4">
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      {/* Header with counter + Accept All */}
+      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-[13px] font-semibold text-gray-700">{currentIndex + 1} sur {pendingGaps.length}</span>
+          <div className="flex items-center gap-1">
+            <button onClick={() => onNavigate(Math.max(0, currentIndex - 1))} disabled={currentIndex === 0} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15" /></svg>
+            </button>
+            <button onClick={() => onNavigate(Math.min(pendingGaps.length - 1, currentIndex + 1))} disabled={currentIndex === pendingGaps.length - 1} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+          </div>
+        </div>
+        <button onClick={onAcceptAll} className="px-3 py-1.5 bg-green-500 text-white text-[12px] font-semibold rounded-lg hover:bg-green-600 transition-colors">
+          Tout accepter ({pendingGaps.length})
+        </button>
+      </div>
+
+      {/* Section label */}
+      <div className="px-5 pt-4">
+        <span className={cn("text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full",
+          current.impact === "high" ? "bg-red-50 text-red-500" : current.impact === "medium" ? "bg-amber-50 text-amber-600" : "bg-blue-50 text-blue-500"
+        )}>{sectionLabel}</span>
+      </div>
+
+      {/* Current text */}
+      <div className="px-5 pt-3">
         <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Actuel</p>
         <p className="text-[13px] text-red-600 line-through leading-relaxed bg-red-50 rounded px-3 py-2">
-          {gap.texte_original || <span className="italic no-underline">Absent du CV</span>}
+          {current.texte_original || <span className="italic no-underline text-gray-400">Absent du CV</span>}
         </p>
       </div>
 
-      {/* Suggested — green */}
-      <div className="px-4 pt-3">
+      {/* Suggested text */}
+      <div className="px-5 pt-3">
         <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Suggéré</p>
-        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">{gap.texte_suggere}</p>
+        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">{current.texte_suggere}</p>
       </div>
 
       {/* Reason */}
-      <div className="px-4 pt-2 pb-3">
-        <p className="text-[12px] text-gray-400 italic leading-relaxed">{gap.raison}</p>
+      <div className="px-5 pt-2 pb-4">
+        <p className="text-[12px] text-gray-400 italic leading-relaxed">{current.raison}</p>
       </div>
 
       {/* Actions */}
       <div className="flex border-t border-gray-100">
-        <button
-          onClick={onIgnore}
-          className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100"
-        >
+        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-          Ignorer
+          Rejeter
         </button>
-        <button
-          onClick={onAccept}
-          className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors"
-        >
+        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
           Accepter
         </button>
+      </div>
+
+      {/* Keyboard hint */}
+      <div className="px-5 py-2 bg-gray-50 border-t border-gray-100 text-center">
+        <span className="text-[11px] text-gray-400"><kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">Tab</kbd> Accepter &middot; <kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">Esc</kbd> Rejeter</span>
       </div>
     </div>
   );
 }
 
-/* ─── A4 CV Document Renderer (from structured CVData) ─── */
-function CVDocument({
-  cvText,
+/* ─── Editable CV Document (full inline editing) ─── */
+function CVDocumentEditable({
   cvJson,
   gaps,
-  selectedGapId,
-  onSelectGap,
-  onEditLine,
-  popupRef,
+  onUpdate,
 }: {
-  cvText: string;
-  cvJson: CVData | null;
+  cvJson: CVData;
   gaps: Gap[];
-  selectedGapId: string | null;
-  onSelectGap: (id: string | null, rect?: DOMRect) => void;
-  onEditLine: (lineIndex: number, oldText: string, newText: string) => void;
-  popupRef: React.Ref<HTMLDivElement>;
+  onUpdate: (updated: CVData) => void;
 }) {
-  // Build a flat list of all text strings from cvJson for gap matching
-  const allTexts = useMemo(() => {
-    if (!cvJson) return [];
-    const texts: string[] = [];
-    if (cvJson.profil) texts.push(cvJson.profil);
-    if (cvJson.titre) texts.push(cvJson.titre);
-    for (const exp of cvJson.experiences) {
-      if (exp.poste) texts.push(exp.poste);
-      for (const m of exp.missions) texts.push(m);
-    }
-    for (const f of cvJson.formation) {
-      if (f.diplome) texts.push(f.diplome);
-    }
-    for (const c of cvJson.competences) texts.push(c);
-    return texts;
-  }, [cvJson]);
+  const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
 
-  // Apply accepted gap substitutions to cvJson fields
-  const workingJson = useMemo(() => {
-    if (!cvJson) return null;
-    const accepted = gaps.filter((g) => g.status === "accepted" && g.texte_original?.trim());
-    if (accepted.length === 0) return cvJson;
+  const hasGap = (text: string) =>
+    pendingGaps.some((g) => {
+      const orig = g.texte_original?.trim();
+      return orig && text.includes(orig);
+    });
 
-    const applyGaps = (text: string): string => {
-      let result = text;
-      for (const gap of accepted) {
-        const orig = gap.texte_original!.trim();
-        if (result.includes(orig)) result = result.replace(orig, gap.texte_suggere);
-      }
-      return result;
-    };
+  const cv = cvJson;
 
-    return {
-      ...cvJson,
-      profil: cvJson.profil ? applyGaps(cvJson.profil) : cvJson.profil,
-      titre: cvJson.titre ? applyGaps(cvJson.titre) : cvJson.titre,
-      experiences: cvJson.experiences.map((exp) => ({
-        ...exp,
-        poste: applyGaps(exp.poste),
-        missions: exp.missions.map(applyGaps),
-      })),
-      formation: cvJson.formation.map((f) => ({
-        ...f,
-        diplome: applyGaps(f.diplome),
-      })),
-      competences: cvJson.competences.map(applyGaps),
-    } as CVData;
-  }, [cvJson, gaps]);
+  const updateField = (field: string, value: string) => onUpdate({ ...cv, [field]: value });
+  const updateContact = (field: string, value: string) =>
+    onUpdate({ ...cv, contact: { ...cv.contact, [field]: value } });
 
-  const matchableGaps = useMemo(() => {
-    const allText = cvJson
-      ? [workingJson?.profil, workingJson?.titre, ...(workingJson?.experiences.flatMap((e) => [e.poste, ...e.missions]) ?? []), ...(workingJson?.competences ?? [])].filter(Boolean).join(" ")
-      : cvText;
-    return gaps
-      .filter((g) => g.status === "pending" && g.texte_original?.trim())
-      .filter((g) => allText.includes(g.texte_original!.trim()));
-  }, [gaps, workingJson, cvJson, cvText]);
-
-  // Highlight text with gap markers
-  const renderHighlightedText = (text: string, key: string) => {
-    if (matchableGaps.length === 0) {
-      return (
-        <EditableText
-          text={text}
-          onSave={(v) => onEditLine(0, text, v)}
-        />
-      );
-    }
-
-    const fragments: { text: string; gapId?: string }[] = [];
-    let remaining = text;
-
-    for (const gap of matchableGaps) {
-      const orig = gap.texte_original!.trim();
-      const idx = remaining.indexOf(orig);
-      if (idx < 0) continue;
-      if (idx > 0) fragments.push({ text: remaining.slice(0, idx) });
-      fragments.push({ text: orig, gapId: gap.id });
-      remaining = remaining.slice(idx + orig.length);
-    }
-    if (remaining) fragments.push({ text: remaining });
-    if (fragments.length <= 1 && !fragments[0]?.gapId) {
-      return (
-        <EditableText
-          text={text}
-          onSave={(v) => onEditLine(0, text, v)}
-        />
-      );
-    }
-
-    return (
-      <>
-        {fragments.map((f, i) =>
-          f.gapId ? (
-            <span
-              key={`${key}-${i}`}
-              data-gap-id={f.gapId}
-              onClick={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                onSelectGap(selectedGapId === f.gapId ? null : f.gapId!, rect);
-              }}
-              className={cn(
-                "cursor-pointer rounded-sm px-0.5 py-px transition-all inline",
-                selectedGapId === f.gapId
-                  ? "bg-amber-300 ring-2 ring-amber-400 shadow-sm"
-                  : gaps.find((g) => g.id === f.gapId)?.status === "accepted"
-                    ? "bg-green-200/60"
-                    : "bg-amber-200/70 hover:bg-amber-300/80"
-              )}
-            >
-              {f.text}
-            </span>
-          ) : (
-            <span key={`${key}-${i}`}>{f.text}</span>
-          )
-        )}
-      </>
-    );
+  const updateExperience = (idx: number, field: string, value: string) => {
+    const exps = cv.experiences.map((e, i) => (i === idx ? { ...e, [field]: value } : e));
+    onUpdate({ ...cv, experiences: exps });
   };
-
-  /* ─── Section title component ─── */
-  const SectionTitle = ({ title }: { title: string }) => (
-    <div className="mt-6 mb-2 first:mt-0">
-      <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{title}</h2>
-    </div>
-  );
-
-  /* ─── Bullet item ─── */
-  const Bullet = ({ text, id }: { text: string; id: string }) => (
-    <div className="flex items-start gap-2 pl-2 mb-1">
-      <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
-      <p className="text-[13px] text-[#111827] leading-[1.7]">{renderHighlightedText(text, id)}</p>
-    </div>
-  );
-
-  // Fallback: use heuristic parser if cvJson is null
-  if (!workingJson) {
-    const contactInfo = extractContactInfo(cvText);
-    let workingText = cvText;
-    const accepted = gaps.filter((g) => g.status === "accepted" && g.texte_original?.trim());
-    for (const gap of accepted) {
-      const orig = gap.texte_original!.trim();
-      if (workingText.includes(orig)) workingText = workingText.replace(orig, gap.texte_suggere);
-    }
-    const workingSections = parseCVSections(workingText);
-
-    return (
-      <div ref={popupRef} className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden" style={{ minHeight: 600 }}>
-        <div className="bg-[#111827] px-10 py-7">
-          <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{contactInfo.name}</h1>
-          {contactInfo.title && <p className="text-[14px] text-gray-300 mt-1">{contactInfo.title}</p>}
-        </div>
-        <div className="px-10 py-8">
-          {workingSections.map((section, i) => {
-            if (section.type === "header" || section.type === "contact-line") return null;
-            switch (section.type) {
-              case "section-title": return <SectionTitle key={i} title={section.text} />;
-              case "entry-title": return (
-                <div key={i} className="flex items-baseline justify-between mt-4 mb-0.5">
-                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(section.text, `fb-${i}`)}</p>
-                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{section.rightText}</p>}
-                </div>
-              );
-              case "bullet": return <Bullet key={i} text={section.text} id={`fb-${i}`} />;
-              case "text": return <p key={i} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(section.text, `fb-${i}`)}</p>;
-              case "blank": return <div key={i} className="h-3" />;
-              default: return null;
-            }
-          })}
-        </div>
-      </div>
+  const updateMission = (ei: number, mi: number, value: string) => {
+    const exps = cv.experiences.map((e, i) => {
+      if (i !== ei) return e;
+      const missions = e.missions.map((m, j) => (j === mi ? value : m));
+      return { ...e, missions };
+    });
+    onUpdate({ ...cv, experiences: exps });
+  };
+  const addMission = (ei: number) => {
+    const exps = cv.experiences.map((e, i) =>
+      i === ei ? { ...e, missions: [...e.missions, "Nouvelle mission"] } : e
     );
-  }
+    onUpdate({ ...cv, experiences: exps });
+  };
+  const removeMission = (ei: number, mi: number) => {
+    const exps = cv.experiences.map((e, i) => {
+      if (i !== ei) return e;
+      return { ...e, missions: e.missions.filter((_, j) => j !== mi) };
+    });
+    onUpdate({ ...cv, experiences: exps });
+  };
+  const addExperience = () =>
+    onUpdate({ ...cv, experiences: [...cv.experiences, { poste: "Nouveau poste", missions: [] }] });
+  const removeExperience = (idx: number) =>
+    onUpdate({ ...cv, experiences: cv.experiences.filter((_, i) => i !== idx) });
 
-  // ─── Main render from structured CVData ───
-  const cv = workingJson;
+  const updateFormation = (idx: number, field: string, value: string) => {
+    const fms = cv.formation.map((f, i) => (i === idx ? { ...f, [field]: value } : f));
+    onUpdate({ ...cv, formation: fms });
+  };
+  const addFormation = () =>
+    onUpdate({ ...cv, formation: [...cv.formation, { diplome: "Nouveau diplôme" }] });
+  const removeFormation = (idx: number) =>
+    onUpdate({ ...cv, formation: cv.formation.filter((_, i) => i !== idx) });
+
+  const updateCompetence = (idx: number, value: string) => {
+    const comps = cv.competences.map((c, i) => (i === idx ? value : c));
+    onUpdate({ ...cv, competences: comps });
+  };
+  const addCompetence = () =>
+    onUpdate({ ...cv, competences: [...cv.competences, "Nouvelle compétence"] });
+  const removeCompetence = (idx: number) =>
+    onUpdate({ ...cv, competences: cv.competences.filter((_, i) => i !== idx) });
+
+  const updateCentreInteret = (idx: number, value: string) => {
+    const ci = cv.centres_interet.map((c, i) => (i === idx ? value : c));
+    onUpdate({ ...cv, centres_interet: ci });
+  };
+  const addCentreInteret = () =>
+    onUpdate({ ...cv, centres_interet: [...cv.centres_interet, "Nouveau centre d'intérêt"] });
+  const removeCentreInteret = (idx: number) =>
+    onUpdate({ ...cv, centres_interet: cv.centres_interet.filter((_, i) => i !== idx) });
+
+  const updateInformation = (idx: number, value: string) => {
+    const infos = cv.informations.map((inf, i) => (i === idx ? value : inf));
+    onUpdate({ ...cv, informations: infos });
+  };
+  const addInformation = () =>
+    onUpdate({ ...cv, informations: [...cv.informations, "Nouvelle information"] });
+  const removeInformation = (idx: number) =>
+    onUpdate({ ...cv, informations: cv.informations.filter((_, i) => i !== idx) });
+
+  const GapField = ({
+    value,
+    onSave,
+    className,
+    placeholder,
+    multiline,
+  }: {
+    value: string;
+    onSave: (v: string) => void;
+    className?: string;
+    placeholder?: string;
+    multiline?: boolean;
+  }) => (
+    <span className={hasGap(value) ? "bg-amber-100/60 rounded" : ""}>
+      <InlineField
+        value={value}
+        onSave={onSave}
+        className={className}
+        placeholder={placeholder}
+        multiline={multiline}
+      />
+    </span>
+  );
 
   return (
-    <div ref={popupRef} className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden" style={{ minHeight: 600 }}>
-      {/* ─── Dark Header ─── */}
+    <div
+      className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden"
+      style={{ minHeight: 600 }}
+    >
+      {/* Dark Header */}
       <div className="bg-[#111827] px-10 py-7">
-        <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{cv.nom}</h1>
-        {cv.titre && <p className="text-[14px] text-gray-300 mt-1">{cv.titre}</p>}
+        <GapField
+          value={cv.nom}
+          onSave={(v) => updateField("nom", v)}
+          className="text-[24px] font-bold text-white tracking-tight leading-tight"
+        />
+        <div className="mt-1">
+          <GapField
+            value={cv.titre ?? ""}
+            onSave={(v) => updateField("titre", v)}
+            className="text-[14px] text-gray-300"
+            placeholder="Titre du poste"
+          />
+        </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-3">
-          {cv.contact?.email && (
-            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-              {cv.contact.email}
-            </span>
-          )}
-          {cv.contact?.telephone && (
-            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.64.32 1.26.56 1.85l.04.1c.16.39.08.84-.2 1.16L8.09 9.91a16 16 0 006 6l1.27-1.27c.32-.28.77-.36 1.16-.2l.1.04c.59.24 1.21.43 1.85.56A2 2 0 0120 16.92v3z" /></svg>
-              {cv.contact.telephone}
-            </span>
-          )}
-          {cv.contact?.ville && (
-            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-              {cv.contact.ville}
-            </span>
-          )}
+          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <InlineField
+              value={cv.contact?.email ?? ""}
+              onSave={(v) => updateContact("email", v)}
+              className="text-[12px] text-gray-400"
+              placeholder="Email"
+            />
+          </span>
+          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.64.32 1.26.56 1.85l.04.1c.16.39.08.84-.2 1.16L8.09 9.91a16 16 0 006 6l1.27-1.27c.32-.28.77-.36 1.16-.2l.1.04c.59.24 1.21.43 1.85.56A2 2 0 0120 16.92v3z" />
+            </svg>
+            <InlineField
+              value={cv.contact?.telephone ?? ""}
+              onSave={(v) => updateContact("telephone", v)}
+              className="text-[12px] text-gray-400"
+              placeholder="Téléphone"
+            />
+          </span>
+          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <InlineField
+              value={cv.contact?.ville ?? ""}
+              onSave={(v) => updateContact("ville", v)}
+              className="text-[12px] text-gray-400"
+              placeholder="Ville"
+            />
+          </span>
         </div>
       </div>
 
-      {/* ─── CV Body ─── */}
+      {/* CV Body */}
       <div className="px-10 py-8">
         {/* Profil */}
-        {cv.profil && (
-          <>
-            <SectionTitle title="Profil" />
-            <p className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(cv.profil, "profil")}</p>
-          </>
-        )}
+        <SectionTitle title="Profil" />
+        <GapField
+          value={cv.profil ?? ""}
+          onSave={(v) => updateField("profil", v)}
+          multiline
+          className="text-[13px] text-[#111827] leading-[1.7]"
+          placeholder="Résumé professionnel"
+        />
 
         {/* Expériences */}
-        {cv.experiences.length > 0 && (
-          <>
-            <SectionTitle title="Expérience professionnelle" />
-            {cv.experiences.map((exp, ei) => (
-              <div key={ei} className="mb-4">
-                <div className="flex items-baseline justify-between mt-3 mb-0.5">
-                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(exp.poste, `exp-${ei}`)}</p>
-                  {exp.periode && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{exp.periode}</p>}
-                </div>
-                {(exp.entreprise || exp.lieu) && (
-                  <p className="text-[13px] text-gray-500 italic mb-1">
-                    {[exp.entreprise, exp.lieu].filter(Boolean).join(" — ")}
-                  </p>
-                )}
-                {exp.missions.map((mission, mi) => (
-                  <Bullet key={mi} text={mission} id={`exp-${ei}-m-${mi}`} />
-                ))}
+        {cv.experiences.length > 0 && <SectionTitle title="Expérience professionnelle" />}
+        {cv.experiences.map((exp, ei) => (
+          <div key={ei} className="mb-4 group/exp relative">
+            <div className="absolute -left-6 top-3 opacity-0 group-hover/exp:opacity-100 transition-opacity">
+              <DeleteBtn onClick={() => removeExperience(ei)} size="md" />
+            </div>
+            <div className="flex items-baseline justify-between mt-3 mb-0.5">
+              <GapField
+                value={exp.poste}
+                onSave={(v) => updateExperience(ei, "poste", v)}
+                className="text-[14px] font-bold text-[#111827]"
+              />
+              <InlineField
+                value={exp.periode ?? ""}
+                onSave={(v) => updateExperience(ei, "periode", v)}
+                className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic"
+                placeholder="Période"
+              />
+            </div>
+            <div className="flex items-baseline gap-2 mb-1">
+              <InlineField
+                value={exp.entreprise ?? ""}
+                onSave={(v) => updateExperience(ei, "entreprise", v)}
+                className="text-[13px] text-gray-500 italic"
+                placeholder="Entreprise"
+              />
+              {(exp.entreprise || exp.lieu) && <span className="text-gray-400">&mdash;</span>}
+              <InlineField
+                value={exp.lieu ?? ""}
+                onSave={(v) => updateExperience(ei, "lieu", v)}
+                className="text-[13px] text-gray-500 italic"
+                placeholder="Lieu"
+              />
+            </div>
+            {exp.missions.map((mission, mi) => (
+              <div key={mi} className="flex items-start gap-2 pl-2 mb-1 group/mission">
+                <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
+                <GapField
+                  value={mission}
+                  onSave={(v) => updateMission(ei, mi, v)}
+                  className="text-[13px] text-[#111827] leading-[1.7] flex-1"
+                />
+                <span className="opacity-0 group-hover/mission:opacity-100 transition-opacity mt-1">
+                  <DeleteBtn onClick={() => removeMission(ei, mi)} />
+                </span>
               </div>
             ))}
-          </>
-        )}
+            <AddButton label="Ajouter une mission" onClick={() => addMission(ei)} />
+          </div>
+        ))}
+        <AddButton label="Ajouter une expérience" onClick={addExperience} />
 
         {/* Formation */}
-        {cv.formation.length > 0 && (
-          <>
-            <SectionTitle title="Formation" />
-            {cv.formation.map((f, fi) => (
-              <div key={fi} className="mb-2">
-                <div className="flex items-baseline justify-between mt-3 mb-0.5">
-                  <p className="text-[14px] font-bold text-[#111827]">{f.diplome}</p>
-                  {f.periode && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{f.periode}</p>}
-                </div>
-                {f.etablissement && <p className="text-[13px] text-gray-500 italic">{f.etablissement}</p>}
-              </div>
-            ))}
-          </>
-        )}
+        {cv.formation.length > 0 && <SectionTitle title="Formation" />}
+        {cv.formation.map((f, fi) => (
+          <div key={fi} className="mb-2 group/form relative">
+            <div className="absolute -left-6 top-3 opacity-0 group-hover/form:opacity-100 transition-opacity">
+              <DeleteBtn onClick={() => removeFormation(fi)} size="md" />
+            </div>
+            <div className="flex items-baseline justify-between mt-3 mb-0.5">
+              <InlineField
+                value={f.diplome}
+                onSave={(v) => updateFormation(fi, "diplome", v)}
+                className="text-[14px] font-bold text-[#111827]"
+              />
+              <InlineField
+                value={f.periode ?? ""}
+                onSave={(v) => updateFormation(fi, "periode", v)}
+                className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic"
+                placeholder="Période"
+              />
+            </div>
+            <InlineField
+              value={f.etablissement ?? ""}
+              onSave={(v) => updateFormation(fi, "etablissement", v)}
+              className="text-[13px] text-gray-500 italic"
+              placeholder="Établissement"
+            />
+          </div>
+        ))}
+        <AddButton label="Ajouter une formation" onClick={addFormation} />
 
         {/* Compétences */}
-        {cv.competences.length > 0 && (
-          <>
-            <SectionTitle title="Compétences" />
-            <div className="flex flex-wrap gap-2 mt-1">
-              {cv.competences.map((c, ci) => (
-                <span key={ci} className="text-[13px] text-[#111827] bg-gray-100 rounded px-2.5 py-1">{renderHighlightedText(c, `comp-${ci}`)}</span>
-              ))}
-            </div>
-          </>
-        )}
+        <SectionTitle title="Compétences" />
+        <div className="flex flex-wrap gap-2 mt-1">
+          {cv.competences.map((c, ci) => (
+            <span key={ci} className="flex items-center gap-1 bg-gray-100 rounded px-2.5 py-1 group/comp">
+              <GapField
+                value={c}
+                onSave={(v) => updateCompetence(ci, v)}
+                className="text-[13px] text-[#111827]"
+              />
+              <span className="opacity-0 group-hover/comp:opacity-100 transition-opacity">
+                <DeleteBtn onClick={() => removeCompetence(ci)} />
+              </span>
+            </span>
+          ))}
+        </div>
+        <AddButton label="Ajouter une compétence" onClick={addCompetence} />
 
         {/* Centres d'intérêt */}
         {cv.centres_interet.length > 0 && (
           <>
-            <SectionTitle title="Centres d'intérêt" />
-            <p className="text-[13px] text-[#111827] leading-[1.7]">{cv.centres_interet.join(" · ")}</p>
+            <SectionTitle title="Centres d&apos;intérêt" />
+            <div className="flex flex-wrap gap-2 mt-1">
+              {cv.centres_interet.map((c, ci) => (
+                <span key={ci} className="flex items-center gap-1 group/ci">
+                  <InlineField
+                    value={c}
+                    onSave={(v) => updateCentreInteret(ci, v)}
+                    className="text-[13px] text-[#111827]"
+                  />
+                  <span className="opacity-0 group-hover/ci:opacity-100 transition-opacity">
+                    <DeleteBtn onClick={() => removeCentreInteret(ci)} />
+                  </span>
+                  {ci < cv.centres_interet.length - 1 && <span className="text-gray-400 mx-1">&middot;</span>}
+                </span>
+              ))}
+            </div>
+            <AddButton label="Ajouter un centre d&apos;intérêt" onClick={addCentreInteret} />
           </>
         )}
 
@@ -1059,8 +986,18 @@ function CVDocument({
           <>
             <SectionTitle title="Informations" />
             {cv.informations.map((info, ii) => (
-              <p key={ii} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{info}</p>
+              <div key={ii} className="flex items-start gap-2 mb-0.5 group/info">
+                <InlineField
+                  value={info}
+                  onSave={(v) => updateInformation(ii, v)}
+                  className="text-[13px] text-[#111827] leading-[1.7]"
+                />
+                <span className="opacity-0 group-hover/info:opacity-100 transition-opacity mt-1">
+                  <DeleteBtn onClick={() => removeInformation(ii)} />
+                </span>
+              </div>
             ))}
+            <AddButton label="Ajouter une information" onClick={addInformation} />
           </>
         )}
       </div>
@@ -1068,83 +1005,77 @@ function CVDocument({
   );
 }
 
-/* ─── CV Editor Panel ─── */
-function CVEditor({
-  cvText,
-  setCvText,
+/* ─── CV Editor With Suggestion Panel ─── */
+function CVEditorWithPanel({
   cvJson,
   gaps,
+  onUpdate,
   onAccept,
   onIgnore,
+  onAcceptAll,
+  onDownload,
+  isDownloading,
+  downloadError,
 }: {
-  cvText: string;
-  setCvText: (text: string) => void;
-  cvJson: CVData | null;
+  cvJson: CVData;
   gaps: Gap[];
-  acceptedGaps: Gap[];
+  onUpdate: (updated: CVData) => void;
   onAccept: (id: string) => void;
   onIgnore: (id: string) => void;
   onAcceptAll: () => void;
+  onDownload: () => void;
+  isDownloading: boolean;
+  downloadError: string | null;
 }) {
-  const [selectedGapId, setSelectedGapId] = useState<string | null>(null);
-  const [popupPos, setPopupPos] = useState<{ top: number; left: number } | null>(null);
-  const selectedGap = gaps.find((g) => g.id === selectedGapId);
-  const popupRef = useRef<HTMLDivElement>(null);
+  const [suggestionIdx, setSuggestionIdx] = useState(0);
+  const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
 
-  // Close popup on outside click
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-        // Don't close if clicking on a highlighted span
-        const target = e.target as HTMLElement;
-        if (target.closest("[data-gap-id]")) return;
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  const handleSelectGap = (id: string | null, rect?: DOMRect) => {
-    setSelectedGapId(id);
-    if (id && rect) {
-      setPopupPos({ top: rect.bottom + window.scrollY, left: rect.left });
-    } else {
-      setPopupPos(null);
-    }
+  const applyGapToJson = (gap: Gap, json: CVData): CVData => {
+    const orig = gap.texte_original?.trim();
+    if (!orig) return json;
+    const sub = (text: string) => (text.includes(orig) ? text.replace(orig, gap.texte_suggere) : text);
+    return {
+      ...json,
+      profil: json.profil ? sub(json.profil) : json.profil,
+      titre: json.titre ? sub(json.titre) : json.titre,
+      experiences: json.experiences.map((exp) => ({
+        ...exp,
+        poste: sub(exp.poste),
+        missions: exp.missions.map(sub),
+      })),
+      formation: json.formation.map((f) => ({ ...f, diplome: sub(f.diplome) })),
+      competences: json.competences.map(sub),
+    } as CVData;
   };
 
-  const handleAcceptGap = (id: string) => {
+  const handleAccept = (id: string) => {
+    const gap = gaps.find((g) => g.id === id);
+    if (gap) onUpdate(applyGapToJson(gap, cvJson));
     onAccept(id);
-    setSelectedGapId(null);
-    setPopupPos(null);
   };
 
-  const handleIgnoreGap = (id: string) => {
-    onIgnore(id);
-    setSelectedGapId(null);
-    setPopupPos(null);
-  };
-
-  // Inline editing: replace text in cvText
-  const handleEditLine = (_lineIndex: number, oldText: string, newText: string) => {
-    if (oldText === newText) return;
-    const updated = cvText.replace(oldText, newText);
-    setCvText(updated);
+  const handleAcceptAll = () => {
+    let updated = cvJson;
+    for (const gap of pendingGaps) {
+      updated = applyGapToJson(gap, updated);
+    }
+    onUpdate(updated);
+    onAcceptAll();
   };
 
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (!selectedGap || selectedGap.status !== "pending") return;
-      // Don't intercept when editing
       const tag = (e.target as HTMLElement).tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const current = pendingGaps[suggestionIdx];
+      if (!current) return;
       if (e.key === "Tab") {
         e.preventDefault();
-        handleAcceptGap(selectedGap.id);
+        handleAccept(current.id);
       } else if (e.key === "Escape") {
         e.preventDefault();
-        handleIgnoreGap(selectedGap.id);
+        onIgnore(current.id);
       }
     };
     window.addEventListener("keydown", handler);
@@ -1152,32 +1083,52 @@ function CVEditor({
   });
 
   return (
-    <div className="relative">
-      {/* A4 CV Document */}
-      <div className="max-h-[85vh] overflow-y-auto pb-4">
-        <CVDocument
-          cvText={cvText}
-          cvJson={cvJson}
-          gaps={gaps}
-          selectedGapId={selectedGapId}
-          onSelectGap={handleSelectGap}
-          onEditLine={handleEditLine}
-          popupRef={popupRef}
-        />
+    <div>
+      {/* Download bar */}
+      <div className="flex items-center justify-end mb-4">
+        <button
+          onClick={onDownload}
+          disabled={isDownloading}
+          className="px-5 py-2.5 bg-gray-900 text-white text-[13px] font-semibold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center gap-2"
+        >
+          {isDownloading ? (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          )}
+          Télécharger PDF
+        </button>
       </div>
 
-      {/* Suggestion Popup */}
-      {selectedGap && selectedGap.status === "pending" && popupPos && (
-        <SuggestionPopup
-          gap={selectedGap}
-          onAccept={() => handleAcceptGap(selectedGap.id)}
-          onIgnore={() => handleIgnoreGap(selectedGap.id)}
-          position={popupPos}
-        />
+      {downloadError && (
+        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center mb-4">
+          {downloadError}
+        </div>
       )}
+
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-7 max-h-[85vh] overflow-y-auto pb-4">
+          <CVDocumentEditable cvJson={cvJson} gaps={gaps} onUpdate={onUpdate} />
+        </div>
+        <div className="col-span-5 sticky top-0 self-start">
+          <SuggestionPanel
+            gaps={gaps}
+            currentIndex={suggestionIdx}
+            onNavigate={setSuggestionIdx}
+            onAccept={handleAccept}
+            onIgnore={onIgnore}
+            onAcceptAll={handleAcceptAll}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
 
 /* ═══════════════════════════════════════════════════════════
    MAIN RESULTS PAGE
@@ -1187,10 +1138,9 @@ export default function ResultsPage() {
   useUser();
   const posthog = usePostHog();
 
-  const { cvText, setCvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch, cvJson } = useStore(
+  const { cvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch, cvJson, setCvJson } = useStore(
     useShallow((s) => ({
       cvText: s.cvText,
-      setCvText: s.setCvText,
       gaps: s.gaps,
       score_avant: s.score_avant,
       scoreActuel: s.scoreActuel,
@@ -1201,6 +1151,7 @@ export default function ResultsPage() {
       analysisType: s.analysisType,
       jdMatch: s.jdMatch,
       cvJson: s.cvJson,
+      setCvJson: s.setCvJson,
     }))
   );
   const isJdMatch = analysisType === "jd" && jdMatch !== null;
@@ -1300,25 +1251,10 @@ export default function ResultsPage() {
         }
       }
 
-      let finalCvText = cvText;
-      for (const gap of acceptedGaps) {
-        const orig = gap.texte_original?.trim();
-        if (!orig) continue;
-        if (finalCvText.includes(orig)) {
-          finalCvText = finalCvText.replace(orig, gap.texte_suggere);
-        } else {
-          const origNorm = orig.replace(/\s+/g, " ");
-          const cvNorm = finalCvText.replace(/\s+/g, " ");
-          if (cvNorm.includes(origNorm)) {
-            finalCvText = cvNorm.replace(origNorm, gap.texte_suggere);
-          }
-        }
-      }
-
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvText: finalCvText, acceptedGaps, analysisId: savedId }),
+        body: JSON.stringify({ cvJson, cvText, analysisId: savedId }),
       });
 
       if (res.status === 402) {
@@ -1676,49 +1612,23 @@ export default function ResultsPage() {
           {/* ─── EDITOR TAB ─── */}
           {activeTab === "editor" && (
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <div />
-                <div className="flex items-center gap-3">
-                  {pendingGaps.length > 0 && (
-                    <button
-                      onClick={handleAcceptAll}
-                      className="px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors flex items-center gap-2 shadow-sm"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                      Tout accepter ({pendingGaps.length})
-                    </button>
-                  )}
-                  <button
-                    onClick={handleDownload}
-                    disabled={acceptedGaps.length === 0 || isDownloading}
-                    className="px-5 py-2.5 bg-gray-900 text-white text-[13px] font-semibold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center gap-2"
-                  >
-                    {isDownloading ? (
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                    )}
-                    Télécharger PDF
-                  </button>
-                </div>
-              </div>
-
-              {downloadError && (
-                <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center mb-4">
-                  {downloadError}
+              {cvJson ? (
+                <CVEditorWithPanel
+                  cvJson={cvJson}
+                  gaps={gaps}
+                  onUpdate={setCvJson}
+                  onAccept={handleAcceptGap}
+                  onIgnore={handleIgnoreGap}
+                  onAcceptAll={handleAcceptAll}
+                  onDownload={handleDownload}
+                  isDownloading={isDownloading}
+                  downloadError={downloadError}
+                />
+              ) : (
+                <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+                  <p className="text-gray-400 text-[15px]">Le CV n&apos;a pas pu être structuré. Relancez l&apos;analyse.</p>
                 </div>
               )}
-
-              <CVEditor
-                cvText={cvText}
-                setCvText={setCvText}
-                cvJson={cvJson}
-                gaps={gaps}
-                acceptedGaps={acceptedGaps}
-                onAccept={handleAcceptGap}
-                onIgnore={handleIgnoreGap}
-                onAcceptAll={handleAcceptAll}
-              />
             </div>
           )}
         </main>

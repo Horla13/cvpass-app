@@ -82,6 +82,7 @@ interface CVPassStore {
   setJobOffer: (offer: string) => void;
   setAnalysisType: (type: AnalysisType) => void;
   setAnalysis: (analysis: Analysis) => void;
+  setCvJson: (cvJson: CVData) => void;
   acceptGap: (id: string) => void;
   ignoreGap: (id: string) => void;
   setCoverLetter: (text: string) => void;
@@ -111,6 +112,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
   setCvText: (text) => set({ cvText: text }),
   setJobOffer: (offer) => set({ jobOffer: offer }),
   setAnalysisType: (type) => set({ analysisType: type }),
+  setCvJson: (cvJson) => set({ cvJson }),
 
   setAnalysis: (analysis) => {
     const gaps: Gap[] = analysis.gaps.map((g) => ({ ...g, status: "pending" }));
