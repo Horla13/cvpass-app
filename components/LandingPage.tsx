@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Show } from "@clerk/nextjs";
 import { FAQAccordion } from "@/components/FAQAccordion";
-import { CTABanner } from "@/components/CTABanner";
 import { ScoreGauge } from "@/components/ScoreGauge";
 import { useStore } from "@/lib/store";
 
@@ -652,47 +651,102 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 8. FEATURES ── */}
+      {/* ── 8. FEATURES (360° style) ── */}
       <section id="features" className="py-24">
         <div className="max-w-[1100px] mx-auto px-8">
-          <div className="text-center mb-14 fade-up">
+          <div className="text-center mb-6 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              Tout ce qu&apos;il faut pour <span className="text-brand-green">décrocher le poste</span>
+              Une analyse <span className="text-brand-green">360&deg;</span> de votre CV
             </h2>
+            <p className="text-brand-gray text-base mt-3 max-w-[580px] mx-auto">
+              CVpass identifie chaque mot-clé manquant, corrige les blocages de parsing et quantifie votre impact avec son IA avancée.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
             {[
               {
-                emoji: "\uD83D\uDCCA",
-                color: "bg-blue-50",
-                title: "Score ATS en temps réel",
-                desc: "Votre score remonte à chaque suggestion acceptée. Mesurez l'impact immédiatement.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
+                  </svg>
+                ),
+                title: "Impact & Quantification",
+                subtitle: "Le pouvoir des chiffres",
+                desc: "Notre IA identifie les bullet points sans métriques et suggère des façons concrètes de quantifier vos réalisations.",
+                checks: [
+                  "Détection des pourcentages, montants et indicateurs temporels",
+                  "Identification des formulations vagues comme \"amélioré la performance\"",
+                  "Suggestions de quantification : %, €, effectifs, délais",
+                ],
               },
               {
-                emoji: "\u2728",
-                color: "bg-purple-50",
-                title: "Suggestions IA",
-                desc: "Pour chaque point faible, une réécriture complète avec les mots-clés de l'offre. Vous acceptez ou ignorez.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                ),
+                title: "Matching ATS par mots-clés",
+                subtitle: "Analyse NLP avancée",
+                desc: "Nous extrayons les mots-clés prioritaires de l'offre d'emploi et les comparons à votre CV en temps réel.",
+                checks: [
+                  "Extraction des mots-clés critiques de l'offre",
+                  "Comparaison croisée avec vos compétences",
+                  "Optimisation de la densité sans keyword stuffing",
+                ],
               },
               {
-                emoji: "\uD83D\uDCC4",
-                color: "bg-green-50",
-                title: "Export PDF optimisé",
-                desc: "Un PDF sobre et propre, parfaitement lisible par les logiciels RH et ATS.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />
+                  </svg>
+                ),
+                title: "Mise en forme & Lisibilité",
+                subtitle: "Détection des blocages parseur",
+                desc: "Nous détectons les erreurs de formatage qui causent le rejet de 70% des CV par les logiciels ATS.",
+                checks: [
+                  "Vérification de la structure des sections",
+                  "Détection des éléments non lisibles par les ATS",
+                  "Optimisation de la hiérarchie du contenu",
+                ],
               },
               {
-                emoji: "\uD83D\uDCDD",
-                color: "bg-orange-50",
-                title: "Lettre de motivation IA",
-                desc: "Générez une lettre de motivation calibrée sur l'offre en un clic.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                ),
+                title: "Verbes d'action & Leadership",
+                subtitle: "Densité de verbes d'impact",
+                desc: "Nous remplaçons le langage passif par des verbes d'autorité adaptés au niveau de séniorité du poste.",
+                checks: [
+                  "Remplacement des formulations passives",
+                  "Adaptation au niveau de séniorité visé",
+                  "Réécriture complète des bullet points faibles",
+                ],
               },
             ].map((f, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[14px] p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
-                <div className={`w-11 h-11 ${f.color} rounded-xl flex items-center justify-center text-xl mb-4`}>
-                  {f.emoji}
+              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    {f.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-[17px] font-bold text-brand-black">{f.title}</h3>
+                    <p className="text-[13px] text-brand-green font-medium">{f.subtitle}</p>
+                  </div>
                 </div>
-                <h3 className="font-display text-[16px] font-bold text-brand-black mb-2">{f.title}</h3>
-                <p className="text-[13.5px] text-brand-gray leading-relaxed">{f.desc}</p>
+                <p className="text-[14px] text-brand-gray leading-relaxed mb-5">{f.desc}</p>
+                <div className="border-t border-gray-100 pt-4">
+                  <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">Vérifications techniques</p>
+                  <ul className="space-y-2.5">
+                    {f.checks.map((check, ci) => (
+                      <li key={ci} className="flex items-start gap-2.5 text-[13px] text-gray-600">
+                        <svg className="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        {check}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
@@ -821,9 +875,6 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* ── 12. CTA BANNER ── */}
-      <CTABanner />
 
       {/* ── 13. FOOTER ── */}
       <footer className="bg-gray-50 border-t border-gray-200 py-8 px-8">
