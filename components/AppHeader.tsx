@@ -4,15 +4,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Analyser" },
+  { href: "/pricing", label: "Tarifs" },
+  { href: "/account", label: "Mon compte" },
 ];
 
 export function AppHeader() {
   const pathname = usePathname();
+  const { isSignedIn } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [credits, setCredits] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      fetch("/api/credits").then((r) => r.json()).then((d) => setCredits(d.credits ?? null)).catch(() => {});
+    }
+  }, [isSignedIn]);
 
   return (
     <header className="bg-white/[0.92] backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04]">
@@ -45,8 +56,18 @@ export function AppHeader() {
           })}
         </nav>
 
-        {/* Right — UserButton + mobile hamburger */}
+        {/* Right — Credits + UserButton + mobile hamburger */}
         <div className="flex items-center gap-3 shrink-0">
+          {/* Credit badge */}
+          {credits !== null && (
+            <Link
+              href="/pricing"
+              className="hidden sm:flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 transition-colors"
+            >
+              <span className="text-amber-500">&#9889;</span>
+              <span className="font-semibold text-amber-700">{credits}</span>
+            </Link>
+          )}
           {/* Mobile hamburger */}
           <button
             className="sm:hidden p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"

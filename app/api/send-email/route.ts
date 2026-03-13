@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { canUsePremiumFeature } from "@/lib/billing";
+import { checkRateLimitWith } from "@/lib/rate-limit";
 import { Gap } from "@/lib/store";
 import { restructureWithGPT, buildCvPdfBuffer, buildLetterPdfBuffer, CVData } from "@/lib/pdf-builder";
 import { sendEmailWithAttachment } from "@/lib/brevo";
@@ -14,13 +15,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
+  const { allowed } = await checkRateLimitWith(`send-email:${userId}`, 10, "1 h");
+  if (!allowed) {
+    return NextResponse.json({ error: "Trop d'envois. Réessayez dans 1 heure." }, { status: 429 });
+  }
+
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const userEmail = user.emailAddresses[0]?.emailAddress;
   const firstName = user.firstName ?? "là";
 
-  const allowed = await canUsePremiumFeature(userId, userEmail);
-  if (!allowed) {
+  const isPremium = await canUsePremiumFeature(userId, userEmail);
+  if (!isPremium) {
     return NextResponse.json(
       { error: "PREMIUM_REQUIRED", message: "Exportez votre CV optimisé en PDF avec un pass CVpass." },
       { status: 403 }

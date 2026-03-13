@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
-import { canAnalyze } from "@/lib/billing";
+import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const BodySchema = z.object({
@@ -98,25 +98,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  const clerk = await clerkClient();
-  const user = await clerk.users.getUser(userId);
-  const email = user.emailAddresses[0]?.emailAddress;
-
-  const billing = await canAnalyze(userId, email);
-  if (!billing.allowed) {
-    return NextResponse.json(
-      { error: "quota_exceeded", code: "quota_exceeded", upgradeUrl: "/pricing" },
-      { status: 402 }
-    );
-  }
-
-  // Rate limiting: 5 req/hour pour tous les utilisateurs (anti-abus)
+  // Rate limiting FIRST — before credit deduction to avoid losing credits on 429
   const { allowed: rateLimitOk } = await checkRateLimit(`analyze:${userId}`);
   if (!rateLimitOk) {
     return NextResponse.json(
       { error: "Limite atteinte. Réessaie dans 1 heure.", code: "rate_limit_exceeded" },
       { status: 429 }
     );
+  }
+
+  const clerk = await clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const email = user.emailAddresses[0]?.emailAddress;
+
+  // Vérifier crédits ou accès illimité
+  const unlimited = await hasUnlimitedAccess(userId, email);
+  if (!unlimited) {
+    const cost = CREDIT_COSTS.jd_analysis;
+    const deduction = await deductCredits(userId, cost, "jd_analysis");
+    if (!deduction.success) {
+      return NextResponse.json(
+        { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: cost },
+        { status: 402 }
+      );
+    }
   }
 
   let rawBody: unknown;

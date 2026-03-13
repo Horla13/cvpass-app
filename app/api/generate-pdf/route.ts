@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { canUsePremiumFeature } from "@/lib/billing";
+import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
@@ -25,12 +25,15 @@ export async function POST(req: NextRequest) {
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
-  const allowed = await canUsePremiumFeature(userId, email);
-  if (!allowed) {
-    return NextResponse.json(
-      { error: "PREMIUM_REQUIRED", message: "Exportez votre CV optimisé en PDF avec un pass CVpass." },
-      { status: 403 }
-    );
+  const unlimited = await hasUnlimitedAccess(userId, email);
+  if (!unlimited) {
+    const deduction = await deductCredits(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    if (!deduction.success) {
+      return NextResponse.json(
+        { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
+        { status: 402 }
+      );
+    }
   }
 
   let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string };

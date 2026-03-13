@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { AppHeader } from "@/components/AppHeader";
+
+export const metadata: Metadata = {
+  title: "Mentions légales – CVpass",
+  robots: { index: false, follow: false },
+};
 
 export default function MentionsLegalesPage() {
   return (

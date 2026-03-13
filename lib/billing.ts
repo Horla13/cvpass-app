@@ -88,3 +88,103 @@ export async function canAnalyze(userId: string, email?: string): Promise<Billin
     return { allowed: false, reason: "quota_exceeded" }; // Fail closed
   }
 }
+
+// ── Système de crédits ──
+
+export const CREDIT_COSTS = {
+  ats_analysis: 1,
+  jd_analysis: 2,
+  pdf_export: 1,
+} as const;
+
+export type CreditAction = keyof typeof CREDIT_COSTS;
+
+export async function getUserCredits(userId: string): Promise<number> {
+  const admin = getSupabaseAdmin();
+  const { data } = await admin
+    .from("user_credits")
+    .select("balance")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (data) return data.balance;
+
+  // Auto-initialiser avec 2 crédits pour les nouveaux utilisateurs
+  const { data: inserted } = await admin
+    .from("user_credits")
+    .upsert({ user_id: userId, balance: 2, lifetime_earned: 2 })
+    .select("balance")
+    .single();
+
+  return inserted?.balance ?? 2;
+}
+
+export async function deductCredits(
+  userId: string,
+  amount: number,
+  reason: string
+): Promise<{ success: boolean; newBalance?: number; error?: string }> {
+  const admin = getSupabaseAdmin();
+
+  const balance = await getUserCredits(userId);
+  if (balance < amount) {
+    return { success: false, error: "insufficient_credits" };
+  }
+
+  const newBalance = balance - amount;
+  const { error } = await admin
+    .from("user_credits")
+    .update({ balance: newBalance, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
+
+  if (error) return { success: false, error: error.message };
+
+  await admin.from("credit_transactions").insert({
+    user_id: userId,
+    amount: -amount,
+    reason,
+  });
+
+  return { success: true, newBalance };
+}
+
+export async function addCredits(
+  userId: string,
+  amount: number,
+  reason: string
+): Promise<{ success: boolean; newBalance?: number }> {
+  const admin = getSupabaseAdmin();
+
+  const currentBalance = await getUserCredits(userId);
+  const newBalance = currentBalance + amount;
+
+  await admin
+    .from("user_credits")
+    .upsert({
+      user_id: userId,
+      balance: newBalance,
+      lifetime_earned: currentBalance + amount,
+      updated_at: new Date().toISOString(),
+    });
+
+  await admin.from("credit_transactions").insert({
+    user_id: userId,
+    amount,
+    reason,
+  });
+
+  return { success: true, newBalance };
+}
+
+export async function hasUnlimitedAccess(userId: string, email?: string): Promise<boolean> {
+  if (email && (await isEarlyAccess(email))) return true;
+
+  const admin = getSupabaseAdmin();
+  const { data: sub } = await admin
+    .from("subscriptions")
+    .select("plan, status")
+    .eq("user_id", userId)
+    .single();
+
+  return !!(sub && sub.plan === "monthly" && sub.status === "active");
+}

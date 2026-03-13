@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { extractTextFromBuffer } from "@/lib/parse-document";
+import { checkRateLimitWith } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  const { allowed } = await checkRateLimitWith(`parse-cv:${userId}`, 20, "1 h");
+  if (!allowed) {
+    return NextResponse.json({ error: "Trop d'uploads. Réessayez dans 1 heure." }, { status: 429 });
   }
 
   const formData = await req.formData();

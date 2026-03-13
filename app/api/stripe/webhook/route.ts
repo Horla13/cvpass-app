@@ -1,11 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { addCredits } from "@/lib/billing";
 
 export const dynamic = "force-dynamic";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
+}
+
+/**
+ * Loyalty discount: -5% per month, capped at month 6 (max -25%).
+ * Month 1 = full price (no discount on first invoice).
+ * Month 2 = 5%, Month 3 = 10%, ..., Month 6+ = 25%.
+ */
+function getLoyaltyDiscountPercent(subscriptionStartEpoch: number): number {
+  const monthsActive = Math.floor(
+    (Date.now() / 1000 - subscriptionStartEpoch) / (30.44 * 24 * 60 * 60)
+  );
+  // monthsActive = 0 for the first invoice, 1 after ~1 month, etc.
+  if (monthsActive <= 0) return 0;
+  return Math.min(monthsActive * 5, 25);
 }
 
 export async function POST(req: NextRequest) {
@@ -28,8 +43,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Signature invalide" }, { status: 400 });
   }
 
+  const stripe = getStripe();
   const admin = getSupabaseAdmin();
 
+  // ── Checkout completed ──
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const userId = session.metadata?.userId;
@@ -52,6 +69,8 @@ export async function POST(req: NextRequest) {
         },
         { onConflict: "user_id" }
       );
+      // Créditer 4 crédits pour le pack "Coup de pouce"
+      await addCredits(userId, 4, "purchase_pack");
     }
 
     if (plan === "monthly") {
@@ -70,6 +89,46 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // ── Invoice created (draft) — apply loyalty discount on renewals ──
+  if (event.type === "invoice.created") {
+    const invoice = event.data.object as Stripe.Invoice;
+    const subscriptionId =
+      invoice.parent?.type === "subscription_details"
+        ? (invoice.parent.subscription_details?.subscription as string)
+        : undefined;
+
+    // Only apply to subscription renewal invoices (not the first one)
+    if (subscriptionId && invoice.billing_reason === "subscription_cycle") {
+      try {
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        const startEpoch = subscription.start_date ?? subscription.created;
+        const discountPercent = getLoyaltyDiscountPercent(startEpoch);
+
+        if (discountPercent > 0 && invoice.subtotal > 0) {
+          // Create a one-off coupon for this exact percentage
+          const coupon = await stripe.coupons.create({
+            percent_off: discountPercent,
+            duration: "once",
+            name: `Fidélité -${discountPercent}%`,
+          });
+
+          // Apply the coupon discount to this invoice
+          await stripe.invoices.update(invoice.id, {
+            discounts: [{ coupon: coupon.id }],
+          });
+
+          console.log(
+            `Loyalty discount applied: -${discountPercent}% on invoice ${invoice.id} for sub ${subscriptionId}`
+          );
+        }
+      } catch (e) {
+        // Don't block the webhook if discount application fails
+        console.error("Loyalty discount error:", e);
+      }
+    }
+  }
+
+  // ── Subscription deleted ──
   if (event.type === "customer.subscription.deleted") {
     const sub = event.data.object as Stripe.Subscription;
     await admin
@@ -78,6 +137,7 @@ export async function POST(req: NextRequest) {
       .eq("stripe_subscription_id", sub.id);
   }
 
+  // ── Payment succeeded ──
   if (event.type === "invoice.payment_succeeded") {
     const invoice = event.data.object as Stripe.Invoice;
     const subscriptionId =
@@ -92,6 +152,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // ── Payment failed ──
   if (event.type === "invoice.payment_failed") {
     const invoice = event.data.object as Stripe.Invoice;
     const subscriptionId =

@@ -15,6 +15,7 @@ interface Analysis {
   score_avant: number;
   gaps: Omit<Gap, "status">[];
   resume: string;
+  job_title?: string;
 }
 
 interface CVPassStore {
@@ -24,6 +25,7 @@ interface CVPassStore {
   score_avant: number;
   scoreActuel: number;
   resume: string;
+  jobTitle: string;
   coverLetter: string;
   setCvText: (text: string) => void;
   setJobOffer: (offer: string) => void;
@@ -48,6 +50,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
   score_avant: 0,
   scoreActuel: 0,
   resume: "",
+  jobTitle: "",
   coverLetter: "",
 
   setCvText: (text) => set({ cvText: text }),
@@ -60,6 +63,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
       scoreActuel: analysis.score_avant,
       gaps,
       resume: analysis.resume,
+      jobTitle: analysis.job_title ?? "",
     });
   },
 
@@ -87,6 +91,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
       score_avant: 0,
       scoreActuel: 0,
       resume: "",
+      jobTitle: "",
       coverLetter: "",
     }),
 }));

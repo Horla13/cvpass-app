@@ -58,6 +58,37 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "CVpass",
+      url: "https://cvpass.fr",
+      logo: "https://cvpass.fr/icon.png",
+      sameAs: [],
+    },
+    {
+      "@type": "WebSite",
+      name: "CVpass",
+      url: "https://cvpass.fr",
+      description: "Scanner IA gratuit : analyse ton CV, calcule ton score ATS et réécrit automatiquement chaque point faible.",
+      inLanguage: "fr",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "CVpass",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      offers: [
+        { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Gratuit" },
+        { "@type": "Offer", price: "2.90", priceCurrency: "EUR", name: "Coup de pouce" },
+        { "@type": "Offer", price: "8.90", priceCurrency: "EUR", name: "Recherche Active", priceSpecification: { "@type": "UnitPriceSpecification", price: "8.90", priceCurrency: "EUR", unitText: "MONTH" } },
+      ],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -65,6 +96,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${plusJakarta.variable} ${dmSans.variable} antialiased`}>
         <ClerkProvider localization={frFR}>
           <PostHogProvider>
