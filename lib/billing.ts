@@ -183,9 +183,19 @@ export async function hasUnlimitedAccess(userId: string, email?: string): Promis
   const admin = getSupabaseAdmin();
   const { data: sub } = await admin
     .from("subscriptions")
-    .select("plan, status")
+    .select("plan, status, pass_expires_at")
     .eq("user_id", userId)
     .single();
 
-  return !!(sub && sub.plan === "monthly" && sub.status === "active");
+  if (!sub || sub.status !== "active") return false;
+
+  if (sub.plan === "monthly") {
+    // Prepaid plans have an expiration date
+    if (sub.pass_expires_at) {
+      return new Date(sub.pass_expires_at) > new Date();
+    }
+    return true; // Legacy subscriptions without expiration
+  }
+
+  return false;
 }

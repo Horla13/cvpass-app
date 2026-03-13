@@ -49,7 +49,7 @@ export default function AnalyzingModal({ type }: { type: "ats" | "jd" }) {
         </p>
 
         {/* Progress dots */}
-        <div className="flex items-center justify-center gap-1.5 mt-4">
+        <div className="flex items-center justify-center gap-1.5 mt-4 mb-5">
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
@@ -59,6 +59,11 @@ export default function AnalyzingModal({ type }: { type: "ats" | "jd" }) {
             />
           ))}
         </div>
+
+        <p className="text-[12px] text-gray-400 flex items-center justify-center gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+          Powered by advanced AI models for accurate results
+        </p>
       </div>
     </div>
   );

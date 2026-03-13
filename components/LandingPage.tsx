@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Show } from "@clerk/nextjs";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
 import { ScoreGauge } from "@/components/ScoreGauge";
+import { useStore } from "@/lib/store";
 
 export function LandingPage() {
+  const router = useRouter();
+  const setCvText = useStore((s) => s.setCvText);
   const [counterValue, setCounterValue] = useState("+1 200");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -135,10 +142,75 @@ export function LandingPage() {
               </Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/dashboard" className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
-                Analyser mon CV gratuitement
-                <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </Link>
+              {/* CV upload widget — like cvcomp */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.docx"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) setSelectedFile(f);
+                }}
+              />
+              {!selectedFile ? (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="inline-flex items-center gap-2.5 bg-white border-2 border-dashed border-gray-300 hover:border-brand-green text-gray-600 hover:text-brand-green px-7 py-3.5 rounded-[12px] text-[15px] font-display font-semibold transition-all"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                  Choisir mon CV (PDF ou DOCX)
+                </button>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <div className="inline-flex items-center gap-2.5 bg-green-50 border border-green-200 text-green-800 px-5 py-3 rounded-[10px] text-[14px] font-medium">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    {selectedFile.name}
+                    <button
+                      onClick={() => {
+                        setSelectedFile(null);
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      }}
+                      className="ml-1 text-green-400 hover:text-green-700 transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                    </button>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      setIsUploading(true);
+                      try {
+                        const formData = new FormData();
+                        formData.append("file", selectedFile);
+                        const res = await fetch("/api/parse-cv", { method: "POST", body: formData });
+                        if (!res.ok) throw new Error();
+                        const data = await res.json();
+                        setCvText(data.text);
+                        router.push("/analyze");
+                      } catch {
+                        alert("Erreur lors de l'upload. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
+                      } finally {
+                        setIsUploading(false);
+                      }
+                    }}
+                    disabled={isUploading}
+                    className="inline-flex items-center gap-2 bg-brand-green text-white px-6 py-3 rounded-[10px] text-[15px] font-display font-bold hover:bg-green-600 hover:-translate-y-px transition-all disabled:opacity-50"
+                  >
+                    {isUploading ? "Chargement..." : "Analyser maintenant"}
+                    {!isUploading && (
+                      <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
+                  </button>
+                </div>
+              )}
             </Show>
           </div>
 

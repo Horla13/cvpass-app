@@ -7,68 +7,19 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
-import { cn } from "@/lib/utils";
 
-const plans = [
-  {
-    id: "free",
-    name: "Gratuit",
-    subtitle: "Pour découvrir, sans engagement",
-    priceLabel: "Gratuit",
-    priceMain: null,
-    priceDetail: "",
-    features: [
-      "2 analyses génériques (à vie)",
-      "Vérification compatibilité ATS",
-      "Suggestions en lecture seule",
-      "Export PDF avec filigrane",
-    ],
-    cta: "Plan actuel",
-    ctaDisabled: true,
-    highlighted: false,
-    badge: null,
-    icon: "⚡",
-  },
-  {
-    id: "pass48h",
-    name: "Coup de pouce",
-    subtitle: "Idéal pour postuler à cette offre rêvée",
-    priceLabel: null,
-    priceMain: "2,90€",
-    priceDetail: "paiement unique",
-    features: [
-      "4 crédits",
-      "Éditeur CV avec corrections IA",
-      "Export PDF propre (sans filigrane)",
-      "Crédits sans expiration",
-    ],
-    cta: "Acheter le pack",
-    ctaDisabled: false,
-    highlighted: true,
-    badge: "Le plus populaire",
-    icon: "🚀",
-  },
-  {
-    id: "monthly",
-    name: "Recherche Active",
-    subtitle: "Scans illimités pendant 30 jours",
-    priceLabel: null,
-    priceMain: "8,90€",
-    priceDetail: "par mois",
-    features: [
-      "Scans illimités",
-      "Éditeur CV avec corrections IA",
-      "Export PDF propre (sans filigrane)",
-      "Crédits conservés après résiliation",
-    ],
-    cta: "Commencer",
-    ctaDisabled: false,
-    highlighted: false,
-    badge: "Meilleure valeur",
-    icon: "👑",
-    loyaltyDiscount: true,
-  },
+const MONTHLY_PRICES = [
+  { months: 1, price: 8.90, discount: 0 },
+  { months: 2, price: 16.91, discount: 5 },
+  { months: 3, price: 24.03, discount: 10 },
+  { months: 4, price: 30.49, discount: 14 },
+  { months: 5, price: 36.31, discount: 18 },
+  { months: 6, price: 41.34, discount: 23 },
 ];
+
+function formatPrice(n: number): string {
+  return n.toFixed(2).replace(".", ",");
+}
 
 export default function PricingPage() {
   const router = useRouter();
@@ -76,6 +27,10 @@ export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [unlimited, setUnlimited] = useState(false);
+  const [selectedMonths, setSelectedMonths] = useState(1);
+
+  const monthData = MONTHLY_PRICES[selectedMonths - 1];
+  const fullPrice = selectedMonths * 8.90;
 
   useEffect(() => {
     fetch("/api/credits")
@@ -99,7 +54,7 @@ export default function PricingPage() {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId }),
+        body: JSON.stringify({ plan: planId, months: planId === "monthly" ? selectedMonths : undefined }),
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -151,101 +106,123 @@ export default function PricingPage() {
       {/* Pricing cards */}
       <section className="max-w-[1060px] mx-auto px-8 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              className={cn(
-                "relative bg-white rounded-2xl border-2 p-8 transition-all",
-                plan.highlighted
-                  ? "border-green-300 shadow-[0_4px_24px_rgba(22,163,74,0.12)]"
-                  : plan.badge === "Meilleure valeur"
-                  ? "border-blue-200 shadow-sm"
-                  : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-              )}
+          {/* Free */}
+          <div className="relative bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-gray-300 hover:shadow-sm transition-all">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[20px]">⚡</span>
+              <h3 className="font-display text-[20px] font-bold text-gray-900">Gratuit</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-5">Pour découvrir, sans engagement</p>
+            <div className="mb-1">
+              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">Gratuit</span>
+            </div>
+            <div className="mb-6" />
+            <ul className="space-y-3 mb-7">
+              {["2 analyses génériques (à vie)", "Vérification compatibilité ATS", "Suggestions en lecture seule", "Export PDF avec filigrane"].map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
+                  <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button disabled className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed">
+              Plan actuel
+            </button>
+          </div>
+
+          {/* Coup de pouce */}
+          <div className="relative bg-white rounded-2xl border-2 border-green-300 shadow-[0_4px_24px_rgba(22,163,74,0.12)] p-8 transition-all">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap">
+              Le plus populaire
+            </div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[20px]">🚀</span>
+              <h3 className="font-display text-[20px] font-bold text-gray-900">Coup de pouce</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-5">Idéal pour postuler à cette offre rêvée</p>
+            <div className="flex items-baseline gap-1 mb-1">
+              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">2,90&euro;</span>
+            </div>
+            <p className="text-[13px] text-gray-400 mb-6">paiement unique</p>
+            <ul className="space-y-3 mb-7">
+              {["4 crédits", "Éditeur CV avec corrections IA", "Export PDF propre (sans filigrane)", "Crédits sans expiration"].map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
+                  <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handlePlanClick("pass48h")}
+              disabled={loading === "pass48h"}
+              className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200 transition-all disabled:opacity-50"
             >
-              {plan.badge && (
-                <div className={cn(
-                  "absolute -top-3.5 left-1/2 -translate-x-1/2 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap",
-                  plan.highlighted ? "bg-green-500" : "bg-blue-500"
-                )}>
-                  {plan.badge}
-                </div>
+              {loading === "pass48h" ? "Redirection..." : "Acheter le pack"}
+            </button>
+          </div>
+
+          {/* Recherche Active — with month selector */}
+          <div className="relative bg-white rounded-2xl border-2 border-blue-200 shadow-sm p-8 transition-all">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap">
+              Meilleure valeur
+            </div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[20px]">👑</span>
+              <h3 className="font-display text-[20px] font-bold text-gray-900">Recherche Active</h3>
+            </div>
+            <p className="text-[13px] text-gray-500 mb-5">Scans illimités pendant {selectedMonths * 30} jours</p>
+
+            {/* Price with discount */}
+            <div className="text-right mb-1">
+              {monthData.discount > 0 && (
+                <div className="text-[13px] text-gray-400 line-through">{formatPrice(fullPrice)}&euro;</div>
               )}
-
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[20px]">{plan.icon}</span>
-                <h3 className="font-display text-[20px] font-bold text-gray-900">{plan.name}</h3>
-              </div>
-              <p className="text-[13px] text-gray-500 mb-5">{plan.subtitle}</p>
-
-              {/* Price */}
-              {plan.priceLabel ? (
-                <div className="mb-1">
-                  <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">{plan.priceLabel}</span>
-                </div>
-              ) : (
-                <div className="flex items-baseline gap-1 mb-1">
-                  <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">{plan.priceMain}</span>
-                </div>
-              )}
-              {plan.priceDetail && (
-                <p className="text-[13px] text-gray-400 mb-6">{plan.priceDetail}</p>
-              )}
-              {!plan.priceDetail && <div className="mb-6" />}
-
-              {/* Features */}
-              <ul className="space-y-3 mb-7">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
-                    <svg className={cn("mt-0.5 flex-shrink-0", plan.highlighted ? "text-green-500" : plan.id === "monthly" ? "text-blue-500" : "text-green-500")} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <button
-                onClick={() => handlePlanClick(plan.id)}
-                disabled={plan.ctaDisabled || loading === plan.id}
-                className={cn(
-                  "w-full py-3.5 rounded-xl text-[14px] font-semibold transition-all disabled:cursor-not-allowed",
-                  plan.ctaDisabled
-                    ? "bg-gray-100 text-gray-400 border border-gray-200"
-                    : plan.highlighted
-                    ? "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200"
-                    : plan.id === "monthly"
-                    ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200"
-                    : "bg-white text-gray-800 border border-gray-200 hover:border-gray-400"
-                )}
-              >
-                {loading === plan.id ? "Redirection..." : plan.cta}
-              </button>
-
-              {/* Loyalty discount visual */}
-              {"loyaltyDiscount" in plan && plan.loyaltyDiscount && (
-                <div className="mt-5 pt-4 border-t border-gray-100">
-                  <p className="text-[11px] text-blue-500 font-semibold uppercase tracking-wider mb-2.5">
-                    -5% chaque mois de fidélité
-                  </p>
-                  <div className="space-y-1.5">
-                    {[
-                      { month: "Mois 1", price: "8,90" },
-                      { month: "Mois 2", price: "8,46" },
-                      { month: "Mois 3", price: "8,03" },
-                      { month: "Mois 6+", price: "6,88" },
-                    ].map((row) => (
-                      <div key={row.month} className="flex items-center justify-between text-[11px]">
-                        <span className="text-gray-400">{row.month}</span>
-                        <span className="font-semibold text-gray-700">{row.price}&euro;</span>
-                      </div>
-                    ))}
-                  </div>
+              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">{formatPrice(monthData.price)}&euro;</span>
+              {monthData.discount > 0 && (
+                <div className="text-[13px] text-green-600 font-semibold">
+                  -{monthData.discount}% ({formatPrice(fullPrice - monthData.price)}&euro; d&apos;économie)
                 </div>
               )}
             </div>
-          ))}
+            <p className="text-[13px] text-gray-400 mb-4 text-right">pour {selectedMonths} mois</p>
+
+            {/* Month selector */}
+            <div className="flex items-center justify-center gap-4 mb-5">
+              <button
+                onClick={() => setSelectedMonths(Math.max(1, selectedMonths - 1))}
+                disabled={selectedMonths <= 1}
+                className="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              </button>
+              <span className="text-[16px] font-bold text-gray-900 min-w-[80px] text-center">
+                {selectedMonths} mois
+              </span>
+              <button
+                onClick={() => setSelectedMonths(Math.min(6, selectedMonths + 1))}
+                disabled={selectedMonths >= 6}
+                className="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+              </button>
+            </div>
+
+            <ul className="space-y-3 mb-7">
+              {["Scans illimités", "Éditeur CV avec corrections IA", "Export PDF propre illimité", "Crédits conservés après résiliation"].map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
+                  <svg className="mt-0.5 flex-shrink-0 text-blue-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handlePlanClick("monthly")}
+              disabled={loading === "monthly"}
+              className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200 transition-all disabled:opacity-50"
+            >
+              {loading === "monthly" ? "Redirection..." : "Passer en illimité"}
+            </button>
+          </div>
         </div>
       </section>
 

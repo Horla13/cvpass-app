@@ -74,13 +74,15 @@ export async function POST(req: NextRequest) {
     }
 
     if (plan === "monthly") {
+      const months = parseInt(session.metadata?.months ?? "1", 10);
+      const expiresAt = new Date(Date.now() + months * 30 * 24 * 60 * 60 * 1000).toISOString();
       await admin.from("subscriptions").upsert(
         {
           user_id: userId,
           stripe_customer_id: session.customer as string,
-          stripe_subscription_id: session.subscription as string,
+          stripe_subscription_id: null,
           plan: "monthly",
-          pass_expires_at: null,
+          pass_expires_at: expiresAt,
           status: "active",
           updated_at: new Date().toISOString(),
         },

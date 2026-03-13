@@ -11,12 +11,58 @@ export interface Gap {
   status: "pending" | "accepted" | "ignored";
 }
 
+export interface MissingKeyword {
+  keyword: string;
+  in_resume: boolean;
+  jd_mentions: number;
+}
+
+export interface KeywordFrequency {
+  keyword: string;
+  jd_count: number;
+  resume_count: number;
+  status: "matched" | "missing" | "partial";
+}
+
+export interface QualityCheck {
+  title: string;
+  description: string;
+  status: "pass" | "warning" | "fail";
+}
+
+export interface QualitySection {
+  title: string;
+  description: string;
+  impact_label: string;
+  tip: string;
+  checks: QualityCheck[];
+}
+
+export interface JdMatchData {
+  missing_hard_skills: MissingKeyword[];
+  keyword_frequency: KeywordFrequency[];
+  missing_keywords_tags: string[];
+  strengths: string[];
+  areas_to_improve: string[];
+  category_scores: {
+    keyword_match: number;
+    title_alignment: number;
+    impact_density: number;
+    seniority_fit: number;
+    relevancy: number;
+  };
+  quality_sections: QualitySection[];
+}
+
 interface Analysis {
   score_avant: number;
   gaps: Omit<Gap, "status">[];
   resume: string;
   job_title?: string;
+  jd_match?: JdMatchData;
 }
+
+export type AnalysisType = "ats" | "jd";
 
 interface CVPassStore {
   cvText: string;
@@ -27,8 +73,11 @@ interface CVPassStore {
   resume: string;
   jobTitle: string;
   coverLetter: string;
+  analysisType: AnalysisType;
+  jdMatch: JdMatchData | null;
   setCvText: (text: string) => void;
   setJobOffer: (offer: string) => void;
+  setAnalysisType: (type: AnalysisType) => void;
   setAnalysis: (analysis: Analysis) => void;
   acceptGap: (id: string) => void;
   ignoreGap: (id: string) => void;
@@ -52,9 +101,12 @@ export const useStore = create<CVPassStore>((set, get) => ({
   resume: "",
   jobTitle: "",
   coverLetter: "",
+  analysisType: "ats" as AnalysisType,
+  jdMatch: null,
 
   setCvText: (text) => set({ cvText: text }),
   setJobOffer: (offer) => set({ jobOffer: offer }),
+  setAnalysisType: (type) => set({ analysisType: type }),
 
   setAnalysis: (analysis) => {
     const gaps: Gap[] = analysis.gaps.map((g) => ({ ...g, status: "pending" }));
@@ -64,6 +116,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
       gaps,
       resume: analysis.resume,
       jobTitle: analysis.job_title ?? "",
+      jdMatch: analysis.jd_match ?? null,
     });
   },
 
@@ -93,5 +146,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
       resume: "",
       jobTitle: "",
       coverLetter: "",
+      analysisType: "ats" as AnalysisType,
+      jdMatch: null,
     }),
 }));

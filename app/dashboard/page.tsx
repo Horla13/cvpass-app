@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { usePostHog } from "posthog-js/react";
 import { useStore } from "@/lib/store";
@@ -30,7 +30,15 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("fr-FR");
 }
 
-export default function DashboardPage() {
+export default function DashboardPageWrapper() {
+  return (
+    <Suspense>
+      <DashboardPage />
+    </Suspense>
+  );
+}
+
+function DashboardPage() {
   const router = useRouter();
   useUser();
   const posthog = usePostHog();
@@ -39,8 +47,11 @@ export default function DashboardPage() {
   const cvText = useStore((s) => s.cvText);
   const setJobOffer = useStore((s) => s.setJobOffer);
   const setAnalysis = useStore((s) => s.setAnalysis);
+  const setStoreAnalysisType = useStore((s) => s.setAnalysisType);
 
-  const [step, setStep] = useState<Step>("select");
+  const searchParams = useSearchParams();
+  const initialStep = searchParams.get("step") as Step | null;
+  const [step, setStep] = useState<Step>(initialStep === "type" ? "type" : "select");
   const [analysisType, setAnalysisType] = useState<"ats" | "jd">("jd");
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -118,6 +129,7 @@ export default function DashboardPage() {
   // Choose analysis type
   const handleChooseType = (type: "ats" | "jd") => {
     setAnalysisType(type);
+    setStoreAnalysisType(type);
     if (type === "jd") {
       setStep("jd");
     } else {
@@ -150,6 +162,7 @@ export default function DashboardPage() {
         body: JSON.stringify({
           cvText,
           jobOffer: jobOffer || "Analyse ATS générale — vérifier la compatibilité avec les standards de recrutement.",
+          analysisType: type,
         }),
       });
 
