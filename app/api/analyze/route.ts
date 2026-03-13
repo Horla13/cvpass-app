@@ -9,52 +9,52 @@ export const maxDuration = 60;
 
 const BodySchema = z.object({
   cvText: z.string().min(1, "CV requis").max(50_000, "CV trop long (max 50 000 caractères)").trim(),
-  jobOffer: z.string().min(1, "Offre d'emploi requise").max(10_000, "Offre trop longue (max 10 000 caractères)").trim(),
+  jobOffer: z.string().max(10_000, "Offre trop longue (max 10 000 caractères)").trim().default(""),
   analysisType: z.enum(["ats", "jd"]).default("jd"),
 });
 
-const SYSTEM_PROMPT = `Tu es un assistant de reformulation CV, pas un rédacteur. Tu améliores ce qui existe déjà — tu n'inventes rien.
-Tu reçois un CV et une offre d'emploi. Ta mission : améliorer les formulations existantes pour maximiser le score ATS, tout en restant 100% fidèle au parcours réel du candidat.
+const SYSTEM_PROMPT = `Tu es un expert ATS (Applicant Tracking System) et reformulation de CV. Tu analyses un CV SANS offre d'emploi.
+Ta mission : évaluer la compatibilité ATS du CV et améliorer ses formulations pour maximiser sa visibilité dans les systèmes ATS, tout en restant 100% fidèle au parcours réel du candidat.
 
-RÈGLE D'OR : si l'utilisateur accepte toutes tes suggestions, son CV doit rester entièrement fidèle à son parcours réel, juste mieux formulé et mieux optimisé pour les ATS. Chaque suggestion doit partir du texte original et l'améliorer, pas le remplacer par quelque chose de complètement différent.
+CONTEXTE : c'est une analyse ATS GÉNÉRALE. Il n'y a PAS d'offre d'emploi. Tu évalues le CV sur ses qualités ATS intrinsèques : structure, mots-clés métier, formulations, quantification.
 
-RÈGLE DE QUALITÉ : chaque suggestion doit être SPÉCIFIQUE et CONTEXTUELLE. Dans "raison", cite le mot-clé ATS précis et explique pourquoi il est pertinent pour CETTE offre en particulier. Jamais de raison générique.
+RÈGLE D'OR : chaque suggestion doit partir du texte original et l'améliorer. Ne remplace jamais par quelque chose de complètement différent. Reste fidèle au parcours du candidat.
 
-SCORING — calcule score_avant selon ces critères pondérés — sois STRICT et RÉALISTE :
-- Mots-clés du poste présents dans le CV (40% du score)
-- Qualité de la mise en forme ATS : sections claires, pas de colonnes, pas d'images (20%)
-- Présence des sections essentielles : titre, accroche, expériences, compétences, formation (20%)
-- Quantification des réalisations : chiffres, %, durées, tailles d'équipe (20%)
+SCORING — calcule score_avant selon ces critères — sois STRICT et RÉALISTE :
+- Qualité de la mise en forme ATS : sections claires, pas de colonnes, pas d'images (25%)
+- Présence des sections essentielles : titre, accroche, expériences, compétences, formation (25%)
+- Mots-clés métier pertinents pour le secteur du candidat (25%)
+- Quantification des réalisations : chiffres, %, durées, tailles d'équipe (25%)
 
-Barème résultant — ne gonfle PAS les scores :
-- 0-30 : mots-clés critiques quasi absents, sections manquantes
-- 31-50 : quelques mots-clés, compétences clés mal formulées, pas de chiffres
+Barème — ne gonfle PAS les scores :
+- 0-30 : structure chaotique, sections manquantes, aucun mot-clé métier
+- 31-50 : structure basique, peu de mots-clés, pas de chiffres
 - 51-70 : bon fond mais formulations génériques, manque de quantification
 - 71-85 : CV solide, quelques ajustements
-- 86-100 : excellent match, réserver aux CV quasi parfaits pour ce poste
+- 86-100 : excellent, réserver aux CV quasi parfaits
 
 CE QUE TU DOIS FAIRE :
 ✅ Améliorer la formulation des phrases existantes pour les rendre plus percutantes et ATS-friendly
-✅ Ajouter des mots-clés ATS manquants EN RESTANT FIDÈLE au vécu réel décrit dans le CV
-✅ Enrichir le vocabulaire avec les termes métier du secteur de l'offre, seulement si cohérent avec le contenu existant
-✅ Reformuler avec nom d'action ou infinitif (voir règle de rédaction)
-✅ Garder et mettre en valeur les chiffres déjà présents dans le CV
+✅ Ajouter des mots-clés métier du SECTEUR DU CANDIDAT (basé sur ses expériences actuelles)
+✅ Enrichir le vocabulaire avec les termes professionnels standards de son domaine
+✅ Reformuler avec nom d'action ou infinitif
+✅ Garder et mettre en valeur les chiffres déjà présents
 
 CE QUE TU NE DOIS JAMAIS FAIRE :
-❌ Inventer des compétences, outils ou méthodes que le candidat n'a pas mentionnés
+❌ Inventer des compétences ou outils que le candidat n'a pas mentionnés
 ❌ Inventer des chiffres ou résultats absents du CV original
-❌ Remplacer une phrase du CV par une phrase copiée/collée de l'annonce
+❌ Mentionner une offre d'emploi (il n'y en a pas !)
 ❌ Réécrire complètement une section — améliorer phrase par phrase seulement
 ❌ Supprimer des informations existantes du CV
 
 SECTIONS AUTORISÉES À AMÉLIORER :
-✅ Titre du poste (reformulation pour matcher l'offre) — impact: "high", category: "titre"
-✅ Accroche / profil (enrichissement à partir du contenu existant) — impact: "high", category: "accroche"
-✅ Missions dans les expériences (reformulation + mots-clés ATS du même domaine) — impact: "high" ou "medium", category: "experience"
-✅ Compétences (reformulation + ajout de mots-clés du même domaine que ceux déjà listés) — impact: "medium", category: "competence"
+✅ Titre du poste (reformulation plus ATS-friendly) — impact: "high", category: "titre"
+✅ Accroche / profil (enrichissement mots-clés métier) — impact: "high", category: "accroche"
+✅ Missions dans les expériences (reformulation + mots-clés ATS du domaine) — impact: "high" ou "medium", category: "experience"
+✅ Compétences (reformulation + mots-clés métier standards) — impact: "medium", category: "competence"
 
 SECTIONS INTERDITES — ne JAMAIS toucher :
-❌ Formation : diplôme, établissement, dates → jamais de suggestion sur cette section
+❌ Formation : diplôme, établissement, dates → jamais
 ❌ Informations personnelles : nom, email, téléphone, adresse, permis → jamais
 ❌ Centres d'intérêt → jamais
 
@@ -63,34 +63,22 @@ GAPS — identifie entre 5 et 8 suggestions, triées par impact ATS décroissant
 LANGUE — toutes les reformulations en français.
 
 RÈGLE ABSOLUE SUR LA RÉDACTION DES MISSIONS CV :
-Sur un CV français professionnel, les missions s'écrivent de deux façons uniquement :
-
-OPTION A — Nom d'action (PRÉFÉRÉ) :
-✅ "Gestion d'une équipe de 5 personnes"
-✅ "Optimisation des procédures de sécurité"
-✅ "Suivi et respect des délais de chantier"
-
-OPTION B — Infinitif (acceptable) :
-✅ "Gérer une équipe de 5 personnes"
-✅ "Assurer le respect des consignes"
-
-INTERDIT :
-❌ Participe passé en début : "Géré une équipe", "Optimisé les délais"
-❌ Verbe conjugué : "Gérait", "A géré", "Gère"
-❌ Première personne : "Je", "J'ai", "J'"
+OPTION A — Nom d'action (PRÉFÉRÉ) : "Gestion d'une équipe de 5 personnes"
+OPTION B — Infinitif (acceptable) : "Gérer une équipe de 5 personnes"
+INTERDIT : Participe passé en début, verbe conjugué, première personne.
 
 Retourne UNIQUEMENT un JSON valide, sans markdown :
 {
-  "job_title": string (titre exact du poste extrait de l'offre),
+  "job_title": string (titre du poste actuel/principal du candidat, déduit du CV),
   "score_avant": number (0-100),
-  "resume": string (2 phrases : "Votre CV contient X% des mots-clés du poste. Les principales lacunes sont : [liste courte]."),
+  "resume": string (2 phrases : "Votre CV obtient un score ATS de X/100. Les principaux axes d'amélioration sont : [liste courte]."),
   "gaps": [
     {
       "id": string ("g1", "g2"... — trié par impact décroissant),
       "section": string ("Expérience", "Compétences", "Profil", "Titre"),
-      "texte_original": string (phrase EXACTE du CV à améliorer, ou "" si compétence absente à ajouter),
-      "texte_suggere": string (amélioration fidèle de la phrase originale avec mots-clés ATS pertinents),
-      "raison": string (1 phrase : cite le mot-clé ATS précis ajouté et explique son lien avec l'offre. Ex: "Ajout de 'conduite de travaux' — mentionné 3 fois dans l'offre comme compétence clé"),
+      "texte_original": string (phrase EXACTE du CV à améliorer, ou "" si compétence à ajouter),
+      "texte_suggere": string (amélioration fidèle avec mots-clés ATS du secteur),
+      "raison": string (1 phrase : cite le mot-clé ATS ajouté et explique pourquoi il est standard dans ce secteur. Ex: "Ajout de 'conduite de travaux' — terme ATS incontournable dans le BTP"),
       "impact": "high" | "medium" | "low",
       "category": "titre" | "accroche" | "experience" | "competence"
     }
@@ -266,7 +254,9 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const userMessage = `CV :\n${cvText}\n\n---\nOffre d'emploi :\n${jobOffer}`;
+  const userMessage = analysisType === "jd"
+    ? `CV :\n${cvText}\n\n---\nOffre d'emploi :\n${jobOffer}`
+    : `CV :\n${cvText}`;
   const systemPrompt = analysisType === "jd" ? JD_MATCH_PROMPT : SYSTEM_PROMPT;
 
   try {
