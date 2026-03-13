@@ -318,8 +318,8 @@ export default function ResultsPage() {
   const [downloadError, setDownloadError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!cvText) router.push("/dashboard");
-  }, [cvText, router]);
+    if (gaps.length === 0 && score_avant === 0) router.push("/dashboard");
+  }, [gaps.length, score_avant, router]);
 
   // Derived data
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);

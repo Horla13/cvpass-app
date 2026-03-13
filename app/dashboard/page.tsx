@@ -164,7 +164,10 @@ export default function DashboardPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? "Erreur lors de l'analyse. Réessayez.");
+        const msg = res.status === 504
+          ? "L'analyse a pris trop de temps. Réessayez."
+          : data.error ?? "Erreur lors de l'analyse. Réessayez.";
+        alert(msg);
         setIsAnalyzing(false);
         setStep("type");
         return;

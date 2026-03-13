@@ -4,6 +4,8 @@ import { getOpenAI } from "@/lib/openai";
 import { canUsePremiumFeature } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 
+export const maxDuration = 60;
+
 const SYSTEM_PROMPT = `Tu es un expert en rédaction de lettres de motivation françaises.
 À partir du CV et de l'offre d'emploi fournis, rédige une lettre de motivation professionnelle en français.
 
