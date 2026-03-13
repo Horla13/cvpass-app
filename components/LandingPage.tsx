@@ -360,25 +360,100 @@ export function LandingPage() {
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-14 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              Avant vs Après CVpass
+              Transformez votre CV moyen en{" "}
+              <span className="text-brand-green">aimant à entretiens</span>
             </h2>
+            <p className="text-brand-gray text-base max-w-[560px] mx-auto mt-4">
+              Découvrez comment CVpass transforme des bullet points faibles en phrases percutantes optimisées ATS
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[700px] mx-auto mb-12">
-            {/* Before */}
-            <div className="fade-up d1 rounded-[14px] border border-red-200 bg-red-50 p-8 text-center">
-              <div className="text-xs font-bold uppercase tracking-wider text-red-400 mb-3">Avant</div>
-              <div className="font-display text-[48px] font-extrabold text-red-500 tracking-tighter leading-none mb-2">34</div>
-              <div className="text-sm text-red-400">/100</div>
+
+          <div className="fade-up grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-0 lg:gap-0 items-stretch max-w-[960px] mx-auto">
+            {/* BEFORE card */}
+            <div className="rounded-t-[14px] lg:rounded-l-[14px] lg:rounded-tr-none border border-red-200 bg-gradient-to-b from-red-50/80 to-red-50/30 overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 pt-6 pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                  <span className="font-display text-[15px] font-bold text-red-500">CV Original (Avant)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-display text-[28px] font-extrabold text-red-500 leading-none">34</span>
+                  <span className="text-[13px] text-red-400 font-medium">/100</span>
+                </div>
+              </div>
+              {/* Bullet points */}
+              <div className="px-5 pb-6 space-y-2.5">
+                {[
+                  { text: "Géré une équipe de 5 personnes", badge: "Verbe faible", color: "red" },
+                  { text: "Responsable des ventes en région", badge: "Pas de chiffres", color: "red" },
+                  { text: "Aidé à améliorer les processus", badge: "Impact vague", color: "red" },
+                  { text: "Traitement des plaintes clients", badge: "Passif", color: "red" },
+                  { text: "Travaillé sur divers projets", badge: "Trop générique", color: "red" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white/70 border border-red-100 rounded-[10px] px-4 py-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-300 shrink-0"></span>
+                    <span className="flex-1 text-[13.5px] text-gray-600">{item.text}</span>
+                    <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      {item.badge}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-            {/* After */}
-            <div className="fade-up d2 rounded-[14px] border border-green-200 bg-green-50 p-8 text-center">
-              <div className="text-xs font-bold uppercase tracking-wider text-brand-green mb-3">Après</div>
-              <div className="font-display text-[48px] font-extrabold text-brand-green tracking-tighter leading-none mb-2">87</div>
-              <div className="text-sm text-green-500">/100</div>
+
+            {/* Arrow separator */}
+            <div className="hidden lg:flex items-center justify-center z-10 -mx-5">
+              <div className="w-10 h-10 rounded-full bg-brand-green shadow-lg flex items-center justify-center">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M5 12h14m0 0l-4-4m4 4l-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </div>
+            {/* Mobile arrow */}
+            <div className="flex lg:hidden items-center justify-center py-3 -my-px z-10">
+              <div className="w-10 h-10 rounded-full bg-brand-green shadow-lg flex items-center justify-center">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-4-4m4 4l4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </div>
+
+            {/* AFTER card */}
+            <div className="rounded-b-[14px] lg:rounded-r-[14px] lg:rounded-bl-none border border-green-200 bg-gradient-to-b from-green-50/40 to-white overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 pt-6 pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-brand-green"></span>
+                  <span className="font-display text-[15px] font-bold text-brand-green">CVpass Optimisé (Après)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-display text-[28px] font-extrabold text-brand-green leading-none">87</span>
+                  <span className="text-[13px] text-green-500 font-medium">/100</span>
+                </div>
+              </div>
+              {/* Bullet points */}
+              <div className="px-5 pb-6 space-y-2.5">
+                {[
+                  { text: "Pilotage d'une équipe de 5 personnes en méthode Agile", highlight: "+30% productivité" },
+                  { text: "Développement commercial en région, CA portefeuille", highlight: "1,2M€ (+18% vs objectifs)" },
+                  { text: "Optimisation des processus internes", highlight: "−40% temps de traitement" },
+                  { text: "Gestion des réclamations clients", highlight: "98% de satisfaction" },
+                  { text: "Coordination de 3 projets logiciels majeurs", highlight: "livrés en avance" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-green-50/50 border border-green-100 rounded-[10px] px-4 py-3">
+                    <span className="mt-0.5 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                    <span className="flex-1 text-[13.5px] text-brand-black">
+                      {item.text},{" "}
+                      <span className="font-semibold text-brand-green bg-green-100/60 px-1 py-0.5 rounded">{item.highlight}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
           {/* Stats */}
-          <div className="fade-up flex items-center justify-center gap-10">
+          <div className="fade-up flex items-center justify-center gap-10 mt-12">
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">+31 points</div>
               <div className="text-xs text-brand-gray mt-1">en moyenne</div>
@@ -386,7 +461,7 @@ export function LandingPage() {
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">3x</div>
-              <div className="text-xs text-brand-gray mt-1">entretiens</div>
+              <div className="text-xs text-brand-gray mt-1">plus d&apos;entretiens</div>
             </div>
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
