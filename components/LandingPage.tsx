@@ -557,6 +557,42 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* ── 7b. ANATOMY ── */}
+      <section className="py-20">
+        <div className="max-w-[1100px] mx-auto px-8">
+          <h2 className="fade-up font-display text-[24px] md:text-[30px] font-extrabold tracking-[-1.2px] text-center mb-12">
+            L&apos;anatomie d&apos;un <span className="text-brand-green">CV parfait</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            {[
+              {
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>,
+                title: "Polices standards",
+                desc: "Utilisez Arial, Calibri ou Times New Roman. Les polices décoratives ne sont pas lues correctement par les logiciels ATS.",
+              },
+              {
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>,
+                title: "Ordre antéchronologique",
+                desc: "Listez votre expérience la plus récente en premier. Les ATS et les recruteurs s'attendent à ce format.",
+              },
+              {
+                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+                title: "Coordonnées en haut",
+                desc: "Nom, téléphone, email et LinkedIn en en-tête. Les ATS extraient ces informations en priorité.",
+              },
+            ].map((tip, i) => (
+              <div key={i} className={`fade-up d${i + 1}`}>
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-50 text-brand-green mb-4">
+                  {tip.icon}
+                </div>
+                <h3 className="font-display text-[15px] font-bold text-brand-black mb-2">{tip.title}</h3>
+                <p className="text-[13px] text-brand-gray leading-relaxed max-w-[300px] mx-auto">{tip.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── 8. FEATURES ── */}
       <section id="features" className="py-24">
         <div className="max-w-[1100px] mx-auto px-8">
