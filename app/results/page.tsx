@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useShallow } from "zustand/react/shallow";
@@ -499,13 +499,7 @@ function CategorySection({
   );
 }
 
-/* ─── CV Section Parser ─── */
-interface CVSection {
-  type: "header" | "section-title" | "entry-title" | "sub-entry" | "bullet" | "text" | "blank" | "contact-line";
-  text: string;
-  rightText?: string; // for dates
-}
-
+/* ─── CV Contact Info Extractor ─── */
 interface CVContactInfo {
   name: string;
   email?: string;
@@ -519,34 +513,38 @@ function extractContactInfo(text: string): CVContactInfo {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   const info: CVContactInfo = { name: lines[0] || "Candidat" };
 
-  // Scan first 8 lines for contact details
   const headerLines = lines.slice(0, 8);
   for (const line of headerLines) {
     if (!info.email) {
-      const emailMatch = line.match(/[\w.+-]+@[\w.-]+\.\w{2,}/);
-      if (emailMatch) info.email = emailMatch[0];
+      const m = line.match(/[\w.+-]+@[\w.-]+\.\w{2,}/);
+      if (m) info.email = m[0];
     }
     if (!info.phone) {
-      const phoneMatch = line.match(/(?:\+?\d[\d\s.()-]{7,})/);
-      if (phoneMatch) info.phone = phoneMatch[0].trim();
+      const m = line.match(/(?:\+?\d[\d\s.()-]{7,})/);
+      if (m) info.phone = m[0].trim();
     }
     if (!info.linkedin) {
-      const liMatch = line.match(/linkedin\.com\/in\/[\w-]+/i);
-      if (liMatch) info.linkedin = liMatch[0];
+      const m = line.match(/linkedin\.com\/in\/[\w-]+/i);
+      if (m) info.linkedin = m[0];
     }
     if (!info.location) {
-      // Common French city/address patterns
-      const locMatch = line.match(/(?:\d{5}\s+\w+|\b(?:Paris|Lyon|Marseille|Toulouse|Nice|Nantes|Strasbourg|Montpellier|Bordeaux|Lille|Rennes|Reims|Le Havre|Saint-Étienne|Toulon)\b.*)/i);
-      if (locMatch && !line.includes("@") && !/linkedin/i.test(line)) info.location = locMatch[0].trim();
+      const m = line.match(/(?:\d{5}\s+\w+|\b(?:Paris|Lyon|Marseille|Toulouse|Nice|Nantes|Strasbourg|Montpellier|Bordeaux|Lille|Rennes|Reims|Le Havre|Saint-Étienne|Toulon)\b.*)/i);
+      if (m && !line.includes("@") && !/linkedin/i.test(line)) info.location = m[0].trim();
     }
   }
 
-  // Second line might be a title if it doesn't contain contact info
   if (lines[1] && !lines[1].includes("@") && !/\d{5}/.test(lines[1]) && !/linkedin/i.test(lines[1]) && !/^\+?\d/.test(lines[1]) && lines[1].length < 80) {
     info.title = lines[1];
   }
 
   return info;
+}
+
+/* ─── CV Section Parser ─── */
+interface CVSection {
+  type: "header" | "section-title" | "entry-title" | "sub-entry" | "bullet" | "text" | "blank" | "contact-line";
+  text: string;
+  rightText?: string;
 }
 
 function parseCVSections(text: string): CVSection[] {
@@ -653,23 +651,131 @@ function parseCVSections(text: string): CVSection[] {
   return sections;
 }
 
-/* ─── Structured CV Renderer with dark header ─── */
-function StructuredCV({
+/* ─── Editable Text Component ─── */
+function EditableText({
+  text,
+  className,
+  onSave,
+  multiline = false,
+}: {
+  text: string;
+  className?: string;
+  onSave: (newText: string) => void;
+  multiline?: boolean;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(text);
+  const ref = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+
+  useEffect(() => { setValue(text); }, [text]);
+  useEffect(() => { if (editing && ref.current) ref.current.focus(); }, [editing]);
+
+  if (editing) {
+    const shared = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-[13px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400";
+    return multiline ? (
+      <textarea
+        ref={ref as React.RefObject<HTMLTextAreaElement>}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => { setEditing(false); if (value !== text) onSave(value); }}
+        onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); setEditing(false); if (value !== text) onSave(value); } }}
+        rows={3}
+        className={cn(shared, "resize-none")}
+      />
+    ) : (
+      <input
+        ref={ref as React.RefObject<HTMLInputElement>}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => { setEditing(false); if (value !== text) onSave(value); }}
+        onKeyDown={(e) => { if (e.key === "Enter") { setEditing(false); if (value !== text) onSave(value); } }}
+        className={shared}
+      />
+    );
+  }
+
+  return (
+    <span
+      onClick={() => setEditing(true)}
+      className={cn(className, "cursor-text hover:bg-blue-50/50 hover:outline hover:outline-1 hover:outline-blue-200 rounded-sm transition-all group relative")}
+    >
+      {text}
+    </span>
+  );
+}
+
+/* ─── Suggestion Popup (inline tooltip) ─── */
+function SuggestionPopup({
+  gap,
+  onAccept,
+  onIgnore,
+  position,
+}: {
+  gap: Gap;
+  onAccept: () => void;
+  onIgnore: () => void;
+  position: { top: number; left: number };
+}) {
+  return (
+    <div
+      className="fixed z-50 w-[360px] bg-white rounded-xl border border-gray-200 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+      style={{ top: position.top + 8, left: Math.min(position.left, window.innerWidth - 380) }}
+    >
+      {/* Original — strikethrough red */}
+      <div className="px-4 pt-4">
+        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Actuel</p>
+        <p className="text-[13px] text-red-600 line-through leading-relaxed bg-red-50 rounded px-3 py-2">
+          {gap.texte_original || <span className="italic no-underline">Absent du CV</span>}
+        </p>
+      </div>
+
+      {/* Suggested — green */}
+      <div className="px-4 pt-3">
+        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Suggéré</p>
+        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">{gap.texte_suggere}</p>
+      </div>
+
+      {/* Reason */}
+      <div className="px-4 pt-2 pb-3">
+        <p className="text-[12px] text-gray-400 italic leading-relaxed">{gap.raison}</p>
+      </div>
+
+      {/* Actions */}
+      <div className="flex border-t border-gray-100">
+        <button
+          onClick={onIgnore}
+          className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          Ignorer
+        </button>
+        <button
+          onClick={onAccept}
+          className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+          Accepter
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─── A4 CV Document Renderer ─── */
+function CVDocument({
   cvText,
   gaps,
   selectedGapId,
   onSelectGap,
-  headerPhoto,
-  headerPhotoPosition,
-  headerPhotoSize,
+  onEditLine,
+  popupRef,
 }: {
   cvText: string;
   gaps: Gap[];
   selectedGapId: string | null;
-  onSelectGap: (id: string) => void;
-  headerPhoto?: string | null;
-  headerPhotoPosition?: "left" | "right";
-  headerPhotoSize?: "S" | "M" | "L";
+  onSelectGap: (id: string | null, rect?: DOMRect) => void;
+  onEditLine: (lineIndex: number, oldText: string, newText: string) => void;
+  popupRef: React.Ref<HTMLDivElement>;
 }) {
   const contactInfo = useMemo(() => extractContactInfo(cvText), [cvText]);
 
@@ -684,7 +790,6 @@ function StructuredCV({
     return text;
   }, [cvText, gaps]);
 
-  // Build matchable gaps index
   const matchableGaps = useMemo(() =>
     gaps
       .filter((g) => g.status === "pending" && g.texte_original?.trim())
@@ -692,9 +797,16 @@ function StructuredCV({
     [gaps, workingText]
   );
 
-  // Highlight a text string with gaps
-  const highlightText = (text: string) => {
-    if (matchableGaps.length === 0) return <>{text}</>;
+  // Highlight text with gap markers
+  const renderHighlightedText = (text: string, lineIdx: number) => {
+    if (matchableGaps.length === 0) {
+      return (
+        <EditableText
+          text={text}
+          onSave={(v) => onEditLine(lineIdx, text, v)}
+        />
+      );
+    }
 
     const fragments: { text: string; gapId?: string }[] = [];
     let remaining = text;
@@ -708,8 +820,14 @@ function StructuredCV({
       remaining = remaining.slice(idx + orig.length);
     }
     if (remaining) fragments.push({ text: remaining });
-
-    if (fragments.length <= 1 && !fragments[0]?.gapId) return <>{text}</>;
+    if (fragments.length <= 1 && !fragments[0]?.gapId) {
+      return (
+        <EditableText
+          text={text}
+          onSave={(v) => onEditLine(lineIdx, text, v)}
+        />
+      );
+    }
 
     return (
       <>
@@ -717,12 +835,17 @@ function StructuredCV({
           f.gapId ? (
             <span
               key={i}
-              onClick={() => onSelectGap(f.gapId!)}
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                onSelectGap(selectedGapId === f.gapId ? null : f.gapId!, rect);
+              }}
               className={cn(
-                "cursor-pointer rounded-sm px-0.5 transition-all",
+                "cursor-pointer rounded-sm px-0.5 py-px transition-all inline",
                 selectedGapId === f.gapId
-                  ? "bg-yellow-300/80 ring-2 ring-yellow-400"
-                  : "bg-yellow-200/60 hover:bg-yellow-300/70"
+                  ? "bg-amber-300 ring-2 ring-amber-400 shadow-sm"
+                  : gaps.find((g) => g.id === f.gapId)?.status === "accepted"
+                    ? "bg-green-200/60"
+                    : "bg-amber-200/70 hover:bg-amber-300/80"
               )}
             >
               {f.text}
@@ -735,99 +858,83 @@ function StructuredCV({
     );
   };
 
-  // Render using working text sections
   const workingSections = useMemo(() => parseCVSections(workingText), [workingText]);
 
-  const photoSizeClass = headerPhotoSize === "L" ? "w-20 h-20" : headerPhotoSize === "S" ? "w-12 h-12" : "w-16 h-16";
-
   return (
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+    <div ref={popupRef} className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden" style={{ minHeight: 600 }}>
       {/* ─── Dark Header ─── */}
-      <div className="bg-[#1e293b] px-8 py-6">
-        <div className={cn("flex items-center gap-6", headerPhotoPosition === "left" ? "flex-row" : "flex-row-reverse")}>
-          {/* Photo */}
-          {headerPhoto && (
-            <div className={cn("rounded-full overflow-hidden flex-shrink-0 border-2 border-white/20", photoSizeClass)}>
-              <img src={headerPhoto} alt="" className="w-full h-full object-cover" />
-            </div>
+      <div className="bg-[#111827] px-10 py-7">
+        <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{contactInfo.name}</h1>
+        {contactInfo.title && (
+          <p className="text-[14px] text-gray-300 mt-1">{contactInfo.title}</p>
+        )}
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-3">
+          {contactInfo.email && (
+            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+              {contactInfo.email}
+            </span>
           )}
-
-          {/* Name + Contact */}
-          <div className="flex-1 min-w-0">
-            <h1 className="text-[26px] font-bold text-white tracking-tight leading-tight">{contactInfo.name}</h1>
-            {contactInfo.title && (
-              <p className="text-[15px] text-slate-300 mt-0.5">{contactInfo.title}</p>
-            )}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-3">
-              {contactInfo.email && (
-                <span className="flex items-center gap-1.5 text-[12px] text-slate-400">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-                  {contactInfo.email}
-                </span>
-              )}
-              {contactInfo.phone && (
-                <span className="flex items-center gap-1.5 text-[12px] text-slate-400">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" /></svg>
-                  {contactInfo.phone}
-                </span>
-              )}
-              {contactInfo.location && (
-                <span className="flex items-center gap-1.5 text-[12px] text-slate-400">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                  {contactInfo.location}
-                </span>
-              )}
-              {contactInfo.linkedin && (
-                <span className="flex items-center gap-1.5 text-[12px] text-blue-400">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="flex-shrink-0"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                  {contactInfo.linkedin}
-                </span>
-              )}
-            </div>
-          </div>
+          {contactInfo.phone && (
+            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.64.32 1.26.56 1.85l.04.1c.16.39.08.84-.2 1.16L8.09 9.91a16 16 0 006 6l1.27-1.27c.32-.28.77-.36 1.16-.2l.1.04c.59.24 1.21.43 1.85.56A2 2 0 0120 16.92v3z" /></svg>
+              {contactInfo.phone}
+            </span>
+          )}
+          {contactInfo.location && (
+            <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+              {contactInfo.location}
+            </span>
+          )}
+          {contactInfo.linkedin && (
+            <span className="flex items-center gap-1.5 text-[12px] text-blue-400">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
+              {contactInfo.linkedin}
+            </span>
+          )}
         </div>
       </div>
 
       {/* ─── CV Body ─── */}
-      <div className="px-8 py-6 space-y-0">
+      <div className="px-10 py-8">
         {workingSections.map((section, i) => {
-          // Skip header and contact lines (rendered in dark header)
           if (section.type === "header" || section.type === "contact-line") return null;
 
           switch (section.type) {
             case "section-title":
               return (
-                <div key={i} className="mt-5 mb-3 first:mt-0">
-                  <h2 className="text-[13px] font-bold text-[#1e293b] uppercase tracking-[0.15em] border-b-2 border-[#1e293b] pb-1.5">{section.text}</h2>
+                <div key={i} className="mt-6 mb-2 first:mt-0">
+                  <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{section.text}</h2>
                 </div>
               );
             case "entry-title":
               return (
-                <div key={i} className="flex items-baseline justify-between mt-3 mb-0.5">
-                  <p className="text-[14px] font-bold text-gray-900">{highlightText(section.text)}</p>
-                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 font-medium">{section.rightText}</p>}
+                <div key={i} className="flex items-baseline justify-between mt-4 mb-0.5">
+                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(section.text, i)}</p>
+                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{section.rightText}</p>}
                 </div>
               );
             case "sub-entry":
               return (
                 <div key={i} className="flex items-baseline justify-between mb-1">
-                  <p className="text-[13px] text-gray-600 italic">{highlightText(section.text)}</p>
-                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4">{section.rightText}</p>}
+                  <p className="text-[13px] text-gray-500 italic">{renderHighlightedText(section.text, i)}</p>
+                  {section.rightText && <p className="text-[12px] text-gray-400 flex-shrink-0 ml-4">{section.rightText}</p>}
                 </div>
               );
             case "bullet":
               return (
-                <div key={i} className="flex items-start gap-2.5 pl-3 mb-1">
-                  <span className="text-[#1e293b] mt-[7px] text-[5px]">&#9679;</span>
-                  <p className="text-[13px] text-gray-700 leading-[1.6]">{highlightText(section.text)}</p>
+                <div key={i} className="flex items-start gap-2 pl-2 mb-1">
+                  <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
+                  <p className="text-[13px] text-[#111827] leading-[1.7]">{renderHighlightedText(section.text, i)}</p>
                 </div>
               );
             case "text":
               return (
-                <p key={i} className="text-[13px] text-gray-700 leading-[1.6] mb-0.5">{highlightText(section.text)}</p>
+                <p key={i} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(section.text, i)}</p>
               );
             case "blank":
-              return <div key={i} className="h-2" />;
+              return <div key={i} className="h-3" />;
             default:
               return null;
           }
@@ -840,353 +947,107 @@ function StructuredCV({
 /* ─── CV Editor Panel ─── */
 function CVEditor({
   cvText,
+  setCvText,
   gaps,
   onAccept,
   onIgnore,
 }: {
   cvText: string;
+  setCvText: (text: string) => void;
   gaps: Gap[];
   acceptedGaps: Gap[];
   onAccept: (id: string) => void;
   onIgnore: (id: string) => void;
   onAcceptAll: () => void;
 }) {
-  const pendingGaps = gaps.filter((g) => g.status === "pending");
-  const unmatchableGaps = pendingGaps.filter((g) => !g.texte_original?.trim() || !cvText.includes(g.texte_original.trim()));
   const [selectedGapId, setSelectedGapId] = useState<string | null>(null);
+  const [popupPos, setPopupPos] = useState<{ top: number; left: number } | null>(null);
   const selectedGap = gaps.find((g) => g.id === selectedGapId);
+  const popupRef = useRef<HTMLDivElement>(null);
 
-  // Header customization state
-  const [headerPhoto, setHeaderPhoto] = useState<string | null>(null);
-  const [headerPhotoPosition, setHeaderPhotoPosition] = useState<"left" | "right">("right");
-  const [headerPhotoSize, setHeaderPhotoSize] = useState<"S" | "M" | "L">("M");
-  const [showHeaderPanel, setShowHeaderPanel] = useState(true);
+  // Close popup on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        // Don't close if clicking on a highlighted span
+        const target = e.target as HTMLElement;
+        if (target.closest("[data-gap-id]")) return;
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
-  // Navigation through pending gaps
-  const navigableGaps = pendingGaps.filter((g) => g.texte_original?.trim());
-  const currentNavIndex = selectedGapId ? navigableGaps.findIndex((g) => g.id === selectedGapId) : -1;
-
-  const navigateGap = (dir: 1 | -1) => {
-    if (navigableGaps.length === 0) return;
-    const next = currentNavIndex + dir;
-    if (next >= 0 && next < navigableGaps.length) {
-      setSelectedGapId(navigableGaps[next].id);
+  const handleSelectGap = (id: string | null, rect?: DOMRect) => {
+    setSelectedGapId(id);
+    if (id && rect) {
+      setPopupPos({ top: rect.bottom + window.scrollY, left: rect.left });
+    } else {
+      setPopupPos(null);
     }
   };
 
-  // Auto-select first gap
-  useEffect(() => {
-    if (!selectedGapId && navigableGaps.length > 0) {
-      setSelectedGapId(navigableGaps[0].id);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleAcceptGap = (id: string) => {
+    onAccept(id);
+    setSelectedGapId(null);
+    setPopupPos(null);
+  };
 
-  // Keyboard shortcuts: Tab = accept, Esc = reject
+  const handleIgnoreGap = (id: string) => {
+    onIgnore(id);
+    setSelectedGapId(null);
+    setPopupPos(null);
+  };
+
+  // Inline editing: replace text in cvText
+  const handleEditLine = (_lineIndex: number, oldText: string, newText: string) => {
+    if (oldText === newText) return;
+    const updated = cvText.replace(oldText, newText);
+    setCvText(updated);
+  };
+
+  // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (!selectedGap || selectedGap.status !== "pending") return;
+      // Don't intercept when editing
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (e.key === "Tab") {
         e.preventDefault();
-        onAccept(selectedGap.id);
-        navigateGap(1);
+        handleAcceptGap(selectedGap.id);
       } else if (e.key === "Escape") {
         e.preventDefault();
-        onIgnore(selectedGap.id);
-        navigateGap(1);
+        handleIgnoreGap(selectedGap.id);
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   });
 
-  // Photo upload handler
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setHeaderPhoto(reader.result as string);
-    reader.readAsDataURL(file);
-  };
-
   return (
-    <div className="space-y-4">
-      {/* Keyboard shortcut hint */}
-      <div className="flex items-center justify-center gap-4 text-[12px] text-gray-400">
-        <span className="flex items-center gap-1.5">
-          <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-[11px] font-mono">Tab</kbd>
-          Accepter
-        </span>
-        <span className="flex items-center gap-1.5">
-          <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-[11px] font-mono">Esc</kbd>
-          Rejeter
-        </span>
-        <span>
-          Cliquez sur le texte surligné en jaune pour naviguer
-        </span>
+    <div className="relative">
+      {/* A4 CV Document */}
+      <div className="max-h-[85vh] overflow-y-auto pb-4">
+        <CVDocument
+          cvText={cvText}
+          gaps={gaps}
+          selectedGapId={selectedGapId}
+          onSelectGap={handleSelectGap}
+          onEditLine={handleEditLine}
+          popupRef={popupRef}
+        />
       </div>
 
-      {/* Main layout: CV doc + sidebar */}
-      <div className="grid lg:grid-cols-12 gap-5">
-        {/* CV Document — left side */}
-        <div className="lg:col-span-7 max-h-[85vh] overflow-y-auto pr-1">
-          <StructuredCV
-            cvText={cvText}
-            gaps={gaps}
-            selectedGapId={selectedGapId}
-            onSelectGap={setSelectedGapId}
-            headerPhoto={headerPhoto}
-            headerPhotoPosition={headerPhotoPosition}
-            headerPhotoSize={headerPhotoSize}
-          />
-        </div>
-
-        {/* Right sidebar */}
-        <div className="lg:col-span-5 space-y-4">
-          {/* Active suggestion card */}
-          {selectedGap && selectedGap.status === "pending" && (
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden sticky top-[76px]">
-              {/* Header with navigation */}
-              <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white">
-                <div className="flex items-center gap-2">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                  <span className="text-[13px] text-blue-600 font-semibold">Suggestion</span>
-                  <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full",
-                    selectedGap.impact === "high" ? "bg-red-100 text-red-600" :
-                    selectedGap.impact === "medium" ? "bg-amber-100 text-amber-600" :
-                    "bg-green-100 text-green-600"
-                  )}>
-                    {selectedGap.impact === "high" ? "Important" : selectedGap.impact === "medium" ? "Moyen" : "Faible"}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[12px] text-gray-400 font-medium">
-                    {currentNavIndex + 1}/{navigableGaps.length}
-                  </span>
-                  <button
-                    onClick={() => navigateGap(-1)}
-                    disabled={currentNavIndex <= 0}
-                    className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 disabled:opacity-30 transition-colors"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="18 15 12 9 6 15" /></svg>
-                  </button>
-                  <button
-                    onClick={() => navigateGap(1)}
-                    disabled={currentNavIndex >= navigableGaps.length - 1}
-                    className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 disabled:opacity-30 transition-colors"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Section label */}
-              <div className="px-5 py-2 border-b border-gray-50 bg-gray-50/50">
-                <span className="text-[12px] text-gray-400">Section : <span className="font-medium text-gray-600">{selectedGap.section}</span></span>
-              </div>
-
-              {/* Current */}
-              <div className="px-5 pt-4">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Actuel</p>
-                <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                  <p className="text-[13px] text-red-700 leading-relaxed">
-                    {selectedGap.texte_original || <span className="italic">Absent du CV</span>}
-                  </p>
-                </div>
-              </div>
-
-              {/* Suggested */}
-              <div className="px-5 pt-4">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-2">Suggéré</p>
-                <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-                  <p className="text-[13px] text-green-800 leading-relaxed">{selectedGap.texte_suggere}</p>
-                </div>
-              </div>
-
-              {/* Why */}
-              <div className="px-5 pt-4 pb-4">
-                <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Pourquoi ?</p>
-                <p className="text-[13px] text-gray-500 leading-relaxed italic">{selectedGap.raison}</p>
-              </div>
-
-              {/* Actions */}
-              <div className="px-5 pb-5 flex items-center gap-3">
-                <button
-                  onClick={() => { onIgnore(selectedGap.id); navigateGap(1); }}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                  Rejeter
-                  <kbd className="ml-1 px-1 py-0.5 bg-gray-100 border border-gray-200 rounded text-[9px] font-mono text-gray-400">Esc</kbd>
-                </button>
-                <button
-                  onClick={() => { onAccept(selectedGap.id); navigateGap(1); }}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-green-500 text-white rounded-xl text-[13px] font-semibold hover:bg-green-600 transition-colors"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  Accepter
-                  <kbd className="ml-1 px-1 py-0.5 bg-green-600 border border-green-400 rounded text-[9px] font-mono text-green-200">Tab</kbd>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* No selection state */}
-          {(!selectedGap || selectedGap.status !== "pending") && pendingGaps.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center">
-              <p className="text-[13px] text-gray-400">Cliquez sur le texte surligné pour examiner les suggestions</p>
-              <button
-                onClick={() => navigableGaps.length > 0 && setSelectedGapId(navigableGaps[0].id)}
-                className="mt-3 text-[13px] text-blue-500 font-semibold hover:text-blue-600"
-              >
-                Commencer la révision ({pendingGaps.length} suggestions)
-              </button>
-            </div>
-          )}
-
-          {/* All done */}
-          {pendingGaps.length === 0 && (
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" className="mx-auto mb-2"><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>
-              <p className="text-[14px] text-green-700 font-semibold">Toutes les suggestions ont été traitées !</p>
-              <p className="text-[12px] text-green-600 mt-1">Téléchargez votre CV optimisé ci-dessous.</p>
-            </div>
-          )}
-
-          {/* Customize Header Panel */}
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-            <button
-              onClick={() => setShowHeaderPanel(!showHeaderPanel)}
-              className="w-full px-5 py-3.5 flex items-center justify-between hover:bg-gray-50/50 transition-colors"
-            >
-              <span className="flex items-center gap-2 text-[14px] font-bold text-gray-800">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /></svg>
-                Personnaliser l&apos;en-tête
-              </span>
-              <svg
-                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                className={cn("text-gray-400 transition-transform", showHeaderPanel && "rotate-180")}
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-
-            {showHeaderPanel && (
-              <div className="px-5 pb-5 border-t border-gray-100 pt-4 space-y-4">
-                {/* Photo upload */}
-                <div>
-                  <p className="text-[12px] text-gray-500 font-semibold mb-2">Photo de profil</p>
-                  <div className="flex items-center gap-3">
-                    {headerPhoto ? (
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
-                        <img src={headerPhoto} alt="" className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-[12px] font-medium text-gray-700 transition-colors">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
-                        {headerPhoto ? "Changer" : "Ajouter"}
-                        <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
-                      </label>
-                      {headerPhoto && (
-                        <button
-                          onClick={() => setHeaderPhoto(null)}
-                          className="ml-2 text-[11px] text-red-400 hover:text-red-500"
-                        >
-                          Supprimer
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Position */}
-                {headerPhoto && (
-                  <div>
-                    <p className="text-[12px] text-gray-500 font-semibold mb-2">Position</p>
-                    <div className="flex gap-2">
-                      {(["left", "right"] as const).map((pos) => (
-                        <button
-                          key={pos}
-                          onClick={() => setHeaderPhotoPosition(pos)}
-                          className={cn(
-                            "flex-1 py-2 rounded-lg text-[12px] font-medium border transition-colors",
-                            headerPhotoPosition === pos
-                              ? "bg-[#1e293b] text-white border-[#1e293b]"
-                              : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-                          )}
-                        >
-                          {pos === "left" ? "Gauche" : "Droite"}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Size */}
-                {headerPhoto && (
-                  <div>
-                    <p className="text-[12px] text-gray-500 font-semibold mb-2">Taille</p>
-                    <div className="flex gap-2">
-                      {(["S", "M", "L"] as const).map((size) => (
-                        <button
-                          key={size}
-                          onClick={() => setHeaderPhotoSize(size)}
-                          className={cn(
-                            "flex-1 py-2 rounded-lg text-[12px] font-bold border transition-colors",
-                            headerPhotoSize === size
-                              ? "bg-[#1e293b] text-white border-[#1e293b]"
-                              : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-                          )}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Tips */}
-                <div className="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2.5">
-                  <p className="text-[11px] text-blue-600 leading-relaxed">
-                    <span className="font-semibold">Conseil :</span> utilisez une photo professionnelle sur fond neutre. Format carré recommandé.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Additional Suggestions — unmatchable */}
-          {unmatchableGaps.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="px-5 py-3 border-b border-gray-100">
-                <h3 className="font-display text-[14px] font-bold text-gray-800">
-                  Suggestions supplémentaires ({unmatchableGaps.length})
-                </h3>
-              </div>
-              <div className="divide-y divide-gray-100">
-                {unmatchableGaps.map((gap) => (
-                  <div key={gap.id} className="px-5 py-3">
-                    <p className="text-[13px] text-gray-700 font-medium mb-1">{gap.texte_suggere}</p>
-                    <p className="text-[12px] text-gray-400 italic mb-2">{gap.raison}</p>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => onIgnore(gap.id)} className="text-[11px] text-gray-400 hover:text-gray-600 border border-gray-200 rounded-lg px-2.5 py-1">
-                        Ignorer
-                      </button>
-                      <button onClick={() => onAccept(gap.id)} className="text-[11px] text-green-500 hover:text-green-600 border border-green-200 rounded-lg px-2.5 py-1">
-                        Accepter
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* Suggestion Popup */}
+      {selectedGap && selectedGap.status === "pending" && popupPos && (
+        <SuggestionPopup
+          gap={selectedGap}
+          onAccept={() => handleAcceptGap(selectedGap.id)}
+          onIgnore={() => handleIgnoreGap(selectedGap.id)}
+          position={popupPos}
+        />
+      )}
     </div>
   );
 }
@@ -1199,9 +1060,10 @@ export default function ResultsPage() {
   useUser();
   const posthog = usePostHog();
 
-  const { cvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch } = useStore(
+  const { cvText, setCvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch } = useStore(
     useShallow((s) => ({
       cvText: s.cvText,
+      setCvText: s.setCvText,
       gaps: s.gaps,
       score_avant: s.score_avant,
       scoreActuel: s.scoreActuel,
@@ -1721,6 +1583,7 @@ export default function ResultsPage() {
 
               <CVEditor
                 cvText={cvText}
+                setCvText={setCvText}
                 gaps={gaps}
                 acceptedGaps={acceptedGaps}
                 onAccept={handleAcceptGap}
