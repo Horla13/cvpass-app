@@ -74,6 +74,7 @@ export function LandingPage() {
 
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-7">
+            <a href="#how" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Comment ça marche</a>
             <a href="#features" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Fonctionnalités</a>
             <a href="#pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</a>
             <Show when="signed-out">
@@ -110,6 +111,7 @@ export function LandingPage() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="sm:hidden border-t border-gray-100 bg-white px-8 py-4 space-y-3">
+            <a href="#how" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Comment ça marche</a>
             <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
             <a href="#pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</a>
             <Show when="signed-out">
@@ -323,31 +325,188 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 5. HOW IT WORKS ── */}
-      <section className="py-24 bg-[#fafafa]">
+      {/* ── 5. HOW IT WORKS (detailed timeline) ── */}
+      <section id="how" className="py-24 bg-[#fafafa]">
         <div className="max-w-[1100px] mx-auto px-8">
-          <div className="text-center mb-14 fade-up">
+          <div className="text-center mb-16 fade-up">
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-3">Comment ça marche</p>
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
-              4 étapes, 30 secondes
+              Optimisez votre CV en <span className="text-brand-green">4 étapes</span>
             </h2>
-            <p className="text-brand-gray text-base max-w-[460px] mx-auto">
-              Pas d&apos;inscription requise pour votre premier essai.
+            <p className="text-brand-gray text-base max-w-[500px] mx-auto">
+              De l&apos;upload à l&apos;entretien, suivez le processus complet pour maximiser vos chances.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical line (desktop only) */}
+            <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gray-200 -translate-x-1/2" />
+
             {[
-              { n: "1", title: "Uploadez votre CV", desc: "PDF ou Word, même créé avec Canva. Notre moteur extrait tout le contenu." },
-              { n: "2", title: "Score ATS instantané", desc: "En quelques secondes, votre score s'affiche avec les points faibles identifiés." },
-              { n: "3", title: "Acceptez les suggestions", desc: "L'IA propose des réécritures. Vous acceptez ou ignorez chaque suggestion." },
-              { n: "4", title: "Téléchargez le PDF", desc: "Un PDF sobre, sans colonnes ni icônes. Conçu pour passer les logiciels RH." },
+              {
+                n: "1",
+                label: "ÉTAPE 1",
+                title: "Importez votre CV et l'offre d'emploi",
+                desc: "Uploadez votre CV en PDF ou Word — même s'il a été créé avec Canva. Puis collez l'offre d'emploi ciblée. Notre IA a besoin des deux pour comparer précisément votre profil aux attentes du recruteur.",
+                details: [
+                  "Formats acceptés : PDF, DOCX",
+                  "Détection automatique des CV Canva (image)",
+                  "Extraction intelligente du texte",
+                ],
+                mockup: (
+                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span className="text-[13px] text-brand-black font-medium">CV uploadé : MonCV.pdf</span>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-[12px] font-display font-bold text-brand-black">Collez l&apos;offre d&apos;emploi</p>
+                        <div className="bg-[#f8f9fa] border border-[#e5e7eb] rounded-lg p-3 h-20">
+                          <p className="text-[11px] text-brand-gray">Nous recherchons un chef de chantier VRD expérimenté pour piloter les travaux de voirie...</p>
+                        </div>
+                      </div>
+                      <div className="bg-brand-black text-white text-center py-2.5 rounded-[10px] text-[13px] font-display font-bold">
+                        Analyser mon CV →
+                      </div>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                n: "2",
+                label: "ÉTAPE 2",
+                title: "Recevez votre score ATS détaillé",
+                desc: "En quelques secondes, notre IA analyse votre CV et attribue un score sur 100 basé sur les mots-clés, la mise en forme, les sections essentielles et la quantification de vos réalisations.",
+                details: [
+                  "Score pondéré : mots-clés (40%), mise en forme (20%), sections (20%), chiffres (20%)",
+                  "Résumé des lacunes principales",
+                  "Comparaison avec les exigences du poste",
+                ],
+                mockup: (
+                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="p-6 flex items-center gap-6">
+                      <div className="shrink-0">
+                        <ScoreGauge score={42} size={100} strokeWidth={6} animate={false} />
+                      </div>
+                      <div className="space-y-2 flex-1">
+                        <p className="text-[13px] font-display font-bold text-brand-black">Score ATS : 42/100</p>
+                        <p className="text-[11px] text-brand-gray leading-relaxed">Votre CV contient 35% des mots-clés du poste. Lacunes : titre imprécis, pas d&apos;accroche, compétences VRD absentes.</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {["Titre", "Accroche", "Mots-clés VRD"].map((tag) => (
+                            <span key={tag} className="text-[10px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                n: "3",
+                label: "ÉTAPE 3",
+                title: "Acceptez ou ignorez chaque suggestion",
+                desc: "L'IA propose des reformulations fidèles à votre parcours. Pour chaque suggestion, vous voyez le texte original, la version améliorée, et l'explication de l'impact ATS. Vous gardez le contrôle total.",
+                details: [
+                  "Suggestions triées par impact ATS décroissant",
+                  "Badge d'impact : fort, moyen, faible",
+                  "Explication du mot-clé ATS ciblé",
+                  "Aucune invention — fidélité au parcours réel",
+                ],
+                mockup: (
+                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="p-5 space-y-3">
+                      {[
+                        { label: "Impact fort", color: "red", orig: "Géré les chantiers", sugg: "Gestion des chantiers VRD — coordination équipe et sous-traitants" },
+                        { label: "Impact moyen", color: "amber", orig: "Responsable sécurité", sugg: "Suivi et application des normes PPSPS et port des EPI" },
+                      ].map((s, i) => (
+                        <div key={i} className="border border-[#e5e7eb] rounded-[10px] p-3 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.color === "red" ? "bg-red-50 text-red-600 border border-red-200" : "bg-amber-50 text-amber-600 border border-amber-200"}`}>{s.label}</span>
+                            <span className="text-[11px] text-brand-gray">Expérience</span>
+                          </div>
+                          <p className="text-[12px] text-gray-400 line-through">{s.orig}</p>
+                          <p className="text-[12px] text-brand-black font-medium">{s.sugg}</p>
+                          <div className="flex gap-2">
+                            <span className="text-[11px] font-display font-bold text-brand-green bg-green-50 border border-green-200 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-100 transition-colors">✓ Accepter</span>
+                            <span className="text-[11px] font-display font-bold text-brand-gray bg-gray-50 border border-gray-200 px-3 py-1 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">Ignorer</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                n: "4",
+                label: "ÉTAPE 4",
+                title: "Téléchargez votre CV optimisé",
+                desc: "Votre CV est régénéré en PDF propre, sans colonnes ni icônes — conçu spécifiquement pour être lu par les logiciels ATS des recruteurs. Votre score passe en vert.",
+                details: [
+                  "PDF sobre et ATS-compatible",
+                  "Toutes les suggestions acceptées intégrées",
+                  "Score final recalculé en temps réel",
+                  "Prêt à envoyer aux recruteurs",
+                ],
+                mockup: (
+                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="p-6 text-center space-y-4">
+                      <ScoreGauge score={87} size={90} strokeWidth={6} animate={false} />
+                      <div>
+                        <p className="font-display text-[15px] font-bold text-brand-black">CV optimisé — prêt !</p>
+                        <p className="text-[11px] text-brand-gray mt-1">6/8 suggestions acceptées · Score : 42 → 87</p>
+                      </div>
+                      <div className="flex gap-2 justify-center">
+                        <div className="flex items-center gap-1.5 bg-brand-green text-white px-4 py-2 rounded-[10px] text-[12px] font-display font-bold">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          Télécharger PDF
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              },
             ].map((step, i) => (
-              <div key={step.n} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[14px] p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
-                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-50 text-brand-green text-[13px] font-display font-bold mb-4">
-                  {step.n}
+              <div key={step.n} className={`fade-up relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${i > 0 ? "mt-16 lg:mt-24" : ""}`}>
+                {/* Timeline node (desktop) */}
+                <div className="hidden lg:flex absolute left-1/2 top-0 -translate-x-1/2 z-10">
+                  <div className="w-10 h-10 rounded-full bg-brand-green text-white flex items-center justify-center font-display font-bold text-[14px] shadow-md">
+                    {step.n}
+                  </div>
                 </div>
-                <h3 className="font-display text-[15px] font-bold text-brand-black mb-2">{step.title}</h3>
-                <p className="text-[13px] text-brand-gray leading-relaxed">{step.desc}</p>
+
+                {/* Text side */}
+                <div className={`${i % 2 === 1 ? "lg:order-2" : ""}`}>
+                  <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-2">{step.label}</p>
+                  <h3 className="font-display text-[22px] md:text-[26px] font-extrabold tracking-[-0.8px] text-brand-black mb-3 leading-tight">{step.title}</h3>
+                  <p className="text-[14px] text-brand-gray leading-relaxed mb-4">{step.desc}</p>
+                  <ul className="space-y-2">
+                    {step.details.map((d, j) => (
+                      <li key={j} className="flex items-start gap-2 text-[13px] text-brand-gray">
+                        <svg className="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Mockup side */}
+                <div className={`${i % 2 === 1 ? "lg:order-1" : ""} max-w-[420px] ${i % 2 === 0 ? "lg:ml-auto" : ""}`}>
+                  {step.mockup}
+                </div>
               </div>
             ))}
           </div>
