@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { CVData } from "@/lib/pdf-restructure";
 
 export interface Gap {
   id: string;
@@ -60,6 +61,7 @@ interface Analysis {
   resume: string;
   job_title?: string;
   jd_match?: JdMatchData;
+  cv_json?: CVData | null;
 }
 
 export type AnalysisType = "ats" | "jd";
@@ -75,6 +77,7 @@ interface CVPassStore {
   coverLetter: string;
   analysisType: AnalysisType;
   jdMatch: JdMatchData | null;
+  cvJson: CVData | null;
   setCvText: (text: string) => void;
   setJobOffer: (offer: string) => void;
   setAnalysisType: (type: AnalysisType) => void;
@@ -103,6 +106,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
   coverLetter: "",
   analysisType: "ats" as AnalysisType,
   jdMatch: null,
+  cvJson: null,
 
   setCvText: (text) => set({ cvText: text }),
   setJobOffer: (offer) => set({ jobOffer: offer }),
@@ -117,6 +121,7 @@ export const useStore = create<CVPassStore>((set, get) => ({
       resume: analysis.resume,
       jobTitle: analysis.job_title ?? "",
       jdMatch: analysis.jd_match ?? null,
+      cvJson: analysis.cv_json ?? null,
     });
   },
 
@@ -148,5 +153,6 @@ export const useStore = create<CVPassStore>((set, get) => ({
       coverLetter: "",
       analysisType: "ats" as AnalysisType,
       jdMatch: null,
+      cvJson: null,
     }),
 }));

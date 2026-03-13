@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { useShallow } from "zustand/react/shallow";
 import { usePostHog } from "posthog-js/react";
 import { useStore, Gap, JdMatchData, QualitySection } from "@/lib/store";
+import type { CVData } from "@/lib/pdf-restructure";
 import { ScoreGauge } from "@/components/ScoreGauge";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
@@ -761,9 +762,10 @@ function SuggestionPopup({
   );
 }
 
-/* ─── A4 CV Document Renderer ─── */
+/* ─── A4 CV Document Renderer (from structured CVData) ─── */
 function CVDocument({
   cvText,
+  cvJson,
   gaps,
   selectedGapId,
   onSelectGap,
@@ -771,39 +773,78 @@ function CVDocument({
   popupRef,
 }: {
   cvText: string;
+  cvJson: CVData | null;
   gaps: Gap[];
   selectedGapId: string | null;
   onSelectGap: (id: string | null, rect?: DOMRect) => void;
   onEditLine: (lineIndex: number, oldText: string, newText: string) => void;
   popupRef: React.Ref<HTMLDivElement>;
 }) {
-  const contactInfo = useMemo(() => extractContactInfo(cvText), [cvText]);
-
-  // Apply accepted gap substitutions
-  const workingText = useMemo(() => {
-    let text = cvText;
-    const accepted = gaps.filter((g) => g.status === "accepted" && g.texte_original?.trim());
-    for (const gap of accepted) {
-      const orig = gap.texte_original!.trim();
-      if (text.includes(orig)) text = text.replace(orig, gap.texte_suggere);
+  // Build a flat list of all text strings from cvJson for gap matching
+  const allTexts = useMemo(() => {
+    if (!cvJson) return [];
+    const texts: string[] = [];
+    if (cvJson.profil) texts.push(cvJson.profil);
+    if (cvJson.titre) texts.push(cvJson.titre);
+    for (const exp of cvJson.experiences) {
+      if (exp.poste) texts.push(exp.poste);
+      for (const m of exp.missions) texts.push(m);
     }
-    return text;
-  }, [cvText, gaps]);
+    for (const f of cvJson.formation) {
+      if (f.diplome) texts.push(f.diplome);
+    }
+    for (const c of cvJson.competences) texts.push(c);
+    return texts;
+  }, [cvJson]);
 
-  const matchableGaps = useMemo(() =>
-    gaps
+  // Apply accepted gap substitutions to cvJson fields
+  const workingJson = useMemo(() => {
+    if (!cvJson) return null;
+    const accepted = gaps.filter((g) => g.status === "accepted" && g.texte_original?.trim());
+    if (accepted.length === 0) return cvJson;
+
+    const applyGaps = (text: string): string => {
+      let result = text;
+      for (const gap of accepted) {
+        const orig = gap.texte_original!.trim();
+        if (result.includes(orig)) result = result.replace(orig, gap.texte_suggere);
+      }
+      return result;
+    };
+
+    return {
+      ...cvJson,
+      profil: cvJson.profil ? applyGaps(cvJson.profil) : cvJson.profil,
+      titre: cvJson.titre ? applyGaps(cvJson.titre) : cvJson.titre,
+      experiences: cvJson.experiences.map((exp) => ({
+        ...exp,
+        poste: applyGaps(exp.poste),
+        missions: exp.missions.map(applyGaps),
+      })),
+      formation: cvJson.formation.map((f) => ({
+        ...f,
+        diplome: applyGaps(f.diplome),
+      })),
+      competences: cvJson.competences.map(applyGaps),
+    } as CVData;
+  }, [cvJson, gaps]);
+
+  const matchableGaps = useMemo(() => {
+    const allText = cvJson
+      ? [workingJson?.profil, workingJson?.titre, ...(workingJson?.experiences.flatMap((e) => [e.poste, ...e.missions]) ?? []), ...(workingJson?.competences ?? [])].filter(Boolean).join(" ")
+      : cvText;
+    return gaps
       .filter((g) => g.status === "pending" && g.texte_original?.trim())
-      .filter((g) => workingText.includes(g.texte_original!.trim())),
-    [gaps, workingText]
-  );
+      .filter((g) => allText.includes(g.texte_original!.trim()));
+  }, [gaps, workingJson, cvJson, cvText]);
 
   // Highlight text with gap markers
-  const renderHighlightedText = (text: string, lineIdx: number) => {
+  const renderHighlightedText = (text: string, key: string) => {
     if (matchableGaps.length === 0) {
       return (
         <EditableText
           text={text}
-          onSave={(v) => onEditLine(lineIdx, text, v)}
+          onSave={(v) => onEditLine(0, text, v)}
         />
       );
     }
@@ -824,7 +865,7 @@ function CVDocument({
       return (
         <EditableText
           text={text}
-          onSave={(v) => onEditLine(lineIdx, text, v)}
+          onSave={(v) => onEditLine(0, text, v)}
         />
       );
     }
@@ -834,7 +875,8 @@ function CVDocument({
         {fragments.map((f, i) =>
           f.gapId ? (
             <span
-              key={i}
+              key={`${key}-${i}`}
+              data-gap-id={f.gapId}
               onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 onSelectGap(selectedGapId === f.gapId ? null : f.gapId!, rect);
@@ -851,46 +893,93 @@ function CVDocument({
               {f.text}
             </span>
           ) : (
-            <span key={i}>{f.text}</span>
+            <span key={`${key}-${i}`}>{f.text}</span>
           )
         )}
       </>
     );
   };
 
-  const workingSections = useMemo(() => parseCVSections(workingText), [workingText]);
+  /* ─── Section title component ─── */
+  const SectionTitle = ({ title }: { title: string }) => (
+    <div className="mt-6 mb-2 first:mt-0">
+      <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{title}</h2>
+    </div>
+  );
+
+  /* ─── Bullet item ─── */
+  const Bullet = ({ text, id }: { text: string; id: string }) => (
+    <div className="flex items-start gap-2 pl-2 mb-1">
+      <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
+      <p className="text-[13px] text-[#111827] leading-[1.7]">{renderHighlightedText(text, id)}</p>
+    </div>
+  );
+
+  // Fallback: use heuristic parser if cvJson is null
+  if (!workingJson) {
+    const contactInfo = extractContactInfo(cvText);
+    let workingText = cvText;
+    const accepted = gaps.filter((g) => g.status === "accepted" && g.texte_original?.trim());
+    for (const gap of accepted) {
+      const orig = gap.texte_original!.trim();
+      if (workingText.includes(orig)) workingText = workingText.replace(orig, gap.texte_suggere);
+    }
+    const workingSections = parseCVSections(workingText);
+
+    return (
+      <div ref={popupRef} className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden" style={{ minHeight: 600 }}>
+        <div className="bg-[#111827] px-10 py-7">
+          <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{contactInfo.name}</h1>
+          {contactInfo.title && <p className="text-[14px] text-gray-300 mt-1">{contactInfo.title}</p>}
+        </div>
+        <div className="px-10 py-8">
+          {workingSections.map((section, i) => {
+            if (section.type === "header" || section.type === "contact-line") return null;
+            switch (section.type) {
+              case "section-title": return <SectionTitle key={i} title={section.text} />;
+              case "entry-title": return (
+                <div key={i} className="flex items-baseline justify-between mt-4 mb-0.5">
+                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(section.text, `fb-${i}`)}</p>
+                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{section.rightText}</p>}
+                </div>
+              );
+              case "bullet": return <Bullet key={i} text={section.text} id={`fb-${i}`} />;
+              case "text": return <p key={i} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(section.text, `fb-${i}`)}</p>;
+              case "blank": return <div key={i} className="h-3" />;
+              default: return null;
+            }
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Main render from structured CVData ───
+  const cv = workingJson;
 
   return (
     <div ref={popupRef} className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden" style={{ minHeight: 600 }}>
       {/* ─── Dark Header ─── */}
       <div className="bg-[#111827] px-10 py-7">
-        <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{contactInfo.name}</h1>
-        {contactInfo.title && (
-          <p className="text-[14px] text-gray-300 mt-1">{contactInfo.title}</p>
-        )}
+        <h1 className="text-[24px] font-bold text-white tracking-tight leading-tight">{cv.nom}</h1>
+        {cv.titre && <p className="text-[14px] text-gray-300 mt-1">{cv.titre}</p>}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-3">
-          {contactInfo.email && (
+          {cv.contact?.email && (
             <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-              {contactInfo.email}
+              {cv.contact.email}
             </span>
           )}
-          {contactInfo.phone && (
+          {cv.contact?.telephone && (
             <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.64.32 1.26.56 1.85l.04.1c.16.39.08.84-.2 1.16L8.09 9.91a16 16 0 006 6l1.27-1.27c.32-.28.77-.36 1.16-.2l.1.04c.59.24 1.21.43 1.85.56A2 2 0 0120 16.92v3z" /></svg>
-              {contactInfo.phone}
+              {cv.contact.telephone}
             </span>
           )}
-          {contactInfo.location && (
+          {cv.contact?.ville && (
             <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-              {contactInfo.location}
-            </span>
-          )}
-          {contactInfo.linkedin && (
-            <span className="flex items-center gap-1.5 text-[12px] text-blue-400">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-              {contactInfo.linkedin}
+              {cv.contact.ville}
             </span>
           )}
         </div>
@@ -898,47 +987,82 @@ function CVDocument({
 
       {/* ─── CV Body ─── */}
       <div className="px-10 py-8">
-        {workingSections.map((section, i) => {
-          if (section.type === "header" || section.type === "contact-line") return null;
+        {/* Profil */}
+        {cv.profil && (
+          <>
+            <SectionTitle title="Profil" />
+            <p className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(cv.profil, "profil")}</p>
+          </>
+        )}
 
-          switch (section.type) {
-            case "section-title":
-              return (
-                <div key={i} className="mt-6 mb-2 first:mt-0">
-                  <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{section.text}</h2>
+        {/* Expériences */}
+        {cv.experiences.length > 0 && (
+          <>
+            <SectionTitle title="Expérience professionnelle" />
+            {cv.experiences.map((exp, ei) => (
+              <div key={ei} className="mb-4">
+                <div className="flex items-baseline justify-between mt-3 mb-0.5">
+                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(exp.poste, `exp-${ei}`)}</p>
+                  {exp.periode && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{exp.periode}</p>}
                 </div>
-              );
-            case "entry-title":
-              return (
-                <div key={i} className="flex items-baseline justify-between mt-4 mb-0.5">
-                  <p className="text-[14px] font-bold text-[#111827]">{renderHighlightedText(section.text, i)}</p>
-                  {section.rightText && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{section.rightText}</p>}
+                {(exp.entreprise || exp.lieu) && (
+                  <p className="text-[13px] text-gray-500 italic mb-1">
+                    {[exp.entreprise, exp.lieu].filter(Boolean).join(" — ")}
+                  </p>
+                )}
+                {exp.missions.map((mission, mi) => (
+                  <Bullet key={mi} text={mission} id={`exp-${ei}-m-${mi}`} />
+                ))}
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* Formation */}
+        {cv.formation.length > 0 && (
+          <>
+            <SectionTitle title="Formation" />
+            {cv.formation.map((f, fi) => (
+              <div key={fi} className="mb-2">
+                <div className="flex items-baseline justify-between mt-3 mb-0.5">
+                  <p className="text-[14px] font-bold text-[#111827]">{f.diplome}</p>
+                  {f.periode && <p className="text-[12px] text-gray-500 flex-shrink-0 ml-4 italic">{f.periode}</p>}
                 </div>
-              );
-            case "sub-entry":
-              return (
-                <div key={i} className="flex items-baseline justify-between mb-1">
-                  <p className="text-[13px] text-gray-500 italic">{renderHighlightedText(section.text, i)}</p>
-                  {section.rightText && <p className="text-[12px] text-gray-400 flex-shrink-0 ml-4">{section.rightText}</p>}
-                </div>
-              );
-            case "bullet":
-              return (
-                <div key={i} className="flex items-start gap-2 pl-2 mb-1">
-                  <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
-                  <p className="text-[13px] text-[#111827] leading-[1.7]">{renderHighlightedText(section.text, i)}</p>
-                </div>
-              );
-            case "text":
-              return (
-                <p key={i} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{renderHighlightedText(section.text, i)}</p>
-              );
-            case "blank":
-              return <div key={i} className="h-3" />;
-            default:
-              return null;
-          }
-        })}
+                {f.etablissement && <p className="text-[13px] text-gray-500 italic">{f.etablissement}</p>}
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* Compétences */}
+        {cv.competences.length > 0 && (
+          <>
+            <SectionTitle title="Compétences" />
+            <div className="flex flex-wrap gap-2 mt-1">
+              {cv.competences.map((c, ci) => (
+                <span key={ci} className="text-[13px] text-[#111827] bg-gray-100 rounded px-2.5 py-1">{renderHighlightedText(c, `comp-${ci}`)}</span>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Centres d'intérêt */}
+        {cv.centres_interet.length > 0 && (
+          <>
+            <SectionTitle title="Centres d'intérêt" />
+            <p className="text-[13px] text-[#111827] leading-[1.7]">{cv.centres_interet.join(" · ")}</p>
+          </>
+        )}
+
+        {/* Informations */}
+        {cv.informations.length > 0 && (
+          <>
+            <SectionTitle title="Informations" />
+            {cv.informations.map((info, ii) => (
+              <p key={ii} className="text-[13px] text-[#111827] leading-[1.7] mb-0.5">{info}</p>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
@@ -948,12 +1072,14 @@ function CVDocument({
 function CVEditor({
   cvText,
   setCvText,
+  cvJson,
   gaps,
   onAccept,
   onIgnore,
 }: {
   cvText: string;
   setCvText: (text: string) => void;
+  cvJson: CVData | null;
   gaps: Gap[];
   acceptedGaps: Gap[];
   onAccept: (id: string) => void;
@@ -1031,6 +1157,7 @@ function CVEditor({
       <div className="max-h-[85vh] overflow-y-auto pb-4">
         <CVDocument
           cvText={cvText}
+          cvJson={cvJson}
           gaps={gaps}
           selectedGapId={selectedGapId}
           onSelectGap={handleSelectGap}
@@ -1060,7 +1187,7 @@ export default function ResultsPage() {
   useUser();
   const posthog = usePostHog();
 
-  const { cvText, setCvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch } = useStore(
+  const { cvText, setCvText, gaps, score_avant, scoreActuel, resume, jobTitle, acceptGap, ignoreGap, analysisType, jdMatch, cvJson } = useStore(
     useShallow((s) => ({
       cvText: s.cvText,
       setCvText: s.setCvText,
@@ -1073,6 +1200,7 @@ export default function ResultsPage() {
       ignoreGap: s.ignoreGap,
       analysisType: s.analysisType,
       jdMatch: s.jdMatch,
+      cvJson: s.cvJson,
     }))
   );
   const isJdMatch = analysisType === "jd" && jdMatch !== null;
@@ -1584,6 +1712,7 @@ export default function ResultsPage() {
               <CVEditor
                 cvText={cvText}
                 setCvText={setCvText}
+                cvJson={cvJson}
                 gaps={gaps}
                 acceptedGaps={acceptedGaps}
                 onAccept={handleAcceptGap}

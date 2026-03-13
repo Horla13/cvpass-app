@@ -58,7 +58,38 @@ const SYSTEM_PROMPT = `Tu es un expert en rédaction de CV ATS.
   "informations": ["string"]
 }
 
-Règles :
+⚠️ TEXTE POTENTIELLEMENT MÉLANGÉ (CV 2 COLONNES) :
+Le texte que tu reçois peut être mal ordonné car extrait d'un CV en 2 colonnes. Les informations de différentes sections sont mélangées. Ton travail est de RECONNAÎTRE et TRIER chaque information dans la bonne catégorie, peu importe l'ordre dans lequel elle apparaît dans le texte.
+
+RÈGLES DE RECONNAISSANCE :
+- nom : Prénom + Nom (souvent en majuscules, en début de document)
+- contact :
+  → email : contient @
+  → telephone : format XX.XX.XX.XX.XX ou +33...
+  → ville : nom de ville + code postal (ex: Allauch, 13190)
+- profil : Phrases décrivant l'objectif professionnel ou le candidat (souvent 2-3 lignes, commence par "Professionnel", "Fort de", "Passionné", etc.)
+- experiences :
+  → Poste = intitulé de métier (Maçon, Employé de magasin, Chef de chantier...)
+  → Entreprise = nom de société (Armand Maçonnerie, Métro, Géant...)
+  → Lieu = ville
+  → Periode = dates (Depuis, 2019, Avril 2018 - Juin 2018...)
+  → Missions = phrases décrivant les tâches (commence par verbe ou nom d'action)
+- formation :
+  → Diplôme = Baccalauréat, BTS, Licence, Master...
+  → Etablissement = lycée, école, université
+  → Periode = années (2013 - 2017)
+- competences : Listes de qualités professionnelles ou compétences techniques (Sens des responsabilités, Ponctualité, Excel, AutoCAD...)
+- centres_interet : Loisirs (Football, Cinéma, Voyages...)
+- informations : Permis de conduire, mobilité géographique, statut (travailleur handicapé, etc.)
+
+IMPORTANT :
+- Ne mets JAMAIS une information dans la mauvaise section.
+- Si tu n'es pas sûr, mets dans "informations".
+- Ne laisse RIEN dans "profil" qui appartient aux expériences.
+- Les dates isolées (Depuis, Octobre 2019) appartiennent à une expérience ou formation, pas à une section séparée.
+- Regroupe les missions avec leur expérience correspondante même si elles sont éloignées dans le texte.
+
+Règles générales :
 - Intègre les modifications acceptées dans les bonnes sections en remplaçant les phrases originales correspondantes.
 - Omets les champs vides (string vide) sauf nom.
 - missions doit être un tableau de strings (une mission par élément).

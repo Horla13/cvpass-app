@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
 import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { restructureWithGPT } from "@/lib/pdf-restructure";
 
 export const maxDuration = 60;
 
@@ -260,16 +261,23 @@ export async function POST(req: NextRequest) {
   const systemPrompt = analysisType === "jd" ? JD_MATCH_PROMPT : SYSTEM_PROMPT;
 
   try {
-    const completion = await getOpenAI().chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage },
-      ],
-      temperature: 0.2,
-      max_tokens: analysisType === "jd" ? 6000 : 4500,
-      response_format: { type: "json_object" },
-    });
+    // Run analysis + CV restructuring in parallel to avoid extra latency
+    const [completion, cvJson] = await Promise.all([
+      getOpenAI().chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userMessage },
+        ],
+        temperature: 0.2,
+        max_tokens: analysisType === "jd" ? 6000 : 4500,
+        response_format: { type: "json_object" },
+      }),
+      restructureWithGPT(cvText, []).catch((err) => {
+        console.error("CV restructuring failed (non-blocking):", err);
+        return null;
+      }),
+    ]);
 
     const content = completion.choices[0].message.content;
     if (!content) throw new Error("Réponse vide de l'IA");
@@ -286,7 +294,7 @@ export async function POST(req: NextRequest) {
 
     const jobTitle = typeof analysis.job_title === "string" ? analysis.job_title : "";
 
-    return NextResponse.json({ ...analysis, job_title: jobTitle });
+    return NextResponse.json({ ...analysis, job_title: jobTitle, cv_json: cvJson });
   } catch (e: unknown) {
     const isTimeout = e instanceof Error && e.message.toLowerCase().includes("timed out");
     if (isTimeout) {
