@@ -79,7 +79,7 @@ export async function restructureWithGPT(cvText: string, acceptedGaps: Gap[]): P
   }`;
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o",
     temperature: 0.1,
     max_tokens: 2000,
     response_format: { type: "json_object" },
