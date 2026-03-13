@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SignInButton, SignUpButton, Show } from "@clerk/nextjs";
+import { Show } from "@clerk/nextjs";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { PricingCard } from "@/components/PricingCard";
 import { CTABanner } from "@/components/CTABanner";
@@ -78,12 +78,8 @@ export function LandingPage() {
             <a href="#features" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Fonctionnalités</a>
             <a href="#pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</a>
             <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Connexion</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Analyser mon CV</button>
-              </SignUpButton>
+              <Link href="/login" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Connexion</Link>
+              <Link href="/signup" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
               <Link href="/dashboard" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
@@ -115,12 +111,8 @@ export function LandingPage() {
             <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
             <a href="#pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</a>
             <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Connexion</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</button>
-              </SignUpButton>
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Connexion</Link>
+              <Link href="/signup" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
               <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Mon espace &rarr;</Link>
@@ -161,12 +153,10 @@ export function LandingPage() {
           {/* Actions */}
           <div className="fade-up flex items-center justify-center gap-4 mb-12">
             <Show when="signed-out">
-              <SignUpButton mode="modal">
-                <button className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
-                  Analyser mon CV gratuitement
-                  <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </button>
-              </SignUpButton>
+              <Link href="/signup" className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
+                Analyser mon CV gratuitement
+                <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </Link>
             </Show>
             <Show when="signed-in">
               <Link href="/dashboard" className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
@@ -229,97 +219,6 @@ export function LandingPage() {
                   ))}
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. BROWSER MOCKUP ── */}
-      <section className="py-24">
-        <div className="max-w-[1100px] mx-auto px-8">
-          <div className="fade-up rounded-2xl border border-gray-200 shadow-[0_4px_40px_rgba(0,0,0,0.08)] overflow-hidden">
-            {/* Browser chrome */}
-            <div className="flex items-center gap-3 bg-gray-50 border-b border-gray-200 px-5 py-3">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
-              <div className="flex-1 bg-white border border-gray-200 rounded-md px-4 py-1 text-xs text-gray-400 text-center">
-                cvpass.fr/results
-              </div>
-            </div>
-            {/* Browser body */}
-            <div className="p-8 flex flex-col md:flex-row gap-8 items-start">
-              {/* Score Gauge */}
-              <div className="flex-shrink-0">
-                <ScoreGauge score={82} size={120} />
-              </div>
-              {/* Suggestion cards */}
-              <div className="flex-1 flex flex-col gap-3">
-                {/* Card 1 - accepted */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-start gap-3 px-4 py-3">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
-                    <div className="flex-1">
-                      <div className="text-[13px] font-semibold text-brand-black mb-1">Ajouter des mots-clés techniques</div>
-                      <div className="text-xs">
-                        <span className="line-through text-red-400">Géré une équipe de 5 personnes</span>
-                        <span className="mx-1.5 text-gray-300">&rarr;</span>
-                        <span className="text-brand-green font-medium">Piloté une équipe de 5 en méthode Agile, +30% productivité</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 px-4 py-2 bg-green-50 border-t border-green-100">
-                    <span className="text-xs font-semibold text-brand-green flex items-center gap-1">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      Accepté
-                    </span>
-                  </div>
-                </div>
-                {/* Card 2 - pending */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-start gap-3 px-4 py-3">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="3" strokeLinecap="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </span>
-                    <div className="flex-1">
-                      <div className="text-[13px] font-semibold text-brand-black mb-1">Quantifier les résultats</div>
-                      <div className="text-xs">
-                        <span className="line-through text-red-400">Responsable des ventes en région</span>
-                        <span className="mx-1.5 text-gray-300">&rarr;</span>
-                        <span className="text-brand-green font-medium">Développé un CA de 1,2M€, +18% vs objectifs</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 px-4 py-2 bg-gray-50 border-t border-gray-100">
-                    <button className="text-xs font-semibold text-white bg-brand-black px-3 py-1 rounded-md">Accepter</button>
-                    <button className="text-xs font-medium text-brand-gray px-3 py-1 rounded-md border border-gray-200">Ignorer</button>
-                  </div>
-                </div>
-                {/* Card 3 - pending faded */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden opacity-50">
-                  <div className="flex items-start gap-3 px-4 py-3">
-                    <span className="mt-0.5 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="3" strokeLinecap="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </span>
-                    <div className="flex-1">
-                      <div className="text-[13px] font-semibold text-brand-black mb-1">Renforcer le vocabulaire métier</div>
-                      <div className="text-xs">
-                        <span className="line-through text-red-400">Aidé à améliorer les processus</span>
-                        <span className="mx-1.5 text-gray-300">&rarr;</span>
-                        <span className="text-brand-green font-medium">Optimisé les processus internes, -40% temps de traitement</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 px-4 py-2 bg-gray-50 border-t border-gray-100">
-                    <button className="text-xs font-semibold text-white bg-brand-black px-3 py-1 rounded-md">Accepter</button>
-                    <button className="text-xs font-medium text-brand-gray px-3 py-1 rounded-md border border-gray-200">Ignorer</button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
