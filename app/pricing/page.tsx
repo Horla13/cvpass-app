@@ -177,7 +177,7 @@ export default function PricingPage() {
             <p className="text-[13px] text-gray-500 mb-5">Scans illimités pendant {selectedMonths * 30} jours</p>
 
             {/* Price with discount */}
-            <div className="text-right mb-1">
+            <div className="mb-1">
               {monthData.discount > 0 && (
                 <div className="text-[13px] text-gray-400 line-through">{formatPrice(fullPrice)}&euro;</div>
               )}
@@ -188,10 +188,10 @@ export default function PricingPage() {
                 </div>
               )}
             </div>
-            <p className="text-[13px] text-gray-400 mb-4 text-right">pour {selectedMonths} mois</p>
+            <p className="text-[13px] text-gray-400 mb-4">pour {selectedMonths} mois</p>
 
             {/* Month selector */}
-            <div className="flex items-center justify-center gap-4 mb-5">
+            <div className="flex items-center justify-start gap-4 mb-5">
               <button
                 onClick={() => setSelectedMonths(Math.max(1, selectedMonths - 1))}
                 disabled={selectedMonths <= 1}

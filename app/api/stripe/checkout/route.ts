@@ -7,8 +7,8 @@ let _stripe: Stripe | null = null;
 function getStripe() {
   if (!_stripe) {
     _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      timeout: 15_000, // 15s timeout for serverless
-      maxNetworkRetries: 1,
+      timeout: 25_000,
+      maxNetworkRetries: 2,
     });
   }
   return _stripe;
@@ -45,13 +45,23 @@ export async function POST(req: NextRequest) {
 
   let sessionConfig: Stripe.Checkout.SessionCreateParams;
 
+  const commonConfig = {
+    locale: "fr" as const,
+    allow_promotion_codes: true,
+    billing_address_collection: "auto" as const,
+  };
+
   if (plan === "pass48h") {
     sessionConfig = {
+      ...commonConfig,
       mode: "payment",
       line_items: [{ price: process.env.STRIPE_PRICE_ID_PASS48H!, quantity: 1 }],
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "pass48h" },
+      custom_text: {
+        submit: { message: "Paiement unique — accès immédiat après confirmation" },
+      },
     };
   } else {
     // Monthly plan — 1-6 months prepaid
@@ -60,6 +70,7 @@ export async function POST(req: NextRequest) {
     const priceInCents = Math.round(monthData.price * 100);
 
     sessionConfig = {
+      ...commonConfig,
       mode: "payment",
       line_items: [
         {
@@ -67,7 +78,7 @@ export async function POST(req: NextRequest) {
             currency: "eur",
             product_data: {
               name: `CVpass Recherche Active — ${selectedMonths} mois`,
-              description: `Accès illimité pendant ${selectedMonths * 30} jours${monthData.discount > 0 ? ` (-${monthData.discount}%)` : ""}`,
+              description: `Analyses illimitées, éditeur CV IA, export PDF illimité, lettre de motivation, historique complet`,
             },
             unit_amount: priceInCents,
           },
@@ -77,6 +88,9 @@ export async function POST(req: NextRequest) {
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "monthly", months: String(selectedMonths) },
+      custom_text: {
+        submit: { message: "Résiliable à tout moment depuis votre espace client" },
+      },
     };
   }
 

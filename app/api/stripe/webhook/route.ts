@@ -9,8 +9,8 @@ let _stripe: Stripe | null = null;
 function getStripe() {
   if (!_stripe) {
     _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      timeout: 15_000,
-      maxNetworkRetries: 1,
+      timeout: 25_000,
+      maxNetworkRetries: 2,
     });
   }
   return _stripe;
