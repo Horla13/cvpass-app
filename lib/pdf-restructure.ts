@@ -89,6 +89,17 @@ IMPORTANT :
 - Les dates isolées (Depuis, Octobre 2019) appartiennent à une expérience ou formation, pas à une section séparée.
 - Regroupe les missions avec leur expérience correspondante même si elles sont éloignées dans le texte.
 
+RÈGLES DE FORMATAGE DES DATES (OBLIGATOIRE) :
+- Toujours format : "Mois AAAA" → ex: "Octobre 2019"
+- Poste en cours (si le texte contient "Depuis", "depuis", "actuellement", "en cours", "à ce jour", "présent") → formater comme "Mois AAAA - Présent"
+  Exemples : "Depuis Octobre 2019" → "Octobre 2019 - Présent"
+             "Depuis octobre 2019 - aujourd'hui" → "Octobre 2019 - Présent"
+             "Octobre 2019 - en cours" → "Octobre 2019 - Présent"
+- Poste terminé avec 2 dates → "Mois AAAA - Mois AAAA" ex: "Avril 2018 - Juin 2018"
+- Si une expérience n'a qu'une date de début sans date de fin et ne semble PAS être le poste actuel → "Mois AAAA - ?"
+- Format cohérent partout : majuscule sur le mois (Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre)
+- JAMAIS "Depuis Mois AAAA" en sortie — toujours convertir en "Mois AAAA - Présent"
+
 Règles générales :
 - Intègre les modifications acceptées dans les bonnes sections en remplaçant les phrases originales correspondantes.
 - Omets les champs vides (string vide) sauf nom.

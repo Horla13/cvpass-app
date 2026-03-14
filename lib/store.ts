@@ -131,7 +131,27 @@ export const useStore = create<CVPassStore>((set, get) => ({
     const gaps = get().gaps.map((g) =>
       g.id === id ? { ...g, status: "accepted" as const } : g
     );
-    set({ gaps, scoreActuel: recalculateScore(get().score_avant, gaps) });
+    // Also apply the suggestion text to cvJson so CV display updates immediately
+    const gap = get().gaps.find((g) => g.id === id);
+    let cvJson = get().cvJson;
+    if (gap && cvJson) {
+      const orig = gap.texte_original?.trim();
+      if (orig) {
+        const sub = (text: string) => (text.includes(orig) ? text.replace(orig, gap.texte_suggere) : text);
+        cvJson = {
+          ...cvJson,
+          profil: cvJson.profil ? sub(cvJson.profil) : cvJson.profil,
+          titre: cvJson.titre ? sub(cvJson.titre) : cvJson.titre,
+          experiences: cvJson.experiences.map((exp) => ({
+            ...exp,
+            poste: sub(exp.poste),
+            missions: exp.missions.map(sub),
+          })),
+          competences: cvJson.competences.map(sub),
+        };
+      }
+    }
+    set({ gaps, cvJson, scoreActuel: recalculateScore(get().score_avant, gaps) });
   },
 
   ignoreGap: (id) => {

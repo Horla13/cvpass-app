@@ -683,11 +683,18 @@ function CVDocumentEditable({
   onUpdate: (updated: CVData) => void;
 }) {
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
+  const acceptedGaps = useMemo(() => gaps.filter((g) => g.status === "accepted"), [gaps]);
 
   const hasGap = (text: string) =>
     pendingGaps.some((g) => {
       const orig = g.texte_original?.trim();
       return orig && text.includes(orig);
+    });
+
+  const wasAccepted = (text: string) =>
+    acceptedGaps.some((g) => {
+      const sugg = g.texte_suggere?.trim();
+      return sugg && text.includes(sugg);
     });
 
   const cv = cvJson;
@@ -775,7 +782,7 @@ function CVDocumentEditable({
     placeholder?: string;
     multiline?: boolean;
   }) => (
-    <span className={hasGap(value) ? "bg-amber-100/60 rounded" : ""}>
+    <span className={hasGap(value) ? "bg-amber-100/60 rounded" : wasAccepted(value) ? "bg-green-100/60 rounded" : ""}>
       <InlineField
         value={value}
         onSave={onSave}
@@ -1030,36 +1037,12 @@ function CVEditorWithPanel({
   const [suggestionIdx, setSuggestionIdx] = useState(0);
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
 
-  const applyGapToJson = (gap: Gap, json: CVData): CVData => {
-    const orig = gap.texte_original?.trim();
-    if (!orig) return json;
-    const sub = (text: string) => (text.includes(orig) ? text.replace(orig, gap.texte_suggere) : text);
-    return {
-      ...json,
-      profil: json.profil ? sub(json.profil) : json.profil,
-      titre: json.titre ? sub(json.titre) : json.titre,
-      experiences: json.experiences.map((exp) => ({
-        ...exp,
-        poste: sub(exp.poste),
-        missions: exp.missions.map(sub),
-      })),
-      formation: json.formation.map((f) => ({ ...f, diplome: sub(f.diplome) })),
-      competences: json.competences.map(sub),
-    } as CVData;
-  };
-
+  // acceptGap in store now applies text changes to cvJson automatically
   const handleAccept = (id: string) => {
-    const gap = gaps.find((g) => g.id === id);
-    if (gap) onUpdate(applyGapToJson(gap, cvJson));
     onAccept(id);
   };
 
   const handleAcceptAll = () => {
-    let updated = cvJson;
-    for (const gap of pendingGaps) {
-      updated = applyGapToJson(gap, updated);
-    }
-    onUpdate(updated);
     onAcceptAll();
   };
 
