@@ -40,14 +40,34 @@ function sectionTitle(label: string): unknown[] {
 export function buildContent(cv: CVData): unknown[] {
   const content: unknown[] = [];
 
-  content.push({
+  // Header: name (+ photo if present)
+  const nameBlock: unknown = {
     text: cv.nom || "CV",
     font: "Helvetica",
     fontSize: 22,
     bold: true,
     color: "#111827",
     margin: [0, 0, 0, 4],
-  });
+  };
+
+  if (cv.photo) {
+    content.push({
+      columns: [
+        { ...nameBlock as Record<string, unknown>, width: "*" },
+        {
+          image: cv.photo,
+          width: 60,
+          height: 60,
+          alignment: "right",
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...({ borderRadius: 30 } as any),
+        },
+      ],
+      margin: [0, 0, 0, 4],
+    });
+  } else {
+    content.push(nameBlock);
+  }
 
   if (cv.titre) {
     content.push({ text: cv.titre, font: "Helvetica", fontSize: 13, color: "#16a34a", margin: [0, 0, 0, 6] });
@@ -57,6 +77,7 @@ export function buildContent(cv: CVData): unknown[] {
   if (cv.contact?.email) contactParts.push(cv.contact.email);
   if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
   if (cv.contact?.ville) contactParts.push(cv.contact.ville);
+  if (cv.contact?.linkedin) contactParts.push(cv.contact.linkedin);
   if (contactParts.length > 0) {
     content.push({ text: contactParts.join("  |  "), font: "Helvetica", fontSize: 10, color: "#6b7280", margin: [0, 0, 0, 6] });
   }

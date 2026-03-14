@@ -571,6 +571,85 @@ function SectionTitle({ title }: { title: string }) {
   );
 }
 
+/* ─── Photo Upload ─── */
+const MAX_PHOTO_SIZE = 2 * 1024 * 1024; // 2MB
+function PhotoUpload({ photo, onUpdate }: { photo?: string; onUpdate: (photo: string | null) => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setError("Format accepté : JPG, PNG ou WebP");
+      return;
+    }
+    if (file.size > MAX_PHOTO_SIZE) {
+      setError("Image trop lourde (max 2MB)");
+      return;
+    }
+    setError(null);
+    const reader = new FileReader();
+    reader.onload = () => onUpdate(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  if (photo) {
+    return (
+      <div className="relative group/photo flex-shrink-0">
+        <div className="w-[72px] h-[72px] rounded-full overflow-hidden border-2 border-white/20">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photo} alt="Photo" className="w-full h-full object-cover" />
+        </div>
+        {/* Hover overlay */}
+        <div
+          className="absolute inset-0 w-[72px] h-[72px] rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover/photo:opacity-100 transition-opacity cursor-pointer"
+          onClick={() => fileRef.current?.click()}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>
+        </div>
+        {/* Delete button */}
+        <button
+          onClick={() => onUpdate(null)}
+          className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center text-[10px] opacity-0 group-hover/photo:opacity-100 transition-opacity hover:bg-red-600"
+        >
+          &times;
+        </button>
+        <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleFile} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-shrink-0 relative">
+      <div
+        className="w-[72px] h-[72px] rounded-full border-2 border-dashed border-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-gray-300 transition-colors"
+        onClick={() => fileRef.current?.click()}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5">
+          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+          <circle cx="12" cy="13" r="4" />
+        </svg>
+        <span className="text-[8px] text-gray-500 mt-0.5">Photo</span>
+      </div>
+      {showTooltip && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[200px] bg-gray-800 text-[10px] text-gray-300 rounded-lg px-3 py-2 shadow-lg z-10 leading-relaxed">
+          La photo n&apos;est pas obligatoire en France et peut cr&eacute;er des biais de recrutement. Elle est stock&eacute;e uniquement en m&eacute;moire locale.
+        </div>
+      )}
+      {error && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-red-600 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap z-10">
+          {error}
+        </div>
+      )}
+      <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleFile} />
+    </div>
+  );
+}
+
 /* ─── Suggestion Panel (right side, like cvcomp) ─── */
 function SuggestionPanel({
   gaps,
@@ -800,17 +879,19 @@ function CVDocumentEditable({
     >
       {/* Dark Header */}
       <div className="bg-[#111827] px-10 py-7">
-        <GapField
-          value={cv.nom}
-          onSave={(v) => updateField("nom", v)}
-          className="text-[24px] font-bold text-white tracking-tight leading-tight"
-        />
-        <div className="mt-1">
-          <GapField
-            value={cv.titre ?? ""}
-            onSave={(v) => updateField("titre", v)}
-            className="text-[14px] text-gray-300"
-            placeholder="Titre du poste"
+        <div className="flex items-start gap-6">
+          {/* Left: name + contact */}
+          <div className="flex-1 min-w-0">
+            <GapField
+              value={cv.nom}
+              onSave={(v) => updateField("nom", v)}
+              className="text-[24px] font-bold text-white tracking-tight leading-tight"
+            />
+          </div>
+          {/* Right: photo */}
+          <PhotoUpload
+            photo={cv.photo}
+            onUpdate={(photo) => onUpdate({ ...cv, photo: photo ?? undefined })}
           />
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-3">
@@ -847,6 +928,17 @@ function CVDocumentEditable({
               onSave={(v) => updateContact("ville", v)}
               className="text-[12px] text-gray-400"
               placeholder="Ville"
+            />
+          </span>
+          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+            </svg>
+            <InlineField
+              value={cv.contact?.linkedin ?? ""}
+              onSave={(v) => updateContact("linkedin", v)}
+              className="text-[12px] text-gray-400"
+              placeholder="Ajouter LinkedIn"
             />
           </span>
         </div>

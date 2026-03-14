@@ -20,8 +20,9 @@ export interface Formation {
 export interface CVData {
   nom: string;
   titre?: string;
-  contact?: { email?: string; telephone?: string; ville?: string };
+  contact?: { email?: string; telephone?: string; ville?: string; linkedin?: string };
   profil?: string;
+  photo?: string;
   experiences: Experience[];
   formation: Formation[];
   competences: string[];
