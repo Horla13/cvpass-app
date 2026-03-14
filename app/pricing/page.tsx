@@ -63,7 +63,11 @@ export default function PricingPage() {
       }
 
       const data = await res.json();
-      if (data.url) window.location.href = data.url;
+      if (!res.ok || !data.url) {
+        alert(data.error ?? "Impossible d'ouvrir le paiement. Réessayez.");
+        return;
+      }
+      window.location.href = data.url;
     } catch {
       alert("Une erreur est survenue. Réessayez.");
     } finally {

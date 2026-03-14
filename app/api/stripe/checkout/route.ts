@@ -72,7 +72,18 @@ export async function POST(req: NextRequest) {
     };
   }
 
-  const session = await getStripe().checkout.sessions.create(sessionConfig);
+  try {
+    const session = await getStripe().checkout.sessions.create(sessionConfig);
 
-  return NextResponse.json({ url: session.url });
+    if (!session.url) {
+      console.error("Stripe session created but no URL returned:", session.id);
+      return NextResponse.json({ error: "Impossible de créer la session de paiement" }, { status: 500 });
+    }
+
+    return NextResponse.json({ url: session.url });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : "Erreur Stripe inconnue";
+    console.error("Stripe checkout error:", e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
