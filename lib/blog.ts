@@ -662,6 +662,429 @@ Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et c
 **Essaie CVpass gratuitement — analyse complète, sans carte de crédit.** [Scanner mon CV sur CVpass →](https://cvpass.fr)
     `.trim(),
   },
+
+  {
+    slug: "lettre-motivation-ats",
+    title:
+      "Lettre de motivation ATS : comment rédiger une lettre qui passe les filtres automatiques",
+    metaTitle:
+      "Lettre de motivation ATS : rédiger une lettre compatible filtres automatiques | CVpass",
+    metaDescription:
+      "Comment rédiger une lettre de motivation compatible ATS en 2026. Structure, mots-clés, format et erreurs à éviter pour passer les filtres automatiques.",
+    description:
+      "Comment rédiger une lettre de motivation compatible ATS en 2026.",
+    date: "2026-03-14",
+    readTime: "8 min",
+    category: "Lettre de motivation",
+    content: `
+## La lettre de motivation face aux ATS : ce que personne ne t'explique
+
+Quand on parle d'optimisation ATS, tout le monde pense au CV. Pourtant, la lettre de motivation passe elle aussi par les filtres automatiques dans de nombreux cas. Les systèmes de gestion des candidatures — les fameux ATS — analysent l'ensemble des documents que tu soumets, y compris la lettre de motivation quand elle est demandée.
+
+Le problème : la plupart des candidats rédigent leur lettre de motivation ATS comme une dissertation littéraire. Des phrases longues, un style soutenu, des formules de politesse à rallonge — mais aucune stratégie de mots-clés. Résultat : la lettre ne renforce pas la candidature. Elle la plombe parfois.
+
+Comprendre comment les ATS traitent les lettres de motivation change radicalement la façon dont tu dois les rédiger.
+
+## Comment les ATS analysent les lettres de motivation
+
+### L'extraction de texte
+
+Comme pour le CV, l'ATS extrait le texte brut de ta lettre. Si tu envoies un PDF image ou un fichier avec une mise en page complexe — colonnes, en-têtes graphiques, zones de texte décoratives — le logiciel peut rater une partie du contenu.
+
+La première règle est donc la même que pour le CV : le texte doit être sélectionnable, dans un format simple et lisible par une machine.
+
+### L'analyse des mots-clés
+
+L'ATS compare les termes de ta lettre avec ceux de l'offre d'emploi. Une lettre de motivation compatible ATS contient les compétences clés, les outils et le vocabulaire sectoriel mentionnés dans l'offre. Ce n'est pas du bourrage de mots-clés — c'est une correspondance naturelle entre ce que l'entreprise cherche et ce que tu apportes.
+
+### Le poids relatif de la lettre
+
+Dans la plupart des systèmes, le CV a plus de poids que la lettre dans le calcul du score global. Mais la lettre peut faire la différence quand deux candidats ont des CV similaires. Elle peut aussi compenser un mot-clé absent du CV si ce mot-clé apparaît dans la lettre.
+
+Autrement dit : la lettre de motivation n'est pas le document principal, mais elle amplifie ou affaiblit ta candidature.
+
+## La structure idéale d'une lettre de motivation ATS
+
+### L'accroche : directe et ciblée
+
+Oublie les formules classiques comme "Suite à votre annonce parue sur...". L'accroche doit poser immédiatement ta valeur ajoutée en utilisant des termes de l'offre.
+
+**Exemple faible** : "Je me permets de vous adresser ma candidature pour le poste publié sur votre site."
+
+**Exemple fort** : "Développeur Python avec 4 ans d'expérience en développement d'API REST et en architecture microservices, je souhaite rejoindre votre équipe technique pour contribuer à vos projets de migration cloud."
+
+L'accroche forte contient déjà trois mots-clés techniques tirés de l'offre. L'ATS les détecte dès la première phrase.
+
+### Le corps : compétences et preuves
+
+Le corps de la lettre doit faire correspondre tes compétences aux besoins de l'offre. Chaque paragraphe du corps devrait répondre à un besoin identifié dans l'annonce.
+
+La méthode la plus efficace pour rédiger une lettre de motivation compatible ATS :
+
+- **Identifie les 3-4 compétences principales** de l'offre
+- **Consacre un paragraphe court à chacune**, en décrivant comment tu l'as mise en œuvre dans un contexte professionnel concret
+- **Utilise les termes exacts de l'offre** dans tes descriptions — pas des synonymes approximatifs
+- **Ajoute un résultat concret** quand c'est possible : un livrable, une amélioration, un projet abouti
+
+### La conclusion : disponibilité et appel à l'action
+
+La conclusion doit rester simple : confirmer ta motivation, mentionner ta disponibilité et inviter à un échange. Évite les formules alambiquées. Une phrase directe comme "Je serais ravi d'échanger avec vous sur ma contribution possible à votre équipe" est plus efficace qu'un paragraphe de politesses formelles.
+
+## Les règles de formatage pour une lettre ATS-compatible
+
+### Le format du fichier
+
+- **PDF texte** (généré depuis Word, Google Docs ou LibreOffice) : le meilleur choix
+- **DOCX** : accepté par tous les ATS
+- **PDF image** (export Canva graphique) : à éviter absolument
+
+### La mise en page
+
+- **Pas de colonnes** — une seule colonne de texte, alignée à gauche
+- **Pas d'en-tête graphique** — tes coordonnées en texte simple en haut du document
+- **Pas de tableau** ni de zone de texte flottante
+- **Police standard** : Arial, Calibri, Times New Roman, ou toute police sans empattement classique
+- **Taille 10 à 12 points** — lisible par l'humain, neutre pour la machine
+
+### La longueur
+
+Une lettre de motivation ATS doit être concise. Les recruteurs consacrent peu de temps à la lecture de chaque candidature. Trois à quatre paragraphes — soit environ 250 à 400 mots — sont suffisants. Chaque phrase doit apporter une information utile.
+
+## Les 5 erreurs qui sabotent ta lettre de motivation ATS
+
+### Erreur 1 : Aucun mot-clé de l'offre
+
+Tu écris une lettre générique que tu envoies à toutes tes candidatures. L'ATS ne trouve aucune correspondance avec l'offre. La lettre n'apporte aucune valeur au score global.
+
+**Comment corriger** : relis l'offre avant chaque lettre. Intègre au minimum 5 à 7 mots-clés techniques ou sectoriels dans le texte.
+
+### Erreur 2 : Un format graphique
+
+Tu utilises un modèle de lettre avec des bordures, des colonnes latérales, un logo personnel, des icônes. L'ATS ne peut pas parser correctement le contenu.
+
+**Comment corriger** : utilise un document texte simple, sans fioritures visuelles.
+
+### Erreur 3 : Des phrases creuses sans contenu concret
+
+"Dynamique et motivé, je souhaite apporter mon expertise à votre entreprise leader dans son domaine." Cette phrase ne contient aucun mot-clé exploitable et aucune information vérifiable.
+
+**Comment corriger** : remplace chaque phrase vague par une affirmation concrète avec un verbe d'action, une compétence identifiable et si possible un contexte réel.
+
+### Erreur 4 : Répéter le CV au lieu de le compléter
+
+Ta lettre paraphrase ton CV point par point. L'ATS détecte les mêmes informations dans les deux documents, mais tu perds l'occasion d'ajouter des mots-clés supplémentaires ou de contextualiser tes compétences différemment.
+
+**Comment corriger** : utilise la lettre pour développer 2-3 expériences clés avec un angle narratif que le format CV ne permet pas. Ajoute des compétences transversales ou des projets pertinents qui n'apparaissent pas dans le CV.
+
+### Erreur 5 : Ignorer la lettre quand elle est "facultative"
+
+Quand une plateforme indique que la lettre de motivation est facultative, beaucoup de candidats la sautent. Pourtant, soumettre une lettre bien rédigée reste un avantage : elle ajoute du contenu analysable par l'ATS et montre au recruteur humain un effort supplémentaire.
+
+**Comment corriger** : rédige toujours une lettre courte (250 mots suffisent) quand l'option est disponible.
+
+## Comment CVpass t'aide à rédiger une lettre de motivation ATS
+
+CVpass ne se limite pas à l'analyse de ton CV. L'outil identifie les mots-clés prioritaires de l'offre d'emploi et t'aide à construire une candidature complète — CV et lettre — qui maximise la correspondance avec les filtres automatiques.
+
+En analysant l'offre et ton profil, CVpass te montre quels termes intégrer dans ta lettre pour compléter les mots-clés déjà présents dans ton CV. Tu obtiens une candidature cohérente où chaque document renforce l'autre.
+
+Le résultat : un score ATS global plus élevé et une candidature qui se démarque aussi bien pour les machines que pour les recruteurs humains.
+
+---
+
+**Optimise ta candidature complète — CV et lettre de motivation.** [Commence ton analyse gratuite sur cvpass.fr →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-par-secteur-ats",
+    title:
+      "CV ATS par secteur : développeur, commercial, cadre — les règles qui changent tout",
+    metaTitle:
+      "CV ATS par secteur : développeur, commercial, cadre — guide 2026 | CVpass",
+    metaDescription:
+      "Les règles ATS changent selon ton secteur. CV développeur, commercial, cadre : mots-clés, structure et erreurs spécifiques à éviter.",
+    description:
+      "Les règles ATS changent selon ton secteur. CV développeur, commercial, cadre : les différences clés.",
+    date: "2026-03-14",
+    readTime: "9 min",
+    category: "CV par secteur",
+    content: `
+## Pourquoi un CV ATS par secteur change tout
+
+Un ATS ne fonctionne pas de la même façon selon le poste. Plus précisément, c'est l'offre d'emploi qui détermine les critères de filtrage — et chaque secteur a son propre vocabulaire, ses propres attentes et ses propres pièges.
+
+Un CV ATS développeur n'a rien à voir avec un CV ATS commercial ou un CV ATS cadre dirigeant. Les mots-clés diffèrent. La structure optimale change. Les erreurs fatales ne sont pas les mêmes.
+
+Pourtant, la plupart des guides d'optimisation ATS donnent des conseils génériques qui s'appliquent mal à des profils spécifiques. Ce guide détaille les règles concrètes pour trois profils parmi les plus demandés sur le marché français.
+
+## CV ATS développeur : la technique au premier plan
+
+### Les mots-clés qui comptent
+
+Pour un développeur, l'ATS cherche avant tout des **compétences techniques précises**. Les langages de programmation, les frameworks, les outils DevOps, les méthodologies de travail — chaque terme est un filtre potentiel.
+
+Les mots-clés à surveiller dans les offres développeur :
+
+- **Langages** : JavaScript, TypeScript, Python, Java, Go, Rust, PHP, C#
+- **Frameworks front-end** : React, Next.js, Vue.js, Angular, Svelte
+- **Frameworks back-end** : Node.js, Django, Spring Boot, Express, FastAPI
+- **Bases de données** : PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch
+- **DevOps et cloud** : Docker, Kubernetes, AWS, GCP, Azure, CI/CD, GitHub Actions, Terraform
+- **Méthodologies** : Agile, Scrum, Kanban, TDD, code review, pair programming
+
+### La structure optimale du CV développeur
+
+Le CV ATS développeur doit mettre en avant une **section Compétences techniques** clairement identifiable. Place-la en haut du CV, juste après le résumé de profil. Liste les technologies par catégories (langages, frameworks, outils, cloud).
+
+Pour les expériences, chaque bullet point doit combiner un **verbe d'action technique**, une **technologie** et un **résultat concret**.
+
+**Exemple faible** : "Développement de fonctionnalités pour l'application web"
+
+**Exemple fort** : "Développé une API REST avec Node.js et Express, servant des données à une application React utilisée par l'équipe commerciale de 40 personnes"
+
+### Les erreurs spécifiques au profil développeur
+
+**Erreur 1 : Lister les technologies sans contexte.** Un bloc "JavaScript, React, Python, Docker, AWS" n'a presque aucun poids pour un ATS avancé. Ces mots-clés doivent aussi apparaître dans les descriptions d'expériences.
+
+**Erreur 2 : Utiliser des versions obsolètes.** Si l'offre demande "React" et que ton CV dit "React.js 16", tu ajoutes une friction inutile. Mentionne la technologie telle qu'elle apparaît dans l'offre, et précise la version uniquement si c'est pertinent.
+
+**Erreur 3 : Omettre les projets open source ou personnels.** Pour les développeurs juniors ou en reconversion, une section "Projets" avec des liens GitHub peut compenser un manque d'expérience professionnelle — et ajouter des mots-clés techniques précieux.
+
+**Erreur 4 : Négliger les soft skills techniques.** Les offres développeur mentionnent souvent "travail en équipe", "code review", "communication avec les équipes produit". Ces termes doivent figurer dans ton CV si tu les pratiques.
+
+## CV ATS commercial : les résultats au centre
+
+### Les mots-clés qui comptent
+
+Pour un profil commercial, l'ATS cherche des **compétences de vente et de relation client**, des **outils CRM** et des **indicateurs de performance**.
+
+Les mots-clés à surveiller dans les offres commerciales :
+
+- **Processus de vente** : prospection B2B, prospection B2C, négociation, closing, fidélisation, cycle de vente, qualification de leads
+- **Outils** : Salesforce, HubSpot, Pipedrive, LinkedIn Sales Navigator, CRM
+- **Indicateurs** : chiffre d'affaires, objectifs commerciaux, KPIs, taux de conversion, panier moyen, pipeline
+- **Techniques** : cold calling, social selling, vente consultative, upselling, cross-selling, gestion de portefeuille clients
+- **Secteur** : B2B, B2C, SaaS, grands comptes, PME, retail
+
+### La structure optimale du CV commercial
+
+Le CV ATS commercial doit ouvrir avec un **résumé de profil orienté résultats**. Les chiffres parlent plus que les mots dans ce secteur : années d'expérience, taille du portefeuille géré, types de clients.
+
+Pour chaque expérience, structure tes bullet points autour du modèle **Action + Cible + Résultat** :
+
+**Exemple faible** : "Gestion d'un portefeuille clients et développement commercial"
+
+**Exemple fort** : "Géré un portefeuille de 80 comptes B2B dans le secteur SaaS, avec un objectif annuel atteint chaque année sur les 3 dernières années"
+
+### Les erreurs spécifiques au profil commercial
+
+**Erreur 1 : Des descriptions vagues sans chiffres.** Le monde commercial tourne autour des résultats mesurables. Un CV commercial sans chiffres est un signal faible pour l'ATS et pour le recruteur.
+
+**Erreur 2 : Omettre les outils CRM.** Les offres commerciales mentionnent presque toujours un CRM spécifique. Si tu as utilisé Salesforce, HubSpot ou un autre outil, il doit apparaître explicitement — pas juste "outils CRM".
+
+**Erreur 3 : Confondre responsabilités et accomplissements.** "Responsable du développement commercial zone Île-de-France" décrit un rôle, pas un résultat. L'ATS et le recruteur veulent savoir ce que tu as accompli dans ce rôle.
+
+**Erreur 4 : Ignorer le vocabulaire de l'offre.** Si l'offre parle de "business development" et que tu écris "développement commercial", l'ATS peut ne pas faire le rapprochement. Utilise les termes exacts de l'annonce.
+
+## CV ATS cadre : la vision stratégique
+
+### Les mots-clés qui comptent
+
+Pour un profil cadre ou cadre dirigeant, l'ATS cherche des **compétences de management**, de **pilotage stratégique** et de **transformation organisationnelle**.
+
+Les mots-clés à surveiller dans les offres cadres :
+
+- **Management** : management d'équipe, leadership, gestion des talents, coaching, recrutement, évaluation de la performance
+- **Stratégie** : stratégie d'entreprise, plan d'action, feuille de route, transformation digitale, conduite du changement, business plan
+- **Finance et pilotage** : P&L, budget, reporting, tableaux de bord, ROI, réduction des coûts, optimisation des processus
+- **Gouvernance** : comité de direction, CODIR, conseil d'administration, présentation aux investisseurs, stakeholder management
+- **Transversal** : gestion de projet, coordination interservices, relations sociales, conformité réglementaire
+
+### La structure optimale du CV cadre
+
+Le CV ATS cadre dirigeant doit mettre en avant l'**impact stratégique** dès le résumé de profil. Mentionne le périmètre de responsabilité (taille d'équipe, budget géré, chiffre d'affaires supervisé) et les domaines d'expertise.
+
+Pour les expériences, chaque bullet point doit illustrer une **décision stratégique** et son **impact mesurable** :
+
+**Exemple faible** : "Direction de l'équipe marketing et communication"
+
+**Exemple fort** : "Piloté la refonte de la stratégie marketing digital — recrutement et management d'une équipe de 12 personnes, coordination avec les équipes produit et commerciale"
+
+### Les erreurs spécifiques au profil cadre
+
+**Erreur 1 : Trop de jargon interne.** Les cadres utilisent souvent le vocabulaire spécifique de leur entreprise précédente. L'ATS de l'entreprise cible ne connaît pas ces termes. Traduis tes accomplissements dans un vocabulaire universel.
+
+**Erreur 2 : Un CV trop long.** Les profils cadres ont souvent 15 à 25 ans d'expérience et produisent des CV de 3-4 pages. La plupart des ATS lisent l'ensemble, mais les recruteurs humains décrochent après 2 pages. Concentre-toi sur les 10 dernières années en détail.
+
+**Erreur 3 : Négliger la section Formation et Certifications.** Pour les postes cadres en France, le diplôme reste un critère de filtrage important dans les ATS — école de commerce, école d'ingénieur, MBA, certifications sectorielles.
+
+**Erreur 4 : Omettre les compétences transversales.** Les offres cadres mentionnent souvent "conduite du changement", "transformation digitale", "management interculturel". Ces termes doivent apparaître dans le CV s'ils font partie de ton expérience.
+
+## Comment CVpass adapte l'analyse par secteur
+
+CVpass ne fait pas une analyse ATS générique. L'outil compare ton CV à l'offre d'emploi précise que tu vises — ce qui signifie que les mots-clés analysés, les suggestions de réécriture et le score calculé sont toujours adaptés au secteur et au poste.
+
+Que tu sois développeur, commercial ou cadre dirigeant, CVpass identifie les termes spécifiques de ton secteur qui manquent dans ton CV et propose des reformulations adaptées. L'IA comprend la différence entre une suggestion de bullet point pour un développeur ("Implémenté une pipeline CI/CD avec GitHub Actions") et une suggestion pour un cadre ("Piloté la transformation digitale du département avec un budget de 500K€").
+
+Le résultat : un CV ATS par secteur optimisé pour les filtres automatiques de ton domaine, sans passer des heures à reformuler manuellement chaque ligne.
+
+---
+
+**Optimise ton CV pour ton secteur.** [Analyse gratuite et personnalisée sur cvpass.fr →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "erreurs-cv-ats",
+    title:
+      "Les 10 erreurs CV qui font planter les ATS (et comment les corriger)",
+    metaTitle:
+      "10 erreurs CV ATS à éviter absolument en 2026 | CVpass",
+    metaDescription:
+      "Pourquoi ton CV est refusé par les ATS ? Les 10 erreurs les plus fréquentes et comment les corriger pour enfin décrocher des entretiens.",
+    description:
+      "Les 10 erreurs les plus fréquentes qui font échouer ton CV face aux ATS.",
+    date: "2026-03-14",
+    readTime: "7 min",
+    category: "Erreurs CV",
+    content: `
+## Pourquoi ton CV est refusé avant même d'être lu
+
+Tu envoies des dizaines de candidatures. Tu es qualifié pour les postes. Pourtant, tu n'obtiens aucun entretien. Le problème n'est probablement pas ton profil — c'est la façon dont ton CV est lu par les machines.
+
+Les ATS — les logiciels de tri automatique utilisés par les recruteurs — rejettent ou mal classent des candidatures à cause d'erreurs techniques que les candidats ignorent complètement. Ces erreurs CV ATS n'ont rien à voir avec ton expérience ou tes compétences. Elles concernent la façon dont ton CV est construit, formaté et formulé.
+
+Voici les 10 erreurs les plus fréquentes qui font planter les ATS, et comment les corriger une par une.
+
+## Erreur 1 : Un CV au format PDF image
+
+### Le problème
+
+Ton CV est un fichier PDF, mais le texte n'est pas sélectionnable. C'est le cas de nombreux CV exportés depuis Canva, Photoshop ou InDesign sans les bons réglages. Pour l'ATS, c'est une image — il ne peut extraire aucun texte, aucun mot-clé, aucune information. Ton score tombe à zéro.
+
+### Comment corriger
+
+Ouvre ton PDF et essaie de sélectionner du texte. Si tu ne peux pas, ton CV est un PDF image. Recréé-le depuis Word, Google Docs ou LibreOffice et exporte en PDF. Vérifie que le texte est bien sélectionnable dans le fichier exporté.
+
+## Erreur 2 : Une mise en page en colonnes
+
+### Le problème
+
+Les CV à deux ou trois colonnes sont visuellement élégants. Mais les ATS lisent le contenu de gauche à droite, ligne par ligne. Avec des colonnes, le logiciel mélange le texte de la colonne gauche avec celui de la colonne droite, produisant des phrases incohérentes et ratant des informations entières.
+
+### Comment corriger
+
+Passe à un format à **une seule colonne**. Toutes les sections les unes sous les autres, dans un ordre logique. C'est moins spectaculaire visuellement, mais infiniment plus efficace pour les filtres automatiques.
+
+## Erreur 3 : Des en-têtes créatifs ou dans des formes graphiques
+
+### Le problème
+
+Tu as mis ton nom dans un bandeau coloré, tes coordonnées dans une forme ronde, tes titres de section dans des rectangles avec un fond de couleur. L'ATS ne sait pas lire le texte qui se trouve dans ces éléments graphiques. Tes informations de contact, tes titres de section — tout peut être ignoré.
+
+### Comment corriger
+
+Utilise du **texte simple** pour toutes les informations. Ton nom en gras et en taille plus grande suffit. Les titres de section en gras ou en majuscules, sans fond coloré ni forme. Les coordonnées en texte brut en haut du document.
+
+## Erreur 4 : L'absence de mots-clés de l'offre
+
+### Le problème
+
+Tu envoies le même CV pour toutes tes candidatures sans l'adapter à chaque offre. L'ATS compare ton CV à l'offre — si les termes clés de l'annonce ne figurent pas dans ton document, le score de correspondance est faible. Pourquoi ton CV est refusé par les ATS ? Souvent, c'est simplement parce que les bons mots n'y sont pas.
+
+### Comment corriger
+
+Avant chaque candidature, lis attentivement l'offre. Identifie les **compétences, outils et qualifications** mentionnés. Intègre ces termes dans ton CV — dans le résumé de profil, dans les descriptions d'expérience et dans la section compétences. Utilise les formulations exactes de l'offre.
+
+## Erreur 5 : Un CV générique sans personnalisation
+
+### Le problème
+
+Ton CV est bien rédigé, mais il est conçu pour être universel. Il couvre toutes tes compétences de façon équitable, sans mettre en avant celles qui correspondent à un poste précis. Pour un ATS qui cherche des correspondances spécifiques, un CV générique obtient un score moyen sur toutes les offres — et un bon score sur aucune.
+
+### Comment corriger
+
+Garde un CV "maître" complet avec toutes tes expériences et compétences. Pour chaque candidature, crée une version adaptée en **réorganisant les compétences** (les plus pertinentes en premier), en **ajustant les formulations** des bullet points et en **renforçant les expériences** les plus proches du poste visé.
+
+## Erreur 6 : Pas de section Profil ou Résumé
+
+### Le problème
+
+Tu commences ton CV directement par la section Expérience. Tu rates une opportunité précieuse : la section Profil en haut du CV est l'endroit idéal pour concentrer les mots-clés les plus importants de l'offre. C'est aussi la première chose que le recruteur humain lit après le tri ATS.
+
+### Comment corriger
+
+Ajoute un **résumé de profil de 3 à 5 lignes** en haut de ton CV, juste sous tes coordonnées. Ce résumé doit contenir : ton titre professionnel, tes années d'expérience, tes 3-4 compétences clés pour le poste visé et un accomplissement marquant.
+
+## Erreur 7 : Des polices fantaisistes ou décoratives
+
+### Le problème
+
+Tu utilises une police originale pour te démarquer — une police calligraphique, une police display, ou une police rare qui n'est pas installée sur tous les systèmes. L'ATS peut mal interpréter les caractères ou ne pas les lire du tout. Certaines polices décoratives encodent les lettres de façon non standard, rendant le texte partiellement ou totalement illisible pour le parser.
+
+### Comment corriger
+
+Utilise une **police standard** : Arial, Calibri, Helvetica, Times New Roman, Garamond. Ces polices sont lues correctement par tous les ATS. La taille doit être comprise entre 10 et 12 points pour le corps du texte.
+
+## Erreur 8 : Des dates incohérentes ou absentes
+
+### Le problème
+
+Tes expériences n'ont pas de dates, ou les dates sont dans des formats différents ("2022-2024" pour une expérience, "Mars 2020 à Juin 2021" pour une autre, "depuis 3 ans" pour une troisième). L'ATS extrait les dates pour calculer ta durée d'expérience totale et vérifier les critères d'ancienneté. Des dates incohérentes perturbent ce calcul.
+
+### Comment corriger
+
+Utilise un **format de date uniforme** sur tout le CV. Le format "Mois Année – Mois Année" (ex : "Janvier 2022 – Mars 2024") est le plus lisible. Pour le poste en cours, utilise "Depuis Mois Année" ou "Mois Année – Présent".
+
+## Erreur 9 : Des acronymes sans version développée
+
+### Le problème
+
+Tu écris "CRM", "ERP", "KPI", "ROI", "SEO" en supposant que tout le monde sait ce que ça signifie. L'ATS sait peut-être — mais si l'offre utilise "gestion de la relation client" au lieu de "CRM", le rapprochement ne se fait pas. Les erreurs CV ATS liées aux acronymes sont parmi les plus sournoises : tu penses avoir mis le bon mot-clé, mais l'ATS cherche la version complète.
+
+### Comment corriger
+
+Utilise **l'acronyme ET la version développée** au moins une fois dans le CV. Par exemple : "Gestion de la relation client (CRM) via Salesforce". Cela couvre les deux formulations et augmente les chances de correspondance.
+
+## Erreur 10 : Aucun résultat quantifié
+
+### Le problème
+
+Tes bullet points décrivent ce que tu as fait, mais pas ce que tu as accompli. "Géré les réseaux sociaux de l'entreprise" n'apporte aucun contexte mesurable. Les ATS modernes et les recruteurs humains cherchent des résultats concrets.
+
+### Comment corriger
+
+Pour chaque expérience, identifie au moins un **résultat chiffrable**. Pas besoin d'inventer — pense en termes de volume (nombre de projets, taille d'équipe, nombre de clients), de temps (délais réduits, fréquence augmentée) ou d'amélioration (processus optimisé, satisfaction client améliorée). Si tu ne peux pas donner un chiffre exact, décris l'impact de façon concrète : "Refonte du processus d'onboarding, passé de 2 semaines à 3 jours".
+
+## Le récapitulatif : vérifie ton CV en 5 minutes
+
+Avant d'envoyer ta prochaine candidature, passe cette checklist rapide :
+
+- Le texte de ton PDF est-il sélectionnable ?
+- Ton CV est-il sur une seule colonne ?
+- Les en-têtes sont-ils en texte simple, sans formes graphiques ?
+- Les mots-clés de l'offre apparaissent-ils dans ton CV ?
+- Le CV est-il adapté à cette offre précise ?
+- As-tu un résumé de profil en haut ?
+- La police est-elle standard (Arial, Calibri, etc.) ?
+- Les dates sont-elles cohérentes et complètes ?
+- Les acronymes ont-ils leur version développée ?
+- Chaque expérience a-t-elle au moins un résultat concret ?
+
+Si tu coches les 10 points, ton CV a de bonnes chances de passer les filtres ATS. Si tu en rates ne serait-ce que 2 ou 3, ton score peut chuter significativement.
+
+## CVpass corrige ces erreurs automatiquement
+
+Vérifier manuellement chaque erreur prend du temps. CVpass automatise cette analyse : tu uploades ton CV, tu colles l'offre d'emploi et l'outil identifie immédiatement les problèmes de format, les mots-clés manquants et les formulations à améliorer.
+
+Pour chaque erreur détectée, l'IA propose une correction prête à l'emploi. Tu cliques Accepter, le score remonte en temps réel. En quelques minutes, ton CV passe de "rejeté par l'ATS" à "en haut de la pile du recruteur".
+
+---
+
+**Combien d'erreurs contient ton CV ?** [Fais le test gratuitement sur cvpass.fr →](https://cvpass.fr)
+    `.trim(),
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

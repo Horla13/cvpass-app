@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tarifs CVpass – Plans et crédits flexibles | Dès 0€",
+  title: "Tarifs scanner CV ATS — Plans dès 0€ | CVpass",
   description:
-    "Commencez gratuitement avec 2 crédits. Pack Coup de pouce à 2,90€ ou Recherche Active dès 8,90€/mois avec -5% de fidélité chaque mois.",
+    "Analysez votre CV ATS gratuitement. Pack 4 crédits à 2,90€ ou accès illimité dès 8,90€/mois. Prix optimisation CV transparents, sans engagement.",
   alternates: {
     canonical: "https://cvpass.fr/pricing",
   },
   openGraph: {
-    title: "Tarifs CVpass – Plans et crédits flexibles",
-    description: "Analyse ATS gratuite. Pack 4 crédits à 2,90€. Illimité dès 8,90€/mois.",
+    title: "Tarifs scanner CV ATS — Plans dès 0€ | CVpass",
+    description: "Analysez votre CV ATS gratuitement. Pack 4 crédits à 2,90€ ou accès illimité dès 8,90€/mois.",
     url: "https://cvpass.fr/pricing",
   },
 };

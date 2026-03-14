@@ -120,10 +120,10 @@ export function LandingPage() {
 
           {/* H1 */}
           <h1 className="fade-up font-display text-[32px] md:text-[42px] lg:text-[52px] font-extrabold tracking-[-2.5px] leading-[1.06] mb-6">
-            Optimisez votre{" "}
-            <span className="text-brand-green">score ATS</span>
+            Scanner CV ATS gratuit —{" "}
+            <span className="text-brand-green">Optimise ton CV</span>
             <br />
-            et décrochez plus d&apos;entretiens
+            pour les recruteurs avec l&apos;IA
           </h1>
 
           {/* Subtitle */}
@@ -266,7 +266,7 @@ export function LandingPage() {
           <div className="text-center mb-16 fade-up">
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-3">Comment ça marche</p>
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
-              Optimisez votre CV en <span className="text-brand-green">4 étapes</span>
+              Comment optimiser ton CV ATS en <span className="text-brand-green">3 étapes</span>
             </h2>
             <p className="text-brand-gray text-base max-w-[500px] mx-auto">
               De l&apos;upload à l&apos;entretien, suivez le processus complet pour maximiser vos chances.
@@ -656,7 +656,7 @@ export function LandingPage() {
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-6 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              Une analyse <span className="text-brand-green">360&deg;</span> de votre CV
+              Analyse <span className="text-brand-green">360&deg;</span> : score ATS, mots-clés et compatibilité recruteur
             </h2>
             <p className="text-brand-gray text-base mt-3 max-w-[580px] mx-auto">
               CVpass identifie chaque mot-clé manquant, corrige les blocages de parsing et quantifie votre impact avec son IA avancée.
@@ -844,7 +844,7 @@ export function LandingPage() {
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-14 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              FAQ
+              Questions fréquentes sur le <span className="text-brand-green">score ATS</span> et l&apos;optimisation CV
             </h2>
           </div>
           <div className="fade-up">
@@ -872,6 +872,29 @@ export function LandingPage() {
                 },
               ]}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 12. BLOG LINKS ── */}
+      <section className="bg-white py-16 px-8 border-t border-gray-100">
+        <div className="max-w-[1100px] mx-auto">
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-8">
+            Guides pour améliorer ton CV ATS
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6 text-center">
+            <Link href="/blog/score-ats-cv" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">Score ATS : comment le calculer et l&apos;améliorer</h3>
+              <p className="text-[13px] text-gray-500">Guide complet 2026</p>
+            </Link>
+            <Link href="/blog/cv-canva-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">CV Canva et ATS : le problème et la solution</h3>
+              <p className="text-[13px] text-gray-500">Pourquoi ton CV est invisible</p>
+            </Link>
+            <Link href="/blog/erreurs-cv-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">10 erreurs CV qui font planter les ATS</h3>
+              <p className="text-[13px] text-gray-500">Et comment les corriger</p>
+            </Link>
           </div>
         </div>
       </section>

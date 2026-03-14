@@ -1,3 +1,17 @@
 User-agent: *
 Allow: /
+Allow: /blog/
+Allow: /pricing
+Disallow: /dashboard
+Disallow: /results
+Disallow: /history
+Disallow: /cover-letter
+Disallow: /account
+Disallow: /acces-refuse
+Disallow: /analyze
+Disallow: /api/
+Disallow: /login
+Disallow: /signup
+Disallow: /pricing/success
+
 Sitemap: https://cvpass.fr/sitemap.xml

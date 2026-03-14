@@ -196,8 +196,25 @@ export default async function BlogPostPage(
   const dateObj = new Date(post.date);
   const dateLabel = dateObj.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.metaDescription,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { "@type": "Organization", name: "CVpass", url: "https://cvpass.fr" },
+    publisher: { "@type": "Organization", name: "CVpass", url: "https://cvpass.fr", logo: { "@type": "ImageObject", url: "https://cvpass.fr/icon.png" } },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://cvpass.fr/blog/${post.slug}` },
+    inLanguage: "fr",
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* NAV */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 100,
