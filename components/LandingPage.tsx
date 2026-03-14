@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Show } from "@clerk/nextjs";
+import { ExitIntentModal } from "@/components/ExitIntentModal";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ScoreGauge } from "@/components/ScoreGauge";
 import { useStore } from "@/lib/store";
@@ -134,7 +135,7 @@ export function LandingPage() {
           {/* Actions */}
           <div className="fade-up flex items-center justify-center gap-4 mb-12">
             <Show when="signed-out">
-              <Link href="/signup" className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
+              <Link href="/signup" className="inline-flex items-center gap-2 bg-brand-black text-white px-7 py-3.5 min-h-[48px] rounded-[10px] text-[15px] font-display font-bold hover:bg-black hover:-translate-y-px transition-all">
                 Analyser mon CV gratuitement
                 <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
@@ -169,7 +170,7 @@ export function LandingPage() {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading}
-                  className="inline-flex items-center gap-2.5 bg-brand-green text-white px-8 py-4 rounded-[12px] text-[16px] font-display font-bold hover:bg-green-600 hover:-translate-y-px transition-all disabled:opacity-50"
+                  className="inline-flex items-center gap-2.5 bg-brand-green text-white px-8 py-4 min-h-[48px] rounded-[12px] text-[16px] font-display font-bold hover:bg-green-600 hover:-translate-y-px transition-all disabled:opacity-50"
                 >
                   {isUploading ? (
                     <>
@@ -919,6 +920,8 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <ExitIntentModal />
     </div>
   );
 }

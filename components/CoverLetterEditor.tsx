@@ -82,7 +82,7 @@ export function CoverLetterEditor({
       <textarea
         value={content}
         onChange={handleChange}
-        className="flex-1 w-full min-h-[500px] p-4 border border-gray-200 rounded-xl text-sm text-brand-black font-mono leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-brand-green"
+        className="flex-1 w-full min-h-[500px] p-4 border border-gray-200 rounded-xl text-base text-brand-black font-mono leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-brand-green"
         placeholder="Votre lettre de motivation apparaîtra ici..."
         spellCheck={true}
         lang="fr"
@@ -130,7 +130,7 @@ export function CoverLetterEditor({
                   type="email"
                   value={emailAddr}
                   onChange={(e) => setEmailAddr(e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green"
+                  className="w-full px-3 py-2 text-base border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green"
                   placeholder="votre@email.com"
                 />
                 {emailErr && <p className="text-xs text-red-500">{emailErr}</p>}

@@ -129,7 +129,7 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <button disabled className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed">
+            <button disabled className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed">
               Plan actuel
             </button>
           </div>
@@ -159,7 +159,7 @@ export default function PricingPage() {
             <button
               onClick={() => handlePlanClick("pass48h")}
               disabled={loading === "pass48h"}
-              className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200 transition-all disabled:opacity-50"
+              className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200 transition-all disabled:opacity-50"
             >
               {loading === "pass48h" ? "Redirection..." : "Acheter le pack"}
             </button>
@@ -195,7 +195,7 @@ export default function PricingPage() {
               <button
                 onClick={() => setSelectedMonths(Math.max(1, selectedMonths - 1))}
                 disabled={selectedMonths <= 1}
-                className="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /></svg>
               </button>
@@ -205,7 +205,7 @@ export default function PricingPage() {
               <button
                 onClick={() => setSelectedMonths(Math.min(6, selectedMonths + 1))}
                 disabled={selectedMonths >= 6}
-                className="w-9 h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               </button>
@@ -222,7 +222,7 @@ export default function PricingPage() {
             <button
               onClick={() => handlePlanClick("monthly")}
               disabled={loading === "monthly"}
-              className="w-full py-3.5 rounded-xl text-[14px] font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200 transition-all disabled:opacity-50"
+              className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200 transition-all disabled:opacity-50"
             >
               {loading === "monthly" ? "Redirection..." : "Passer en illimité"}
             </button>

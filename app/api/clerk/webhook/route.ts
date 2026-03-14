@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
-import { sendWelcomeEmail } from "@/lib/brevo";
+import { sendWelcomeEmail, sendRetentionEmailJ3, sendRetentionEmailJ7 } from "@/lib/brevo";
+import { captureServerEvent } from "@/lib/posthog-server";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,12 @@ export async function POST(req: NextRequest) {
     const firstName = event.data.first_name ?? "là";
     if (email) {
       sendWelcomeEmail(email, firstName).catch(console.error);
+      sendRetentionEmailJ3(email, firstName).catch(console.error);
+      sendRetentionEmailJ7(email, firstName).catch(console.error);
+
+      captureServerEvent(event.data.id, "signup_completed", { email }).catch(console.error);
+      captureServerEvent(event.data.id, "email_j3_sent", { email, scheduled_days: 3 }).catch(console.error);
+      captureServerEvent(event.data.id, "email_j7_sent", { email, scheduled_days: 7 }).catch(console.error);
     }
   }
 

@@ -24,9 +24,9 @@ function getLimiter(requests: number, window: Duration): Ratelimit | null {
   return _limiters.get(key)!;
 }
 
-// Default: 5 req/h — used by /api/analyze
+// Default: 10 req/h — used by /api/analyze (all users, including beta & premium)
 export async function checkRateLimit(identifier: string): Promise<{ allowed: boolean }> {
-  return checkRateLimitWith(identifier, 5, "1 h");
+  return checkRateLimitWith(identifier, 10, "1 h");
 }
 
 // Configurable rate limit for any route

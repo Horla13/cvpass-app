@@ -5,6 +5,7 @@ interface EmailPayload {
   subject: string;
   htmlContent: string;
   attachment?: { name: string; content: string }[];
+  scheduledAt?: string;
 }
 
 async function sendEmail(payload: EmailPayload): Promise<void> {
@@ -16,10 +17,20 @@ async function sendEmail(payload: EmailPayload): Promise<void> {
     return;
   }
 
-  const body = {
+  const body: Record<string, unknown> = {
     sender: { name: "CVpass", email: senderEmail },
-    ...payload,
+    to: payload.to,
+    subject: payload.subject,
+    htmlContent: payload.htmlContent,
   };
+
+  if (payload.attachment) {
+    body.attachment = payload.attachment;
+  }
+
+  if (payload.scheduledAt) {
+    body.scheduledAt = payload.scheduledAt;
+  }
 
   const res = await fetch(BREVO_API_URL, {
     method: "POST",
@@ -75,6 +86,95 @@ export async function sendWelcomeEmail(
           <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> ·
           <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a>
         </p>
+      </div>
+    `,
+  });
+}
+
+export async function sendRetentionEmailJ3(
+  email: string,
+  firstName: string
+): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
+  const scheduledAt = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+  await sendEmail({
+    to: [{ email, name: firstName }],
+    subject: `Avez-vous testé CVpass, ${firstName} ?`,
+    scheduledAt,
+    htmlContent: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#111827;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+          <span style="color:white;font-weight:bold;font-size:20px;">CVpass</span>
+        </div>
+        <div style="padding:28px 24px;color:#111827;">
+          <p>Bonjour ${firstName},</p>
+          <p>Vous vous êtes inscrit il y a 3 jours.</p>
+          <p>Des milliers de CVs sont analysés chaque semaine avec CVpass.</p>
+          <p><strong>Le vôtre aussi mérite une analyse.</strong></p>
+          <div style="background:#f9fafb;border-radius:12px;padding:24px;margin:24px 0;text-align:center;">
+            <span style="font-size:36px;font-weight:bold;color:#ef4444;">42</span>
+            <span style="font-size:24px;color:#6b7280;margin:0 12px;">&rarr;</span>
+            <span style="font-size:36px;font-weight:bold;color:#16a34a;">87</span>
+          </div>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="${appUrl}/dashboard"
+               style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+              Analyser mon CV maintenant &rarr;
+            </a>
+          </div>
+        </div>
+        <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
+          <p>L'équipe CVpass</p>
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
+          <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a>
+        </div>
+      </div>
+    `,
+  });
+}
+
+export async function sendRetentionEmailJ7(
+  email: string,
+  firstName: string
+): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
+  const scheduledAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+  await sendEmail({
+    to: [{ email, name: firstName }],
+    subject: `Résultats CVpass cette semaine : +31 points en moyenne 📈`,
+    scheduledAt,
+    htmlContent: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#111827;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+          <span style="color:white;font-weight:bold;font-size:20px;">CVpass</span>
+        </div>
+        <div style="padding:28px 24px;color:#111827;">
+          <p>Bonjour ${firstName},</p>
+          <div style="text-align:center;margin:24px 0;">
+            <span style="font-size:48px;font-weight:900;color:#16a34a;">+31 points</span>
+            <p style="color:#6b7280;font-size:16px;margin-top:4px;">de score ATS en moyenne cette semaine</p>
+          </div>
+          <div style="border-left:4px solid #16a34a;background:#f9fafb;padding:16px 20px;margin:24px 0;border-radius:0 8px 8px 0;">
+            <p style="font-style:italic;color:#374151;margin:0;">
+              &laquo; Mon CV est passé de 38 à 84. J'ai eu un entretien la semaine suivante. &raquo;
+            </p>
+            <p style="color:#6b7280;font-size:13px;margin:8px 0 0 0;">&mdash; Marie, beta-testeuse</p>
+          </div>
+          <p>Il n'est pas trop tard pour optimiser votre CV avant votre prochaine candidature.</p>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="${appUrl}/dashboard"
+               style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+              Voir mon score ATS &rarr;
+            </a>
+          </div>
+        </div>
+        <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
+          <p>L'équipe CVpass</p>
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
+          <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a>
+          <br/><br/>
+          <a href="${appUrl}/unsubscribe?email=${email}" style="color:#9ca3af;font-size:11px;">Se désabonner</a>
+        </div>
       </div>
     `,
   });

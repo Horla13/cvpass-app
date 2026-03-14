@@ -39,7 +39,7 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing }: Pr
           onChange={(e) => setText(e.target.value)}
           placeholder="Collez la description du poste ici..."
           rows={12}
-          className="w-full p-4 text-[15px] resize-none focus:outline-none"
+          className="w-full p-4 text-base resize-none focus:outline-none"
         />
         <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-t border-gray-100">
           <button

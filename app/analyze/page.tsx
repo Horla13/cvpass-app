@@ -73,6 +73,9 @@ function AnalyzePage() {
       setCvText(data.text);
       setSelectedFilename(file.name);
       posthog?.capture("cv_uploaded");
+      if (window.innerWidth < 768) {
+        posthog?.capture("mobile_upload_started");
+      }
       setStep("type");
     } catch {
       alert("Erreur lors de l'upload du CV. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
@@ -197,7 +200,7 @@ function AnalyzePage() {
               <button
                 onClick={() => fileRef.current?.click()}
                 disabled={isUploading}
-                className="w-full max-w-[400px] mx-auto border-2 border-dashed border-gray-300 rounded-xl p-10 text-center hover:border-brand-green/50 transition-colors disabled:opacity-50 cursor-pointer"
+                className="w-full max-w-[400px] mx-auto border-2 border-dashed border-gray-300 rounded-xl p-10 min-h-[48px] text-center hover:border-brand-green/50 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 <div className="flex flex-col items-center gap-3">
                   {isUploading ? (

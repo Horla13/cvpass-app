@@ -2,7 +2,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export interface BillingResult {
   allowed: boolean;
-  isPremium?: boolean; // true = pas de rate limiting applicable
+  isPremium?: boolean; // true = accès illimité (crédits non déduits)
   reason?: "quota_exceeded";
 }
 
@@ -109,8 +109,8 @@ export async function getUserCredits(userId: string, email?: string): Promise<nu
 
   if (data) return data.balance;
 
-  // Early access (beta_whitelist) → 100 crédits, sinon 2
-  const initialCredits = email && (await isEarlyAccess(email)) ? 100 : 2;
+  // Tous les utilisateurs démarrent avec 2 crédits (beta whitelist = accès illimité via hasUnlimitedAccess)
+  const initialCredits = 2;
   const { data: inserted } = await admin
     .from("user_credits")
     .upsert({ user_id: userId, balance: initialCredits, lifetime_earned: initialCredits })

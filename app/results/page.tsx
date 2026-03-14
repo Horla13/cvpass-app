@@ -220,15 +220,15 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
               {gap.status === "pending" && (
                 <div className="flex items-center gap-3">
-                  <button onClick={() => onApplyInEditor(gap.id)} className="inline-flex items-center gap-1.5 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors">
+                  <button onClick={() => onApplyInEditor(gap.id)} className="inline-flex items-center gap-1.5 min-h-[44px] text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                     Appliquer dans l&apos;éditeur
                   </button>
-                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors">
+                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 min-h-[44px] text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accepter
                   </button>
-                  <button onClick={() => onIgnore(gap.id)} className="text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors">
+                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors">
                     Ignorer
                   </button>
                 </div>
@@ -462,7 +462,7 @@ function CategorySection({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => onApplyInEditor(gap.id)}
-                    className="inline-flex items-center gap-1.5 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors"
+                    className="inline-flex items-center gap-1.5 min-h-[44px] text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors"
                   >
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                     Appliquer dans l&apos;éditeur
@@ -470,14 +470,14 @@ function CategorySection({
                   </button>
                   <button
                     onClick={() => onAccept(gap.id)}
-                    className="inline-flex items-center gap-1 text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors"
+                    className="inline-flex items-center gap-1 min-h-[44px] text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors"
                   >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accept
                   </button>
                   <button
                     onClick={() => onIgnore(gap.id)}
-                    className="text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
+                    className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
                   >
                     Dismiss
                   </button>
@@ -527,7 +527,7 @@ function InlineField({
   };
 
   if (editing) {
-    const cls = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-inherit focus:outline-none focus:ring-2 focus:ring-blue-400";
+    const cls = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-base focus:outline-none focus:ring-2 focus:ring-blue-400";
     return multiline ? (
       <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); } }} rows={3} className={cn(cls, "resize-none", className)} />
     ) : (
@@ -700,7 +700,7 @@ function SuggestionPanel({
             </button>
           </div>
         </div>
-        <button onClick={onAcceptAll} className="px-3 py-1.5 bg-green-500 text-white text-[12px] font-semibold rounded-lg hover:bg-green-600 transition-colors">
+        <button onClick={onAcceptAll} className="px-3 py-1.5 min-h-[44px] bg-green-500 text-white text-[12px] font-semibold rounded-lg hover:bg-green-600 transition-colors">
           Tout accepter ({pendingGaps.length})
         </button>
       </div>
@@ -733,11 +733,11 @@ function SuggestionPanel({
 
       {/* Actions */}
       <div className="flex border-t border-gray-100">
-        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
+        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
           Rejeter
         </button>
-        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
+        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
           Accepter
         </button>
@@ -1164,7 +1164,7 @@ function CVEditorWithPanel({
         <button
           onClick={onDownload}
           disabled={isDownloading}
-          className="px-5 py-2.5 bg-gray-900 text-white text-[13px] font-semibold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="px-5 py-2.5 min-h-[48px] bg-gray-900 text-white text-[13px] font-semibold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {isDownloading ? (
             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1185,11 +1185,11 @@ function CVEditorWithPanel({
         </div>
       )}
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-7 max-h-[85vh] overflow-y-auto pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-7 max-h-[85vh] overflow-y-auto pb-4">
           <CVDocumentEditable cvJson={cvJson} gaps={gaps} onUpdate={onUpdate} />
         </div>
-        <div className="col-span-5 sticky top-0 self-start">
+        <div className="md:col-span-5 md:sticky md:top-0 md:self-start">
           <SuggestionPanel
             gaps={gaps}
             currentIndex={suggestionIdx}
