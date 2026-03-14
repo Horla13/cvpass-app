@@ -5,8 +5,15 @@ import { addCredits } from "@/lib/billing";
 
 export const dynamic = "force-dynamic";
 
+let _stripe: Stripe | null = null;
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      timeout: 15_000,
+      maxNetworkRetries: 1,
+    });
+  }
+  return _stripe;
 }
 
 /**

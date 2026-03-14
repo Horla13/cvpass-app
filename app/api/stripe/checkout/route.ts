@@ -2,8 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 
+// Singleton — reuse across warm invocations on Vercel
+let _stripe: Stripe | null = null;
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      timeout: 15_000, // 15s timeout for serverless
+      maxNetworkRetries: 1,
+    });
+  }
+  return _stripe;
 }
 
 const MONTHLY_PRICES = [
