@@ -131,13 +131,16 @@ export const useStore = create<CVPassStore>((set, get) => ({
     const gaps = get().gaps.map((g) =>
       g.id === id ? { ...g, status: "accepted" as const } : g
     );
-    // Also apply the suggestion text to cvJson so CV display updates immediately
+    // Apply the suggestion text to cvJson so CV display updates immediately
     const gap = get().gaps.find((g) => g.id === id);
     let cvJson = get().cvJson;
     if (gap && cvJson) {
       const orig = gap.texte_original?.trim();
-      if (orig) {
-        const sub = (text: string) => (text.includes(orig) ? text.replace(orig, gap.texte_suggere) : text);
+      const suggested = gap.texte_suggere?.trim();
+
+      if (orig && suggested) {
+        // CAS 1 — Remplacement : texte original non vide → str.replace()
+        const sub = (text: string) => (text.includes(orig) ? text.replace(orig, suggested) : text);
         cvJson = {
           ...cvJson,
           profil: cvJson.profil ? sub(cvJson.profil) : cvJson.profil,
@@ -149,6 +152,28 @@ export const useStore = create<CVPassStore>((set, get) => ({
           })),
           competences: cvJson.competences.map(sub),
         };
+      } else if (!orig && suggested) {
+        // CAS 2 — Insertion : section vide, on insère le contenu suggéré
+        const cat = gap.category;
+        if (cat === "accroche") {
+          cvJson = { ...cvJson, profil: cvJson.profil ? cvJson.profil + "\n" + suggested : suggested };
+        } else if (cat === "titre") {
+          cvJson = { ...cvJson, titre: suggested };
+        } else if (cat === "competence") {
+          // Peut contenir plusieurs compétences séparées par des virgules
+          const newComps = suggested.split(/,\s*/).map((s) => s.trim()).filter(Boolean);
+          cvJson = { ...cvJson, competences: [...cvJson.competences, ...newComps] };
+        } else if (cat === "experience") {
+          // Ajoute comme mission à la première expérience, ou crée une expérience
+          if (cvJson.experiences.length > 0) {
+            cvJson = {
+              ...cvJson,
+              experiences: cvJson.experiences.map((exp, i) =>
+                i === 0 ? { ...exp, missions: [...exp.missions, suggested] } : exp
+              ),
+            };
+          }
+        }
       }
     }
     set({ gaps, cvJson, scoreActuel: recalculateScore(get().score_avant, gaps) });
