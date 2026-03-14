@@ -909,10 +909,12 @@ export function LandingPage() {
             </span>
             <span className="text-[13px] text-gray-400 ml-2">© 2026 VertexLab SASU. Tous droits réservés.</span>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
             <Link href="/blog" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Blog</Link>
             <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Mentions légales</Link>
-            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Politique de confidentialité</Link>
+            <Link href="/politique-confidentialite" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Confidentialité</Link>
+            <Link href="/conditions-generales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">CGU/CGV</Link>
+            <Link href="/politique-cookies" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Cookies</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Contact</a>
           </div>
         </div>

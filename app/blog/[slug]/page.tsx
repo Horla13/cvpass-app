@@ -316,8 +316,11 @@ export default async function BlogPostPage(
       {/* FOOTER */}
       <footer style={{ borderTop: "1px solid rgba(229,231,235,.8)", padding: "24px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff" }}>
         <span style={{ fontSize: 13, color: "#9ca3af" }}>© 2026 CVpass</span>
-        <div style={{ display: "flex", gap: 24 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
           <Link href="/mentions-legales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Mentions légales</Link>
+          <Link href="/politique-confidentialite" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Confidentialité</Link>
+          <Link href="/conditions-generales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>CGU/CGV</Link>
+          <Link href="/politique-cookies" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Cookies</Link>
           <a href="mailto:contact@cvpass.fr" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Contact</a>
         </div>
       </footer>
