@@ -28,10 +28,10 @@ function sectionTitle(label: string): unknown[] {
             {
               text: label.toUpperCase(),
               font: "Helvetica",
-              fontSize: 12,
+              fontSize: 11,
               bold: true,
               color: "#16a34a",
-              characterSpacing: 2.4, // ~0.2em at 12px
+              characterSpacing: 2.2, // ~0.2em at 11px
               border: [false, false, false, true],
               borderColor: [null, null, null, "#16a34a"],
               margin: [0, 0, 0, 4],
@@ -59,7 +59,7 @@ function buildHeader(cv: CVData): unknown {
   const nameText: unknown = {
     text: cv.nom || "CV",
     font: "Helvetica",
-    fontSize: 24,
+    fontSize: 22,
     bold: true,
     color: "#FFFFFF",
   };
@@ -75,9 +75,9 @@ function buildHeader(cv: CVData): unknown {
     ? {
         text: contactParts.join("   |   "),
         font: "Helvetica",
-        fontSize: 12,
+        fontSize: 10,
         color: "#9CA3AF",
-        margin: [0, 8, 0, 0],
+        margin: [0, 6, 0, 0],
       }
     : null;
 
@@ -92,8 +92,8 @@ function buildHeader(cv: CVData): unknown {
         { stack: leftStack, width: "*" },
         {
           image: cv.photo,
-          width: 72,
-          height: 72,
+          width: 60,
+          height: 60,
           alignment: "right" as const,
         },
       ],
@@ -112,7 +112,7 @@ function buildHeader(cv: CVData): unknown {
           {
             ...headerBody as Record<string, unknown>,
             fillColor: "#111827",
-            margin: [40, 28, 40, 28], // matches editor px-10 py-7
+            margin: [20, 16, 20, 16],
           },
         ],
       ],
@@ -125,7 +125,7 @@ function buildHeader(cv: CVData): unknown {
       paddingTop: () => 0,
       paddingBottom: () => 0,
     },
-    margin: [-40, -40, -40, 12] as [number, number, number, number],
+    margin: [-40, -40, -40, 10] as [number, number, number, number],
   };
 }
 
@@ -143,9 +143,9 @@ export function buildContent(cv: CVData): unknown[] {
     content.push({
       text: cv.profil,
       font: "Helvetica",
-      fontSize: 13,
+      fontSize: 10,
       color: "#111827",
-      lineHeight: 1.7,
+      lineHeight: 1.5,
       margin: [0, 0, 0, 2],
     });
   }
@@ -158,10 +158,10 @@ export function buildContent(cv: CVData): unknown[] {
       // Poste (left) + Période (right, italic)
       content.push({
         columns: [
-          { text: exp.poste || "", font: "Helvetica", fontSize: 14, bold: true, color: "#111827", width: "*" },
-          { text: exp.periode || "", font: "Helvetica", fontSize: 12, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: exp.poste || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
+          { text: exp.periode || "", font: "Helvetica", fontSize: 9, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
         ],
-        margin: [0, i > 0 ? 10 : 4, 0, 1],
+        margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
       // Entreprise — Lieu
       const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" \u2014 ");
@@ -169,18 +169,18 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: subline,
           font: "Helvetica",
-          fontSize: 13,
+          fontSize: 9,
           italics: true,
           color: "#6b7280",
-          margin: [0, 0, 0, 3],
+          margin: [0, 0, 0, 2],
         });
       }
       // Missions — green dot bullet like editor
       for (const mission of exp.missions ?? []) {
         content.push({
           columns: [
-            { text: "\u2022", font: "Helvetica", fontSize: 8, color: "#16a34a", width: 10, margin: [4, 3, 0, 0] },
-            { text: mission, font: "Helvetica", fontSize: 13, color: "#111827", lineHeight: 1.7, width: "*" },
+            { text: "\u2022", font: "Helvetica", fontSize: 6, color: "#16a34a", width: 10, margin: [4, 2, 0, 0] },
+            { text: mission, font: "Helvetica", fontSize: 10, color: "#111827", lineHeight: 1.5, width: "*" },
           ],
           margin: [0, 0, 0, 1],
         });
@@ -195,8 +195,8 @@ export function buildContent(cv: CVData): unknown[] {
       const f: Formation = cv.formation[i];
       content.push({
         columns: [
-          { text: f.diplome || "", font: "Helvetica", fontSize: 14, bold: true, color: "#111827", width: "*" },
-          { text: f.periode || "", font: "Helvetica", fontSize: 12, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: f.diplome || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
+          { text: f.periode || "", font: "Helvetica", fontSize: 9, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
         ],
         margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
@@ -204,7 +204,7 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: f.etablissement,
           font: "Helvetica",
-          fontSize: 13,
+          fontSize: 9,
           italics: true,
           color: "#6b7280",
           margin: [0, 0, 0, 2],
@@ -219,7 +219,7 @@ export function buildContent(cv: CVData): unknown[] {
     content.push({
       text: cv.competences.join("  \u2022  "),
       font: "Helvetica",
-      fontSize: 13,
+      fontSize: 10,
       color: "#111827",
       margin: [0, 0, 0, 2],
     });
@@ -231,7 +231,7 @@ export function buildContent(cv: CVData): unknown[] {
     content.push({
       text: cv.centres_interet.join("  \u00b7  "),
       font: "Helvetica",
-      fontSize: 13,
+      fontSize: 10,
       color: "#111827",
       margin: [0, 0, 0, 2],
     });
@@ -244,9 +244,8 @@ export function buildContent(cv: CVData): unknown[] {
       content.push({
         text: info,
         font: "Helvetica",
-        fontSize: 13,
+        fontSize: 10,
         color: "#111827",
-        lineHeight: 1.7,
         margin: [0, 1, 0, 1],
       });
     }
@@ -262,7 +261,7 @@ export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
   return pdfmake.createPdf({
     pageSize: "A4" as const,
     pageMargins: [40, 40, 40, 40] as [number, number, number, number],
-    defaultStyle: { font: "Helvetica", fontSize: 13, lineHeight: 1.4 },
+    defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
     info: {
       title: `${cv.nom || "CV"} \u2014 CV`,
       author: cv.nom || "CVpass",
