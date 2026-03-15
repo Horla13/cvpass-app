@@ -175,17 +175,17 @@ function AnalyzePage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#fafafa]">
+      <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f172a]">
         <AppHeader />
 
         <main className="max-w-5xl mx-auto px-6 py-12">
           {/* Step: Upload CV */}
           {step === "upload" && (
             <div className="max-w-[600px] mx-auto text-center">
-              <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] mb-2">
+              <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] mb-2 dark:text-gray-100">
                 Uploadez votre CV
               </h1>
-              <p className="text-brand-gray mb-8">
+              <p className="text-brand-gray dark:text-gray-400 mb-8">
                 Choisissez votre CV au format PDF ou DOCX pour commencer l&apos;analyse.
               </p>
 
@@ -200,13 +200,13 @@ function AnalyzePage() {
               <button
                 onClick={() => fileRef.current?.click()}
                 disabled={isUploading}
-                className="w-full max-w-[400px] mx-auto border-2 border-dashed border-gray-300 rounded-xl p-10 min-h-[48px] text-center hover:border-brand-green/50 transition-colors disabled:opacity-50 cursor-pointer"
+                className="w-full max-w-[400px] mx-auto border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-10 min-h-[48px] text-center hover:border-brand-green/50 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 <div className="flex flex-col items-center gap-3">
                   {isUploading ? (
                     <>
                       <svg className="animate-spin h-8 w-8 text-brand-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
-                      <span className="text-[15px] font-medium text-brand-gray">Upload en cours...</span>
+                      <span className="text-[15px] font-medium text-brand-gray dark:text-gray-400">Upload en cours...</span>
                     </>
                   ) : (
                     <>
@@ -215,8 +215,8 @@ function AnalyzePage() {
                         <polyline points="17 8 12 3 7 8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
                       </svg>
-                      <span className="text-[16px] font-semibold text-gray-700">Choisir mon CV (PDF ou DOCX)</span>
-                      <span className="text-[13px] text-brand-gray">Taille max : 5 Mo</span>
+                      <span className="text-[16px] font-semibold text-gray-700 dark:text-gray-100">Choisir mon CV (PDF ou DOCX)</span>
+                      <span className="text-[13px] text-brand-gray dark:text-gray-400">Taille max : 5 Mo</span>
                     </>
                   )}
                 </div>

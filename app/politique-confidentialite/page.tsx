@@ -21,15 +21,15 @@ const sections = [
 
 export default function PolitiqueConfidentialitePage() {
   return (
-    <div style={{ background: "#fff", color: "#111827", minHeight: "100vh" }}>
+    <div style={{ background: "var(--bg-primary)", color: "var(--text-primary)", minHeight: "100vh" }}>
       {/* Sticky nav */}
       <nav
         style={{
           position: "sticky",
           top: 0,
           zIndex: 50,
-          background: "#fff",
-          borderBottom: "1px solid #e5e7eb",
+          background: "var(--bg-primary)",
+          borderBottom: "1px solid var(--border-color)",
           padding: "16px 24px",
         }}
       >
@@ -46,7 +46,7 @@ export default function PolitiqueConfidentialitePage() {
             style={{
               fontSize: 20,
               fontWeight: 700,
-              color: "#111827",
+              color: "var(--text-primary)",
               textDecoration: "none",
             }}
           >
@@ -64,7 +64,7 @@ export default function PolitiqueConfidentialitePage() {
         }}
       >
         {/* Breadcrumb */}
-        <nav style={{ fontSize: 14, color: "#6b7280", marginBottom: 32 }}>
+        <nav style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 32 }}>
           <Link
             href="/"
             style={{ color: "#16a34a", textDecoration: "none" }}
@@ -85,15 +85,15 @@ export default function PolitiqueConfidentialitePage() {
         >
           Politique de confidentialité
         </h1>
-        <p style={{ fontSize: 14, color: "#6b7280", marginBottom: 40 }}>
+        <p style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 40 }}>
           Dernière mise à jour : 14 mars 2026
         </p>
 
         {/* Table of contents */}
         <div
           style={{
-            background: "#f9fafb",
-            border: "1px solid #e5e7eb",
+            background: "var(--bg-surface)",
+            border: "1px solid var(--border-color)",
             borderRadius: 8,
             padding: "24px 28px",
             marginBottom: 48,
@@ -131,8 +131,8 @@ export default function PolitiqueConfidentialitePage() {
           </p>
           <div
             style={{
-              background: "#f9fafb",
-              border: "1px solid #e5e7eb",
+              background: "var(--bg-surface)",
+              border: "1px solid var(--border-color)",
               borderRadius: 8,
               padding: "20px 24px",
               lineHeight: 1.8,
@@ -283,8 +283,8 @@ export default function PolitiqueConfidentialitePage() {
               <thead>
                 <tr
                   style={{
-                    background: "#f9fafb",
-                    borderBottom: "2px solid #e5e7eb",
+                    background: "var(--bg-surface)",
+                    borderBottom: "2px solid var(--border-color)",
                   }}
                 >
                   <th style={thStyle}>Sous-traitant</th>
@@ -298,8 +298,8 @@ export default function PolitiqueConfidentialitePage() {
                   <tr
                     key={row.name}
                     style={{
-                      borderBottom: "1px solid #e5e7eb",
-                      background: i % 2 === 1 ? "#f9fafb" : "#fff",
+                      borderBottom: "1px solid var(--border-color)",
+                      background: i % 2 === 1 ? "var(--bg-surface)" : "var(--bg-primary)",
                     }}
                   >
                     <td style={tdStyle}>
@@ -316,7 +316,7 @@ export default function PolitiqueConfidentialitePage() {
           <p
             style={{
               fontSize: 14,
-              color: "#6b7280",
+              color: "var(--text-secondary)",
               lineHeight: 1.7,
             }}
           >
@@ -474,10 +474,10 @@ export default function PolitiqueConfidentialitePage() {
       {/* Footer */}
       <footer
         style={{
-          borderTop: "1px solid #e5e7eb",
+          borderTop: "1px solid var(--border-color)",
           padding: "32px 24px",
           fontSize: 14,
-          color: "#6b7280",
+          color: "var(--text-secondary)",
         }}
       >
         <div
@@ -556,7 +556,7 @@ const linkStyle: React.CSSProperties = {
 };
 
 const footerLink: React.CSSProperties = {
-  color: "#6b7280",
+  color: "var(--text-secondary)",
   textDecoration: "none",
 };
 
@@ -564,7 +564,7 @@ const thStyle: React.CSSProperties = {
   textAlign: "left",
   padding: "10px 12px",
   fontWeight: 600,
-  color: "#111827",
+  color: "var(--text-primary)",
 };
 
 const tdStyle: React.CSSProperties = {

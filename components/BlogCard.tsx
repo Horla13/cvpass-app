@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import type { BlogPost } from "@/lib/blog";
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -33,8 +34,8 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
       <Link href={`/blog/${post.slug}`} style={{ textDecoration: "none", display: "block" }}>
         <article
           style={{
-            background: "#fff",
-            border: "1px solid rgba(229,231,235,.9)",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
             borderRadius: 20,
             overflow: "hidden",
             boxShadow: "0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.05)",
@@ -52,16 +53,18 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
             (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
           }}
         >
-          {/* Illustration placeholder */}
+          {/* Illustration */}
           <div style={{
-            background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            position: "relative",
             minHeight: 280,
-            padding: 40,
+            overflow: "hidden",
           }}>
-            <div style={{ fontSize: 64, opacity: 0.6 }}>📄</div>
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              style={{ objectFit: "cover" }}
+            />
           </div>
 
           {/* Content */}
@@ -75,14 +78,14 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
               }}>
                 {post.category}
               </span>
-              <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.readTime} de lecture</span>
+              <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{post.readTime} de lecture</span>
             </div>
 
-            <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111827", lineHeight: 1.3, letterSpacing: "-.5px", margin: 0 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.3, letterSpacing: "-.5px", margin: 0 }}>
               {post.title}
             </h2>
 
-            <p style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.65, margin: 0, flex: 1 }}>
+            <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.65, margin: 0, flex: 1 }}>
               {post.description}
             </p>
 
@@ -92,7 +95,7 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
                 {post.tags.map((tag) => (
                   <span key={tag} style={{
                     fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6,
-                    background: "#f3f4f6", color: "#6b7280",
+                    background: "var(--code-bg)", color: "var(--text-secondary)",
                   }}>
                     {tag}
                   </span>
@@ -116,8 +119,8 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
     <Link href={`/blog/${post.slug}`} style={{ textDecoration: "none" }}>
       <article
         style={{
-          background: "#fff",
-          border: "1px solid rgba(229,231,235,.9)",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border-color)",
           borderRadius: 20,
           overflow: "hidden",
           height: "100%",
@@ -138,16 +141,19 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
           (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
         }}
       >
-        {/* Illustration placeholder */}
+        {/* Illustration */}
         <div style={{
-          background: `linear-gradient(135deg, ${CATEGORY_COLORS[post.category] ?? "#f0fdf4"} 0%, #f8fafc 100%)`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: 140,
-          borderBottom: "1px solid rgba(229,231,235,.5)",
+          position: "relative",
+          height: 180,
+          overflow: "hidden",
+          borderBottom: "1px solid var(--border-light)",
         }}>
-          <div style={{ fontSize: 36, opacity: 0.5 }}>📄</div>
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
 
         <div style={{ padding: "20px 24px 22px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
@@ -160,14 +166,14 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
             }}>
               {post.category}
             </span>
-            <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.readTime} de lecture</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{post.readTime} de lecture</span>
           </div>
 
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: "#111827", lineHeight: 1.4, letterSpacing: "-.3px", margin: 0 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.4, letterSpacing: "-.3px", margin: 0 }}>
             {post.title}
           </h2>
 
-          <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.65, margin: 0, flex: 1 }}>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.65, margin: 0, flex: 1 }}>
             {post.description}
           </p>
 
@@ -177,7 +183,7 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
               {post.tags.map((tag) => (
                 <span key={tag} style={{
                   fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 5,
-                  background: "#f3f4f6", color: "#6b7280",
+                  background: "var(--code-bg)", color: "var(--text-secondary)",
                 }}>
                   {tag}
                 </span>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="hexStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow3">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg3)"/>
+  <!-- Subtle dots pattern -->
+  <g opacity="0.05">
+    <pattern id="dots3" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+      <circle cx="25" cy="25" r="1" fill="white"/>
+    </pattern>
+    <rect width="1200" height="630" fill="url(#dots3)"/>
+  </g>
+  <!-- French tricolor subtle stripe at top -->
+  <rect x="0" y="0" width="400" height="3" fill="#2563eb" opacity="0.6"/>
+  <rect x="400" y="0" width="400" height="3" fill="white" opacity="0.4"/>
+  <rect x="800" y="0" width="400" height="3" fill="#dc2626" opacity="0.6"/>
+  <!-- Tricolor stripe at bottom -->
+  <rect x="0" y="627" width="400" height="3" fill="#2563eb" opacity="0.4"/>
+  <rect x="400" y="627" width="400" height="3" fill="white" opacity="0.25"/>
+  <rect x="800" y="627" width="400" height="3" fill="#dc2626" opacity="0.4"/>
+  <!-- Background hexagon pattern -->
+  <g opacity="0.04" stroke="white" stroke-width="0.5" fill="none">
+    <polygon points="150,100 200,70 250,100 250,160 200,190 150,160"/>
+    <polygon points="250,100 300,70 350,100 350,160 300,190 250,160"/>
+    <polygon points="850,400 900,370 950,400 950,460 900,490 850,460"/>
+    <polygon points="950,400 1000,370 1050,400 1050,460 1000,490 950,460"/>
+    <polygon points="100,400 150,370 200,400 200,460 150,490 100,460"/>
+    <polygon points="1000,100 1050,70 1100,100 1100,160 1050,190 1000,160"/>
+  </g>
+  <!-- Main hexagon (France shape abstraction) -->
+  <g filter="url(#glow3)">
+    <polygon points="600,130 740,200 740,370 600,440 460,370 460,200"
+      fill="url(#hexGrad)" stroke="url(#hexStroke)" stroke-width="2.5"/>
+  </g>
+  <!-- Inner hexagon ring -->
+  <polygon points="600,170 710,225 710,345 600,400 490,345 490,225"
+    fill="none" stroke="#16a34a" stroke-width="0.8" opacity="0.3"/>
+  <!-- Document icon inside hexagon -->
+  <g transform="translate(555, 215)">
+    <rect x="0" y="0" width="70" height="90" rx="5" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+    <path d="M50,0 L70,0 L70,20 Z" fill="#0f172a"/>
+    <path d="M50,0 L50,20 L70,20" fill="none" stroke="#94a3b8" stroke-width="1"/>
+    <!-- Content lines -->
+    <rect x="12" y="30" width="35" height="5" rx="1.5" fill="#16a34a" opacity="0.5"/>
+    <rect x="12" y="42" width="45" height="4" rx="1" fill="#64748b" opacity="0.3"/>
+    <rect x="12" y="52" width="40" height="4" rx="1" fill="#64748b" opacity="0.3"/>
+    <rect x="12" y="62" width="43" height="4" rx="1" fill="#64748b" opacity="0.3"/>
+    <rect x="12" y="72" width="30" height="4" rx="1" fill="#64748b" opacity="0.3"/>
+  </g>
+  <!-- Upward arrows showing improvement -->
+  <g filter="url(#softGlow3)">
+    <!-- Arrow 1 - left -->
+    <g transform="translate(340, 280)" opacity="0.8">
+      <line x1="0" y1="60" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="3"/>
+      <polyline points="-10,15 0,0 10,15" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 2 -->
+    <g transform="translate(390, 240)" opacity="0.6">
+      <line x1="0" y1="50" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="2.5"/>
+      <polyline points="-8,12 0,0 8,12" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 3 - right -->
+    <g transform="translate(860, 280)" opacity="0.8">
+      <line x1="0" y1="60" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="3"/>
+      <polyline points="-10,15 0,0 10,15" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 4 -->
+    <g transform="translate(810, 240)" opacity="0.6">
+      <line x1="0" y1="50" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="2.5"/>
+      <polyline points="-8,12 0,0 8,12" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 5 - top -->
+    <g transform="translate(600, 80)" opacity="0.5">
+      <line x1="0" y1="40" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="2"/>
+      <polyline points="-7,10 0,0 7,10" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 6 -->
+    <g transform="translate(550, 110)" opacity="0.4">
+      <line x1="0" y1="30" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="2"/>
+      <polyline points="-6,8 0,0 6,8" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Arrow 7 -->
+    <g transform="translate(650, 110)" opacity="0.4">
+      <line x1="0" y1="30" x2="0" y2="0" stroke="url(#arrowGrad)" stroke-width="2"/>
+      <polyline points="-6,8 0,0 6,8" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <!-- Small decorative plus signs -->
+  <g stroke="#16a34a" stroke-width="1.5" opacity="0.2">
+    <line x1="200" y1="250" x2="200" y2="266"/><line x1="192" y1="258" x2="208" y2="258"/>
+    <line x1="1000" y1="200" x2="1000" y2="216"/><line x1="992" y1="208" x2="1008" y2="208"/>
+    <line x1="300" y1="500" x2="300" y2="512"/><line x1="294" y1="506" x2="306" y2="506"/>
+    <line x1="900" y1="520" x2="900" y2="532"/><line x1="894" y1="526" x2="906" y2="526"/>
+  </g>
+  <!-- Progress bar elements -->
+  <g transform="translate(420, 500)" opacity="0.5">
+    <rect x="0" y="0" width="360" height="6" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+    <rect x="0" y="0" width="290" height="6" rx="3" fill="#16a34a" opacity="0.7"/>
+  </g>
+  <!-- Branding -->
+  <text x="1150" y="600" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#16a34a" opacity="0.5">CVpass</text>
+</svg>

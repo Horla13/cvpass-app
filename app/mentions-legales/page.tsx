@@ -18,18 +18,18 @@ const sections = [
 
 export default function MentionsLegalesPage() {
   return (
-    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif", color: "#111827" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg-primary)", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif", color: "var(--text-primary)" }}>
 
       {/* NAV */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(255,255,255,0.92)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(229,231,235,0.8)",
+        background: "var(--nav-bg)", backdropFilter: "blur(20px)",
+        borderBottom: "1px solid var(--border-color)",
         boxShadow: "0 1px 0 rgba(0,0,0,.03), 0 4px 20px rgba(0,0,0,.04)",
         padding: "0 40px", height: "64px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
-        <Link href="/" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px", color: "#111827", textDecoration: "none" }}>
+        <Link href="/" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px", color: "var(--text-primary)", textDecoration: "none" }}>
           CV<span style={{ color: "#16a34a" }}>pass</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -49,29 +49,29 @@ export default function MentionsLegalesPage() {
 
         {/* BREADCRUMB */}
         <nav aria-label="Fil d'Ariane" style={{ marginBottom: 32 }}>
-          <ol style={{ display: "flex", alignItems: "center", gap: 8, listStyle: "none", padding: 0, margin: 0, fontSize: 13, color: "#9ca3af" }}>
+          <ol style={{ display: "flex", alignItems: "center", gap: 8, listStyle: "none", padding: 0, margin: 0, fontSize: 13, color: "var(--text-muted)" }}>
             <li>
-              <Link href="/" style={{ color: "#6b7280", textDecoration: "none", fontWeight: 500 }}>Accueil</Link>
+              <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 500 }}>Accueil</Link>
             </li>
-            <li aria-hidden="true" style={{ color: "#d1d5db" }}>›</li>
-            <li style={{ color: "#111827", fontWeight: 600 }}>Mentions légales</li>
+            <li aria-hidden="true" style={{ color: "var(--text-muted)" }}>›</li>
+            <li style={{ color: "var(--text-primary)", fontWeight: 600 }}>Mentions légales</li>
           </ol>
         </nav>
 
         {/* TITLE + DATE */}
-        <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.15, margin: "0 0 12px", color: "#111827" }}>
+        <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.15, margin: "0 0 12px", color: "var(--text-primary)" }}>
           Mentions légales
         </h1>
-        <p style={{ fontSize: 14, color: "#9ca3af", margin: "0 0 40px" }}>
+        <p style={{ fontSize: 14, color: "var(--text-muted)", margin: "0 0 40px" }}>
           Dernière mise à jour : 14 mars 2026
         </p>
 
         {/* TABLE OF CONTENTS */}
         <div style={{
-          background: "#f8fafc", border: "1px solid #f3f4f6", borderRadius: 16,
+          background: "var(--bg-secondary)", border: "1px solid var(--border-light)", borderRadius: 16,
           padding: "24px 28px", marginBottom: 48,
         }}>
-          <p style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: "0 0 14px", letterSpacing: "-0.2px" }}>
+          <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-primary)", margin: "0 0 14px", letterSpacing: "-0.2px" }}>
             Sommaire
           </p>
           <ol style={{ paddingLeft: 20, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
@@ -90,22 +90,22 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             1. Éditeur du site
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151" }}>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)" }}>
             <p style={{ margin: "0 0 8px" }}>
-              <strong style={{ color: "#111827" }}>Nom du site :</strong> CVpass
+              <strong style={{ color: "var(--text-primary)" }}>Nom du site :</strong> CVpass
             </p>
             <p style={{ margin: "0 0 8px" }}>
-              <strong style={{ color: "#111827" }}>URL :</strong>{" "}
+              <strong style={{ color: "var(--text-primary)" }}>URL :</strong>{" "}
               <a href="https://cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>https://cvpass.fr</a>
             </p>
             <p style={{ margin: "0 0 8px" }}>
-              <strong style={{ color: "#111827" }}>Société :</strong> VertexLab SASU
+              <strong style={{ color: "var(--text-primary)" }}>Société :</strong> VertexLab SASU
             </p>
             <p style={{ margin: "0 0 8px" }}>
-              <strong style={{ color: "#111827" }}>Adresse :</strong> 198 boulevard Ange Martin, 13190 Allauch, France
+              <strong style={{ color: "var(--text-primary)" }}>Adresse :</strong> 198 boulevard Ange Martin, 13190 Allauch, France
             </p>
             <p style={{ margin: 0 }}>
-              <strong style={{ color: "#111827" }}>Email :</strong>{" "}
+              <strong style={{ color: "var(--text-primary)" }}>Email :</strong>{" "}
               <a href="mailto:contact@cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>contact@cvpass.fr</a>
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             2. Directeur de la publication
           </h2>
-          <p style={{ fontSize: 15, lineHeight: 1.78, color: "#374151", margin: 0 }}>
+          <p style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0 }}>
             Giovanni Russo, en qualité de Président de VertexLab SASU.
           </p>
         </section>
@@ -126,8 +126,8 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             3. Hébergeur
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151" }}>
-            <p style={{ margin: "0 0 4px", fontWeight: 600, color: "#111827" }}>Vercel Inc.</p>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)" }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 600, color: "var(--text-primary)" }}>Vercel Inc.</p>
             <p style={{ margin: "0 0 4px" }}>340 Pine Street Suite 701, San Francisco, CA 94104, États-Unis</p>
             <p style={{ margin: 0 }}>
               <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>
@@ -142,7 +142,7 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             4. Propriété intellectuelle
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", display: "flex", flexDirection: "column", gap: 12 }}>
             <p style={{ margin: 0 }}>
               L&apos;ensemble du contenu du site CVpass (textes, graphismes, logiciels, images, bases de données, etc.) est protégé par le droit d&apos;auteur et le droit de la propriété intellectuelle, conformément aux dispositions du Code de la propriété intellectuelle.
             </p>
@@ -163,7 +163,7 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             5. Liens hypertextes
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", display: "flex", flexDirection: "column", gap: 12 }}>
             <p style={{ margin: 0 }}>
               Le site CVpass peut contenir des liens hypertextes vers d&apos;autres sites internet. CVpass n&apos;exerce aucun contrôle sur le contenu de ces sites tiers et décline toute responsabilité quant à leur contenu, leurs pratiques en matière de protection des données ou leur disponibilité.
             </p>
@@ -179,7 +179,7 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             6. Limitation de responsabilité
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", display: "flex", flexDirection: "column", gap: 12 }}>
             <p style={{ margin: 0 }}>
               CVpass est un outil d&apos;aide à l&apos;optimisation de CV. Les suggestions générées par l&apos;intelligence artificielle sont fournies à titre indicatif et ne constituent en aucun cas un conseil professionnel garanti. L&apos;utilisateur reste seul responsable de l&apos;utilisation qu&apos;il fait des résultats fournis.
             </p>
@@ -197,7 +197,7 @@ export default function MentionsLegalesPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
             7. Droit applicable
           </h2>
-          <div style={{ fontSize: 15, lineHeight: 1.78, color: "#374151", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", display: "flex", flexDirection: "column", gap: 12 }}>
             <p style={{ margin: 0 }}>
               Le présent site et ses mentions légales sont soumis au droit français.
             </p>
@@ -210,17 +210,17 @@ export default function MentionsLegalesPage() {
 
       {/* FOOTER */}
       <footer style={{
-        borderTop: "1px solid rgba(229,231,235,.8)", background: "#fff",
+        borderTop: "1px solid var(--border-color)", background: "var(--bg-primary)",
         padding: "24px 40px",
         display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16,
       }}>
-        <span style={{ fontSize: 13, color: "#9ca3af" }}>© 2026 CVpass</span>
+        <span style={{ fontSize: 13, color: "var(--text-muted)" }}>© 2026 CVpass</span>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
-          <Link href="/mentions-legales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Mentions légales</Link>
-          <Link href="/politique-confidentialite" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Politique de confidentialité</Link>
-          <Link href="/conditions-generales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Conditions générales</Link>
-          <Link href="/politique-cookies" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Politique cookies</Link>
-          <a href="mailto:contact@cvpass.fr" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>contact@cvpass.fr</a>
+          <Link href="/mentions-legales" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Mentions légales</Link>
+          <Link href="/politique-confidentialite" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Politique de confidentialité</Link>
+          <Link href="/conditions-generales" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Conditions générales</Link>
+          <Link href="/politique-cookies" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Politique cookies</Link>
+          <a href="mailto:contact@cvpass.fr" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>contact@cvpass.fr</a>
         </div>
       </footer>
     </div>

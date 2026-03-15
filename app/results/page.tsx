@@ -46,13 +46,13 @@ function CategoryRow({ label, score }: { label: string; score: number }) {
   const { text } = getScoreLabel(score);
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-[13px] text-gray-700 flex-shrink-0 min-w-[140px]">{label}</span>
+      <span className="text-[13px] text-gray-700 dark:text-gray-100 flex-shrink-0 min-w-[140px]">{label}</span>
       <span className={cn("text-[11px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap",
-        score >= 80 ? "bg-green-50 text-green-600 border-green-200" :
-        score >= 60 ? "bg-blue-50 text-blue-600 border-blue-200" :
-        "bg-amber-50 text-amber-600 border-amber-200"
+        score >= 80 ? "bg-green-50 dark:bg-green-900/30 text-green-600 border-green-200" :
+        score >= 60 ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 border-blue-200" :
+        "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200"
       )}>{text}</span>
-      <span className="text-[13px] font-bold text-gray-700 w-[36px] text-right">{score}%</span>
+      <span className="text-[13px] font-bold text-gray-700 dark:text-gray-100 w-[36px] text-right">{score}%</span>
     </div>
   );
 }
@@ -67,17 +67,17 @@ const JD_CATEGORY_MAP: Record<string, { label: string }> = {
 };
 
 function getJdScoreLabel(score: number): { text: string; badgeClass: string } {
-  if (score >= 75) return { text: "Bon", badgeClass: "bg-green-50 text-green-600 border-green-200" };
-  if (score >= 55) return { text: "À améliorer", badgeClass: "bg-amber-50 text-amber-600 border-amber-200" };
-  return { text: "Critique", badgeClass: "bg-red-50 text-red-500 border-red-200" };
+  if (score >= 75) return { text: "Bon", badgeClass: "bg-green-50 dark:bg-green-900/30 text-green-600 border-green-200" };
+  if (score >= 55) return { text: "À améliorer", badgeClass: "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200" };
+  return { text: "Critique", badgeClass: "bg-red-50 dark:bg-red-900/30 text-red-500 border-red-200" };
 }
 
 function JdCategoryRow({ label, score }: { label: string; score: number }) {
   const { text, badgeClass } = getJdScoreLabel(score);
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-[13px] text-gray-700 flex-shrink-0 min-w-[120px]">{label}</span>
-      <div className="flex-1 bg-gray-100 rounded-full h-2 mx-2">
+      <span className="text-[13px] text-gray-700 dark:text-gray-100 flex-shrink-0 min-w-[120px]">{label}</span>
+      <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-2 mx-2">
         <div
           className={cn("h-2 rounded-full transition-all",
             score >= 75 ? "bg-green-500" : score >= 55 ? "bg-amber-500" : "bg-red-500"
@@ -88,7 +88,7 @@ function JdCategoryRow({ label, score }: { label: string; score: number }) {
       <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap", badgeClass)}>
         {text}
       </span>
-      <span className="text-[13px] font-bold text-gray-700 w-[36px] text-right">{score}%</span>
+      <span className="text-[13px] font-bold text-gray-700 dark:text-gray-100 w-[36px] text-right">{score}%</span>
     </div>
   );
 }
@@ -104,36 +104,36 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
   return (
     <div className="space-y-6">
       {/* Part A: Keyword Gap */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="font-display text-[18px] font-bold text-gray-900">Partie A : Correspondance (Mots-clés)</h2>
-          <p className="text-[13px] text-gray-400 mt-1">Analyse de l&apos;alignement des mots-clés entre votre CV et l&apos;offre d&apos;emploi</p>
+      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-700/50">
+          <h2 className="font-display text-[18px] font-bold text-gray-900 dark:text-gray-100">Partie A : Correspondance (Mots-clés)</h2>
+          <p className="text-[13px] text-gray-400 dark:text-gray-500 mt-1">Analyse de l&apos;alignement des mots-clés entre votre CV et l&apos;offre d&apos;emploi</p>
         </div>
 
         {/* Missing Hard Skills Table */}
         {jdMatch.missing_hard_skills.length > 0 && (
-          <div className="px-6 py-5 border-b border-gray-100">
-            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Compétences manquantes</h3>
+          <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-700/50">
+            <h3 className="font-display text-[15px] font-bold text-gray-800 dark:text-gray-200 mb-4">Compétences manquantes</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-[13px]">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Compétence</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Dans le CV</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Mentions offre</th>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Compétence</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Dans le CV</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Mentions offre</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700/50">
                   {jdMatch.missing_hard_skills.map((skill, i) => (
-                    <tr key={i} className="hover:bg-gray-50/50">
-                      <td className="py-3 px-3 font-medium text-gray-800">{skill.keyword}</td>
+                    <tr key={i} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
+                      <td className="py-3 px-3 font-medium text-gray-800 dark:text-gray-200">{skill.keyword}</td>
                       <td className="py-3 px-3 text-center">
                         <span className="text-red-500">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="inline"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                         </span>
                       </td>
                       <td className="py-3 px-3 text-center">
-                        <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{skill.jd_mentions}</span>
+                        <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{skill.jd_mentions}</span>
                       </td>
                     </tr>
                   ))}
@@ -146,28 +146,28 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
         {/* Keyword Frequency Table */}
         {jdMatch.keyword_frequency.length > 0 && (
           <div className="px-6 py-5">
-            <h3 className="font-display text-[15px] font-bold text-gray-800 mb-4">Fréquence des mots-clés</h3>
+            <h3 className="font-display text-[15px] font-bold text-gray-800 dark:text-gray-200 mb-4">Fréquence des mots-clés</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-[13px]">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Mot-clé</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Offre</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">CV</th>
-                    <th className="text-center py-2.5 px-3 text-gray-400 font-semibold uppercase text-[11px] tracking-wider">Statut</th>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Mot-clé</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Offre</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">CV</th>
+                    <th className="text-center py-2.5 px-3 text-gray-400 dark:text-gray-500 font-semibold uppercase text-[11px] tracking-wider">Statut</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700/50">
                   {jdMatch.keyword_frequency.map((kw, i) => (
-                    <tr key={i} className="hover:bg-gray-50/50">
-                      <td className="py-3 px-3 font-medium text-gray-800">{kw.keyword}</td>
-                      <td className="py-3 px-3 text-center text-gray-600">{kw.jd_count}</td>
-                      <td className="py-3 px-3 text-center text-gray-600">{kw.resume_count}</td>
+                    <tr key={i} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
+                      <td className="py-3 px-3 font-medium text-gray-800 dark:text-gray-200">{kw.keyword}</td>
+                      <td className="py-3 px-3 text-center text-gray-600 dark:text-gray-400">{kw.jd_count}</td>
+                      <td className="py-3 px-3 text-center text-gray-600 dark:text-gray-400">{kw.resume_count}</td>
                       <td className="py-3 px-3 text-center">
                         <span className={cn("text-[11px] font-bold px-2.5 py-0.5 rounded-full",
-                          kw.status === "matched" ? "bg-green-50 text-green-600" :
-                          kw.status === "partial" ? "bg-amber-50 text-amber-600" :
-                          "bg-red-50 text-red-500"
+                          kw.status === "matched" ? "bg-green-50 dark:bg-green-900/30 text-green-600" :
+                          kw.status === "partial" ? "bg-amber-50 dark:bg-amber-900/30 text-amber-600" :
+                          "bg-red-50 dark:bg-red-900/30 text-red-500"
                         )}>
                           {kw.status === "matched" ? "Présent" : kw.status === "partial" ? "Partiel" : "Absent"}
                         </span>
@@ -183,10 +183,10 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
       {/* Part B: Suggestions */}
       <div>
-        <h2 className="font-display text-[18px] font-bold text-gray-900 mb-4">Partie B : Suggestions</h2>
+        <h2 className="font-display text-[18px] font-bold text-gray-900 dark:text-gray-100 mb-4">Partie B : Suggestions</h2>
         <div className="space-y-4">
           {gaps.map((gap) => (
-            <div key={gap.id} className="bg-white rounded-xl border border-gray-200 px-5 py-5">
+            <div key={gap.id} className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 px-5 py-5">
               <div className="flex items-center gap-2 mb-3">
                 <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full uppercase",
                   gap.impact === "high" ? "bg-red-100 text-red-600" :
@@ -195,13 +195,13 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                 )}>
                   {gap.impact ?? "info"}
                 </span>
-                <span className="text-[12px] text-gray-500 font-medium">{gap.section}</span>
+                <span className="text-[12px] text-gray-500 dark:text-gray-400 font-medium">{gap.section}</span>
               </div>
 
               {/* Original */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Actuel :</p>
-                <div className="bg-red-50 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium mb-1">Actuel :</p>
+                <div className="bg-red-50 dark:bg-red-900/30 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-red-700 leading-relaxed">
                     {gap.texte_original || <span className="italic text-red-400">Absent du CV</span>}
                   </p>
@@ -210,13 +210,13 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
               {/* Suggested */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
-                <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium mb-1">Suggéré :</p>
+                <div className="bg-green-50 dark:bg-green-900/30 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
                 </div>
               </div>
 
-              <p className="text-[13px] text-gray-500 leading-relaxed mb-3">{gap.raison}</p>
+              <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed mb-3">{gap.raison}</p>
 
               {gap.status === "pending" && (
                 <div className="flex items-center gap-3">
@@ -228,7 +228,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accepter
                   </button>
-                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors">
+                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-400 dark:text-gray-500 font-medium hover:text-gray-600 transition-colors">
                     Ignorer
                   </button>
                 </div>
@@ -240,7 +240,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                 </span>
               )}
               {gap.status === "ignored" && (
-                <span className="text-[13px] text-gray-400 font-medium">Ignoré</span>
+                <span className="text-[13px] text-gray-400 dark:text-gray-500 font-medium">Ignoré</span>
               )}
             </div>
           ))}
@@ -258,20 +258,20 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
   const failCount = section.checks.filter((c) => c.status === "fail").length;
 
   const impactBadgeClass =
-    section.impact_label === "HIGH SCORE IMPACT" ? "bg-red-50 text-red-500 border-red-200" :
-    section.impact_label === "IMPORTANT" ? "bg-red-50 text-red-500 border-red-200" :
-    section.impact_label === "WARNING CHECK" ? "bg-amber-50 text-amber-600 border-amber-200" :
-    "bg-blue-50 text-blue-500 border-blue-200";
+    section.impact_label === "HIGH SCORE IMPACT" ? "bg-red-50 dark:bg-red-900/30 text-red-500 border-red-200" :
+    section.impact_label === "IMPORTANT" ? "bg-red-50 dark:bg-red-900/30 text-red-500 border-red-200" :
+    section.impact_label === "WARNING CHECK" ? "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200" :
+    "bg-blue-50 dark:bg-blue-900/30 text-blue-500 border-blue-200";
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full text-left px-6 py-5 hover:bg-gray-50/50 transition-colors"
+        className="w-full text-left px-6 py-5 hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="font-display text-[15px] font-bold text-gray-800">{section.title}</h3>
+            <h3 className="font-display text-[15px] font-bold text-gray-800 dark:text-gray-200">{section.title}</h3>
             <span className={cn("text-[10px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wide", impactBadgeClass)}>
               {section.impact_label}
             </span>
@@ -297,20 +297,20 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
             )}
             <svg
               width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-              className={cn("text-gray-400 transition-transform", open && "rotate-180")}
+              className={cn("text-gray-400 dark:text-gray-500 transition-transform", open && "rotate-180")}
             >
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </div>
         </div>
-        <p className="text-[13px] text-gray-500 mt-1">{section.description}</p>
+        <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">{section.description}</p>
       </button>
 
       {open && (
-        <div className="border-t border-gray-100">
+        <div className="border-t border-gray-100 dark:border-gray-700/50">
           {/* Tip banner */}
           {section.tip && (
-            <div className="mx-6 mt-4 mb-3 bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 flex items-start gap-2.5">
+            <div className="mx-6 mt-4 mb-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 rounded-lg px-4 py-3 flex items-start gap-2.5">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="flex-shrink-0 mt-0.5">
                 <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
               </svg>
@@ -319,7 +319,7 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
           )}
 
           {/* Checks */}
-          <div className="divide-y divide-gray-100 px-6 pb-4">
+          <div className="divide-y divide-gray-100 dark:divide-gray-700/50 px-6 pb-4">
             {section.checks.map((check, i) => (
               <div key={i} className="py-4 flex items-start gap-3">
                 {check.status === "pass" ? (
@@ -330,8 +330,8 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" className="flex-shrink-0 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                 )}
                 <div>
-                  <p className="text-[14px] font-semibold text-gray-800">{check.title}</p>
-                  <p className="text-[13px] text-gray-500 leading-relaxed mt-0.5">{check.description}</p>
+                  <p className="text-[14px] font-semibold text-gray-800 dark:text-gray-200">{check.title}</p>
+                  <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed mt-0.5">{check.description}</p>
                 </div>
               </div>
             ))}
@@ -347,15 +347,15 @@ function JdQualityReport({ qualitySections }: { qualitySections: QualitySection[
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="bg-white rounded-2xl border border-gray-200 px-6 py-5">
+      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 px-6 py-5">
         <div className="flex items-center gap-3">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="9 12 12 15 16 10" /></svg>
           <div>
-            <h2 className="font-display text-[18px] font-bold text-gray-900">
+            <h2 className="font-display text-[18px] font-bold text-gray-900 dark:text-gray-100">
               Partie B : Qualité contextuelle
               <span className="ml-2 text-[11px] font-bold bg-purple-100 text-purple-600 rounded-full px-2.5 py-0.5 uppercase">Premium</span>
             </h2>
-            <p className="text-[13px] text-gray-400 mt-0.5">Vérifications avancées analysant la correspondance contextuelle de votre CV avec le poste.</p>
+            <p className="text-[13px] text-gray-400 dark:text-gray-500 mt-0.5">Vérifications avancées analysant la correspondance contextuelle de votre CV avec le poste.</p>
           </div>
         </div>
       </div>
@@ -390,16 +390,16 @@ function CategorySection({
   const warnCount = gaps.filter((g) => g.status !== "accepted").length;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 transition-colors"
+        className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <h3 className="font-display text-[15px] font-bold text-gray-800">{label}</h3>
+          <h3 className="font-display text-[15px] font-bold text-gray-800 dark:text-gray-200">{label}</h3>
           <span className={cn("text-[11px] font-semibold px-2.5 py-0.5 rounded-full border uppercase tracking-wide",
-            impactLabel === "IMPORTANT" ? "bg-red-50 text-red-500 border-red-200" :
-            "bg-amber-50 text-amber-600 border-amber-200"
+            impactLabel === "IMPORTANT" ? "bg-red-50 dark:bg-red-900/30 text-red-500 border-red-200" :
+            "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200"
           )}>{impactLabel}</span>
         </div>
         <div className="flex items-center gap-3">
@@ -417,7 +417,7 @@ function CategorySection({
           )}
           <svg
             width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-            className={cn("text-gray-400 transition-transform", open && "rotate-180")}
+            className={cn("text-gray-400 dark:text-gray-500 transition-transform", open && "rotate-180")}
           >
             <polyline points="6 9 12 15 18 9" />
           </svg>
@@ -425,7 +425,7 @@ function CategorySection({
       </button>
 
       {open && (
-        <div className="border-t border-gray-100 divide-y divide-gray-100">
+        <div className="border-t border-gray-100 dark:border-gray-700/50 divide-y divide-gray-100 dark:divide-gray-700/50">
           {gaps.map((gap) => (
             <div key={gap.id} className="px-5 py-5">
               {/* Type badge */}
@@ -433,13 +433,13 @@ function CategorySection({
                 <span className="text-amber-500">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                 </span>
-                <span className="text-[12px] text-gray-500 font-medium">{gap.section}</span>
+                <span className="text-[12px] text-gray-500 dark:text-gray-400 font-medium">{gap.section}</span>
               </div>
 
               {/* Original */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Actuel :</p>
-                <div className="bg-red-50 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium mb-1">Actuel :</p>
+                <div className="bg-red-50 dark:bg-red-900/30 border-l-3 border-red-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-red-700 leading-relaxed">
                     {gap.texte_original || <span className="italic text-red-400">Absent du CV</span>}
                   </p>
@@ -448,14 +448,14 @@ function CategorySection({
 
               {/* Suggested */}
               <div className="mb-3">
-                <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
-                <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium mb-1">Suggéré :</p>
+                <div className="bg-green-50 dark:bg-green-900/30 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
                   <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
                 </div>
               </div>
 
               {/* Reason */}
-              <p className="text-[13px] text-gray-500 leading-relaxed mb-3">{gap.raison}</p>
+              <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed mb-3">{gap.raison}</p>
 
               {/* Actions */}
               {gap.status === "pending" && (
@@ -477,7 +477,7 @@ function CategorySection({
                   </button>
                   <button
                     onClick={() => onIgnore(gap.id)}
-                    className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
+                    className="min-h-[44px] text-[12px] text-gray-400 dark:text-gray-500 font-medium hover:text-gray-600 transition-colors"
                   >
                     Dismiss
                   </button>
@@ -490,7 +490,7 @@ function CategorySection({
                 </span>
               )}
               {gap.status === "ignored" && (
-                <span className="text-[13px] text-gray-400 font-medium">Dismissed</span>
+                <span className="text-[13px] text-gray-400 dark:text-gray-500 font-medium">Dismissed</span>
               )}
             </div>
           ))}
@@ -527,7 +527,7 @@ function InlineField({
   };
 
   if (editing) {
-    const cls = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-base focus:outline-none focus:ring-2 focus:ring-blue-400";
+    const cls = "w-full bg-white dark:bg-[#1e293b] border border-blue-300 rounded px-2 py-1 text-base focus:outline-none focus:ring-2 focus:ring-blue-400";
     return multiline ? (
       <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); } }} rows={3} className={cn(cls, "resize-none", className)} />
     ) : (
@@ -536,9 +536,9 @@ function InlineField({
   }
 
   return (
-    <span onClick={() => setEditing(true)} className={cn("cursor-text rounded-sm transition-all group relative inline border border-transparent hover:border-dashed hover:border-gray-300", className)}>
-      {value || <span className="text-gray-300 italic">{placeholder ?? "Cliquez pour éditer"}</span>}
-      <span className="opacity-0 group-hover:opacity-60 ml-1 text-gray-400 text-[11px] inline-block align-middle">&#9998;</span>
+    <span onClick={() => setEditing(true)} className={cn("cursor-text rounded-sm transition-all group relative inline border border-transparent hover:border-dashed hover:border-gray-300 dark:hover:border-gray-600", className)}>
+      {value || <span className="text-gray-300 dark:text-gray-600 italic">{placeholder ?? "Cliquez pour éditer"}</span>}
+      <span className="opacity-0 group-hover:opacity-60 ml-1 text-gray-400 dark:text-gray-500 text-[11px] inline-block align-middle">&#9998;</span>
     </span>
   );
 }
@@ -556,7 +556,7 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
 /* ─── Delete Button ─── */
 function DeleteBtn({ onClick, size = "sm" }: { onClick: () => void; size?: "sm" | "md" }) {
   return (
-    <button onClick={onClick} className={cn("text-gray-300 hover:text-red-500 transition-colors flex-shrink-0", size === "md" ? "p-1" : "")}>
+    <button onClick={onClick} className={cn("text-gray-300 dark:text-gray-600 hover:text-red-500 transition-colors flex-shrink-0", size === "md" ? "p-1" : "")}>
       <svg width={size === "md" ? 16 : 12} height={size === "md" ? 16 : 12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
     </button>
   );
@@ -671,12 +671,12 @@ function SuggestionPanel({
 
   if (pendingGaps.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center">
+      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6 text-center">
         <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
         </div>
-        <p className="text-[15px] font-semibold text-gray-800">Toutes les suggestions ont été traitées</p>
-        <p className="text-[13px] text-gray-400 mt-1">Vous pouvez continuer à éditer votre CV manuellement.</p>
+        <p className="text-[15px] font-semibold text-gray-800 dark:text-gray-200">Toutes les suggestions ont été traitées</p>
+        <p className="text-[13px] text-gray-400 dark:text-gray-500 mt-1">Vous pouvez continuer à éditer votre CV manuellement.</p>
       </div>
     );
   }
@@ -686,16 +686,16 @@ function SuggestionPanel({
   const sectionLabel = current.section || CATEGORY_MAP[current.category ?? ""]?.label || "Suggestion";
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
       {/* Header with counter + Accept All */}
-      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+      <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-[13px] font-semibold text-gray-700">{currentIndex + 1} sur {pendingGaps.length}</span>
+          <span className="text-[13px] font-semibold text-gray-700 dark:text-gray-100">{currentIndex + 1} sur {pendingGaps.length}</span>
           <div className="flex items-center gap-1">
-            <button onClick={() => onNavigate(Math.max(0, currentIndex - 1))} disabled={currentIndex === 0} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors">
+            <button onClick={() => onNavigate(Math.max(0, currentIndex - 1))} disabled={currentIndex === 0} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="18 15 12 9 6 15" /></svg>
             </button>
-            <button onClick={() => onNavigate(Math.min(pendingGaps.length - 1, currentIndex + 1))} disabled={currentIndex === pendingGaps.length - 1} className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors">
+            <button onClick={() => onNavigate(Math.min(pendingGaps.length - 1, currentIndex + 1))} disabled={currentIndex === pendingGaps.length - 1} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
             </button>
           </div>
@@ -708,44 +708,44 @@ function SuggestionPanel({
       {/* Section label */}
       <div className="px-5 pt-4">
         <span className={cn("text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full",
-          current.impact === "high" ? "bg-red-50 text-red-500" : current.impact === "medium" ? "bg-amber-50 text-amber-600" : "bg-blue-50 text-blue-500"
+          current.impact === "high" ? "bg-red-50 dark:bg-red-900/30 text-red-500" : current.impact === "medium" ? "bg-amber-50 dark:bg-amber-900/30 text-amber-600" : "bg-blue-50 dark:bg-blue-900/30 text-blue-500"
         )}>{sectionLabel}</span>
       </div>
 
       {/* Current text */}
       <div className="px-5 pt-3">
-        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Actuel</p>
-        <p className="text-[13px] text-red-600 line-through leading-relaxed bg-red-50 rounded px-3 py-2">
-          {current.texte_original || <span className="italic no-underline text-gray-400">Absent du CV</span>}
+        <p className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-wider mb-1">Actuel</p>
+        <p className="text-[13px] text-red-600 line-through leading-relaxed bg-red-50 dark:bg-red-900/30 rounded px-3 py-2">
+          {current.texte_original || <span className="italic no-underline text-gray-400 dark:text-gray-500">Absent du CV</span>}
         </p>
       </div>
 
       {/* Suggested text */}
       <div className="px-5 pt-3">
-        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Suggéré</p>
-        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">{current.texte_suggere}</p>
+        <p className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-wider mb-1">Suggéré</p>
+        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 dark:bg-green-900/30 rounded px-3 py-2">{current.texte_suggere}</p>
       </div>
 
       {/* Reason */}
       <div className="px-5 pt-2 pb-4">
-        <p className="text-[12px] text-gray-400 italic leading-relaxed">{current.raison}</p>
+        <p className="text-[12px] text-gray-400 dark:text-gray-500 italic leading-relaxed">{current.raison}</p>
       </div>
 
       {/* Actions */}
-      <div className="flex border-t border-gray-100">
-        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
+      <div className="flex border-t border-gray-100 dark:border-gray-700/50">
+        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-r border-gray-100 dark:border-gray-700/50">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
           Rejeter
         </button>
-        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
+        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
           Accepter
         </button>
       </div>
 
       {/* Keyboard hint */}
-      <div className="px-5 py-2 bg-gray-50 border-t border-gray-100 text-center">
-        <span className="text-[11px] text-gray-400"><kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">Tab</kbd> Accepter &middot; <kbd className="px-1.5 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">Esc</kbd> Rejeter</span>
+      <div className="px-5 py-2 bg-gray-50 dark:bg-[#0f172a] border-t border-gray-100 dark:border-gray-700/50 text-center">
+        <span className="text-[11px] text-gray-400 dark:text-gray-500"><kbd className="px-1.5 py-0.5 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded text-[10px] font-mono">Tab</kbd> Accepter &middot; <kbd className="px-1.5 py-0.5 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded text-[10px] font-mono">Esc</kbd> Rejeter</span>
       </div>
     </div>
   );
@@ -874,7 +874,7 @@ function CVDocumentEditable({
 
   return (
     <div
-      className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden"
+      className="w-full max-w-[794px] mx-auto bg-white dark:bg-[#1e293b] shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 dark:border-gray-700 overflow-hidden"
       style={{ minHeight: 600 }}
     >
       {/* Dark Header */}
@@ -983,7 +983,7 @@ function CVDocumentEditable({
                 className="text-[13px] text-gray-500 italic"
                 placeholder="Entreprise"
               />
-              {(exp.entreprise || exp.lieu) && <span className="text-gray-400">&mdash;</span>}
+              {(exp.entreprise || exp.lieu) && <span className="text-gray-400 dark:text-gray-500">&mdash;</span>}
               <InlineField
                 value={exp.lieu ?? ""}
                 onSave={(v) => updateExperience(ei, "lieu", v)}
@@ -1043,7 +1043,7 @@ function CVDocumentEditable({
         <SectionTitle title="Compétences" />
         <div className="flex flex-wrap gap-2 mt-1">
           {cv.competences.map((c, ci) => (
-            <span key={ci} className="flex items-center gap-1 bg-gray-100 rounded px-2.5 py-1 group/comp">
+            <span key={ci} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded px-2.5 py-1 group/comp">
               <GapField
                 value={c}
                 onSave={(v) => updateCompetence(ci, v)}
@@ -1072,7 +1072,7 @@ function CVDocumentEditable({
                   <span className="opacity-0 group-hover/ci:opacity-100 transition-opacity">
                     <DeleteBtn onClick={() => removeCentreInteret(ci)} />
                   </span>
-                  {ci < cv.centres_interet.length - 1 && <span className="text-gray-400 mx-1">&middot;</span>}
+                  {ci < cv.centres_interet.length - 1 && <span className="text-gray-400 dark:text-gray-500 mx-1">&middot;</span>}
                 </span>
               ))}
             </div>
@@ -1164,7 +1164,7 @@ function CVEditorWithPanel({
         <button
           onClick={onDownload}
           disabled={isDownloading}
-          className="px-5 py-2.5 min-h-[48px] bg-gray-900 text-white text-[13px] font-semibold rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="px-5 py-2.5 min-h-[48px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-[13px] font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {isDownloading ? (
             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1180,7 +1180,7 @@ function CVEditorWithPanel({
       </div>
 
       {downloadError && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center mb-4">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center mb-4">
           {downloadError}
         </div>
       )}
@@ -1375,15 +1375,15 @@ export default function ResultsPage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#f8f9fb]">
+      <div className="min-h-screen bg-[#f8f9fb] dark:bg-[#0f172a]">
         <AppHeader />
 
         {/* ─── Top tab bar ─── */}
-        <div className="bg-white border-b border-gray-200 py-4">
+        <div className="bg-white dark:bg-[#1e293b] border-b border-gray-200 dark:border-gray-700 py-4">
           <div className="max-w-7xl mx-auto px-6 flex items-center gap-2">
             <button
               onClick={() => router.push("/analyze")}
-              className="flex items-center gap-1.5 text-[13px] text-gray-400 hover:text-gray-600 mr-4 transition-colors"
+              className="flex items-center gap-1.5 text-[13px] text-gray-400 dark:text-gray-500 hover:text-gray-600 mr-4 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
               Retour
@@ -1392,15 +1392,15 @@ export default function ResultsPage() {
             <div className={cn(
               "flex items-center gap-1 px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-all border-2",
               activeTab === "report"
-                ? "bg-white border-gray-300 shadow-sm text-gray-900"
-                : "bg-transparent border-transparent text-gray-400 hover:text-gray-600"
+                ? "bg-white dark:bg-[#1e293b] border-gray-300 dark:border-gray-700 shadow-sm text-gray-900 dark:text-gray-100"
+                : "bg-transparent border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600"
             )}>
               <button onClick={() => setActiveTab("report")} className="flex flex-col">
                 <span className="flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /></svg>
                   Rapport CV
                 </span>
-                <span className="text-[11px] text-gray-400 font-normal block">Score & Analyse</span>
+                <span className="text-[11px] text-gray-400 dark:text-gray-500 font-normal block">Score & Analyse</span>
               </button>
               {/* Match/Quality sub-tabs for JD mode */}
               {isJdMatch && activeTab === "report" && (
@@ -1409,8 +1409,8 @@ export default function ResultsPage() {
                     onClick={() => { setActiveTab("report"); setReportSubTab("match"); }}
                     className={cn("px-3 py-1 rounded-lg text-[12px] font-semibold transition-all",
                       reportSubTab === "match"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-400 hover:text-gray-600"
+                        ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        : "text-gray-400 dark:text-gray-500 hover:text-gray-600"
                     )}
                   >
                     Correspondance
@@ -1420,7 +1420,7 @@ export default function ResultsPage() {
                     className={cn("px-3 py-1 rounded-lg text-[12px] font-semibold transition-all",
                       reportSubTab === "quality"
                         ? "bg-purple-100 text-purple-700"
-                        : "text-gray-400 hover:text-gray-600"
+                        : "text-gray-400 dark:text-gray-500 hover:text-gray-600"
                     )}
                   >
                     Qualité
@@ -1435,15 +1435,15 @@ export default function ResultsPage() {
                 className={cn(
                   "px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-all border-2",
                   activeTab === "editor"
-                    ? "bg-white border-gray-300 shadow-sm text-gray-900"
-                    : "bg-transparent border-transparent text-gray-400 hover:text-gray-600"
+                    ? "bg-white dark:bg-[#1e293b] border-gray-300 dark:border-gray-700 shadow-sm text-gray-900 dark:text-gray-100"
+                    : "bg-transparent border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600"
                 )}
               >
                 <span className="flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                   Éditeur CV
                 </span>
-                <span className="text-[11px] text-gray-400 font-normal block">Modifier & Corriger</span>
+                <span className="text-[11px] text-gray-400 dark:text-gray-500 font-normal block">Modifier & Corriger</span>
               </button>
               <div className="absolute -top-2 -right-2 flex items-center gap-1">
                 <span className="bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
@@ -1466,17 +1466,17 @@ export default function ResultsPage() {
               {/* SIDEBAR — 4 cols */}
               <aside className="lg:col-span-4 space-y-5">
                 {/* Score Card */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-6">
+                <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
                   <div className="flex justify-center mb-4">
                     <ScoreGauge score={scoreActuel} size={160} strokeWidth={8} />
                   </div>
                   <div className="text-center mb-5">
-                    <p className="text-[13px] text-gray-400">{isJdMatch ? "Taux de correspondance" : "Score CV"}</p>
+                    <p className="text-[13px] text-gray-400 dark:text-gray-500">{isJdMatch ? "Taux de correspondance" : "Score CV"}</p>
                     <ScoreStatusBadge score={scoreActuel} />
                   </div>
 
                   {/* Category breakdown */}
-                  <div className="space-y-3 pt-4 border-t border-gray-100">
+                  <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700/50">
                     {isJdMatch && jdMatch ? (
                       <>
                         {Object.entries(jdMatch.category_scores).map(([key, score]) => (
@@ -1500,11 +1500,11 @@ export default function ResultsPage() {
                   <>
                     {/* Missing Keywords Tags */}
                     {jdMatch.missing_keywords_tags.length > 0 && (
-                      <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                        <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">Mots-clés manquants</h3>
+                      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5">
+                        <h3 className="font-display text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-3">Mots-clés manquants</h3>
                         <div className="flex flex-wrap gap-2">
                           {jdMatch.missing_keywords_tags.map((kw, i) => (
-                            <span key={i} className="bg-red-50 text-red-600 border border-red-200 rounded-full px-3 py-1 text-[12px] font-medium">
+                            <span key={i} className="bg-red-50 dark:bg-red-900/30 text-red-600 border border-red-200 rounded-full px-3 py-1 text-[12px] font-medium">
                               {kw}
                             </span>
                           ))}
@@ -1514,8 +1514,8 @@ export default function ResultsPage() {
 
                     {/* Strengths */}
                     {jdMatch.strengths.length > 0 && (
-                      <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                        <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">
+                      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5">
+                        <h3 className="font-display text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-3">
                           <span className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
                             Points forts
@@ -1523,7 +1523,7 @@ export default function ResultsPage() {
                         </h3>
                         <ul className="space-y-2">
                           {jdMatch.strengths.map((s, i) => (
-                            <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
+                            <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">
                               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
                               {s}
                             </li>
@@ -1534,8 +1534,8 @@ export default function ResultsPage() {
 
                     {/* Areas to Improve */}
                     {jdMatch.areas_to_improve.length > 0 && (
-                      <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                        <h3 className="font-display text-[16px] font-bold text-gray-800 mb-3">
+                      <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5">
+                        <h3 className="font-display text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-3">
                           <span className="flex items-center gap-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                             Axes d&apos;amélioration
@@ -1543,7 +1543,7 @@ export default function ResultsPage() {
                         </h3>
                         <ul className="space-y-2">
                           {jdMatch.areas_to_improve.map((a, i) => (
-                            <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
+                            <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">
                               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
                               {a}
                             </li>
@@ -1555,15 +1555,15 @@ export default function ResultsPage() {
                 ) : (
                   /* ATS: Quick Summary */
                   resume && (
-                    <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                      <h3 className="font-display text-[16px] font-bold text-gray-800 mb-4">Résumé rapide</h3>
+                    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5">
+                      <h3 className="font-display text-[16px] font-bold text-gray-800 dark:text-gray-200 mb-4">Résumé rapide</h3>
 
                       {criticalFixes.length > 0 && (
                         <div className="mb-4">
                           <p className="text-[12px] font-bold text-red-500 uppercase tracking-wider mb-2">Corrections critiques</p>
                           <ul className="space-y-1.5">
                             {criticalFixes.map((fix, i) => (
-                              <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
+                              <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">
                                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
                                 {fix}
                               </li>
@@ -1577,7 +1577,7 @@ export default function ResultsPage() {
                           <p className="text-[12px] font-bold text-green-500 uppercase tracking-wider mb-2">Gains rapides</p>
                           <ul className="space-y-1.5">
                             {quickWins.map((win, i) => (
-                              <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 leading-relaxed">
+                              <li key={i} className="flex items-start gap-2 text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">
                                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
                                 {win}
                               </li>
@@ -1590,19 +1590,19 @@ export default function ResultsPage() {
                 )}
 
                 {/* Counters */}
-                <div className="bg-white rounded-2xl border border-gray-200 p-5">
+                <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5">
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="text-[22px] font-bold text-amber-500">{pendingGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">En attente</p>
+                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">En attente</p>
                     </div>
                     <div>
                       <p className="text-[22px] font-bold text-green-500">{acceptedGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">Acceptées</p>
+                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">Acceptées</p>
                     </div>
                     <div>
-                      <p className="text-[22px] font-bold text-gray-400">{ignoredGaps.length}</p>
-                      <p className="text-[11px] text-gray-400 font-medium">Rejetées</p>
+                      <p className="text-[22px] font-bold text-gray-400 dark:text-gray-500">{ignoredGaps.length}</p>
+                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">Rejetées</p>
                     </div>
                   </div>
                 </div>
@@ -1627,16 +1627,16 @@ export default function ResultsPage() {
                     )}
                   </button>
                   {acceptedGaps.length === 0 && (
-                    <p className="text-[12px] text-gray-400 text-center">Acceptez au moins une suggestion pour télécharger</p>
+                    <p className="text-[12px] text-gray-400 dark:text-gray-500 text-center">Acceptez au moins une suggestion pour télécharger</p>
                   )}
                   {downloadError && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center">
+                    <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 rounded-lg px-4 py-2 text-[13px] text-red-600 text-center">
                       {downloadError}
                     </div>
                   )}
 
                   {pdfDownloaded && (
-                    <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center space-y-2">
+                    <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 rounded-xl p-4 text-center space-y-2">
                       <p className="text-[13px] text-green-700 font-medium">CV téléchargé !</p>
                       <a
                         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://cvpass.fr")}&summary=${encodeURIComponent(`Mon CV est passé de ${score_avant} à ${scoreActuel}/100 grâce à CVpass 🚀`)}`}
@@ -1688,8 +1688,8 @@ export default function ResultsPage() {
                 )}
 
                 {gaps.length === 0 && (
-                  <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-                    <p className="text-gray-400 text-[15px]">Aucune suggestion générée pour cette analyse.</p>
+                  <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+                    <p className="text-gray-400 dark:text-gray-500 text-[15px]">Aucune suggestion générée pour cette analyse.</p>
                   </div>
                 )}
               </div>
@@ -1700,10 +1700,10 @@ export default function ResultsPage() {
           {activeTab === "editor" && (
             <div>
               {!isPaid ? (
-                <div className="bg-white rounded-2xl border-2 border-dashed border-green-300 p-12 text-center">
+                <div className="bg-white dark:bg-[#1e293b] rounded-2xl border-2 border-dashed border-green-300 p-12 text-center">
                   <div className="text-[40px] mb-4">🔒</div>
-                  <h3 className="text-[18px] font-bold text-gray-900 mb-2">Éditeur CV réservé aux membres</h3>
-                  <p className="text-[14px] text-gray-500 mb-6 max-w-md mx-auto">
+                  <h3 className="text-[18px] font-bold text-gray-900 dark:text-gray-100 mb-2">Éditeur CV réservé aux membres</h3>
+                  <p className="text-[14px] text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
                     Passez au plan Coup de pouce ou Recherche Active pour débloquer l&apos;éditeur IA, accepter les suggestions et exporter un PDF propre.
                   </p>
                   <a
@@ -1727,8 +1727,8 @@ export default function ResultsPage() {
                   downloadError={downloadError}
                 />
               ) : (
-                <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
-                  <p className="text-gray-400 text-[15px]">Le CV n&apos;a pas pu être structuré. Relancez l&apos;analyse.</p>
+                <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+                  <p className="text-gray-400 dark:text-gray-500 text-[15px]">Le CV n&apos;a pas pu être structuré. Relancez l&apos;analyse.</p>
                 </div>
               )}
             </div>

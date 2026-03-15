@@ -23,6 +23,7 @@ export async function generateMetadata(
       description: post.metaDescription,
       url: `https://cvpass.fr/blog/${post.slug}`,
       type: "article",
+      images: [{ url: `https://cvpass.fr${post.image}`, width: 1200, height: 630, alt: post.title }],
     },
   };
 }
@@ -70,16 +71,16 @@ function renderContent(content: string) {
                 const cells = row.split("|").filter((_, ci) => ci !== 0 && ci !== row.split("|").length - 1);
                 const isHeader = ri === 0;
                 return (
-                  <tr key={ri} style={{ background: isHeader ? "#f9fafb" : ri % 2 === 0 ? "#fff" : "#f8fafc" }}>
+                  <tr key={ri} style={{ background: isHeader ? "var(--bg-surface)" : ri % 2 === 0 ? "var(--bg-primary)" : "var(--bg-secondary)" }}>
                     {cells.map((cell, ci) => {
                       const Tag = isHeader ? "th" : "td";
                       return (
                         <Tag key={ci} style={{
                           padding: "10px 16px",
-                          border: "1px solid #f3f4f6",
+                          border: "1px solid var(--border-light)",
                           textAlign: "left",
                           fontWeight: isHeader ? 700 : 400,
-                          color: isHeader ? "#6b7280" : "#374151",
+                          color: isHeader ? "var(--text-secondary)" : "var(--text-body)",
                           fontSize: isHeader ? 12 : 13.5,
                           letterSpacing: isHeader ? ".4px" : 0,
                           textTransform: isHeader ? "uppercase" : "none",
@@ -101,7 +102,7 @@ function renderContent(content: string) {
     // H3
     if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={key++} style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "28px 0 10px", letterSpacing: "-.3px", lineHeight: 1.35 }}>
+        <h3 key={key++} style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)", margin: "28px 0 10px", letterSpacing: "-.3px", lineHeight: 1.35 }}>
           {line.replace("### ", "")}
         </h3>
       );
@@ -118,7 +119,7 @@ function renderContent(content: string) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
       elements.push(
-        <h2 key={key++} id={id} style={{ fontSize: 22, fontWeight: 800, color: "#111827", margin: "40px 0 12px", letterSpacing: "-.5px", lineHeight: 1.25, paddingTop: 8, borderTop: "1px solid #f3f4f6", scrollMarginTop: 80 }}>
+        <h2 key={key++} id={id} style={{ fontSize: 22, fontWeight: 800, color: "var(--text-primary)", margin: "40px 0 12px", letterSpacing: "-.5px", lineHeight: 1.25, paddingTop: 8, borderTop: "1px solid var(--border-light)", scrollMarginTop: 80 }}>
           {text}
         </h2>
       );
@@ -128,7 +129,7 @@ function renderContent(content: string) {
 
     // HR
     if (line.startsWith("---")) {
-      elements.push(<hr key={key++} style={{ border: "none", borderTop: "1px solid #e5e7eb", margin: "36px 0" }} />);
+      elements.push(<hr key={key++} style={{ border: "none", borderTop: "1px solid var(--border-color)", margin: "36px 0" }} />);
       i++;
       continue;
     }
@@ -143,7 +144,7 @@ function renderContent(content: string) {
       elements.push(
         <ul key={key++} style={{ paddingLeft: 20, margin: "12px 0 16px", display: "flex", flexDirection: "column", gap: 8 }}>
           {items.map((item, idx) => (
-            <li key={idx} style={{ fontSize: 15, color: "#374151", lineHeight: 1.68 }}>
+            <li key={idx} style={{ fontSize: 15, color: "var(--text-body)", lineHeight: 1.68 }}>
               <InlineMarkdown text={item} />
             </li>
           ))}
@@ -161,7 +162,7 @@ function renderContent(content: string) {
     // Bold line (starts and ends with **)
     if (line.startsWith("**") && line.endsWith("**") && line.length > 4) {
       elements.push(
-        <p key={key++} style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: "16px 0 6px" }}>
+        <p key={key++} style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)", margin: "16px 0 6px" }}>
           {line.replace(/\*\*/g, "")}
         </p>
       );
@@ -171,7 +172,7 @@ function renderContent(content: string) {
 
     // Regular paragraph
     elements.push(
-      <p key={key++} style={{ fontSize: 15, color: "#374151", lineHeight: 1.78, margin: "0 0 16px" }}>
+      <p key={key++} style={{ fontSize: 15, color: "var(--text-body)", lineHeight: 1.78, margin: "0 0 16px" }}>
         <InlineMarkdown text={line} />
       </p>
     );
@@ -197,11 +198,11 @@ function InlineMarkdown({ text }: { text: string }) {
         }
         const boldMatch = part.match(/^\*\*(.*?)\*\*$/);
         if (boldMatch) {
-          return <strong key={i} style={{ fontWeight: 700, color: "#111827" }}>{boldMatch[1]}</strong>;
+          return <strong key={i} style={{ fontWeight: 700, color: "var(--text-primary)" }}>{boldMatch[1]}</strong>;
         }
         const codeMatch = part.match(/^`(.*?)`$/);
         if (codeMatch) {
-          return <code key={i} style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: 13, background: "#f3f4f6", padding: "2px 6px", borderRadius: 4, color: "#374151" }}>{codeMatch[1]}</code>;
+          return <code key={i} style={{ fontFamily: "var(--font-geist-mono), monospace", fontSize: 13, background: "var(--code-bg)", padding: "2px 6px", borderRadius: 4, color: "var(--text-body)" }}>{codeMatch[1]}</code>;
         }
         return <span key={i}>{part}</span>;
       })}
@@ -246,7 +247,7 @@ export default async function BlogPostPage(
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg-secondary)", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif" }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -259,17 +260,17 @@ export default async function BlogPostPage(
       {/* NAV */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(255,255,255,0.92)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(229,231,235,0.8)",
+        background: "var(--nav-bg)", backdropFilter: "blur(20px)",
+        borderBottom: "1px solid var(--border-color)",
         boxShadow: "0 1px 0 rgba(0,0,0,.03), 0 4px 20px rgba(0,0,0,.04)",
         padding: "0 40px", height: "64px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
-        <Link href="/" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px", color: "#111827", textDecoration: "none" }}>
+        <Link href="/" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px", color: "var(--text-primary)", textDecoration: "none" }}>
           CV<span style={{ color: "#16a34a" }}>pass</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "#6b7280", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>← Blog</Link>
+          <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>← Blog</Link>
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
             Analyser mon CV →
           </Link>
@@ -278,28 +279,40 @@ export default async function BlogPostPage(
 
       {/* BREADCRUMBS */}
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "16px 40px 0" }}>
-        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#9ca3af" }}>
-          <Link href="/" style={{ color: "#6b7280", textDecoration: "none" }}>Accueil</Link>
+        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "var(--text-muted)" }}>
+          <Link href="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
           <span>/</span>
-          <Link href="/blog" style={{ color: "#6b7280", textDecoration: "none" }}>Blog</Link>
+          <Link href="/blog" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Blog</Link>
           <span>/</span>
-          <span style={{ color: "#374151", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 300 }}>{post.title}</span>
+          <span style={{ color: "var(--text-body)", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 300 }}>{post.title}</span>
         </nav>
       </div>
 
+      {/* HERO IMAGE */}
+      <div style={{ maxWidth: 720, margin: "12px auto 0", padding: "0 40px" }}>
+        <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1200/630", position: "relative" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.image}
+            alt={post.title}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      </div>
+
       {/* ARTICLE HEADER */}
-      <section style={{ background: "#fff", borderBottom: "1px solid rgba(229,231,235,.8)", padding: "40px 40px 40px", marginTop: 12 }}>
+      <section style={{ background: "var(--bg-primary)", padding: "32px 40px 40px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
             <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 100, background: "#f0fdf4", color: "#15803d" }}>{post.category}</span>
             {post.tags?.filter(t => t !== post.category).map((tag) => (
-              <span key={tag} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: "#f3f4f6", color: "#6b7280" }}>{tag}</span>
+              <span key={tag} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: "var(--code-bg)", color: "var(--text-secondary)" }}>{tag}</span>
             ))}
-            <span style={{ fontSize: 12, color: "#9ca3af" }}>{dateLabel}</span>
-            <span style={{ fontSize: 12, color: "#9ca3af" }}>·</span>
-            <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.readTime} de lecture</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{dateLabel}</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>·</span>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{post.readTime} de lecture</span>
           </div>
-          <h1 style={{ fontSize: "clamp(26px,4vw,40px)", fontWeight: 900, color: "#111827", letterSpacing: "-1.3px", lineHeight: 1.12, margin: 0 }}>
+          <h1 style={{ fontSize: "clamp(26px,4vw,40px)", fontWeight: 900, color: "var(--text-primary)", letterSpacing: "-1.3px", lineHeight: 1.12, margin: 0 }}>
             {post.title}
           </h1>
         </div>
@@ -311,17 +324,17 @@ export default async function BlogPostPage(
         {/* TABLE OF CONTENTS */}
         {headings.length >= 3 && (
           <div style={{
-            background: "#fff", border: "1px solid rgba(229,231,235,.9)", borderRadius: 16,
+            background: "var(--bg-primary)", border: "1px solid var(--border-color)", borderRadius: 16,
             padding: "24px 28px", marginBottom: 32,
             boxShadow: "0 1px 2px rgba(0,0,0,.04)",
           }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "#6b7280", marginBottom: 14 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 14 }}>
               Sommaire
             </div>
             <ol style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 8 }}>
               {headings.map((h, idx) => (
                 <li key={idx} style={{ fontSize: 14, lineHeight: 1.5 }}>
-                  <a href={`#${h.id}`} style={{ color: "#374151", textDecoration: "none", fontWeight: 500 }}>
+                  <a href={`#${h.id}`} style={{ color: "var(--text-body)", textDecoration: "none", fontWeight: 500 }}>
                     {h.text}
                   </a>
                 </li>
@@ -330,13 +343,13 @@ export default async function BlogPostPage(
           </div>
         )}
 
-        <article style={{ background: "#fff", border: "1px solid rgba(229,231,235,.9)", borderRadius: 20, padding: "48px 52px", boxShadow: "0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.06)" }}>
+        <article style={{ background: "var(--bg-primary)", border: "1px solid var(--border-color)", borderRadius: 20, padding: "48px 52px", boxShadow: "var(--card-shadow)" }}>
           {renderContent(post.content)}
         </article>
 
         {/* SHARE BUTTONS */}
         <div style={{ marginTop: 24, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: "#6b7280" }}>Partager cet article</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-secondary)" }}>Partager cet article</span>
           <ShareButtons title={post.title} slug={post.slug} />
         </div>
 
@@ -368,22 +381,22 @@ export default async function BlogPostPage(
 
       {/* ARTICLES SUGGÉRÉS */}
       {allPosts.length > 0 && (
-        <section style={{ background: "#fff", borderTop: "1px solid rgba(229,231,235,.8)", padding: "56px 40px" }}>
+        <section style={{ background: "var(--bg-primary)", borderTop: "1px solid var(--border-color)", padding: "56px 40px" }}>
           <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-            <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111827", letterSpacing: "-.5px", marginBottom: 32 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-.5px", marginBottom: 32 }}>
               À lire aussi
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
               {allPosts.map((p) => (
                 <Link key={p.slug} href={`/blog/${p.slug}`} style={{ textDecoration: "none" }}>
                   <div style={{
-                    background: "#f8fafc", border: "1px solid rgba(229,231,235,.9)",
+                    background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
                     borderRadius: 16, padding: "22px 22px 18px",
                     boxShadow: "0 1px 2px rgba(0,0,0,.04)",
                     transition: "box-shadow .22s, transform .22s",
                   }}>
                     <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, background: "#f0fdf4", color: "#15803d", display: "inline-block", marginBottom: 10 }}>{p.category}</span>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", lineHeight: 1.4, margin: 0 }}>{p.title}</p>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.4, margin: 0 }}>{p.title}</p>
                     <p style={{ fontSize: 13, color: "#16a34a", fontWeight: 600, marginTop: 12 }}>Lire →</p>
                   </div>
                 </Link>
@@ -394,14 +407,14 @@ export default async function BlogPostPage(
       )}
 
       {/* FOOTER */}
-      <footer style={{ borderTop: "1px solid rgba(229,231,235,.8)", padding: "24px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff" }}>
-        <span style={{ fontSize: 13, color: "#9ca3af" }}>© 2026 CVpass</span>
+      <footer style={{ borderTop: "1px solid var(--border-color)", padding: "24px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "var(--bg-primary)" }}>
+        <span style={{ fontSize: 13, color: "var(--text-muted)" }}>© 2026 CVpass</span>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
-          <Link href="/mentions-legales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Mentions légales</Link>
-          <Link href="/politique-confidentialite" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Confidentialité</Link>
-          <Link href="/conditions-generales" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>CGU/CGV</Link>
-          <Link href="/politique-cookies" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Cookies</Link>
-          <a href="mailto:contact@cvpass.fr" style={{ fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>Contact</a>
+          <Link href="/mentions-legales" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Mentions légales</Link>
+          <Link href="/politique-confidentialite" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Confidentialité</Link>
+          <Link href="/conditions-generales" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>CGU/CGV</Link>
+          <Link href="/politique-cookies" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Cookies</Link>
+          <a href="mailto:contact@cvpass.fr" style={{ fontSize: 13, color: "var(--text-muted)", textDecoration: "none" }}>Contact</a>
         </div>
       </footer>
     </div>

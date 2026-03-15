@@ -62,13 +62,13 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+      <div className="relative bg-white dark:bg-[#1e293b] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="font-bold text-brand-black">CV optimisé</h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-700/50">
+          <h2 className="font-bold text-brand-black dark:text-gray-100">CV optimisé</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-gray-400 hover:text-brand-black hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-brand-black dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             aria-label="Fermer"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -90,7 +90,7 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
           )}
 
           {!loading && !error && !cvJson && (
-            <p className="text-brand-gray text-sm text-center py-8 italic">
+            <p className="text-brand-gray dark:text-gray-400 text-sm text-center py-8 italic">
               Aperçu non disponible pour cette analyse.<br />
               Téléchargez à nouveau le CV depuis la page Résultats pour l&apos;activer.
             </p>
@@ -100,10 +100,10 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
             <div className="space-y-5 text-sm">
               {/* Header */}
               <div>
-                <h1 className="text-xl font-bold text-brand-black">{cvJson.nom}</h1>
+                <h1 className="text-xl font-bold text-brand-black dark:text-gray-100">{cvJson.nom}</h1>
                 {cvJson.titre && <p className="text-[#16a34a] font-medium mt-0.5">{cvJson.titre}</p>}
                 {(cvJson.contact?.email || cvJson.contact?.telephone || cvJson.contact?.ville) && (
-                  <p className="text-brand-gray text-xs mt-1">
+                  <p className="text-brand-gray dark:text-gray-400 text-xs mt-1">
                     {[cvJson.contact.email, cvJson.contact.telephone, cvJson.contact.ville]
                       .filter(Boolean)
                       .join("  |  ")}
@@ -115,7 +115,7 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
               {/* Profil */}
               {cvJson.profil && (
                 <Section title="Profil">
-                  <p className="text-brand-black leading-relaxed">{cvJson.profil}</p>
+                  <p className="text-brand-black dark:text-gray-100 leading-relaxed">{cvJson.profil}</p>
                 </Section>
               )}
 
@@ -125,16 +125,16 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
                   {cvJson.experiences.map((exp, i) => (
                     <div key={i} className="mb-3">
                       <div className="flex justify-between items-baseline gap-2">
-                        <span className="font-semibold text-brand-black">{exp.poste}</span>
-                        {exp.periode && <span className="text-xs text-brand-gray shrink-0">{exp.periode}</span>}
+                        <span className="font-semibold text-brand-black dark:text-gray-100">{exp.poste}</span>
+                        {exp.periode && <span className="text-xs text-brand-gray dark:text-gray-400 shrink-0">{exp.periode}</span>}
                       </div>
                       {(exp.entreprise || exp.lieu) && (
-                        <p className="text-xs text-brand-gray mb-1">
+                        <p className="text-xs text-brand-gray dark:text-gray-400 mb-1">
                           {[exp.entreprise, exp.lieu].filter(Boolean).join(" — ")}
                         </p>
                       )}
                       {exp.missions?.map((m, j) => (
-                        <p key={j} className="text-brand-black pl-3 before:content-['–'] before:mr-1.5 before:text-brand-gray">
+                        <p key={j} className="text-brand-black dark:text-gray-100 pl-3 before:content-['–'] before:mr-1.5 before:text-brand-gray dark:before:text-gray-400">
                           {m}
                         </p>
                       ))}
@@ -149,10 +149,10 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
                   {cvJson.formation.map((f, i) => (
                     <div key={i} className="mb-2">
                       <div className="flex justify-between items-baseline gap-2">
-                        <span className="font-semibold text-brand-black">{f.diplome}</span>
-                        {f.periode && <span className="text-xs text-brand-gray shrink-0">{f.periode}</span>}
+                        <span className="font-semibold text-brand-black dark:text-gray-100">{f.diplome}</span>
+                        {f.periode && <span className="text-xs text-brand-gray dark:text-gray-400 shrink-0">{f.periode}</span>}
                       </div>
-                      {f.etablissement && <p className="text-xs text-brand-gray">{f.etablissement}</p>}
+                      {f.etablissement && <p className="text-xs text-brand-gray dark:text-gray-400">{f.etablissement}</p>}
                     </div>
                   ))}
                 </Section>
@@ -161,21 +161,21 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
               {/* Compétences */}
               {cvJson.competences?.length > 0 && (
                 <Section title="Compétences">
-                  <p className="text-brand-black">{cvJson.competences.join("  •  ")}</p>
+                  <p className="text-brand-black dark:text-gray-100">{cvJson.competences.join("  •  ")}</p>
                 </Section>
               )}
 
               {/* Centres d'intérêt */}
               {cvJson.centres_interet?.length > 0 && (
                 <Section title="Centres d'intérêt">
-                  <p className="text-brand-black">{cvJson.centres_interet.join("  •  ")}</p>
+                  <p className="text-brand-black dark:text-gray-100">{cvJson.centres_interet.join("  •  ")}</p>
                 </Section>
               )}
 
               {/* Informations */}
               {cvJson.informations?.length > 0 && (
                 <Section title="Informations">
-                  {cvJson.informations.map((info, i) => <p key={i} className="text-brand-black">{info}</p>)}
+                  {cvJson.informations.map((info, i) => <p key={i} className="text-brand-black dark:text-gray-100">{info}</p>)}
                 </Section>
               )}
             </div>
@@ -183,10 +183,10 @@ export function CVJsonModal({ analysisId, onClose }: CVJsonModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 px-6 py-4 border-t border-gray-100">
+        <div className="flex gap-3 px-6 py-4 border-t border-gray-100 dark:border-gray-700/50">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-brand-gray hover:bg-gray-50 transition-colors"
+            className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-brand-gray dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             Fermer
           </button>
@@ -218,7 +218,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h3 className="text-xs font-bold uppercase tracking-wide text-[#16a34a] mb-1">{title}</h3>
-      <div className="h-px bg-gray-200 mb-2" />
+      <div className="h-px bg-gray-200 dark:bg-gray-700 mb-2" />
       <div className="space-y-1">{children}</div>
     </div>
   );

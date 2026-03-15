@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="envelope1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <linearGradient id="letter1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="flap1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <filter id="glow1">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow1">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg1)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03" stroke="#16a34a" stroke-width="1">
+    <line x1="0" y1="0" x2="1200" y2="630"/>
+    <line x1="200" y1="0" x2="1200" y2="500"/>
+    <line x1="400" y1="0" x2="1200" y2="400"/>
+    <line x1="0" y1="200" x2="800" y2="630"/>
+    <line x1="0" y1="400" x2="400" y2="630"/>
+    <line x1="1200" y1="0" x2="0" y2="630"/>
+    <line x1="1000" y1="0" x2="0" y2="500"/>
+    <line x1="800" y1="0" x2="0" y2="400"/>
+  </g>
+
+  <!-- Background circles -->
+  <circle cx="200" cy="150" r="120" fill="#16a34a" opacity="0.04"/>
+  <circle cx="1000" cy="480" r="160" fill="#16a34a" opacity="0.04"/>
+  <circle cx="900" cy="100" r="80" fill="#22c55e" opacity="0.03"/>
+
+  <!-- Envelope body -->
+  <g filter="url(#shadow1)" transform="translate(600, 340)">
+    <!-- Envelope base -->
+    <rect x="-200" y="-30" width="400" height="220" rx="12" fill="url(#envelope1)" opacity="0.9"/>
+    <!-- Envelope flap shadow -->
+    <polygon points="-200,-30 0,90 200,-30" fill="#15803d" opacity="0.5"/>
+    <!-- Envelope bottom fold lines -->
+    <line x1="-200" y1="190" x2="0" y2="100" stroke="#15803d" stroke-width="1" opacity="0.4"/>
+    <line x1="200" y1="190" x2="0" y2="100" stroke="#15803d" stroke-width="1" opacity="0.4"/>
+  </g>
+
+  <!-- Letter emerging from envelope -->
+  <g filter="url(#shadow1)" transform="translate(600, 240)">
+    <rect x="-160" y="-160" width="320" height="260" rx="8" fill="url(#letter1)"/>
+    <!-- Faint text lines on letter -->
+    <g opacity="0.15">
+      <rect x="-120" y="-130" width="180" height="6" rx="3" fill="#64748b"/>
+      <rect x="-120" y="-110" width="240" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-94" width="220" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-78" width="200" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-56" width="240" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-40" width="160" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-18" width="240" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="-2" width="190" height="4" rx="2" fill="#94a3b8"/>
+      <rect x="-120" y="20" width="100" height="6" rx="3" fill="#64748b"/>
+      <rect x="-120" y="40" width="80" height="4" rx="2" fill="#94a3b8"/>
+    </g>
+    <!-- Green check on letter -->
+    <circle cx="100" cy="-30" r="28" fill="#16a34a" opacity="0.15"/>
+    <path d="M88,-32 L97,-22 L114,-42" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+  </g>
+
+  <!-- Envelope flap (open, folded back) -->
+  <g transform="translate(600, 310)">
+    <polygon points="-200,0 0,-100 200,0" fill="url(#flap1)" opacity="0.85"/>
+    <polygon points="-200,0 0,-80 200,0" fill="#0f172a" opacity="0.1"/>
+  </g>
+
+  <!-- Sparkle stars -->
+  <g filter="url(#glow1)">
+    <!-- Star 1 -->
+    <g transform="translate(320, 160)" fill="#22c55e" opacity="0.8">
+      <path d="M0,-18 L4,-4 L18,0 L4,4 L0,18 L-4,4 L-18,0 L-4,-4 Z"/>
+    </g>
+    <!-- Star 2 -->
+    <g transform="translate(880, 130)" fill="#16a34a" opacity="0.6">
+      <path d="M0,-14 L3,-3 L14,0 L3,3 L0,14 L-3,3 L-14,0 L-3,-3 Z"/>
+    </g>
+    <!-- Star 3 -->
+    <g transform="translate(280, 400)" fill="#4ade80" opacity="0.5">
+      <path d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z"/>
+    </g>
+    <!-- Star 4 -->
+    <g transform="translate(950, 350)" fill="#22c55e" opacity="0.7">
+      <path d="M0,-16 L3.5,-3.5 L16,0 L3.5,3.5 L0,16 L-3.5,3.5 L-16,0 L-3.5,-3.5 Z"/>
+    </g>
+    <!-- Star 5 -->
+    <g transform="translate(450, 120)" fill="#86efac" opacity="0.4">
+      <path d="M0,-8 L2,-2 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,-2 Z"/>
+    </g>
+    <!-- Star 6 -->
+    <g transform="translate(760, 180)" fill="#4ade80" opacity="0.5">
+      <path d="M0,-12 L2.5,-2.5 L12,0 L2.5,2.5 L0,12 L-2.5,2.5 L-12,0 L-2.5,-2.5 Z"/>
+    </g>
+    <!-- Star 7 -->
+    <g transform="translate(180, 300)" fill="#16a34a" opacity="0.35">
+      <path d="M0,-10 L2,-2 L10,0 L2,2 L0,10 L-2,2 L-10,0 L-2,-2 Z"/>
+    </g>
+    <!-- Star 8 -->
+    <g transform="translate(1030, 230)" fill="#86efac" opacity="0.45">
+      <path d="M0,-12 L2.5,-2.5 L12,0 L2.5,2.5 L0,12 L-2.5,2.5 L-12,0 L-2.5,-2.5 Z"/>
+    </g>
+  </g>
+
+  <!-- Floating particles -->
+  <circle cx="350" cy="280" r="3" fill="#16a34a" opacity="0.3"/>
+  <circle cx="850" cy="250" r="2" fill="#22c55e" opacity="0.4"/>
+  <circle cx="500" cy="500" r="2.5" fill="#4ade80" opacity="0.25"/>
+  <circle cx="150" cy="500" r="2" fill="#16a34a" opacity="0.2"/>
+  <circle cx="1050" cy="450" r="3" fill="#22c55e" opacity="0.3"/>
+  <circle cx="700" cy="520" r="2" fill="#86efac" opacity="0.2"/>
+
+  <!-- Warm touches - subtle amber dots -->
+  <circle cx="420" cy="200" r="4" fill="#fbbf24" opacity="0.15"/>
+  <circle cx="780" cy="450" r="3" fill="#fbbf24" opacity="0.12"/>
+  <circle cx="300" cy="500" r="3.5" fill="#f59e0b" opacity="0.1"/>
+
+  <!-- CVpass branding -->
+  <text x="1140" y="600" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#16a34a" opacity="0.25" text-anchor="end" letter-spacing="2">CVpass</text>
+</svg>

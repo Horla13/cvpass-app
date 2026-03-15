@@ -8,7 +8,7 @@ export default function AccesRefuse() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--bg-primary)",
         fontFamily: "var(--font-geist-sans, sans-serif)",
         padding: "2rem",
       }}
@@ -18,7 +18,7 @@ export default function AccesRefuse() {
           style={{
             fontSize: "1.5rem",
             fontWeight: 700,
-            color: "#111827",
+            color: "var(--text-primary)",
             marginBottom: "0.75rem",
           }}
         >
@@ -27,7 +27,7 @@ export default function AccesRefuse() {
         <p
           style={{
             fontSize: "1rem",
-            color: "#6b7280",
+            color: "var(--text-secondary)",
             marginBottom: "2rem",
             lineHeight: "1.6",
           }}

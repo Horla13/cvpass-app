@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="pink1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="pink2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="greenA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <clipPath id="megaClip"><rect width="1200" height="630"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Radial energy burst from center -->
+  <g opacity="0.05">
+    <circle cx="600" cy="315" r="500" fill="none" stroke="#ec4899" stroke-width="1"/>
+    <circle cx="600" cy="315" r="400" fill="none" stroke="#ec4899" stroke-width="0.8"/>
+    <circle cx="600" cy="315" r="300" fill="none" stroke="#ec4899" stroke-width="0.6"/>
+    <circle cx="600" cy="315" r="200" fill="none" stroke="#ec4899" stroke-width="0.4"/>
+  </g>
+
+  <!-- SEO Graph going up -->
+  <g transform="translate(100, 100)">
+    <!-- Graph frame -->
+    <line x1="0" y1="350" x2="400" y2="350" stroke="#334155" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="350" stroke="#334155" stroke-width="1"/>
+    <!-- Grid lines -->
+    <g stroke="#334155" stroke-width="0.5" opacity="0.4">
+      <line x1="0" y1="70" x2="400" y2="70"/><line x1="0" y1="140" x2="400" y2="140"/>
+      <line x1="0" y1="210" x2="400" y2="210"/><line x1="0" y1="280" x2="400" y2="280"/>
+    </g>
+    <!-- Rising line chart -->
+    <polyline points="0,320 50,310 100,290 150,280 200,250 250,200 300,140 350,80 400,30" fill="none" stroke="#ec4899" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Area fill -->
+    <polygon points="0,320 50,310 100,290 150,280 200,250 250,200 300,140 350,80 400,30 400,350 0,350" fill="url(#pink2)" opacity="0.15"/>
+    <!-- Data points -->
+    <circle cx="200" cy="250" r="5" fill="#ec4899" opacity="0.8"/>
+    <circle cx="300" cy="140" r="5" fill="#ec4899" opacity="0.9"/>
+    <circle cx="400" cy="30" r="7" fill="#ec4899" filter="url(#glow)"/>
+    <!-- Label -->
+    <text x="410" y="35" fill="#ec4899" font-family="system-ui,sans-serif" font-size="14" font-weight="600">SEO</text>
+  </g>
+
+  <!-- Megaphone -->
+  <g transform="translate(650, 120)" filter="url(#shadow)">
+    <polygon points="0,80 120,30 120,130" fill="#ec4899" opacity="0.85"/>
+    <rect x="120" y="25" width="60" height="110" rx="8" fill="#db2777" opacity="0.9"/>
+    <rect x="-15" y="65" width="20" height="30" rx="4" fill="#ec4899" opacity="0.6"/>
+    <!-- Sound waves -->
+    <path d="M 190 80 Q 220 50, 220 80 Q 220 110, 190 80" fill="none" stroke="#ec4899" stroke-width="2" opacity="0.5"/>
+    <path d="M 200 80 Q 245 35, 245 80 Q 245 125, 200 80" fill="none" stroke="#ec4899" stroke-width="2" opacity="0.35"/>
+    <path d="M 210 80 Q 270 20, 270 80 Q 270 140, 210 80" fill="none" stroke="#ec4899" stroke-width="2" opacity="0.2"/>
+  </g>
+
+  <!-- Click cursor -->
+  <g transform="translate(550, 350)">
+    <path d="M 0 0 L 0 45 L 12 35 L 22 55 L 30 50 L 20 30 L 35 28 Z" fill="#f1f5f9" opacity="0.9"/>
+    <!-- Click ripple -->
+    <circle cx="0" cy="0" r="15" fill="none" stroke="#ec4899" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="0" cy="0" r="28" fill="none" stroke="#ec4899" stroke-width="1" opacity="0.2"/>
+    <circle cx="0" cy="0" r="42" fill="none" stroke="#ec4899" stroke-width="0.5" opacity="0.1"/>
+  </g>
+
+  <!-- Abstract social media icons -->
+  <!-- Heart (like) -->
+  <g transform="translate(850, 250)" opacity="0.7">
+    <path d="M 0 10 C 0 0, 15 -5, 15 10 C 15 -5, 30 0, 30 10 C 30 25, 15 35, 15 35 C 15 35, 0 25, 0 10 Z" fill="#ec4899"/>
+  </g>
+
+  <!-- Share arrow -->
+  <g transform="translate(950, 180)" opacity="0.6">
+    <path d="M 25 0 L 25 15 L 0 30 L 5 20 L 0 10 Z" fill="#ec4899" transform="rotate(30)"/>
+  </g>
+
+  <!-- Chat bubble -->
+  <g transform="translate(1000, 300)" opacity="0.5">
+    <rect width="60" height="40" rx="12" fill="#ec4899"/>
+    <polygon points="15,40 25,55 30,40" fill="#ec4899"/>
+    <circle cx="18" cy="20" r="3" fill="#0f172a"/><circle cx="30" cy="20" r="3" fill="#0f172a"/><circle cx="42" cy="20" r="3" fill="#0f172a"/>
+  </g>
+
+  <!-- Eye / views icon -->
+  <g transform="translate(900, 400)" opacity="0.5">
+    <ellipse cx="25" cy="15" rx="25" ry="15" fill="none" stroke="#ec4899" stroke-width="2"/>
+    <circle cx="25" cy="15" r="8" fill="#ec4899"/>
+    <circle cx="25" cy="15" r="3" fill="#0f172a"/>
+  </g>
+
+  <!-- Hashtag -->
+  <g transform="translate(780, 380)" opacity="0.4" stroke="#ec4899" stroke-width="3" stroke-linecap="round">
+    <line x1="8" y1="0" x2="3" y2="30"/><line x1="20" y1="0" x2="15" y2="30"/>
+    <line x1="0" y1="10" x2="25" y2="10"/><line x1="0" y1="20" x2="25" y2="20"/>
+  </g>
+
+  <!-- Floating engagement metrics -->
+  <g filter="url(#shadow)" transform="translate(700, 450)">
+    <rect width="180" height="80" rx="10" fill="#1e293b" stroke="#ec4899" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="15" y="28" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="11">Engagement</text>
+    <text x="15" y="58" fill="#ec4899" font-family="system-ui,sans-serif" font-size="28" font-weight="700">+247%</text>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(920, 480)">
+    <rect width="160" height="70" rx="10" fill="#1e293b" stroke="#16a34a" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="15" y="25" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="11">CTR</text>
+    <text x="15" y="52" fill="#16a34a" font-family="system-ui,sans-serif" font-size="24" font-weight="700">8.4%</text>
+  </g>
+
+  <!-- Floating particles -->
+  <g fill="#ec4899">
+    <circle cx="150" cy="530" r="2" opacity="0.3"/><circle cx="300" cy="560" r="1.5" opacity="0.2"/>
+    <circle cx="500" cy="500" r="2.5" opacity="0.25"/><circle cx="680" cy="550" r="1.5" opacity="0.3"/>
+    <circle cx="1100" cy="150" r="2" opacity="0.2"/><circle cx="1050" cy="100" r="3" opacity="0.15"/>
+  </g>
+
+  <!-- Connection lines between social elements -->
+  <g stroke="#ec4899" stroke-width="0.8" opacity="0.12" stroke-dasharray="4 4">
+    <line x1="870" y1="270" x2="960" y2="200"/>
+    <line x1="960" y1="200" x2="1020" y2="310"/>
+    <line x1="1020" y1="310" x2="920" y2="420"/>
+    <line x1="920" y1="420" x2="800" y2="390"/>
+    <line x1="800" y1="390" x2="870" y2="270"/>
+  </g>
+
+  <!-- CVpass branding -->
+  <text x="1140" y="610" text-anchor="end" fill="#ec4899" font-family="system-ui,sans-serif" font-size="16" font-weight="600" opacity="0.3">CVpass</text>
+
+  <!-- Corner accents -->
+  <rect x="0" y="0" width="4" height="60" fill="#ec4899" opacity="0.4"/>
+  <rect x="0" y="0" width="60" height="4" fill="#ec4899" opacity="0.4"/>
+  <rect x="1196" y="570" width="4" height="60" fill="#ec4899" opacity="0.4"/>
+  <rect x="1140" y="626" width="60" height="4" fill="#ec4899" opacity="0.4"/>
+</svg>

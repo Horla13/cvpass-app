@@ -39,18 +39,18 @@ function formatDate(iso: string): string {
 
 function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 animate-pulse">
+    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-5 animate-pulse">
       <div className="flex justify-between items-start mb-3">
-        <div className="h-4 bg-gray-200 rounded w-32" />
-        <div className="h-3 bg-gray-200 rounded w-20" />
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-20" />
       </div>
-      <div className="h-3 bg-gray-200 rounded w-48 mb-4" />
+      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-4" />
       <div className="flex items-center gap-2 mb-3">
-        <div className="h-6 bg-gray-200 rounded w-12" />
-        <div className="h-2 bg-gray-200 rounded flex-1" />
-        <div className="h-6 bg-gray-200 rounded w-12" />
+        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-12" />
+        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded flex-1" />
+        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-12" />
       </div>
-      <div className="h-3 bg-gray-200 rounded w-40" />
+      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-40" />
     </div>
   );
 }
@@ -85,22 +85,22 @@ function AnalysisCard({ analysis, onDelete, onView }: AnalysisCardProps) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 relative transition-shadow hover:shadow-md">
+    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-5 relative transition-shadow hover:shadow-md">
       {/* Top row */}
       <div className="flex items-start justify-between gap-3 mb-2">
         <div className="flex-1 min-w-0">
           {analysis.job_title ? (
-            <p className="font-semibold text-brand-black truncate">{analysis.job_title}</p>
+            <p className="font-semibold text-brand-black dark:text-gray-100 truncate">{analysis.job_title}</p>
           ) : (
-            <p className="font-semibold text-brand-gray italic text-sm">Poste non précisé</p>
+            <p className="font-semibold text-brand-gray dark:text-gray-400 italic text-sm">Poste non précisé</p>
           )}
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-xs text-brand-gray">{formatDate(analysis.created_at)}</span>
+          <span className="text-xs text-brand-gray dark:text-gray-400">{formatDate(analysis.created_at)}</span>
           <button
             aria-label="Supprimer"
             onClick={() => setConfirming(true)}
-            className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="3 6 5 6 21 6" />
@@ -127,9 +127,9 @@ function AnalysisCard({ analysis, onDelete, onView }: AnalysisCardProps) {
       </div>
 
       {/* Progress bar */}
-      <div className="relative h-1.5 bg-gray-100 rounded-full overflow-hidden mb-3">
+      <div className="relative h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden mb-3">
         <div
-          className="absolute top-0 h-full bg-gray-200 rounded-full"
+          className="absolute top-0 h-full bg-gray-200 dark:bg-gray-700 rounded-full"
           style={{ width: `${progressStart}%` }}
         />
         <div
@@ -146,12 +146,12 @@ function AnalysisCard({ analysis, onDelete, onView }: AnalysisCardProps) {
         >
           Voir le CV optimisé
         </button>
-        <span className="text-xs text-gray-300">·</span>
-        <span className="text-xs text-brand-gray">
+        <span className="text-xs text-gray-300 dark:text-gray-600">·</span>
+        <span className="text-xs text-brand-gray dark:text-gray-400">
           {analysis.nb_acceptees} / {analysis.nb_suggestions} suggestions acceptées
         </span>
         {analysis.cover_letters?.length > 0 && (
-          <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full font-medium">
+          <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full font-medium">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="M22 7l-10 7L2 7" />
@@ -163,15 +163,15 @@ function AnalysisCard({ analysis, onDelete, onView }: AnalysisCardProps) {
 
       {/* Inline confirmation */}
       {confirming && (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-sm text-brand-black mb-3">
+        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/50">
+          <p className="text-sm text-brand-black dark:text-gray-100 mb-3">
             Supprimer cette candidature ? Cette action est irréversible.
           </p>
           <div className="flex gap-2">
             <button
               onClick={() => setConfirming(false)}
               disabled={deleting}
-              className="flex-1 py-2 px-4 rounded-xl border border-gray-200 text-sm text-brand-gray hover:bg-gray-50 transition-colors min-h-[44px]"
+              className="flex-1 py-2 px-4 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-brand-gray dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors min-h-[44px]"
             >
               Annuler
             </button>
@@ -243,7 +243,7 @@ export default function HistoryPage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#f8fafc]">
+      <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0f172a]">
         <AppHeader />
         {viewId && <CVJsonModal analysisId={viewId} onClose={() => setViewId(null)} />}
 
@@ -251,16 +251,16 @@ export default function HistoryPage() {
           {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-brand-black">Mes candidatures</h1>
+              <h1 className="text-2xl font-bold text-brand-black dark:text-gray-100">Mes candidatures</h1>
               {!loading && (
-                <p className="text-sm text-brand-gray mt-1">
+                <p className="text-sm text-brand-gray dark:text-gray-400 mt-1">
                   {analyses.length} analyse{analyses.length !== 1 ? "s" : ""} effectuée{analyses.length !== 1 ? "s" : ""}
                 </p>
               )}
             </div>
             <Link
               href="/analyze"
-              className="inline-flex items-center gap-1.5 text-sm text-brand-gray hover:text-brand-black transition-colors min-h-[44px] px-2"
+              className="inline-flex items-center gap-1.5 text-sm text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 transition-colors min-h-[44px] px-2"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
@@ -272,7 +272,7 @@ export default function HistoryPage() {
 
           {/* Error */}
           {error && (
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center">
+            <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 text-center">
               <p className="text-red-500 text-sm">{error}</p>
             </div>
           )}
@@ -288,7 +288,7 @@ export default function HistoryPage() {
 
           {/* Empty state */}
           {!loading && !error && analyses.length === 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center flex flex-col items-center gap-4">
+            <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-12 text-center flex flex-col items-center gap-4">
               <svg
                 width="56"
                 height="56"
@@ -303,8 +303,8 @@ export default function HistoryPage() {
                 <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
               <div>
-                <p className="font-semibold text-brand-black mb-1">Aucune candidature pour le moment.</p>
-                <p className="text-sm text-brand-gray">Lance ta première analyse !</p>
+                <p className="font-semibold text-brand-black dark:text-gray-100 mb-1">Aucune candidature pour le moment.</p>
+                <p className="text-sm text-brand-gray dark:text-gray-400">Lance ta première analyse !</p>
               </div>
               <Link
                 href="/analyze"
@@ -337,7 +337,7 @@ export default function HistoryPage() {
                   className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 min-h-[44px] ${
                     deleteAllState === "confirm" || deleteAllState === "deleting"
                       ? "bg-red-500 text-white hover:bg-red-600"
-                      : "bg-white border border-gray-200 text-brand-gray hover:border-red-300 hover:text-red-500"
+                      : "bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 text-brand-gray dark:text-gray-400 hover:border-red-300 hover:text-red-500"
                   }`}
                 >
                   {deleteAllState === "deleting" ? (

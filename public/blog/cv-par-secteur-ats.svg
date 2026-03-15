@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="blue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="iconShadow2">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0369a1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg2)"/>
+
+  <!-- Subtle radial glow -->
+  <circle cx="600" cy="315" r="320" fill="#0369a1" opacity="0.04"/>
+  <circle cx="600" cy="315" r="220" fill="#0ea5e9" opacity="0.03"/>
+
+  <!-- Connection lines between icons -->
+  <g stroke="#0369a1" stroke-width="1" opacity="0.15">
+    <!-- Outer ring connections -->
+    <line x1="600" y1="130" x2="820" y2="220"/>
+    <line x1="820" y1="220" x2="870" y2="400"/>
+    <line x1="870" y1="400" x2="720" y2="520"/>
+    <line x1="720" y1="520" x2="480" y2="520"/>
+    <line x1="480" y1="520" x2="330" y2="400"/>
+    <line x1="330" y1="400" x2="380" y2="220"/>
+    <line x1="380" y1="220" x2="600" y2="130"/>
+    <!-- Cross connections to center -->
+    <line x1="600" y1="130" x2="600" y2="315"/>
+    <line x1="820" y1="220" x2="600" y2="315"/>
+    <line x1="870" y1="400" x2="600" y2="315"/>
+    <line x1="720" y1="520" x2="600" y2="315"/>
+    <line x1="480" y1="520" x2="600" y2="315"/>
+    <line x1="330" y1="400" x2="600" y2="315"/>
+    <line x1="380" y1="220" x2="600" y2="315"/>
+  </g>
+
+  <!-- Connection dots at intersections -->
+  <g fill="#0ea5e9" opacity="0.3">
+    <circle cx="600" cy="130" r="4"/>
+    <circle cx="820" cy="220" r="4"/>
+    <circle cx="870" cy="400" r="4"/>
+    <circle cx="720" cy="520" r="4"/>
+    <circle cx="480" cy="520" r="4"/>
+    <circle cx="330" cy="400" r="4"/>
+    <circle cx="380" cy="220" r="4"/>
+  </g>
+
+  <!-- Center hub -->
+  <circle cx="600" cy="315" r="45" fill="#0f172a" stroke="#0369a1" stroke-width="2" opacity="0.9"/>
+  <circle cx="600" cy="315" r="38" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.4"/>
+  <!-- ATS text in center -->
+  <text x="600" y="322" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#0ea5e9" text-anchor="middle" letter-spacing="3" opacity="0.8">ATS</text>
+
+  <!-- Icon 1: Briefcase (Business) - top -->
+  <g transform="translate(600, 130)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2" fill="none" opacity="0.8">
+      <rect x="-14" y="-8" width="28" height="20" rx="3"/>
+      <path d="M-6,-8 L-6,-12 Q-6,-15 -3,-15 L3,-15 Q6,-15 6,-12 L6,-8"/>
+      <line x1="-14" y1="0" x2="14" y2="0"/>
+    </g>
+  </g>
+
+  <!-- Icon 2: Code brackets (Tech) - top right -->
+  <g transform="translate(820, 220)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8">
+      <path d="M-8,-12 L-16,0 L-8,12"/>
+      <path d="M8,-12 L16,0 L8,12"/>
+      <line x1="-3" y1="14" x2="3" y2="-14"/>
+    </g>
+  </g>
+
+  <!-- Icon 3: Stethoscope (Medical) - right -->
+  <g transform="translate(870, 400)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2" fill="none" opacity="0.8">
+      <path d="M-8,-14 L-8,2 Q-8,12 0,12 Q8,12 8,2 L8,-14"/>
+      <circle cx="8" cy="6" r="4" fill="#0ea5e9" opacity="0.3"/>
+      <circle cx="-8" cy="-14" r="2.5" fill="#0ea5e9" opacity="0.5"/>
+      <circle cx="8" cy="-14" r="2.5" fill="#0ea5e9" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Icon 4: Chart (Analytics) - bottom right -->
+  <g transform="translate(720, 520)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2" fill="none" opacity="0.8">
+      <line x1="-16" y1="14" x2="16" y2="14"/>
+      <rect x="-14" y="2" width="7" height="12" rx="1" fill="#0ea5e9" opacity="0.3"/>
+      <rect x="-3" y="-6" width="7" height="20" rx="1" fill="#0ea5e9" opacity="0.3"/>
+      <rect x="8" y="-12" width="7" height="26" rx="1" fill="#0ea5e9" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- Icon 5: Wrench (Engineering) - bottom left -->
+  <g transform="translate(480, 520)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2" fill="none" opacity="0.8" transform="rotate(-45)">
+      <path d="M-4,-16 Q-10,-10 -10,-4 Q-10,4 -4,8 Q2,12 8,10 L2,4 L4,2 L10,-4 Q14,2 8,8 Q4,14 -4,14 Q-12,14 -16,6 Q-18,0 -14,-6 Z" fill="#0ea5e9" opacity="0.15"/>
+    </g>
+  </g>
+
+  <!-- Icon 6: Heart/Plus (Healthcare) - left -->
+  <g transform="translate(330, 400)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8">
+      <line x1="0" y1="-12" x2="0" y2="12"/>
+      <line x1="-12" y1="0" x2="12" y2="0"/>
+      <rect x="-16" y="-16" width="32" height="32" rx="6"/>
+    </g>
+  </g>
+
+  <!-- Icon 7: Graduation cap (Education) - top left -->
+  <g transform="translate(380, 220)" filter="url(#iconShadow2)">
+    <circle r="38" fill="#0f172a" stroke="#0369a1" stroke-width="1.5" opacity="0.9"/>
+    <g stroke="#0ea5e9" stroke-width="2" fill="none" opacity="0.8">
+      <polygon points="0,-12 18,0 0,6 -18,0" fill="#0ea5e9" opacity="0.15"/>
+      <path d="M-10,2 L-10,10 Q0,16 10,10 L10,2"/>
+      <line x1="18" y1="0" x2="18" y2="12"/>
+    </g>
+  </g>
+
+  <!-- Floating particles -->
+  <g fill="#0ea5e9" opacity="0.2">
+    <circle cx="150" cy="100" r="2"/>
+    <circle cx="1050" cy="150" r="2.5"/>
+    <circle cx="100" cy="500" r="2"/>
+    <circle cx="1100" cy="530" r="3"/>
+    <circle cx="250" cy="300" r="1.5"/>
+    <circle cx="950" cy="315" r="2"/>
+    <circle cx="500" cy="80" r="1.5"/>
+    <circle cx="700" cy="80" r="2"/>
+  </g>
+
+  <!-- CVpass branding -->
+  <text x="1140" y="600" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#0369a1" opacity="0.25" text-anchor="end" letter-spacing="2">CVpass</text>
+</svg>

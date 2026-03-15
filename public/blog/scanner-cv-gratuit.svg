@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="scanLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#16a34a" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#4ade80" stop-opacity="1"/>
+      <stop offset="70%" stop-color="#16a34a" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="scanGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="scanGlowUp" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow6">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="scanBlur">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow6">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg6)"/>
+  <!-- Circuit/tech pattern -->
+  <g opacity="0.04" stroke="white" stroke-width="0.5">
+    <!-- Horizontal lines -->
+    <line x1="0" y1="100" x2="400" y2="100"/>
+    <line x1="800" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="530" x2="350" y2="530"/>
+    <line x1="850" y1="530" x2="1200" y2="530"/>
+    <!-- Vertical lines -->
+    <line x1="200" y1="0" x2="200" y2="150"/>
+    <line x1="1000" y1="0" x2="1000" y2="120"/>
+    <line x1="200" y1="480" x2="200" y2="630"/>
+    <line x1="1000" y1="500" x2="1000" y2="630"/>
+    <!-- Nodes -->
+    <circle cx="200" cy="100" r="3" fill="white"/>
+    <circle cx="1000" cy="100" r="3" fill="white"/>
+    <circle cx="200" cy="530" r="3" fill="white"/>
+    <circle cx="1000" cy="530" r="3" fill="white"/>
+  </g>
+  <!-- Main document -->
+  <g filter="url(#shadow6)" transform="translate(430, 90)">
+    <!-- Document body -->
+    <rect x="0" y="0" width="280" height="380" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <!-- Fold -->
+    <path d="M235,0 L280,0 L280,45 Z" fill="#0f172a"/>
+    <path d="M235,0 L235,45 L280,45" fill="#475569" stroke="#475569" stroke-width="1" stroke-linejoin="round"/>
+    <!-- CV content lines -->
+    <rect x="25" y="30" width="100" height="10" rx="3" fill="#94a3b8" opacity="0.25"/>
+    <rect x="25" y="50" width="70" height="6" rx="2" fill="#64748b" opacity="0.15"/>
+    <!-- Photo placeholder -->
+    <rect x="195" y="25" width="40" height="40" rx="5" fill="#334155" stroke="#475569" stroke-width="0.5"/>
+    <!-- Section 1 -->
+    <rect x="25" y="85" width="55" height="7" rx="2" fill="#16a34a" opacity="0.4"/>
+    <rect x="25" y="100" width="200" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="112" width="180" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="124" width="210" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="136" width="170" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <!-- Section 2 -->
+    <rect x="25" y="165" width="75" height="7" rx="2" fill="#16a34a" opacity="0.4"/>
+    <rect x="25" y="180" width="195" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="192" width="210" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="204" width="185" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="216" width="200" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="228" width="150" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <!-- Section 3 -->
+    <rect x="25" y="258" width="65" height="7" rx="2" fill="#16a34a" opacity="0.4"/>
+    <rect x="25" y="273" width="200" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="285" width="190" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="297" width="210" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <!-- Section 4 -->
+    <rect x="25" y="327" width="60" height="7" rx="2" fill="#16a34a" opacity="0.4"/>
+    <rect x="25" y="342" width="180" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <rect x="25" y="354" width="160" height="5" rx="1.5" fill="#64748b" opacity="0.15"/>
+    <!-- Scan glow area below scan line -->
+    <rect x="0" y="90" width="280" height="140" fill="url(#scanGlow)" rx="0"/>
+    <!-- Scan glow area above scan line -->
+    <rect x="0" y="230" width="280" height="100" fill="url(#scanGlowUp)" rx="0"/>
+  </g>
+  <!-- Scanning line -->
+  <g filter="url(#scanBlur)">
+    <line x1="420" y1="320" x2="720" y2="320" stroke="url(#scanLine)" stroke-width="3"/>
+  </g>
+  <!-- Scan line edge markers -->
+  <g filter="url(#glow6)">
+    <rect x="425" y="316" width="8" height="8" rx="1" fill="#16a34a" opacity="0.8"/>
+    <rect x="707" y="316" width="8" height="8" rx="1" fill="#16a34a" opacity="0.8"/>
+  </g>
+  <!-- Radar/scan wave effects - left side -->
+  <g transform="translate(350, 315)" opacity="0.3">
+    <path d="M0,-30 A30,30 0 0,0 0,30" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+    <path d="M-15,-50 A50,50 0 0,0 -15,50" fill="none" stroke="#16a34a" stroke-width="1" opacity="0.6"/>
+    <path d="M-35,-70 A70,70 0 0,0 -35,70" fill="none" stroke="#16a34a" stroke-width="0.8" opacity="0.3"/>
+  </g>
+  <!-- Radar/scan wave effects - right side -->
+  <g transform="translate(790, 315)" opacity="0.3">
+    <path d="M0,-30 A30,30 0 0,1 0,30" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+    <path d="M15,-50 A50,50 0 0,1 15,50" fill="none" stroke="#16a34a" stroke-width="1" opacity="0.6"/>
+    <path d="M35,-70 A70,70 0 0,1 35,70" fill="none" stroke="#16a34a" stroke-width="0.8" opacity="0.3"/>
+  </g>
+  <!-- Digital data particles -->
+  <g fill="#16a34a">
+    <circle cx="300" cy="200" r="2" opacity="0.4"/>
+    <circle cx="280" cy="280" r="1.5" opacity="0.3"/>
+    <circle cx="320" cy="350" r="2" opacity="0.5"/>
+    <circle cx="260" cy="310" r="1" opacity="0.3"/>
+    <circle cx="340" cy="250" r="1.5" opacity="0.4"/>
+    <circle cx="900" cy="220" r="2" opacity="0.4"/>
+    <circle cx="880" cy="300" r="1.5" opacity="0.5"/>
+    <circle cx="920" cy="370" r="2" opacity="0.3"/>
+    <circle cx="860" cy="260" r="1" opacity="0.4"/>
+    <circle cx="940" cy="340" r="1.5" opacity="0.3"/>
+  </g>
+  <!-- Binary/digital text effect -->
+  <g font-family="monospace" font-size="10" fill="#16a34a" opacity="0.12">
+    <text x="120" y="200">01001</text>
+    <text x="100" y="280">10110</text>
+    <text x="140" y="360">00101</text>
+    <text x="80" y="440">11010</text>
+    <text x="1020" y="180">10011</text>
+    <text x="1050" y="260">01100</text>
+    <text x="1030" y="340">11001</text>
+    <text x="1060" y="420">00110</text>
+  </g>
+  <!-- Corner brackets (scan frame) -->
+  <g stroke="#16a34a" stroke-width="2" opacity="0.4" fill="none">
+    <!-- Top left -->
+    <polyline points="415,80 415,70 425,70"/>
+    <!-- Top right -->
+    <polyline points="715,70 725,70 725,80"/>
+    <!-- Bottom left -->
+    <polyline points="415,480 415,490 425,490"/>
+    <!-- Bottom right -->
+    <polyline points="715,490 725,490 725,480"/>
+  </g>
+  <!-- Status indicators -->
+  <g transform="translate(570, 530)">
+    <circle cx="-30" cy="0" r="4" fill="#16a34a" opacity="0.8"/>
+    <circle cx="-10" cy="0" r="4" fill="#16a34a" opacity="0.5"/>
+    <circle cx="10" cy="0" r="4" fill="#16a34a" opacity="0.3"/>
+    <circle cx="30" cy="0" r="4" fill="#334155"/>
+    <circle cx="50" cy="0" r="4" fill="#334155"/>
+  </g>
+  <!-- Branding -->
+  <text x="1150" y="600" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#16a34a" opacity="0.5">CVpass</text>
+</svg>

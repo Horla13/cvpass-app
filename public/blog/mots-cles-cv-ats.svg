@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg4" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7e22ce"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="greenTag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow4">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg4)"/>
+  <!-- Subtle pattern -->
+  <g opacity="0.03">
+    <pattern id="cross4" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <line x1="15" y1="12" x2="15" y2="18" stroke="white" stroke-width="0.5"/>
+      <line x1="12" y1="15" x2="18" y2="15" stroke="white" stroke-width="0.5"/>
+    </pattern>
+    <rect width="1200" height="630" fill="url(#cross4)"/>
+  </g>
+  <!-- Background accents -->
+  <circle cx="600" cy="315" r="250" fill="#7e22ce" opacity="0.03"/>
+  <circle cx="600" cy="315" r="180" fill="#7e22ce" opacity="0.03"/>
+  <!-- Magnifying glass - center -->
+  <g filter="url(#glow4)" transform="translate(600, 300)">
+    <!-- Glass circle -->
+    <circle cx="0" cy="-20" r="90" fill="none" stroke="url(#purpleGrad)" stroke-width="4"/>
+    <circle cx="0" cy="-20" r="85" fill="#7e22ce" opacity="0.06"/>
+    <!-- Handle -->
+    <line x1="63" y1="45" x2="115" y2="97" stroke="url(#purpleGrad)" stroke-width="8" stroke-linecap="round"/>
+    <!-- Inner reflection arc -->
+    <path d="M-50,-60 A60,60 0 0,1 30,-75" fill="none" stroke="white" stroke-width="1.5" opacity="0.1"/>
+  </g>
+  <!-- Highlighted green keyword tags -->
+  <g filter="url(#softGlow4)">
+    <g transform="translate(180, 160)">
+      <rect x="0" y="0" width="130" height="36" rx="18" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="65" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#4ade80">management</text>
+    </g>
+    <g transform="translate(820, 200)">
+      <rect x="0" y="0" width="105" height="36" rx="18" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="52" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#4ade80">Python</text>
+    </g>
+    <g transform="translate(500, 120)">
+      <rect x="0" y="0" width="140" height="36" rx="18" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="70" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#4ade80">data analysis</text>
+    </g>
+    <g transform="translate(350, 480)">
+      <rect x="0" y="0" width="115" height="36" rx="18" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="57" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#4ade80">leadership</text>
+    </g>
+    <g transform="translate(720, 470)">
+      <rect x="0" y="0" width="95" height="36" rx="18" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="47" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#4ade80">agile</text>
+    </g>
+  </g>
+  <!-- Faded/dim keyword tags -->
+  <g opacity="0.35">
+    <g transform="translate(100, 300)">
+      <rect x="0" y="0" width="100" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="50" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">hobbies</text>
+    </g>
+    <g transform="translate(950, 340)">
+      <rect x="0" y="0" width="120" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="60" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">references</text>
+    </g>
+    <g transform="translate(150, 440)">
+      <rect x="0" y="0" width="85" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="42" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">photo</text>
+    </g>
+    <g transform="translate(870, 120)">
+      <rect x="0" y="0" width="110" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="55" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">objective</text>
+    </g>
+    <g transform="translate(680, 100)">
+      <rect x="0" y="0" width="90" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="45" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">design</text>
+    </g>
+    <g transform="translate(250, 540)">
+      <rect x="0" y="0" width="95" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="47" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">layout</text>
+    </g>
+    <g transform="translate(900, 530)">
+      <rect x="0" y="0" width="100" height="32" rx="16" fill="none" stroke="#64748b" stroke-width="1"/>
+      <text x="50" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#64748b">creative</text>
+    </g>
+  </g>
+  <!-- Purple accent tags -->
+  <g opacity="0.6">
+    <g transform="translate(330, 220)">
+      <rect x="0" y="0" width="95" height="32" rx="16" fill="#7e22ce" opacity="0.15" stroke="#7e22ce" stroke-width="1"/>
+      <text x="47" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#a855f7">SQL</text>
+    </g>
+    <g transform="translate(770, 380)">
+      <rect x="0" y="0" width="120" height="32" rx="16" fill="#7e22ce" opacity="0.15" stroke="#7e22ce" stroke-width="1"/>
+      <text x="60" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#a855f7">marketing</text>
+    </g>
+    <g transform="translate(140, 230)">
+      <rect x="0" y="0" width="80" height="32" rx="16" fill="#7e22ce" opacity="0.15" stroke="#7e22ce" stroke-width="1"/>
+      <text x="40" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#a855f7">KPI</text>
+    </g>
+    <g transform="translate(1010, 250)">
+      <rect x="0" y="0" width="100" height="32" rx="16" fill="#7e22ce" opacity="0.15" stroke="#7e22ce" stroke-width="1"/>
+      <text x="50" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#a855f7">strategy</text>
+    </g>
+    <g transform="translate(530, 530)">
+      <rect x="0" y="0" width="85" height="32" rx="16" fill="#7e22ce" opacity="0.15" stroke="#7e22ce" stroke-width="1"/>
+      <text x="42" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#a855f7">ROI</text>
+    </g>
+  </g>
+  <!-- Connecting lines (subtle) -->
+  <g stroke="#7e22ce" stroke-width="0.5" opacity="0.15">
+    <line x1="310" y1="178" x2="500" y2="138"/>
+    <line x1="640" y1="138" x2="820" y2="218"/>
+    <line x1="425" y1="236" x2="510" y2="260"/>
+    <line x1="690" y1="280" x2="770" y2="396"/>
+    <line x1="530" y1="340" x2="465" y2="498"/>
+    <line x1="660" y1="380" x2="720" y2="470"/>
+  </g>
+  <!-- Branding -->
+  <text x="1150" y="600" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#16a34a" opacity="0.5">CVpass</text>
+</svg>

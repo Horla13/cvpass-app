@@ -8,6 +8,7 @@ export interface BlogPost {
   readTime: string;
   category: string;
   tags: string[];
+  image: string;
   content: string;
 }
 
@@ -24,6 +25,7 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min",
     category: "Score ATS",
     tags: ["Score ATS", "Optimisation CV", "Guide"],
+    image: "/blog/score-ats-cv.svg",
     content: `
 ## Qu'est-ce qu'un score ATS ?
 
@@ -115,6 +117,7 @@ La plupart des scanners ATS en ligne te donnent un score et une liste de problè
     readTime: "6 min",
     category: "CV Canva",
     tags: ["CV Canva", "Format CV", "Erreurs CV"],
+    image: "/blog/cv-canva-ats.svg",
     content: `
 ## Le piège du CV Canva
 
@@ -202,6 +205,7 @@ Pour chaque point faible détecté, l'IA propose une reformulation directement u
     readTime: "8 min",
     category: "Guide ATS",
     tags: ["Guide ATS", "Optimisation CV", "France"],
+    image: "/blog/optimiser-cv-ats-france.svg",
     content: `
 ## Les ATS en France en 2026 : ce qu'il faut savoir
 
@@ -323,6 +327,7 @@ Ce qui prenait 2 heures prend maintenant 20 minutes.
     readTime: "7 min",
     category: "Mots-clés",
     tags: ["Mots-clés", "Optimisation CV", "Score ATS"],
+    image: "/blog/mots-cles-cv-ats.svg",
     content: `
 ## Pourquoi les mots-clés sont au cœur du score ATS
 
@@ -442,6 +447,7 @@ Pour chaque compétence manquante ou mal formulée, l'IA propose une réécritur
     readTime: "6 min",
     category: "Format CV",
     tags: ["Format CV", "PDF", "Word"],
+    image: "/blog/cv-pdf-word-ats.svg",
     content: `
 ## La question que tout le monde se pose
 
@@ -562,6 +568,7 @@ Tu gardes ton CV visuel pour l'impression et les contacts humains. Tu utilises l
     readTime: "8 min",
     category: "Outils",
     tags: ["Outils", "Scanner CV", "Comparatif"],
+    image: "/blog/scanner-cv-gratuit.svg",
     content: `
 ## Pourquoi scanner son CV avant de postuler ?
 
@@ -684,6 +691,7 @@ Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et c
     readTime: "8 min",
     category: "Lettre de motivation",
     tags: ["Lettre de motivation", "Mots-clés", "Candidature"],
+    image: "/blog/lettre-motivation-ats.svg",
     content: `
 ## La lettre de motivation face aux ATS : ce que personne ne t'explique
 
@@ -818,6 +826,7 @@ Le résultat : un score ATS global plus élevé et une candidature qui se démar
     readTime: "9 min",
     category: "CV par secteur",
     tags: ["CV par secteur", "Développeur", "Commercial"],
+    image: "/blog/cv-par-secteur-ats.svg",
     content: `
 ## Pourquoi un CV ATS par secteur change tout
 
@@ -958,6 +967,7 @@ Le résultat : un CV ATS par secteur optimisé pour les filtres automatiques de 
     readTime: "7 min",
     category: "Erreurs CV",
     tags: ["Erreurs CV", "Optimisation CV", "Score ATS"],
+    image: "/blog/erreurs-cv-ats.svg",
     content: `
 ## Pourquoi ton CV est refusé avant même d'être lu
 
@@ -1108,6 +1118,7 @@ Pour chaque erreur détectée, l'IA propose une correction prête à l'emploi. T
     readTime: "8 min",
     category: "CV par métier",
     tags: ["CV par métier", "Développeur", "Tech"],
+    image: "/blog/cv-developpeur-ats.svg",
     content: `
 ## Le CV développeur face aux ATS : un défi spécifique
 
@@ -1191,6 +1202,7 @@ CVpass analyse ton CV développeur par rapport à l'offre d'emploi que tu vises.
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Commercial", "Vente"],
+    image: "/blog/cv-commercial-ats.svg",
     content: `
 ## Le CV commercial et les ATS : pourquoi les chiffres comptent double
 
@@ -1256,6 +1268,7 @@ CVpass analyse ton CV par rapport à l'offre d'emploi et identifie les métrique
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Chef de projet", "Management"],
+    image: "/blog/cv-chef-projet-ats.svg",
     content: `
 ## Le CV chef de projet : un profil où les ATS sont particulièrement exigeants
 
@@ -1315,6 +1328,7 @@ CVpass identifie les méthodologies et certifications manquantes dans ton CV par
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Data Analyst", "Data"],
+    image: "/blog/cv-data-analyst-ats.svg",
     content: `
 ## Le CV data analyst : un secteur où les mots-clés techniques sont décisifs
 
@@ -1377,6 +1391,7 @@ CVpass compare ton CV aux mots-clés de l'offre data analyst que tu vises. L'out
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Marketing digital", "SEO"],
+    image: "/blog/cv-marketing-digital-ats.svg",
     content: `
 ## Le CV marketing digital : un profil où les acronymes comptent
 
@@ -1438,6 +1453,7 @@ CVpass identifie les acronymes et outils manquants dans ton CV marketing par rap
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Ressources humaines", "Recrutement"],
+    image: "/blog/cv-ressources-humaines-ats.svg",
     content: `
 ## Le CV RH face aux ATS : l'ironie du recruteur recruté
 
@@ -1496,6 +1512,7 @@ CVpass analyse ton CV RH et identifie les mots-clés manquants par rapport à l'
     readTime: "7 min",
     category: "CV par métier",
     tags: ["CV par métier", "Comptabilité", "Finance"],
+    image: "/blog/cv-comptable-finance-ats.svg",
     content: `
 ## Le CV comptable/finance : précision et conformité avant tout
 
@@ -1554,6 +1571,7 @@ CVpass identifie les normes, logiciels et mots-clés fiscaux manquants dans ton 
     readTime: "8 min",
     category: "CV par métier",
     tags: ["CV par métier", "Ingénieur", "Industrie"],
+    image: "/blog/cv-ingenieur-ats.svg",
     content: `
 ## Le CV ingénieur : technique et précision face aux ATS
 

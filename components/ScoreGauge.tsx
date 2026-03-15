@@ -89,7 +89,7 @@ export function ScoreGauge({
           >
             {displayScore}
           </span>
-          <span className="text-[11px] text-gray-400">/100</span>
+          <span className="text-[11px] text-gray-400 dark:text-gray-500">/100</span>
         </div>
       </div>
       {label && (

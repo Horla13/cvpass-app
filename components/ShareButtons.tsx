@@ -70,8 +70,8 @@ export function ShareButtons({ title, slug }: { title: string; slug: string }) {
         onClick={handleCopy}
         style={{
           display: "inline-flex", alignItems: "center", gap: 5,
-          fontSize: 12, fontWeight: 600, color: "#374151",
-          background: "#f3f4f6", padding: "6px 12px", borderRadius: 8,
+          fontSize: 12, fontWeight: 600, color: "var(--text-body)",
+          background: "var(--code-bg)", padding: "6px 12px", borderRadius: 8,
           border: "none", cursor: "pointer", transition: "background .2s",
         }}
       >

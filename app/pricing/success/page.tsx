@@ -20,17 +20,17 @@ function TrackCheckout() {
 
 export default function PricingSuccessPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f172a]">
       <AppHeader />
       <Suspense fallback={null}>
         <TrackCheckout />
       </Suspense>
       <main className="max-w-lg mx-auto px-6 py-24 text-center">
         <div className="text-5xl mb-6">🎉</div>
-        <h1 className="text-3xl font-bold text-brand-black mb-4">
+        <h1 className="text-3xl font-bold text-brand-black dark:text-gray-100 mb-4">
           Paiement confirmé !
         </h1>
-        <p className="text-brand-gray mb-8 leading-relaxed">
+        <p className="text-brand-gray dark:text-gray-400 mb-8 leading-relaxed">
           Votre plan est maintenant actif. Vous pouvez dès maintenant analyser
           votre CV sans limite.
         </p>
