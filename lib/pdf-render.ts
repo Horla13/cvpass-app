@@ -16,80 +16,49 @@ function getPdfMake() {
   return pdfmake;
 }
 
-// ─── Section title: green underline under text only (matches editor) ─────────
+// A4 inner width = 595.28 - 2×40 margins
+const PAGE_INNER = 515;
+
+// ─── Section title: UPPERCASE green, green underline, letter-spacing ─────────
 
 function sectionTitle(label: string): unknown[] {
   return [
     {
-      // Single-cell table so the green border only spans the text width (inline-block effect)
-      table: {
-        body: [
-          [
-            {
-              text: label.toUpperCase(),
-              font: "Helvetica",
-              fontSize: 11,
-              bold: true,
-              color: "#16a34a",
-              characterSpacing: 2.2, // ~0.2em at 11px
-              border: [false, false, false, true],
-              borderColor: [null, null, null, "#16a34a"],
-              margin: [0, 0, 0, 4],
-            },
-          ],
-        ],
-      },
-      layout: {
-        hLineWidth: (_i: number, _node: unknown) => 2,
-        vLineWidth: () => 0,
-        hLineColor: () => "#16a34a",
-        paddingLeft: () => 0,
-        paddingRight: () => 0,
-        paddingTop: () => 0,
-        paddingBottom: () => 0,
-      },
-      margin: [0, 16, 0, 6],
+      text: label.toUpperCase(),
+      font: "Helvetica",
+      fontSize: 11,
+      bold: true,
+      color: "#16a34a",
+      characterSpacing: 2.2,
+      margin: [0, 14, 0, 3],
+    },
+    {
+      canvas: [
+        { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 1.5, lineColor: "#16a34a" },
+      ],
+      margin: [0, 0, 0, 6],
     },
   ];
 }
 
-// ─── Dark header block (matches editor bg-[#111827] px-10 py-7) ─────────────
+// ─── Header: fond blanc, nom vert, contact noir — 100% ATS-safe ─────────────
 
-function buildHeader(cv: CVData): unknown {
-  const nameText: unknown = {
+function buildHeader(cv: CVData): unknown[] {
+  const items: unknown[] = [];
+
+  // Nom + photo side by side
+  const nameBlock: unknown = {
     text: cv.nom || "CV",
     font: "Helvetica",
     fontSize: 22,
     bold: true,
-    color: "#FFFFFF",
+    color: "#16a34a",
   };
 
-  // Contact parts — each separated by spaces
-  const contactParts: string[] = [];
-  if (cv.contact?.email) contactParts.push(cv.contact.email);
-  if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
-  if (cv.contact?.ville) contactParts.push(cv.contact.ville);
-  if (cv.contact?.linkedin) contactParts.push(`[in] ${cv.contact.linkedin}`);
-
-  const contactText: unknown = contactParts.length > 0
-    ? {
-        text: contactParts.join("   |   "),
-        font: "Helvetica",
-        fontSize: 10,
-        color: "#9CA3AF",
-        margin: [0, 6, 0, 0],
-      }
-    : null;
-
-  const leftStack: unknown[] = [nameText];
-  if (contactText) leftStack.push(contactText);
-
-  let headerBody: unknown;
-
   if (cv.photo) {
-    headerBody = {
+    items.push({
       columns: [
-        { stack: leftStack, width: "*" },
+        { ...(nameBlock as Record<string, unknown>), width: "*", margin: [0, 10, 0, 0] },
         {
           image: cv.photo,
           width: 60,
@@ -98,35 +67,48 @@ function buildHeader(cv: CVData): unknown {
         },
       ],
       columnGap: 16,
-    };
+      margin: [0, 0, 0, 4],
+    });
   } else {
-    headerBody = { stack: leftStack };
+    items.push({ ...(nameBlock as Record<string, unknown>), margin: [0, 0, 0, 4] });
   }
 
-  // Full-bleed dark header using a single-cell table with fillColor
-  return {
-    table: {
-      widths: ["*"],
-      body: [
-        [
-          {
-            ...headerBody as Record<string, unknown>,
-            fillColor: "#111827",
-            margin: [20, 16, 20, 16],
-          },
-        ],
-      ],
-    },
-    layout: {
-      hLineWidth: () => 0,
-      vLineWidth: () => 0,
-      paddingLeft: () => 0,
-      paddingRight: () => 0,
-      paddingTop: () => 0,
-      paddingBottom: () => 0,
-    },
-    margin: [-40, -40, -40, 10] as [number, number, number, number],
-  };
+  // Titre du poste
+  if (cv.titre) {
+    items.push({
+      text: cv.titre,
+      font: "Helvetica",
+      fontSize: 12,
+      color: "#111827",
+      margin: [0, 0, 0, 4],
+    });
+  }
+
+  // Contact — texte noir lisible sur fond blanc
+  const contactParts: string[] = [];
+  if (cv.contact?.email) contactParts.push(cv.contact.email);
+  if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
+  if (cv.contact?.ville) contactParts.push(cv.contact.ville);
+  if (cv.contact?.linkedin) contactParts.push(cv.contact.linkedin);
+  if (contactParts.length > 0) {
+    items.push({
+      text: contactParts.join("  |  "),
+      font: "Helvetica",
+      fontSize: 10,
+      color: "#6b7280",
+      margin: [0, 0, 0, 4],
+    });
+  }
+
+  // Ligne verte séparatrice
+  items.push({
+    canvas: [
+      { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 2, lineColor: "#16a34a" },
+    ],
+    margin: [0, 4, 0, 0],
+  });
+
+  return items;
 }
 
 // ─── CV content builder ──────────────────────────────────────────────────────
@@ -135,7 +117,7 @@ export function buildContent(cv: CVData): unknown[] {
   const content: unknown[] = [];
 
   // ── Header ──
-  content.push(buildHeader(cv));
+  content.push(...buildHeader(cv));
 
   // ── Profil ──
   if (cv.profil) {
@@ -152,10 +134,9 @@ export function buildContent(cv: CVData): unknown[] {
 
   // ── Expériences professionnelles ──
   if (cv.experiences?.length > 0) {
-    content.push(...sectionTitle("Exp\u00e9rience professionnelle"));
+    content.push(...sectionTitle("Exp\u00e9riences professionnelles"));
     for (let i = 0; i < cv.experiences.length; i++) {
       const exp: Experience = cv.experiences[i];
-      // Poste (left) + Période (right, italic)
       content.push({
         columns: [
           { text: exp.poste || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
@@ -163,7 +144,6 @@ export function buildContent(cv: CVData): unknown[] {
         ],
         margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
-      // Entreprise — Lieu
       const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" \u2014 ");
       if (subline) {
         content.push({
@@ -175,14 +155,13 @@ export function buildContent(cv: CVData): unknown[] {
           margin: [0, 0, 0, 2],
         });
       }
-      // Missions — green dot bullet like editor
       for (const mission of exp.missions ?? []) {
         content.push({
-          columns: [
-            { text: "\u2022", font: "Helvetica", fontSize: 6, color: "#16a34a", width: 10, margin: [4, 2, 0, 0] },
-            { text: mission, font: "Helvetica", fontSize: 10, color: "#111827", lineHeight: 1.5, width: "*" },
-          ],
-          margin: [0, 0, 0, 1],
+          text: `\u2013 ${mission}`,
+          font: "Helvetica",
+          fontSize: 10,
+          color: "#111827",
+          margin: [8, 0, 0, 1],
         });
       }
     }
@@ -198,7 +177,7 @@ export function buildContent(cv: CVData): unknown[] {
           { text: f.diplome || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
           { text: f.periode || "", font: "Helvetica", fontSize: 9, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
         ],
-        margin: [0, i > 0 ? 8 : 4, 0, 1],
+        margin: [0, i > 0 ? 6 : 4, 0, 1],
       });
       if (f.etablissement) {
         content.push({
@@ -229,7 +208,7 @@ export function buildContent(cv: CVData): unknown[] {
   if (cv.centres_interet?.length > 0) {
     content.push(...sectionTitle("Centres d\u2019int\u00e9r\u00eat"));
     content.push({
-      text: cv.centres_interet.join("  \u00b7  "),
+      text: cv.centres_interet.join("  \u2022  "),
       font: "Helvetica",
       fontSize: 10,
       color: "#111827",
