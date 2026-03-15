@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
+import { ShareButtons } from "@/components/ShareButtons";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -24,6 +25,24 @@ export async function generateMetadata(
       type: "article",
     },
   };
+}
+
+/** Extract H2 headings from content for TOC */
+function extractHeadings(content: string): { id: string; text: string }[] {
+  const lines = content.split("\n");
+  const headings: { id: string; text: string }[] = [];
+  for (const line of lines) {
+    if (line.startsWith("## ") && !line.startsWith("### ")) {
+      const text = line.replace("## ", "").trim();
+      const id = text
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      headings.push({ id, text });
+    }
+  }
+  return headings;
 }
 
 function renderContent(content: string) {
@@ -90,11 +109,17 @@ function renderContent(content: string) {
       continue;
     }
 
-    // H2
+    // H2 — with anchor id for TOC
     if (line.startsWith("## ")) {
+      const text = line.replace("## ", "");
+      const id = text
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
       elements.push(
-        <h2 key={key++} style={{ fontSize: 22, fontWeight: 800, color: "#111827", margin: "40px 0 12px", letterSpacing: "-.5px", lineHeight: 1.25, paddingTop: 8, borderTop: "1px solid #f3f4f6" }}>
-          {line.replace("## ", "")}
+        <h2 key={key++} id={id} style={{ fontSize: 22, fontWeight: 800, color: "#111827", margin: "40px 0 12px", letterSpacing: "-.5px", lineHeight: 1.25, paddingTop: 8, borderTop: "1px solid #f3f4f6", scrollMarginTop: 80 }}>
+          {text}
         </h2>
       );
       i++;
@@ -192,6 +217,7 @@ export default async function BlogPostPage(
   if (!post) notFound();
 
   const allPosts = getAllPosts().filter((p) => p.slug !== slug).slice(0, 3);
+  const headings = extractHeadings(post.content);
 
   const dateObj = new Date(post.date);
   const dateLabel = dateObj.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
@@ -209,12 +235,27 @@ export default async function BlogPostPage(
     inLanguage: "fr",
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://cvpass.fr" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://cvpass.fr/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://cvpass.fr/blog/${post.slug}` },
+    ],
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif" }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       {/* NAV */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 100,
@@ -235,15 +276,25 @@ export default async function BlogPostPage(
         </div>
       </nav>
 
+      {/* BREADCRUMBS */}
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "16px 40px 0" }}>
+        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#9ca3af" }}>
+          <Link href="/" style={{ color: "#6b7280", textDecoration: "none" }}>Accueil</Link>
+          <span>/</span>
+          <Link href="/blog" style={{ color: "#6b7280", textDecoration: "none" }}>Blog</Link>
+          <span>/</span>
+          <span style={{ color: "#374151", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 300 }}>{post.title}</span>
+        </nav>
+      </div>
+
       {/* ARTICLE HEADER */}
-      <section style={{ background: "#fff", borderBottom: "1px solid rgba(229,231,235,.8)", padding: "56px 40px 48px" }}>
+      <section style={{ background: "#fff", borderBottom: "1px solid rgba(229,231,235,.8)", padding: "40px 40px 40px", marginTop: 12 }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <Link href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#6b7280", textDecoration: "none", marginBottom: 24 }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Retour au blog
-          </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
             <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 100, background: "#f0fdf4", color: "#15803d" }}>{post.category}</span>
+            {post.tags?.filter(t => t !== post.category).map((tag) => (
+              <span key={tag} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: "#f3f4f6", color: "#6b7280" }}>{tag}</span>
+            ))}
             <span style={{ fontSize: 12, color: "#9ca3af" }}>{dateLabel}</span>
             <span style={{ fontSize: 12, color: "#9ca3af" }}>·</span>
             <span style={{ fontSize: 12, color: "#9ca3af" }}>{post.readTime} de lecture</span>
@@ -256,9 +307,38 @@ export default async function BlogPostPage(
 
       {/* ARTICLE BODY */}
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 40px 80px" }}>
+
+        {/* TABLE OF CONTENTS */}
+        {headings.length >= 3 && (
+          <div style={{
+            background: "#fff", border: "1px solid rgba(229,231,235,.9)", borderRadius: 16,
+            padding: "24px 28px", marginBottom: 32,
+            boxShadow: "0 1px 2px rgba(0,0,0,.04)",
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "#6b7280", marginBottom: 14 }}>
+              Sommaire
+            </div>
+            <ol style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+              {headings.map((h, idx) => (
+                <li key={idx} style={{ fontSize: 14, lineHeight: 1.5 }}>
+                  <a href={`#${h.id}`} style={{ color: "#374151", textDecoration: "none", fontWeight: 500 }}>
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
         <article style={{ background: "#fff", border: "1px solid rgba(229,231,235,.9)", borderRadius: 20, padding: "48px 52px", boxShadow: "0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.06)" }}>
           {renderContent(post.content)}
         </article>
+
+        {/* SHARE BUTTONS */}
+        <div style={{ marginTop: 24, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#6b7280" }}>Partager cet article</span>
+          <ShareButtons title={post.title} slug={post.slug} />
+        </div>
 
         {/* CTA dans l'article */}
         <div style={{

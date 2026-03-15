@@ -7,6 +7,7 @@ import { Show } from "@clerk/nextjs";
 import { ExitIntentModal } from "@/components/ExitIntentModal";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ScoreGauge } from "@/components/ScoreGauge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useStore } from "@/lib/store";
 
 export function LandingPage() {
@@ -43,9 +44,9 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-white text-brand-black overflow-x-hidden">
+    <div className="bg-white dark:bg-[#0f172a] text-brand-black dark:text-gray-100 overflow-x-hidden">
       {/* ── 1. NAV ── */}
-      <nav className="sticky top-0 z-50 bg-white/[0.92] backdrop-blur-[16px] border-b border-black/[0.04]">
+      <nav className="sticky top-0 z-50 bg-white/[0.92] dark:bg-[#0f172a]/[0.92] backdrop-blur-[16px] border-b border-black/[0.04] dark:border-white/[0.06]">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between h-[60px] px-8">
           <div className="font-display text-[21px] font-extrabold tracking-[-0.8px]">
             <span className="text-brand-black">CV</span>
@@ -54,16 +55,17 @@ export function LandingPage() {
 
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-7">
-            <a href="#how" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Comment ça marche</a>
-            <a href="#features" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Fonctionnalités</a>
-            <Link href="/pricing" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Tarifs</Link>
-            <Link href="/blog" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Blog</Link>
+            <a href="#how" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Comment ça marche</a>
+            <a href="#features" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Fonctionnalités</a>
+            <Link href="/pricing" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Tarifs</Link>
+            <Link href="/blog" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Blog</Link>
+            <ThemeToggle />
             <Show when="signed-out">
-              <Link href="/login" className="text-sm text-brand-gray font-medium hover:text-brand-black transition-colors">Connexion</Link>
-              <Link href="/signup" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Analyser mon CV</Link>
+              <Link href="/login" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Connexion</Link>
+              <Link href="/signup" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/analyze" className="bg-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
+              <Link href="/analyze" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
             </Show>
           </div>
 
@@ -87,7 +89,7 @@ export function LandingPage() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="sm:hidden border-t border-gray-100 bg-white px-8 py-4 space-y-3">
+          <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#0f172a] px-8 py-4 space-y-3">
             <a href="#how" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Comment ça marche</a>
             <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
             <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</Link>
@@ -262,7 +264,7 @@ export function LandingPage() {
       </section>
 
       {/* ── 5. HOW IT WORKS (detailed timeline) ── */}
-      <section id="how" className="py-24 bg-[#fafafa]">
+      <section id="how" className="py-24 bg-[#fafafa] dark:bg-[#0b1222]">
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-16 fade-up">
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-3">Comment ça marche</p>
@@ -567,7 +569,7 @@ export function LandingPage() {
       </section>
 
       {/* ── 7. COMPARISON TABLE ── */}
-      <section className="py-24 bg-[#fafafa]">
+      <section className="py-24 bg-[#fafafa] dark:bg-[#0b1222]">
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-14 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
@@ -726,7 +728,7 @@ export function LandingPage() {
                 ],
               },
             ].map((f, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
                     {f.icon}
@@ -768,11 +770,11 @@ export function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {[
-              { name: "Marie L.", role: "Chef de projet", initials: "ML", color: "from-pink-400 to-rose-500", result: "Score : 41 → 89", text: "L'outil ne me dit pas juste \"verbe trop faible\" — il me réécrit la phrase entière avec les bons mots-clés. J'ai eu 3 réponses en une semaine." },
-              { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "3 entretiens en 1 semaine", text: "J'avais déjà essayé d'autres outils. Ça me donnait une liste de problèmes sans solution. CVpass corrige lui-même — c'est une autre catégorie." },
-              { name: "Sophie C.", role: "Responsable Marketing", initials: "SC", color: "from-amber-400 to-orange-500", result: "Poste décroché en 2 semaines", text: "Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste visé." },
+              { name: "Marie L.", role: "Chef de projet IT", initials: "ML", color: "from-pink-400 to-rose-500", result: "Score : 41 → 89", text: "Mon score ATS est passé de 41 à 89 en 10 minutes. L'outil ne dit pas juste \"verbe trop faible\" — il réécrit la phrase entière avec les mots-clés de l'offre. J'ai eu 3 réponses en une semaine." },
+              { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "Score : 38 → 92 · 3 entretiens", text: "Score passé de 38 à 92. Avant, zéro réponse en 2 mois. Après CVpass, 3 entretiens en 1 semaine. Les autres outils donnent une liste de problèmes sans solution — ici l'IA corrige elle-même." },
+              { name: "Sophie C.", role: "Responsable Marketing Digital", initials: "SC", color: "from-amber-400 to-orange-500", result: "Score : 45 → 91 · Poste décroché", text: "De 45 à 91 en quelques clics. Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste. J'ai décroché le job en 2 semaines." },
             ].map((t, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
                 {/* Avatar */}
                 <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${t.color} mx-auto mb-4 flex items-center justify-center text-white text-[18px] font-bold shadow-md`}>
                   {t.initials}
@@ -805,7 +807,7 @@ export function LandingPage() {
       </section>
 
       {/* ── ANATOMY ── */}
-      <section className="py-20 bg-[#fafafa]">
+      <section className="py-20 bg-[#fafafa] dark:bg-[#0b1222]">
         <div className="max-w-[1100px] mx-auto px-8">
           <h2 className="fade-up font-display text-[24px] md:text-[30px] font-extrabold tracking-[-1.2px] text-center mb-12">
             L&apos;anatomie d&apos;un <span className="text-brand-green">CV parfait</span>
@@ -840,8 +842,36 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* ── NOTRE HISTOIRE ── */}
+      <section className="py-20 bg-white dark:bg-[#0f172a] border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-[720px] mx-auto px-8">
+          <div className="text-center mb-10 fade-up">
+            <h2 className="font-display text-[28px] md:text-[36px] font-extrabold tracking-[-1.5px] leading-tight">
+              Pourquoi nous avons créé <span className="text-brand-green">CVpass</span>
+            </h2>
+          </div>
+          <div className="fade-up space-y-5 text-[15px] text-gray-600 leading-relaxed">
+            <p>
+              Tout a commencé par un constat frustrant : des candidats qualifiés qui n&apos;obtenaient aucune réponse. Pas parce qu&apos;ils manquaient de compétences, mais parce que leur CV était rejeté par des machines avant même d&apos;être lu par un humain.
+            </p>
+            <p>
+              En France, <strong className="text-brand-black">plus de 75% des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
+            </p>
+            <p>
+              Les outils existants ? Ils donnent un score et une liste de problèmes — puis vous laissent vous débrouiller. Nous voulions aller plus loin : <strong className="text-brand-black">un outil qui ne se contente pas de diagnostiquer, mais qui corrige.</strong>
+            </p>
+            <p>
+              CVpass analyse ton CV, identifie chaque point faible et propose une réécriture IA intégrant les mots-clés de l&apos;offre que tu vises. Tu acceptes ou tu ignores. Le score remonte en temps réel. Tu télécharges un PDF propre, optimisé, prêt à postuler.
+            </p>
+            <p className="text-brand-black font-semibold">
+              Notre mission : que le meilleur candidat obtienne l&apos;entretien — pas le mieux formaté.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── 11. FAQ ── */}
-      <section className="py-24 bg-[#fafafa]">
+      <section className="py-24 bg-[#fafafa] dark:bg-[#0b1222]">
         <div className="max-w-[1100px] mx-auto px-8">
           <div className="text-center mb-14 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
@@ -871,6 +901,26 @@ export function LandingPage() {
                   question: "Quelle est la différence avec les autres outils ?",
                   answer: "Les autres scanners ATS vous donnent un score et une liste de problèmes. CVpass va plus loin : pour chaque point faible, l'IA propose une réécriture complète intégrant les mots-clés de votre offre. Vous acceptez ou ignorez — c'est tout.",
                 },
+                {
+                  question: "Combien de temps prend l'analyse ?",
+                  answer: "L'analyse complète prend environ 30 secondes. Vous obtenez votre score ATS, la liste des points faibles et les suggestions de réécriture IA en une seule opération. L'export PDF est instantané.",
+                },
+                {
+                  question: "Quels formats de CV sont acceptés ?",
+                  answer: "CVpass accepte les fichiers PDF et Word (.docx). Les PDF générés depuis Word, Google Docs ou LibreOffice fonctionnent parfaitement. Les PDF images (captures d'écran, exports Canva non-texte) sont détectés et vous êtes guidé pour les corriger.",
+                },
+                {
+                  question: "Est-ce que CVpass fonctionne pour tous les secteurs ?",
+                  answer: "Oui. L'IA analyse les mots-clés spécifiques à votre offre d'emploi, quel que soit le secteur : tech, commerce, finance, RH, marketing, industrie, santé. Les suggestions sont toujours adaptées au vocabulaire de votre domaine.",
+                },
+                {
+                  question: "L'IA réécrit-elle tout mon CV ?",
+                  answer: "Non. CVpass identifie uniquement les points faibles et propose des améliorations ciblées. Pour chaque suggestion, vous choisissez d'accepter ou d'ignorer. Votre CV reste le vôtre — l'IA l'optimise, elle ne le réinvente pas.",
+                },
+                {
+                  question: "Les crédits expirent-ils ?",
+                  answer: "Non. Les crédits achetés avec le Pack Coup de pouce n'expirent jamais. Vous pouvez les utiliser à votre rythme, sans pression. Les crédits gratuits (2 analyses) sont également sans limite de temps.",
+                },
               ]}
             />
           </div>
@@ -878,7 +928,7 @@ export function LandingPage() {
       </section>
 
       {/* ── 12. BLOG LINKS ── */}
-      <section className="bg-white py-16 px-8 border-t border-gray-100">
+      <section className="bg-white dark:bg-[#0f172a] py-16 px-8 border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-[1100px] mx-auto">
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-8">
             Guides pour améliorer ton CV ATS
@@ -901,7 +951,7 @@ export function LandingPage() {
       </section>
 
       {/* ── 13. FOOTER ── */}
-      <footer className="bg-gray-50 border-t border-gray-200 py-8 px-8">
+      <footer className="bg-gray-50 dark:bg-[#0b1222] border-t border-gray-200 dark:border-gray-800 py-8 px-8">
         <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="font-display text-[16px] font-extrabold tracking-[-0.5px]">

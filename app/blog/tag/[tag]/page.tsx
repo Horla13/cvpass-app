@@ -1,43 +1,44 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllPosts } from "@/lib/blog";
+import { notFound } from "next/navigation";
+import { getAllTags, tagToSlug, getPostsByTag, getTagName } from "@/lib/blog";
 import { BlogCard } from "@/components/BlogCard";
 
-export const metadata: Metadata = {
-  title: "Blog CVpass – Conseils CV, ATS et recherche d'emploi en France",
-  description:
-    "Guides pratiques pour optimiser ton CV pour les ATS, choisir les bons mots-clés et décrocher plus d'entretiens en France.",
-  alternates: { canonical: "https://cvpass.fr/blog" },
-  openGraph: {
-    title: "Blog CVpass – Conseils CV, ATS et recherche d'emploi",
-    description:
-      "Guides pratiques pour optimiser ton CV pour les ATS et décrocher plus d'entretiens.",
-    url: "https://cvpass.fr/blog",
-    type: "website",
-  },
-};
+export async function generateStaticParams() {
+  return getAllTags().map((tag) => ({ tag: tagToSlug(tag) }));
+}
 
-export default function BlogPage() {
-  const posts = getAllPosts();
-  const [featured, ...rest] = posts;
-
-  const blogJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    name: "Blog CVpass",
-    description: "Guides pratiques pour optimiser ton CV pour les ATS et décrocher plus d'entretiens en France.",
-    url: "https://cvpass.fr/blog",
-    publisher: { "@type": "Organization", name: "CVpass", url: "https://cvpass.fr" },
-    inLanguage: "fr",
+export async function generateMetadata(
+  { params }: { params: Promise<{ tag: string }> }
+): Promise<Metadata> {
+  const { tag } = await params;
+  const tagName = getTagName(tag);
+  if (!tagName) return {};
+  return {
+    title: `${tagName} — Articles et guides | Blog CVpass`,
+    description: `Tous les articles CVpass sur le thème ${tagName}. Guides pratiques pour optimiser ton CV et passer les filtres ATS.`,
+    alternates: { canonical: `https://cvpass.fr/blog/tag/${tag}` },
+    openGraph: {
+      title: `${tagName} — Blog CVpass`,
+      description: `Articles et guides sur ${tagName} pour optimiser ton CV ATS.`,
+      url: `https://cvpass.fr/blog/tag/${tag}`,
+      type: "website",
+    },
   };
+}
+
+export default async function TagPage(
+  { params }: { params: Promise<{ tag: string }> }
+) {
+  const { tag } = await params;
+  const tagName = getTagName(tag);
+  if (!tagName) notFound();
+
+  const posts = getPostsByTag(tag);
+  const allTags = getAllTags();
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "var(--font-geist-sans), -apple-system, sans-serif" }}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
-      />
-
       {/* NAV */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 100,
@@ -51,8 +52,7 @@ export default function BlogPage() {
           CV<span style={{ color: "#16a34a" }}>pass</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link href="/#pricing" style={{ fontSize: 14, fontWeight: 500, color: "#6b7280", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>Tarifs</Link>
-          <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "#16a34a", textDecoration: "none", padding: "7px 12px", borderRadius: 8, background: "#f0fdf4" }}>Blog</Link>
+          <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "#6b7280", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>← Blog</Link>
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
             Analyser mon CV →
           </Link>
@@ -64,51 +64,54 @@ export default function BlogPage() {
         <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#9ca3af" }}>
           <Link href="/" style={{ color: "#6b7280", textDecoration: "none" }}>Accueil</Link>
           <span>/</span>
-          <span style={{ color: "#111827", fontWeight: 600 }}>Blog</span>
+          <Link href="/blog" style={{ color: "#6b7280", textDecoration: "none" }}>Blog</Link>
+          <span>/</span>
+          <span style={{ color: "#111827", fontWeight: 600 }}>{tagName}</span>
         </nav>
       </div>
 
       {/* HEADER */}
       <section style={{ background: "#fff", borderBottom: "1px solid rgba(229,231,235,.8)", padding: "48px 40px 44px", marginTop: 8 }}>
         <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-          <div style={{ display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "#16a34a", marginBottom: 14 }}>Blog</div>
-          <h1 style={{ fontSize: "clamp(32px,5vw,52px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.07, color: "#111827", marginBottom: 16 }}>
-            Conseils CV et ATS<br />pour décrocher plus d&apos;entretiens.
+          <h1 style={{ fontSize: "clamp(28px,4vw,44px)", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1.1, color: "#111827", marginBottom: 12 }}>
+            {tagName}
           </h1>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <p style={{ fontSize: 18, color: "#6b7280", lineHeight: 1.7, maxWidth: 520, margin: 0 }}>
-              Guides pratiques sur l&apos;optimisation ATS, les mots-clés, les formats de CV et les outils pour candidater efficacement en France.
-            </p>
-            <span style={{
-              fontSize: 13, fontWeight: 700, padding: "6px 14px", borderRadius: 100,
-              background: "#f0fdf4", color: "#15803d", whiteSpace: "nowrap",
-            }}>
-              {posts.length} articles publiés
-            </span>
-          </div>
+          <p style={{ fontSize: 16, color: "#6b7280", lineHeight: 1.7 }}>
+            {posts.length} article{posts.length > 1 ? "s" : ""} sur ce thème
+          </p>
         </div>
       </section>
 
-      {/* FEATURED POST */}
-      {featured && (
-        <section style={{ padding: "48px 40px 0" }}>
-          <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "#6b7280", marginBottom: 16 }}>
-              Dernier article
-            </div>
-            <BlogCard post={featured} featured />
-          </div>
-        </section>
-      )}
+      {/* TAG CLOUD */}
+      <section style={{ padding: "24px 40px 0" }}>
+        <div style={{ maxWidth: 1080, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {allTags.map((t) => {
+            const tSlug = tagToSlug(t);
+            const isActive = tSlug === tag;
+            return (
+              <Link
+                key={t}
+                href={`/blog/tag/${tSlug}`}
+                style={{
+                  fontSize: 12, fontWeight: 600, padding: "5px 14px", borderRadius: 100,
+                  background: isActive ? "#16a34a" : "#f3f4f6",
+                  color: isActive ? "#fff" : "#6b7280",
+                  textDecoration: "none",
+                  transition: "background .2s, color .2s",
+                }}
+              >
+                {t}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
-      {/* ALL ARTICLES */}
-      <section style={{ padding: "48px 40px 96px" }}>
+      {/* ARTICLES */}
+      <section style={{ padding: "32px 40px 96px" }}>
         <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "#6b7280", marginBottom: 20 }}>
-            Tous les articles
-          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}>
-            {rest.map((post) => (
+            {posts.map((post) => (
               <BlogCard key={post.slug} post={post} />
             ))}
           </div>

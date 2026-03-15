@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { frFR } from "@clerk/localizations";
 import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import { PostHogProvider } from "@/components/PostHogProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -107,17 +108,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("cvpass-theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})()`,
+          }}
+        />
       </head>
       <body className={`${plusJakarta.variable} ${dmSans.variable} antialiased`}>
         <ClerkProvider localization={frFR}>
           <PostHogProvider>
-            {children}
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
           </PostHogProvider>
         </ClerkProvider>
       </body>

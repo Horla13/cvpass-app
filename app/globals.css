@@ -5,6 +5,19 @@
 body {
   color: #111827;
   font-family: var(--font-dm-sans), sans-serif;
+  background: #fff;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark mode base */
+.dark body,
+html.dark body {
+  color: #e5e7eb;
+  background: #0f172a;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 /* Display font utility */

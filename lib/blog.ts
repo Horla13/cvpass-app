@@ -7,6 +7,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   category: string;
+  tags: string[];
   content: string;
 }
 
@@ -22,6 +23,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "2026-03-10",
     readTime: "7 min",
     category: "Score ATS",
+    tags: ["Score ATS", "Optimisation CV", "Guide"],
     content: `
 ## Qu'est-ce qu'un score ATS ?
 
@@ -112,6 +114,7 @@ La plupart des scanners ATS en ligne te donnent un score et une liste de problè
     date: "2026-03-10",
     readTime: "6 min",
     category: "CV Canva",
+    tags: ["CV Canva", "Format CV", "Erreurs CV"],
     content: `
 ## Le piège du CV Canva
 
@@ -198,6 +201,7 @@ Pour chaque point faible détecté, l'IA propose une reformulation directement u
     date: "2026-03-10",
     readTime: "8 min",
     category: "Guide ATS",
+    tags: ["Guide ATS", "Optimisation CV", "France"],
     content: `
 ## Les ATS en France en 2026 : ce qu'il faut savoir
 
@@ -318,6 +322,7 @@ Ce qui prenait 2 heures prend maintenant 20 minutes.
     date: "2026-03-10",
     readTime: "7 min",
     category: "Mots-clés",
+    tags: ["Mots-clés", "Optimisation CV", "Score ATS"],
     content: `
 ## Pourquoi les mots-clés sont au cœur du score ATS
 
@@ -436,6 +441,7 @@ Pour chaque compétence manquante ou mal formulée, l'IA propose une réécritur
     date: "2026-03-10",
     readTime: "6 min",
     category: "Format CV",
+    tags: ["Format CV", "PDF", "Word"],
     content: `
 ## La question que tout le monde se pose
 
@@ -555,6 +561,7 @@ Tu gardes ton CV visuel pour l'impression et les contacts humains. Tu utilises l
     date: "2026-03-10",
     readTime: "8 min",
     category: "Outils",
+    tags: ["Outils", "Scanner CV", "Comparatif"],
     content: `
 ## Pourquoi scanner son CV avant de postuler ?
 
@@ -676,6 +683,7 @@ Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et c
     date: "2026-03-14",
     readTime: "8 min",
     category: "Lettre de motivation",
+    tags: ["Lettre de motivation", "Mots-clés", "Candidature"],
     content: `
 ## La lettre de motivation face aux ATS : ce que personne ne t'explique
 
@@ -809,6 +817,7 @@ Le résultat : un score ATS global plus élevé et une candidature qui se démar
     date: "2026-03-14",
     readTime: "9 min",
     category: "CV par secteur",
+    tags: ["CV par secteur", "Développeur", "Commercial"],
     content: `
 ## Pourquoi un CV ATS par secteur change tout
 
@@ -948,6 +957,7 @@ Le résultat : un CV ATS par secteur optimisé pour les filtres automatiques de 
     date: "2026-03-14",
     readTime: "7 min",
     category: "Erreurs CV",
+    tags: ["Erreurs CV", "Optimisation CV", "Score ATS"],
     content: `
 ## Pourquoi ton CV est refusé avant même d'être lu
 
@@ -1085,6 +1095,520 @@ Pour chaque erreur détectée, l'IA propose une correction prête à l'emploi. T
 **Combien d'erreurs contient ton CV ?** [Fais le test gratuitement sur cvpass.fr →](https://cvpass.fr)
     `.trim(),
   },
+
+  // ─── Articles par métier ────────────────────────────────────────────────────
+
+  {
+    slug: "cv-developpeur-ats",
+    title: "CV développeur : comment créer un CV ATS qui décroche des entretiens tech en 2026",
+    metaTitle: "CV développeur ATS : guide complet pour décrocher en tech 2026 | CVpass",
+    metaDescription: "Comment créer un CV développeur optimisé ATS en 2026. Stack technique, projets, mots-clés et structure pour passer les filtres automatiques.",
+    description: "Crée un CV développeur optimisé ATS avec la bonne structure, les bons mots-clés et la mise en valeur de ta stack technique.",
+    date: "2026-03-15",
+    readTime: "8 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Développeur", "Tech"],
+    content: `
+## Le CV développeur face aux ATS : un défi spécifique
+
+Le marché tech recrute massivement, mais les grandes entreprises et les ESN utilisent toutes des ATS pour filtrer les candidatures. Un CV développeur qui n'est pas optimisé pour ces systèmes peut être écarté avant même qu'un recruteur technique ne le voie.
+
+Le piège classique : les développeurs créent des CV visuellement originaux (sites web, PDF designés, infographies) qui sont illisibles pour les ATS. L'originalité technique doit se trouver dans le contenu, pas dans le format.
+
+## Structure idéale d'un CV développeur ATS
+
+### En-tête : nom, titre et coordonnées
+
+- **Titre clair** : "Développeur Full-Stack JavaScript" plutôt que "Passionné de code"
+- Email, téléphone, ville
+- Liens GitHub et LinkedIn (texte, pas d'icônes)
+
+### Résumé technique (3-4 lignes)
+
+C'est la section la plus importante pour l'ATS. Elle doit contenir tes technologies principales et ton niveau d'expérience. Exemple :
+
+"Développeur Full-Stack avec 4 ans d'expérience en React, Node.js et TypeScript. Spécialisé dans le développement d'applications SaaS performantes. Expérience en CI/CD, Docker et déploiement cloud AWS."
+
+### Stack technique
+
+Liste tes technologies par catégories :
+- **Frontend** : React, Next.js, TypeScript, Tailwind CSS
+- **Backend** : Node.js, Express, PostgreSQL, Redis
+- **DevOps** : Docker, GitHub Actions, AWS, Vercel
+- **Outils** : Git, Jira, Figma, Postman
+
+### Expériences professionnelles
+
+Pour chaque poste :
+- Titre exact du poste + entreprise + dates
+- 3-5 réalisations quantifiées
+- Technologies utilisées dans le contexte de chaque mission
+
+**Bon exemple** : "Développé une API REST avec Node.js et PostgreSQL servant 50 000 requêtes/jour, réduisant le temps de réponse de 40%."
+
+**Mauvais exemple** : "Développement backend" (trop vague, aucun mot-clé exploitable).
+
+## Les mots-clés tech que les ATS recherchent
+
+Les recruteurs tech configurent les ATS avec des mots-clés très précis. Voici les catégories à couvrir :
+
+- **Langages** : JavaScript, TypeScript, Python, Java, Go, PHP
+- **Frameworks** : React, Angular, Vue.js, Next.js, Django, Spring Boot
+- **Bases de données** : PostgreSQL, MySQL, MongoDB, Redis
+- **Cloud** : AWS, GCP, Azure, Heroku, Vercel
+- **Méthodes** : Agile, Scrum, CI/CD, TDD, Code Review
+- **Outils** : Git, Docker, Kubernetes, Jenkins, Terraform
+
+Utilise les noms exacts des technologies. "JS" ne sera pas toujours reconnu comme "JavaScript". Écris les deux si possible.
+
+## Erreurs fréquentes des CV développeurs
+
+**Lister uniquement les technologies sans contexte.** Une liste de 30 technologies sans explication n'impressionne ni l'ATS ni le recruteur. Intègre les technologies dans tes expériences.
+
+**Oublier les soft skills techniques.** Les ATS recherchent aussi "travail en équipe", "communication technique", "mentorat", "architecture logicielle".
+
+**Mettre un lien vers un portfolio sans texte.** L'ATS ne visite pas les liens. Décris tes projets en texte dans le CV.
+
+**Utiliser un format non standard.** Un site web comme CV, un README GitHub, un PDF Canva — tout ça échoue face aux ATS. Utilise un PDF texte simple.
+
+## Ce que CVpass fait pour les développeurs
+
+CVpass analyse ton CV développeur par rapport à l'offre d'emploi que tu vises. L'outil identifie les technologies manquantes, les formulations à améliorer et les sections à restructurer. En quelques clics, ton CV passe de "filtré par l'ATS" à "en haut de la pile du recruteur tech".
+
+---
+
+**Ton CV développeur passe-t-il les ATS ?** [Fais le test gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-commercial-ats",
+    title: "CV commercial : optimiser son CV pour les ATS et décrocher plus de postes en 2026",
+    metaTitle: "CV commercial ATS : guide pour décrocher plus de postes en 2026 | CVpass",
+    metaDescription: "Comment créer un CV commercial optimisé ATS en 2026. Chiffres de vente, mots-clés et structure pour passer les filtres automatiques des recruteurs.",
+    description: "Optimise ton CV commercial pour les ATS avec les bons chiffres, mots-clés et la structure qui convainc.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Commercial", "Vente"],
+    content: `
+## Le CV commercial et les ATS : pourquoi les chiffres comptent double
+
+Dans le monde commercial, les résultats parlent. Et les ATS le savent — ou plutôt, les recruteurs qui configurent les filtres le savent. Un CV commercial sans chiffres est un CV vide pour un ATS configuré pour chercher des indicateurs de performance.
+
+Le problème : beaucoup de commerciaux décrivent leurs missions ("prospection", "gestion de portefeuille") sans jamais quantifier leurs résultats. L'ATS ne trouve pas les signaux qu'il cherche.
+
+## Structure optimale d'un CV commercial ATS
+
+### Résumé de profil orienté résultats
+
+"Commercial B2B avec 5 ans d'expérience en vente de solutions SaaS. Portefeuille de 120 comptes, CA annuel généré de 800K€. Expertise en prospection, négociation grands comptes et closing."
+
+Ce résumé contient exactement ce que l'ATS cherche : le type de vente (B2B, SaaS), les métriques (120 comptes, 800K€) et les compétences clés.
+
+### Expériences avec KPIs
+
+Pour chaque poste commercial, inclus systématiquement :
+- **Chiffre d'affaires** généré ou géré
+- **Nombre de clients** dans le portefeuille
+- **Taux de conversion** ou de rétention
+- **Objectifs atteints** (% du quota)
+- **Croissance** du CA sur la période
+
+**Bon exemple** : "Développé un portefeuille de 80 comptes B2B, générant 650K€ de CA annuel (115% de l'objectif). Taux de rétention client de 92%."
+
+**Mauvais exemple** : "Gestion et développement du portefeuille clients."
+
+## Mots-clés commerciaux que les ATS recherchent
+
+- **Types de vente** : B2B, B2C, SaaS, grands comptes, PME, cycle de vente long/court
+- **Compétences** : prospection, qualification, négociation, closing, upsell, cross-sell, fidélisation
+- **Outils CRM** : Salesforce, HubSpot, Pipedrive, Microsoft Dynamics
+- **Métriques** : CA, MRR, ARR, pipe commercial, taux de conversion, NPS
+- **Méthodes** : SPIN selling, MEDDIC, Challenger Sale, social selling
+- **Certifications** : HubSpot Sales, Salesforce Certified
+
+## Erreurs fréquentes des CV commerciaux
+
+**Des descriptions vagues sans chiffres.** "Responsable du développement commercial" ne dit rien à l'ATS. Chaque ligne doit contenir au moins un chiffre.
+
+**Oublier les outils CRM.** Si l'offre mentionne Salesforce et que tu l'utilises, ce mot doit apparaître dans ton CV.
+
+**Trop de responsabilités, pas assez de résultats.** L'ATS et le recruteur veulent savoir ce que tu as accompli, pas seulement ce que tu faisais au quotidien.
+
+## Ce que CVpass fait pour les commerciaux
+
+CVpass analyse ton CV par rapport à l'offre d'emploi et identifie les métriques manquantes, les mots-clés de vente absents et les formulations trop vagues. L'IA propose des réécritures orientées résultats pour chaque point faible.
+
+---
+
+**Ton CV commercial est-il à la hauteur ?** [Analyse-le gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-chef-projet-ats",
+    title: "CV chef de projet : structure ATS et mots-clés pour décrocher en 2026",
+    metaTitle: "CV chef de projet ATS : structure et mots-clés 2026 | CVpass",
+    metaDescription: "Comment créer un CV chef de projet optimisé ATS en 2026. Méthodologies, certifications, mots-clés et structure pour passer les filtres automatiques.",
+    description: "Crée un CV chef de projet ATS-friendly avec les bonnes méthodologies, certifications et mots-clés.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Chef de projet", "Management"],
+    content: `
+## Le CV chef de projet : un profil où les ATS sont particulièrement exigeants
+
+Le chef de projet est un profil transversal. Les recruteurs cherchent un mélange spécifique de compétences techniques, méthodologiques et managériales. Les ATS sont configurés pour filtrer sur des mots-clés très précis : méthodologies, outils, certifications.
+
+Un CV chef de projet générique — "pilotage de projets dans un environnement international" — sera mal classé par l'ATS. Il faut être spécifique.
+
+## Structure d'un CV chef de projet ATS
+
+### Résumé de profil
+
+"Chef de projet IT certifié PMP avec 6 ans d'expérience en gestion de projets Agile/Scrum. Pilotage de projets jusqu'à 500K€ de budget et équipes de 15 personnes. Expertise en transformation digitale et déploiement ERP."
+
+### Expériences structurées par projet
+
+Pour chaque expérience, décris les projets pilotés :
+- **Scope** : type de projet, nombre de personnes, budget
+- **Méthodologie** : Agile, Scrum, Waterfall, SAFe, Prince2
+- **Livrables** : ce qui a été produit, les résultats obtenus
+- **Outils** : Jira, Confluence, MS Project, Monday, Asana, Trello
+
+**Bon exemple** : "Piloté la refonte du SI commercial (budget 350K€, équipe de 12). Méthodologie Scrum avec sprints de 2 semaines. Livraison dans les délais avec satisfaction client de 4.5/5."
+
+## Mots-clés chef de projet pour les ATS
+
+- **Méthodologies** : Agile, Scrum, Kanban, SAFe, Waterfall, Prince2, Lean, Six Sigma
+- **Certifications** : PMP, PSM, PSPO, Prince2, ITIL, SAFe Agilist
+- **Outils** : Jira, Confluence, MS Project, Monday.com, Asana, Trello, Notion
+- **Compétences** : gestion de budget, planning, roadmap, backlog, sprint, rétrospective, comité de pilotage, cahier des charges, MOA, MOE, AMOA
+- **Soft skills recherchés** : coordination, communication, gestion des risques, arbitrage, leadership
+
+## Erreurs fréquentes
+
+**Ne pas mentionner les certifications.** PMP, PSM, ITIL — si tu les as, elles doivent être visibles. Les ATS filtrent dessus.
+
+**Des descriptions sans métriques de projet.** Budget, taille d'équipe, délais respectés, nombre de sprints — les chiffres prouvent ton impact.
+
+**Confondre "coordonner" et "piloter".** L'ATS cherche des termes précis. "Piloté" est plus fort que "participé à".
+
+## Ce que CVpass fait pour les chefs de projet
+
+CVpass identifie les méthodologies et certifications manquantes dans ton CV par rapport à l'offre. L'IA reformule tes expériences pour mettre en avant les métriques de projet et les mots-clés méthodologiques attendus.
+
+---
+
+**Ton CV chef de projet est-il optimisé ?** [Vérifie gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-data-analyst-ats",
+    title: "CV data analyst : mots-clés, outils et structure ATS pour 2026",
+    metaTitle: "CV data analyst ATS : mots-clés et structure optimale 2026 | CVpass",
+    metaDescription: "Comment créer un CV data analyst optimisé ATS en 2026. Outils data, langages, visualisation et mots-clés pour décrocher en analyse de données.",
+    description: "Optimise ton CV data analyst pour les ATS avec les bons outils, langages et mots-clés du secteur data.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Data Analyst", "Data"],
+    content: `
+## Le CV data analyst : un secteur où les mots-clés techniques sont décisifs
+
+Le marché de la data explose en France. Les postes de data analyst se multiplient dans tous les secteurs — finance, retail, santé, tech. Les recruteurs utilisent les ATS pour filtrer sur des compétences techniques très précises : langages, outils de visualisation, bases de données.
+
+Un CV data analyst qui dit "analyse de données" sans préciser les outils utilisés sera mal classé. La spécificité est la clé.
+
+## Structure d'un CV data analyst ATS
+
+### Résumé technique
+
+"Data Analyst avec 3 ans d'expérience en analyse de données business. Expertise en SQL, Python (Pandas, NumPy) et Power BI. Expérience en modélisation de données, création de dashboards et analyse prédictive pour des équipes marketing et finance."
+
+### Compétences techniques par catégories
+
+- **Langages** : SQL, Python, R
+- **Visualisation** : Power BI, Tableau, Looker, Google Data Studio
+- **Bases de données** : PostgreSQL, MySQL, BigQuery, Snowflake
+- **Outils** : Excel avancé, Google Sheets, Jupyter, dbt
+- **Cloud/ETL** : AWS, GCP, Airflow, Talend
+
+### Expériences orientées impact business
+
+**Bon exemple** : "Créé un dashboard Power BI pour le suivi des KPIs marketing (15 métriques). Identifié une opportunité de réduction des coûts d'acquisition de 22%, soit 80K€/an d'économies."
+
+**Mauvais exemple** : "Analyse de données et création de rapports."
+
+## Mots-clés data analyst pour les ATS
+
+- **Hard skills** : SQL, Python, R, Power BI, Tableau, Excel, ETL, data modeling, A/B testing, statistical analysis
+- **Concepts** : KPI, data-driven, insight, segmentation, cohort analysis, funnel analysis, data quality
+- **Soft skills** : data storytelling, communication des résultats, vulgarisation, collaboration cross-fonctionnelle
+- **Certifications** : Google Data Analytics, Microsoft Power BI, Tableau Desktop Specialist
+
+## Erreurs fréquentes des CV data analyst
+
+**Lister les outils sans montrer l'impact.** "Maîtrise de Power BI" ne suffit pas. Montre ce que tu as construit avec et quel problème business ça a résolu.
+
+**Oublier SQL.** C'est le mot-clé n°1 des offres data analyst. Si tu ne le mentionnes pas explicitement, l'ATS te pénalise.
+
+**Pas de résultats chiffrés.** Combien de dashboards créés ? Quel volume de données traité ? Quel impact business ?
+
+## Ce que CVpass fait pour les data analysts
+
+CVpass compare ton CV aux mots-clés de l'offre data analyst que tu vises. L'outil détecte les technologies manquantes, les formulations vagues et propose des réécritures avec impact business chiffré.
+
+---
+
+**Ton CV data analyst passe-t-il les filtres ?** [Teste-le gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-marketing-digital-ats",
+    title: "CV marketing digital : structure ATS et mots-clés pour décrocher en 2026",
+    metaTitle: "CV marketing digital ATS : structure et mots-clés 2026 | CVpass",
+    metaDescription: "Comment créer un CV marketing digital optimisé ATS en 2026. SEO, SEA, social media, analytics — les mots-clés et la structure pour passer les filtres.",
+    description: "Optimise ton CV marketing digital pour les ATS avec les bons mots-clés SEO, SEA et analytics.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Marketing digital", "SEO"],
+    content: `
+## Le CV marketing digital : un profil où les acronymes comptent
+
+Le marketing digital est un domaine où le vocabulaire technique est dense : SEO, SEA, SEM, CRO, CTR, CPL, ROAS, CAC... Les ATS filtrent massivement sur ces acronymes. Un CV qui dit "responsable de la visibilité en ligne" au lieu de "SEO Manager" sera mal classé.
+
+## Structure d'un CV marketing digital ATS
+
+### Résumé de profil
+
+"Responsable marketing digital avec 4 ans d'expérience en SEO, SEA et content marketing. Gestion de budgets publicitaires jusqu'à 150K€/mois. Expertise en Google Ads, Meta Ads, Google Analytics 4 et stratégie de contenu B2B."
+
+### Expériences avec métriques marketing
+
+Pour chaque poste :
+- **Budget géré** : montant mensuel/annuel
+- **Résultats** : trafic organique, conversions, ROAS, CTR, CPL
+- **Outils** : plateformes publicitaires, analytics, CMS, automation
+- **Campagnes** : type, audience, résultats chiffrés
+
+**Bon exemple** : "Piloté les campagnes Google Ads (budget 80K€/mois, ROAS 4.2x). Augmentation du trafic organique de 180% en 12 mois via stratégie SEO on-page et netlinking."
+
+**Mauvais exemple** : "Gestion des campagnes publicitaires et du référencement."
+
+## Mots-clés marketing digital pour les ATS
+
+- **SEO** : référencement naturel, on-page, off-page, netlinking, audit SEO, Core Web Vitals, Search Console
+- **SEA** : Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads, programmatique
+- **Analytics** : Google Analytics 4, Tag Manager, Data Studio, Hotjar, Mixpanel
+- **Content** : content marketing, copywriting, editorial planning, blog, newsletter
+- **Automation** : HubSpot, Mailchimp, Brevo, ActiveCampaign, marketing automation
+- **CMS** : WordPress, Webflow, Shopify
+- **Métriques** : ROAS, CTR, CPC, CPL, CAC, LTV, taux de conversion, taux de rebond
+
+## Erreurs fréquentes des CV marketing
+
+**Des responsabilités sans résultats.** "Gestion des réseaux sociaux" ne dit rien. Combien de followers gagnés ? Quel taux d'engagement ? Quel impact sur le CA ?
+
+**Oublier les outils.** Google Analytics 4, HubSpot, SEMrush, Ahrefs — si tu les utilises, écris-les. L'ATS filtre dessus.
+
+**Un CV trop généraliste.** "Marketing" est trop vague. Précise ta spécialité : SEO, SEA, growth, content, social media.
+
+## Ce que CVpass fait pour les marketeurs
+
+CVpass identifie les acronymes et outils manquants dans ton CV marketing par rapport à l'offre. L'IA reformule tes expériences avec les métriques et mots-clés attendus par les ATS du secteur.
+
+---
+
+**Ton CV marketing passe-t-il les filtres ?** [Vérifie gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-ressources-humaines-ats",
+    title: "CV RH : comment optimiser son CV ressources humaines pour les ATS en 2026",
+    metaTitle: "CV RH ATS : optimiser son CV ressources humaines en 2026 | CVpass",
+    metaDescription: "Comment créer un CV ressources humaines optimisé ATS en 2026. Recrutement, paie, droit social — les mots-clés et la structure pour décrocher.",
+    description: "Crée un CV RH optimisé ATS avec les bons mots-clés en recrutement, paie et droit social.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Ressources humaines", "Recrutement"],
+    content: `
+## Le CV RH face aux ATS : l'ironie du recruteur recruté
+
+Les professionnels RH connaissent les ATS mieux que personne — ce sont eux qui les utilisent au quotidien. Pourtant, quand ils cherchent eux-mêmes un emploi, leurs CV souffrent souvent des mêmes problèmes que ceux qu'ils rejettent : formulations vagues, mots-clés manquants, structure non optimale.
+
+## Structure d'un CV RH ATS
+
+### Résumé de profil
+
+"Chargée de recrutement avec 5 ans d'expérience en recrutement IT et commercial. 200+ recrutements réalisés, de la définition du besoin à l'intégration. Expertise en sourcing, entretiens structurés et marque employeur. Outils : Workday, LinkedIn Recruiter, Greenhouse."
+
+### Expériences avec métriques RH
+
+- **Volume de recrutement** : nombre de postes pourvus par an
+- **Time-to-hire** : délai moyen de recrutement
+- **Taux de rétention** : à 6 mois, 1 an
+- **Budget formation** : montant géré
+- **Effectif géré** : nombre de collaborateurs
+
+**Bon exemple** : "Recruté 45 profils tech et commerciaux en 12 mois (time-to-hire moyen : 28 jours). Mis en place un programme d'onboarding réduisant le turnover de 25% sur la première année."
+
+## Mots-clés RH pour les ATS
+
+- **Recrutement** : sourcing, chasse de tête, entretien structuré, assessment, ATS, jobboard, cooptation
+- **Administration** : paie, DPAE, contrats de travail, DSN, mutuelle, prévoyance
+- **Droit social** : convention collective, CSE, NAO, rupture conventionnelle, licenciement
+- **Formation** : plan de développement des compétences, OPCO, CPF, bilan de compétences
+- **Outils** : Workday, SAP SuccessFactors, Talentsoft, PayFit, Silae, LinkedIn Recruiter, Greenhouse
+- **Concepts** : marque employeur, QVT/QVCT, RSE, diversité et inclusion, GPEC/GEPP
+
+## Erreurs fréquentes des CV RH
+
+**Des missions génériques.** "Gestion des ressources humaines" ne dit rien. Précise : recrutement, paie, formation, relations sociales ?
+
+**Oublier le volume.** Combien de recrutements ? Quel effectif géré ? Quel budget formation ?
+
+**Pas de mention des outils SIRH.** Les ATS filtrent sur Workday, SAP, PayFit. Si tu les utilises, mentionne-les.
+
+## Ce que CVpass fait pour les RH
+
+CVpass analyse ton CV RH et identifie les mots-clés manquants par rapport à l'offre. L'outil reformule tes expériences avec les métriques et le vocabulaire spécifique attendu.
+
+---
+
+**Ton CV RH est-il à la hauteur ?** [Analyse-le gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-comptable-finance-ats",
+    title: "CV comptable / finance : mots-clés ATS et structure pour décrocher en 2026",
+    metaTitle: "CV comptable finance ATS : mots-clés et structure 2026 | CVpass",
+    metaDescription: "Comment créer un CV comptable ou finance optimisé ATS en 2026. Normes, logiciels, certifications et mots-clés pour passer les filtres automatiques.",
+    description: "Optimise ton CV comptable ou finance pour les ATS avec les normes, logiciels et mots-clés du secteur.",
+    date: "2026-03-15",
+    readTime: "7 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Comptabilité", "Finance"],
+    content: `
+## Le CV comptable/finance : précision et conformité avant tout
+
+En comptabilité et finance, les recruteurs cherchent des profils rigoureux et techniques. Les ATS sont configurés pour filtrer sur des normes comptables, des logiciels spécifiques et des certifications. Un CV qui ne mentionne pas explicitement ces éléments sera écarté.
+
+## Structure d'un CV comptable/finance ATS
+
+### Résumé de profil
+
+"Comptable général avec 6 ans d'expérience en comptabilité multi-sociétés. Maîtrise des normes IFRS et PCG. Expertise en clôtures mensuelles, déclarations fiscales (TVA, IS, CVAE) et consolidation. Logiciels : SAP, Sage, Cegid."
+
+### Expériences avec métriques
+
+- **Volume** : nombre de sociétés gérées, CA consolidé
+- **Clôtures** : délais de clôture (J+5, J+10)
+- **Déclarations** : types (TVA, IS, liasses fiscales)
+- **Équipe** : taille de l'équipe supervisée
+
+**Bon exemple** : "Responsable de la comptabilité de 3 filiales (CA consolidé 25M€). Clôtures mensuelles en J+5. Préparation des liasses fiscales et coordination avec les commissaires aux comptes."
+
+## Mots-clés comptabilité/finance pour les ATS
+
+- **Comptabilité** : comptabilité générale, auxiliaire, analytique, tiers, immobilisations, rapprochement bancaire
+- **Normes** : PCG, IFRS, US GAAP, normes fiscales françaises
+- **Fiscalité** : TVA, IS, CFE, CVAE, liasse fiscale, prix de transfert
+- **Logiciels** : SAP (FI/CO), Sage 100/1000, Cegid, Oracle, QuickBooks, Pennylane
+- **Certifications** : DEC, DSCG, DCG, CCA
+- **Finance** : consolidation, reporting, budget, forecast, trésorerie, BFR, cash-flow
+- **Audit** : contrôle interne, commissariat aux comptes, due diligence
+
+## Erreurs fréquentes
+
+**Ne pas mentionner les normes.** IFRS vs PCG — les ATS filtrent dessus. Précise toujours les référentiels que tu maîtrises.
+
+**Oublier les logiciels comptables.** SAP, Sage, Cegid — ce sont des mots-clés critiques. Ne les oublie pas.
+
+**Des descriptions sans volume.** Quel CA ? Combien de factures traitées ? Quel délai de clôture ?
+
+## Ce que CVpass fait pour les comptables
+
+CVpass identifie les normes, logiciels et mots-clés fiscaux manquants dans ton CV par rapport à l'offre. L'IA reformule tes expériences avec la précision attendue dans le secteur.
+
+---
+
+**Ton CV comptable est-il optimisé ?** [Vérifie-le gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "cv-ingenieur-ats",
+    title: "CV ingénieur : comment créer un CV ATS qui se démarque en 2026",
+    metaTitle: "CV ingénieur ATS : structure et mots-clés pour se démarquer 2026 | CVpass",
+    metaDescription: "Comment créer un CV ingénieur optimisé ATS en 2026. Compétences techniques, projets, certifications et mots-clés pour passer les filtres automatiques.",
+    description: "Crée un CV ingénieur ATS-friendly qui met en valeur tes compétences techniques et tes projets.",
+    date: "2026-03-15",
+    readTime: "8 min",
+    category: "CV par métier",
+    tags: ["CV par métier", "Ingénieur", "Industrie"],
+    content: `
+## Le CV ingénieur : technique et précision face aux ATS
+
+Les postes d'ingénieur sont parmi les plus filtrés par les ATS. Les recruteurs configurent des mots-clés très techniques : logiciels de CAO, normes industrielles, certifications, langages de programmation embarqué. Un CV ingénieur générique passera rarement les filtres.
+
+## Structure d'un CV ingénieur ATS
+
+### Résumé technique
+
+"Ingénieur mécanique avec 5 ans d'expérience en conception produit et industrialisation. Expertise en CAO (CATIA V5, SolidWorks), calcul de structures (ANSYS) et gestion de projets industriels. Certifié Green Belt Lean Six Sigma."
+
+### Formation en premier
+
+Pour les ingénieurs, la formation est souvent un critère de filtrage ATS :
+- Nom exact de l'école (INSA, Centrale, Arts et Métiers, Polytech...)
+- Spécialisation
+- Année de diplôme
+
+### Compétences techniques par catégories
+
+- **CAO/FAO** : CATIA V5/V6, SolidWorks, Creo, AutoCAD, Inventor
+- **Simulation** : ANSYS, Abaqus, COMSOL, Matlab/Simulink
+- **Normes** : ISO 9001, ISO 14001, IATF 16949, EN 9100
+- **Méthodes** : Lean, Six Sigma, AMDEC/FMEA, 5S, Kaizen, PDCA
+- **Outils** : SAP, Windchill, TeamCenter, JIRA
+
+### Expériences orientées projets
+
+**Bon exemple** : "Conçu et industrialisé un sous-ensemble moteur (CATIA V5) réduisant le poids de 15% tout en respectant les normes IATF 16949. Coordination avec 3 fournisseurs, livraison dans les délais et budget (250K€)."
+
+## Mots-clés ingénieur pour les ATS
+
+- **Conception** : CAO, FAO, PLM, prototypage, design review, cotation fonctionnelle
+- **Production** : industrialisation, process, gamme de fabrication, ligne de production, yield
+- **Qualité** : ISO 9001, AMDEC, contrôle qualité, non-conformité, audit interne
+- **Management** : gestion de projet technique, coordination fournisseurs, cahier des charges
+- **Certifications** : Green Belt, Black Belt, PMP, certifications sectorielles
+
+## Erreurs fréquentes des CV ingénieurs
+
+**Lister les logiciels sans contexte.** "CATIA V5" seul ne suffit pas. Dans quel contexte ? Pour quel type de pièces ? Quel résultat ?
+
+**Oublier les normes.** ISO, IATF, EN — les ATS des grands groupes industriels filtrent systématiquement dessus.
+
+**Ne pas mentionner l'école.** En France, l'école d'ingénieur est un critère de filtrage majeur. Assure-toi qu'elle est bien visible.
+
+## Ce que CVpass fait pour les ingénieurs
+
+CVpass analyse ton CV ingénieur par rapport à l'offre et identifie les logiciels, normes et certifications manquantes. L'IA reformule tes expériences avec les mots-clés techniques attendus.
+
+---
+
+**Ton CV ingénieur passe-t-il les ATS ?** [Teste-le gratuitement sur CVpass →](https://cvpass.fr)
+    `.trim(),
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
@@ -1093,4 +1617,40 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 
 export function getAllPosts(): BlogPost[] {
   return BLOG_POSTS;
+}
+
+/** Get all unique tags across all posts */
+export function getAllTags(): string[] {
+  const tagSet = new Set<string>();
+  for (const post of BLOG_POSTS) {
+    for (const tag of post.tags) tagSet.add(tag);
+  }
+  return Array.from(tagSet).sort();
+}
+
+/** Get tag slug from tag name */
+export function tagToSlug(tag: string): string {
+  return tag
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+/** Get posts by tag */
+export function getPostsByTag(tagSlug: string): BlogPost[] {
+  return BLOG_POSTS.filter((p) =>
+    p.tags.some((t) => tagToSlug(t) === tagSlug)
+  );
+}
+
+/** Get tag name from slug */
+export function getTagName(tagSlug: string): string | undefined {
+  for (const post of BLOG_POSTS) {
+    for (const tag of post.tags) {
+      if (tagToSlug(tag) === tagSlug) return tag;
+    }
+  }
+  return undefined;
 }
