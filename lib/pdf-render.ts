@@ -240,7 +240,7 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const docDef: any = {
     pageSize: "A4" as const,
-    pageMargins: [40, 40, 40, 40] as [number, number, number, number],
+    pageMargins: [40, 40, 40, options?.watermark ? 50 : 40] as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
     info: {
       title: `${cv.nom || "CV"} \u2014 CV`,
@@ -253,14 +253,14 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
   };
 
   if (options?.watermark) {
-    docDef.watermark = {
-      text: "CVpass.fr",
-      color: "#d1d5db",
-      opacity: 0.15,
-      bold: true,
-      fontSize: 60,
-      angle: -45,
-    };
+    docDef.footer = () => ({
+      text: "G\u00e9n\u00e9r\u00e9 avec CVpass.fr",
+      font: "Helvetica",
+      fontSize: 8,
+      color: "#9CA3AF",
+      alignment: "center" as const,
+      margin: [0, 15, 0, 0],
+    });
   }
 
   return pdfmake.createPdf(docDef).getBuffer();
