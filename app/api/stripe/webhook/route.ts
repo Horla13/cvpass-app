@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { addCredits } from "@/lib/billing";
+import { sendPaymentConfirmationEmail } from "@/lib/brevo";
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +64,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Métadonnées manquantes" }, { status: 400 });
     }
 
+    const customerEmail = session.customer_details?.email ?? session.customer_email;
+
     if (plan === "pass48h") {
       const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
       await admin.from("subscriptions").upsert(
@@ -76,8 +79,10 @@ export async function POST(req: NextRequest) {
         },
         { onConflict: "user_id" }
       );
-      // Créditer 4 crédits pour le pack "Coup de pouce"
       await addCredits(userId, 4, "purchase_pack");
+      if (customerEmail) {
+        sendPaymentConfirmationEmail(customerEmail, "pass48h").catch(console.error);
+      }
     }
 
     if (plan === "monthly") {
@@ -95,6 +100,9 @@ export async function POST(req: NextRequest) {
         },
         { onConflict: "user_id" }
       );
+      if (customerEmail) {
+        sendPaymentConfirmationEmail(customerEmail, "monthly", months).catch(console.error);
+      }
     }
   }
 

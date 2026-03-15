@@ -180,6 +180,55 @@ export async function sendRetentionEmailJ7(
   });
 }
 
+export async function sendPaymentConfirmationEmail(
+  email: string,
+  plan: "pass48h" | "monthly",
+  months?: number
+): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
+
+  const isPack = plan === "pass48h";
+  const planName = isPack ? "Coup de pouce" : `Recherche Active — ${months ?? 1} mois`;
+  const description = isPack
+    ? "4 crédits ont été ajoutés à votre compte. Utilisez-les pour analyser et optimiser vos CVs."
+    : `Vous avez un accès illimité pendant ${months ?? 1} mois. Analysez, optimisez et exportez sans limite.`;
+  const ctaText = isPack ? "Utiliser mes crédits →" : "Commencer à analyser →";
+
+  await sendEmail({
+    to: [{ email }],
+    subject: `Paiement confirmé — ${planName}`,
+    htmlContent: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#111827;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+          <span style="color:white;font-weight:bold;font-size:20px;">CVpass</span>
+        </div>
+        <div style="padding:28px 24px;color:#111827;">
+          <div style="text-align:center;margin-bottom:24px;">
+            <span style="font-size:40px;">✅</span>
+          </div>
+          <h2 style="text-align:center;margin:0 0 8px;">Paiement confirmé !</h2>
+          <p style="text-align:center;color:#6b7280;margin:0 0 24px;">Plan : <strong>${planName}</strong></p>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin:0 0 24px;">
+            <p style="margin:0;color:#166534;">${description}</p>
+          </div>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="${appUrl}/analyze"
+               style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+              ${ctaText}
+            </a>
+          </div>
+        </div>
+        <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
+          <p>L'équipe CVpass — VertexLab SASU</p>
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
+          <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a> &middot;
+          <a href="${appUrl}/conditions-generales" style="color:#6b7280;">CGV</a>
+        </div>
+      </div>
+    `,
+  });
+}
+
 export async function sendAnalysisEmail(
   email: string,
   firstName: string,
