@@ -16,43 +16,55 @@ function getPdfMake() {
   return pdfmake;
 }
 
-// Page width = A4 (595.28pt) - 40pt margins each side = 515.28pt
-const PAGE_INNER = 515;
-
-// ─── Section title: UPPERCASE green + thin gray line ─────────────────────────
+// ─── Section title: green underline under text only (matches editor) ─────────
 
 function sectionTitle(label: string): unknown[] {
   return [
     {
-      text: label.toUpperCase(),
-      font: "Helvetica",
-      fontSize: 11,
-      bold: true,
-      color: "#16a34a",
-      margin: [0, 14, 0, 3],
-    },
-    {
-      canvas: [
-        { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 0.5, lineColor: "#d1d5db" },
-      ],
-      margin: [0, 0, 0, 6],
+      // Single-cell table so the green border only spans the text width (inline-block effect)
+      table: {
+        body: [
+          [
+            {
+              text: label.toUpperCase(),
+              font: "Helvetica",
+              fontSize: 12,
+              bold: true,
+              color: "#16a34a",
+              characterSpacing: 2.4, // ~0.2em at 12px
+              border: [false, false, false, true],
+              borderColor: [null, null, null, "#16a34a"],
+              margin: [0, 0, 0, 4],
+            },
+          ],
+        ],
+      },
+      layout: {
+        hLineWidth: (_i: number, _node: unknown) => 2,
+        vLineWidth: () => 0,
+        hLineColor: () => "#16a34a",
+        paddingLeft: () => 0,
+        paddingRight: () => 0,
+        paddingTop: () => 0,
+        paddingBottom: () => 0,
+      },
+      margin: [0, 16, 0, 6],
     },
   ];
 }
 
-// ─── Dark header block (matches editor #111827 background) ───────────────────
+// ─── Dark header block (matches editor bg-[#111827] px-10 py-7) ─────────────
 
 function buildHeader(cv: CVData): unknown {
-  // Name text
   const nameText: unknown = {
     text: cv.nom || "CV",
     font: "Helvetica",
-    fontSize: 22,
+    fontSize: 24,
     bold: true,
     color: "#FFFFFF",
   };
 
-  // Contact line parts
+  // Contact parts — each separated by spaces
   const contactParts: string[] = [];
   if (cv.contact?.email) contactParts.push(cv.contact.email);
   if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
@@ -61,15 +73,14 @@ function buildHeader(cv: CVData): unknown {
 
   const contactText: unknown = contactParts.length > 0
     ? {
-        text: contactParts.join("  |  "),
+        text: contactParts.join("   |   "),
         font: "Helvetica",
-        fontSize: 10,
-        color: "#9CA3AF", // gray-400
-        margin: [0, 6, 0, 0],
+        fontSize: 12,
+        color: "#9CA3AF",
+        margin: [0, 8, 0, 0],
       }
     : null;
 
-  // Build header content — name + contact on left, photo on right (if exists)
   const leftStack: unknown[] = [nameText];
   if (contactText) leftStack.push(contactText);
 
@@ -81,17 +92,18 @@ function buildHeader(cv: CVData): unknown {
         { stack: leftStack, width: "*" },
         {
           image: cv.photo,
-          width: 70,
-          height: 70,
+          width: 72,
+          height: 72,
           alignment: "right" as const,
         },
       ],
+      columnGap: 16,
     };
   } else {
     headerBody = { stack: leftStack };
   }
 
-  // Wrap in a single-cell table for dark background (ATS-safe: single cell, linear text order)
+  // Full-bleed dark header using a single-cell table with fillColor
   return {
     table: {
       widths: ["*"],
@@ -100,7 +112,7 @@ function buildHeader(cv: CVData): unknown {
           {
             ...headerBody as Record<string, unknown>,
             fillColor: "#111827",
-            margin: [20, 16, 20, 16],
+            margin: [40, 28, 40, 28], // matches editor px-10 py-7
           },
         ],
       ],
@@ -113,7 +125,7 @@ function buildHeader(cv: CVData): unknown {
       paddingTop: () => 0,
       paddingBottom: () => 0,
     },
-    margin: [-40, -40, -40, 10] as [number, number, number, number],
+    margin: [-40, -40, -40, 12] as [number, number, number, number],
   };
 }
 
@@ -122,7 +134,7 @@ function buildHeader(cv: CVData): unknown {
 export function buildContent(cv: CVData): unknown[] {
   const content: unknown[] = [];
 
-  // ── Header (dark background, photo, contacts) ──
+  // ── Header ──
   content.push(buildHeader(cv));
 
   // ── Profil ──
@@ -131,25 +143,25 @@ export function buildContent(cv: CVData): unknown[] {
     content.push({
       text: cv.profil,
       font: "Helvetica",
-      fontSize: 10,
+      fontSize: 13,
       color: "#111827",
-      lineHeight: 1.5,
+      lineHeight: 1.7,
       margin: [0, 0, 0, 2],
     });
   }
 
   // ── Expériences professionnelles ──
   if (cv.experiences?.length > 0) {
-    content.push(...sectionTitle("Exp\u00e9riences professionnelles"));
+    content.push(...sectionTitle("Exp\u00e9rience professionnelle"));
     for (let i = 0; i < cv.experiences.length; i++) {
       const exp: Experience = cv.experiences[i];
-      // Poste (left) + Période (right)
+      // Poste (left) + Période (right, italic)
       content.push({
         columns: [
-          { text: exp.poste || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
-          { text: exp.periode || "", font: "Helvetica", fontSize: 10, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: exp.poste || "", font: "Helvetica", fontSize: 14, bold: true, color: "#111827", width: "*" },
+          { text: exp.periode || "", font: "Helvetica", fontSize: 12, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
         ],
-        margin: [0, i > 0 ? 8 : 4, 0, 1],
+        margin: [0, i > 0 ? 10 : 4, 0, 1],
       });
       // Entreprise — Lieu
       const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" \u2014 ");
@@ -157,20 +169,20 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: subline,
           font: "Helvetica",
-          fontSize: 10,
+          fontSize: 13,
           italics: true,
           color: "#6b7280",
-          margin: [0, 0, 0, 2],
+          margin: [0, 0, 0, 3],
         });
       }
-      // Missions
+      // Missions — green dot bullet like editor
       for (const mission of exp.missions ?? []) {
         content.push({
-          text: `\u2013 ${mission}`,
-          font: "Helvetica",
-          fontSize: 10,
-          color: "#111827",
-          margin: [8, 0, 0, 1],
+          columns: [
+            { text: "\u2022", font: "Helvetica", fontSize: 8, color: "#16a34a", width: 10, margin: [4, 3, 0, 0] },
+            { text: mission, font: "Helvetica", fontSize: 13, color: "#111827", lineHeight: 1.7, width: "*" },
+          ],
+          margin: [0, 0, 0, 1],
         });
       }
     }
@@ -183,16 +195,16 @@ export function buildContent(cv: CVData): unknown[] {
       const f: Formation = cv.formation[i];
       content.push({
         columns: [
-          { text: f.diplome || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
-          { text: f.periode || "", font: "Helvetica", fontSize: 10, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: f.diplome || "", font: "Helvetica", fontSize: 14, bold: true, color: "#111827", width: "*" },
+          { text: f.periode || "", font: "Helvetica", fontSize: 12, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
         ],
-        margin: [0, i > 0 ? 6 : 4, 0, 1],
+        margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
       if (f.etablissement) {
         content.push({
           text: f.etablissement,
           font: "Helvetica",
-          fontSize: 10,
+          fontSize: 13,
           italics: true,
           color: "#6b7280",
           margin: [0, 0, 0, 2],
@@ -207,7 +219,7 @@ export function buildContent(cv: CVData): unknown[] {
     content.push({
       text: cv.competences.join("  \u2022  "),
       font: "Helvetica",
-      fontSize: 10,
+      fontSize: 13,
       color: "#111827",
       margin: [0, 0, 0, 2],
     });
@@ -217,9 +229,9 @@ export function buildContent(cv: CVData): unknown[] {
   if (cv.centres_interet?.length > 0) {
     content.push(...sectionTitle("Centres d\u2019int\u00e9r\u00eat"));
     content.push({
-      text: cv.centres_interet.join("  \u2022  "),
+      text: cv.centres_interet.join("  \u00b7  "),
       font: "Helvetica",
-      fontSize: 10,
+      fontSize: 13,
       color: "#111827",
       margin: [0, 0, 0, 2],
     });
@@ -232,8 +244,9 @@ export function buildContent(cv: CVData): unknown[] {
       content.push({
         text: info,
         font: "Helvetica",
-        fontSize: 10,
+        fontSize: 13,
         color: "#111827",
+        lineHeight: 1.7,
         margin: [0, 1, 0, 1],
       });
     }
@@ -248,8 +261,8 @@ export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
   const pdfmake = getPdfMake();
   return pdfmake.createPdf({
     pageSize: "A4" as const,
-    pageMargins: [40, 40, 40, 50] as [number, number, number, number],
-    defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
+    pageMargins: [40, 40, 40, 40] as [number, number, number, number],
+    defaultStyle: { font: "Helvetica", fontSize: 13, lineHeight: 1.4 },
     info: {
       title: `${cv.nom || "CV"} \u2014 CV`,
       author: cv.nom || "CVpass",
@@ -258,14 +271,6 @@ export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
       creator: "CVpass",
     },
     content: buildContent(cv),
-    footer: (currentPage: number, pageCount: number) => ({
-      text: `Optimis\u00e9 par CVpass \u2022 cvpass.fr${pageCount > 1 ? `    \u2014    ${currentPage}/${pageCount}` : ""}`,
-      font: "Helvetica",
-      fontSize: 8,
-      color: "#d1d5db",
-      alignment: "center" as const,
-      margin: [0, 15, 0, 0],
-    }),
   }).getBuffer();
 }
 
@@ -300,7 +305,6 @@ export async function buildLetterPdfBuffer(
     letterContent.push({ text: `Objet : Candidature au poste de ${jobTitle}`, font: "Helvetica", fontSize: 11, bold: true, color: "#111827", margin: [0, 0, 0, 24] });
   }
 
-  // Strip trailing sender name to avoid duplicate signature
   const paragraphs = content.split("\n");
   if (senderName) {
     for (let i = paragraphs.length - 1; i >= 0; i--) {
