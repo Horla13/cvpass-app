@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { sendWelcomeEmail, sendRetentionEmailJ3, sendRetentionEmailJ7 } from "@/lib/brevo";
 import { captureServerEvent } from "@/lib/posthog-server";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,16 @@ export async function POST(req: NextRequest) {
     const email = event.data.email_addresses[0]?.email_address;
     const firstName = event.data.first_name ?? "là";
     if (email) {
+      // Enregistrer l'utilisateur dans Supabase
+      const admin = getSupabaseAdmin();
+      admin
+        .from("users")
+        .upsert(
+          { clerk_id: event.data.id, email, first_name: firstName === "là" ? null : firstName },
+          { onConflict: "clerk_id" }
+        )
+        .then(({ error }) => { if (error) console.error("Supabase users insert error:", error); });
+
       sendWelcomeEmail(email, firstName).catch(console.error);
       sendRetentionEmailJ3(email, firstName).catch(console.error);
       sendRetentionEmailJ7(email, firstName).catch(console.error);
