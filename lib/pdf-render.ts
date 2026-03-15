@@ -235,9 +235,10 @@ export function buildContent(cv: CVData): unknown[] {
 
 // ─── CV PDF buffer generation ────────────────────────────────────────────────
 
-export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
+export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boolean }): Promise<Buffer> {
   const pdfmake = getPdfMake();
-  return pdfmake.createPdf({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const docDef: any = {
     pageSize: "A4" as const,
     pageMargins: [40, 40, 40, 40] as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
@@ -249,7 +250,20 @@ export async function buildCvPdfBuffer(cv: CVData): Promise<Buffer> {
       creator: "CVpass",
     },
     content: buildContent(cv),
-  }).getBuffer();
+  };
+
+  if (options?.watermark) {
+    docDef.watermark = {
+      text: "CVpass.fr",
+      color: "#d1d5db",
+      opacity: 0.15,
+      bold: true,
+      fontSize: 60,
+      angle: -45,
+    };
+  }
+
+  return pdfmake.createPdf(docDef).getBuffer();
 }
 
 // ─── Cover letter PDF ────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { getUserCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { getUserCredits, hasUnlimitedAccess, canUsePremiumFeature, CREDIT_COSTS } from "@/lib/billing";
 
 export async function GET() {
   const { userId } = await auth();
@@ -10,14 +10,16 @@ export async function GET() {
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
 
-  const [credits, unlimited] = await Promise.all([
+  const [credits, unlimited, isPaid] = await Promise.all([
     getUserCredits(userId, email),
     hasUnlimitedAccess(userId, email),
+    canUsePremiumFeature(userId, email),
   ]);
 
   return NextResponse.json({
     credits,
     unlimited,
+    isPaid,
     costs: CREDIT_COSTS,
   });
 }

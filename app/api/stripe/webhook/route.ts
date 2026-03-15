@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         },
         { onConflict: "user_id" }
       );
-      await addCredits(userId, 4, "purchase_pack");
+      await addCredits(userId, 10, "purchase_pack");
       if (customerEmail) {
         sendPaymentConfirmationEmail(customerEmail, "pass48h").catch(console.error);
       }

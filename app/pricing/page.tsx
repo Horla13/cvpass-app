@@ -149,7 +149,7 @@ export default function PricingPage() {
             </div>
             <p className="text-[13px] text-gray-400 mb-6">paiement unique</p>
             <ul className="space-y-3 mb-7">
-              {["4 crédits", "Éditeur CV avec corrections IA", "Export PDF propre (sans filigrane)", "Crédits sans expiration"].map((f) => (
+              {["10 crédits", "Éditeur CV avec corrections IA", "Export PDF propre (sans filigrane)", "Crédits sans expiration"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -250,7 +250,7 @@ export default function PricingPage() {
                 {[
                   ["Prix", "0€", "2,90€", "8,90€/mois"],
                   ["Idéal pour", "Découvrir", "Postuler à une offre", "Recherche intensive"],
-                  ["Scans", "2 (à vie)", "4 crédits", "Illimité"],
+                  ["Scans", "2 (à vie)", "10 crédits", "Illimité"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
                     <td className="py-3.5 px-5 font-medium text-gray-800">{feature}</td>
@@ -314,7 +314,7 @@ export default function PricingPage() {
           </h2>
           <FAQAccordion items={[
             { question: "Comment fonctionnent les crédits ?", answer: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." },
-            { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 4 crédits utilisables quand vous voulez. Idéal pour 3-4 candidatures urgentes. Pas de renouvellement automatique, les crédits sont à vous." },
+            { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 10 crédits utilisables quand vous voulez, l'accès à l'éditeur IA pour accepter et modifier les suggestions, et l'export PDF sans filigrane. Idéal pour 5-10 candidatures. Pas de renouvellement automatique, les crédits sont à vous." },
             { question: "Comment fonctionne la réduction fidélité ?", answer: "Avec le plan Recherche Active, vous bénéficiez de -5% chaque mois. Mois 1 : 8,90€, Mois 2 : 8,46€... jusqu'à 6,88€ au mois 6+. La réduction est appliquée automatiquement." },
             { question: "Puis-je me faire rembourser ?", answer: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." },
             { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." },
