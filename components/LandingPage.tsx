@@ -44,34 +44,34 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#0f172a] text-brand-black dark:text-gray-100 overflow-x-hidden">
+    <div className="bg-white dark:bg-[#0f172a] text-brand-black dark:text-gray-100 dark:text-gray-100 overflow-x-hidden">
       {/* ── 1. NAV ── */}
       <nav className="sticky top-0 z-50 bg-white/[0.92] dark:bg-[#0f172a]/[0.92] backdrop-blur-[16px] border-b border-black/[0.04] dark:border-white/[0.06]">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between h-[60px] px-8">
           <div className="font-display text-[21px] font-extrabold tracking-[-0.8px]">
-            <span className="text-brand-black">CV</span>
+            <span className="text-brand-black dark:text-gray-100">CV</span>
             <span className="text-brand-green">pass</span>
           </div>
 
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-7">
-            <a href="#how" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Comment ça marche</a>
-            <a href="#features" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Fonctionnalités</a>
-            <Link href="/pricing" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Tarifs</Link>
-            <Link href="/blog" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Blog</Link>
+            <a href="#how" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Comment ça marche</a>
+            <a href="#features" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Fonctionnalités</a>
+            <Link href="/pricing" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Tarifs</Link>
+            <Link href="/blog" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Blog</Link>
             <ThemeToggle />
             <Show when="signed-out">
-              <Link href="/login" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Connexion</Link>
-              <Link href="/signup" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Analyser mon CV</Link>
+              <Link href="/login" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Connexion</Link>
+              <Link href="/signup" className="bg-brand-black dark:bg-white dark:text-brand-black dark:text-gray-100 text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/analyze" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
+              <Link href="/analyze" className="bg-brand-black dark:bg-white dark:text-brand-black dark:text-gray-100 text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
             </Show>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="sm:hidden p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"
+            className="sm:hidden p-2 rounded-md text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 hover:bg-gray-100 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -90,12 +90,12 @@ export function LandingPage() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#0f172a] px-8 py-4 space-y-3">
-            <a href="#how" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Comment ça marche</a>
-            <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Fonctionnalités</a>
-            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Tarifs</Link>
-            <Link href="/blog" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Blog</Link>
+            <a href="#how" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100">Comment ça marche</a>
+            <a href="#features" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100">Fonctionnalités</a>
+            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100">Tarifs</Link>
+            <Link href="/blog" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100">Blog</Link>
             <Show when="signed-out">
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray font-medium hover:text-brand-black">Connexion</Link>
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="block text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100">Connexion</Link>
               <Link href="/signup" onClick={() => setMobileOpen(false)} className="block w-full text-center bg-brand-black text-white py-2.5 rounded-lg text-[13px] font-display font-semibold mt-2">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
@@ -130,7 +130,7 @@ export function LandingPage() {
           </h1>
 
           {/* Subtitle */}
-          <p className="fade-up text-brand-gray text-lg leading-relaxed max-w-[580px] mx-auto mb-10">
+          <p className="fade-up text-brand-gray dark:text-gray-400 text-lg leading-relaxed max-w-[580px] mx-auto mb-10">
             Uploadez votre CV, obtenez un score ATS instant, des suggestions IA précises et un CV optimisé — prêt à télécharger.
           </p>
 
@@ -193,7 +193,7 @@ export function LandingPage() {
                 </button>
                 <Link
                   href="/analyze?step=resume-selection"
-                  className="inline-flex items-center gap-1.5 text-[14px] text-brand-gray hover:text-brand-black transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[14px] text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -211,28 +211,28 @@ export function LandingPage() {
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">{counterValue}</span>
               </div>
-              <div className="text-xs text-brand-gray mt-0.5">CVs analysés</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-0.5">CVs analysés</div>
             </div>
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">4.8/5</span>
               </div>
-              <div className="text-xs text-brand-gray mt-0.5">Note moyenne</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-0.5">Note moyenne</div>
             </div>
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">30s</span>
               </div>
-              <div className="text-xs text-brand-gray mt-0.5">Pour optimiser</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-0.5">Pour optimiser</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── 3. COMPATIBLE LOGOS ── */}
-      <section className="py-6 border-y border-gray-100">
+      <section className="py-6 border-y border-gray-100 dark:border-gray-800">
         <div className="max-w-[1100px] mx-auto px-8">
           <p className="text-center text-[11px] font-bold uppercase tracking-[1.5px] text-gray-400 mb-5">
             Collez une offre depuis vos sites préférés
@@ -271,7 +271,7 @@ export function LandingPage() {
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
               Comment optimiser ton CV ATS en <span className="text-brand-green">3 étapes</span>
             </h2>
-            <p className="text-brand-gray text-base max-w-[500px] mx-auto">
+            <p className="text-brand-gray dark:text-gray-400 text-base max-w-[500px] mx-auto">
               De l&apos;upload à l&apos;entretien, suivez le processus complet pour maximiser vos chances.
             </p>
           </div>
@@ -293,19 +293,19 @@ export function LandingPage() {
                   "Extraction intelligente du texte",
                 ],
                 mockup: (
-                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                  <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 space-y-4">
                       <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span className="text-[13px] text-brand-black font-medium">CV uploadé : MonCV.pdf</span>
+                        <span className="text-[13px] text-brand-black dark:text-gray-100 font-medium">CV uploadé : MonCV.pdf</span>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-[12px] font-display font-bold text-brand-black">Collez l&apos;offre d&apos;emploi</p>
+                        <p className="text-[12px] font-display font-bold text-brand-black dark:text-gray-100">Collez l&apos;offre d&apos;emploi</p>
                         <div className="bg-[#f8f9fa] border border-[#e5e7eb] rounded-lg p-3 h-20">
-                          <p className="text-[11px] text-brand-gray">Nous recherchons un chef de chantier VRD expérimenté pour piloter les travaux de voirie...</p>
+                          <p className="text-[11px] text-brand-gray dark:text-gray-400">Nous recherchons un chef de chantier VRD expérimenté pour piloter les travaux de voirie...</p>
                         </div>
                       </div>
                       <div className="bg-brand-black text-white text-center py-2.5 rounded-[10px] text-[13px] font-display font-bold">
@@ -326,8 +326,8 @@ export function LandingPage() {
                   "Comparaison avec les exigences du poste",
                 ],
                 mockup: (
-                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                  <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 flex items-center gap-6">
@@ -335,8 +335,8 @@ export function LandingPage() {
                         <ScoreGauge score={42} size={100} strokeWidth={6} animate={false} />
                       </div>
                       <div className="space-y-2 flex-1">
-                        <p className="text-[13px] font-display font-bold text-brand-black">Score ATS : 42/100</p>
-                        <p className="text-[11px] text-brand-gray leading-relaxed">Votre CV contient 35% des mots-clés du poste. Lacunes : titre imprécis, pas d&apos;accroche, compétences VRD absentes.</p>
+                        <p className="text-[13px] font-display font-bold text-brand-black dark:text-gray-100">Score ATS : 42/100</p>
+                        <p className="text-[11px] text-brand-gray dark:text-gray-400 leading-relaxed">Votre CV contient 35% des mots-clés du poste. Lacunes : titre imprécis, pas d&apos;accroche, compétences VRD absentes.</p>
                         <div className="flex gap-2 flex-wrap">
                           {["Titre", "Accroche", "Mots-clés VRD"].map((tag) => (
                             <span key={tag} className="text-[10px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">{tag}</span>
@@ -359,8 +359,8 @@ export function LandingPage() {
                   "Aucune invention — fidélité au parcours réel",
                 ],
                 mockup: (
-                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                  <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-5 space-y-3">
@@ -371,13 +371,13 @@ export function LandingPage() {
                         <div key={i} className="border border-[#e5e7eb] rounded-[10px] p-3 space-y-2">
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.color === "red" ? "bg-red-50 text-red-600 border border-red-200" : "bg-amber-50 text-amber-600 border border-amber-200"}`}>{s.label}</span>
-                            <span className="text-[11px] text-brand-gray">Expérience</span>
+                            <span className="text-[11px] text-brand-gray dark:text-gray-400">Expérience</span>
                           </div>
                           <p className="text-[12px] text-gray-400 line-through">{s.orig}</p>
-                          <p className="text-[12px] text-brand-black font-medium">{s.sugg}</p>
+                          <p className="text-[12px] text-brand-black dark:text-gray-100 font-medium">{s.sugg}</p>
                           <div className="flex gap-2">
                             <span className="text-[11px] font-display font-bold text-brand-green bg-green-50 border border-green-200 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-100 transition-colors">✓ Accepter</span>
-                            <span className="text-[11px] font-display font-bold text-brand-gray bg-gray-50 border border-gray-200 px-3 py-1 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">Ignorer</span>
+                            <span className="text-[11px] font-display font-bold text-brand-gray dark:text-gray-400 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 px-3 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Ignorer</span>
                           </div>
                         </div>
                       ))}
@@ -397,15 +397,15 @@ export function LandingPage() {
                   "Prêt à envoyer aux recruteurs",
                 ],
                 mockup: (
-                  <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb]">
+                  <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 text-center space-y-4">
                       <ScoreGauge score={87} size={90} strokeWidth={6} animate={false} />
                       <div>
-                        <p className="font-display text-[15px] font-bold text-brand-black">CV optimisé — prêt !</p>
-                        <p className="text-[11px] text-brand-gray mt-1">6/8 suggestions acceptées · Score : 42 → 87</p>
+                        <p className="font-display text-[15px] font-bold text-brand-black dark:text-gray-100">CV optimisé — prêt !</p>
+                        <p className="text-[11px] text-brand-gray dark:text-gray-400 mt-1">6/8 suggestions acceptées · Score : 42 → 87</p>
                       </div>
                       <div className="flex gap-2 justify-center">
                         <div className="flex items-center gap-1.5 bg-brand-green text-white px-4 py-2 rounded-[10px] text-[12px] font-display font-bold">
@@ -429,11 +429,11 @@ export function LandingPage() {
                 {/* Text side */}
                 <div className={`${i % 2 === 1 ? "lg:order-2" : ""}`}>
                   <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-2">{step.label}</p>
-                  <h3 className="font-display text-[22px] md:text-[26px] font-extrabold tracking-[-0.8px] text-brand-black mb-3 leading-tight">{step.title}</h3>
-                  <p className="text-[14px] text-brand-gray leading-relaxed mb-4">{step.desc}</p>
+                  <h3 className="font-display text-[22px] md:text-[26px] font-extrabold tracking-[-0.8px] text-brand-black dark:text-gray-100 mb-3 leading-tight">{step.title}</h3>
+                  <p className="text-[14px] text-brand-gray dark:text-gray-400 leading-relaxed mb-4">{step.desc}</p>
                   <ul className="space-y-2">
                     {step.details.map((d, j) => (
-                      <li key={j} className="flex items-start gap-2 text-[13px] text-brand-gray">
+                      <li key={j} className="flex items-start gap-2 text-[13px] text-brand-gray dark:text-gray-400">
                         <svg className="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                         {d}
                       </li>
@@ -459,7 +459,7 @@ export function LandingPage() {
               Transformez votre CV moyen en{" "}
               <span className="text-brand-green">aimant à entretiens</span>
             </h2>
-            <p className="text-brand-gray text-base max-w-[560px] mx-auto mt-4">
+            <p className="text-brand-gray dark:text-gray-400 text-base max-w-[560px] mx-auto mt-4">
               Découvrez comment CVpass transforme des bullet points faibles en phrases percutantes optimisées ATS
             </p>
           </div>
@@ -489,7 +489,7 @@ export function LandingPage() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 bg-white/70 border border-red-100 rounded-[10px] px-4 py-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-300 shrink-0"></span>
-                    <span className="flex-1 text-[13.5px] text-gray-600">{item.text}</span>
+                    <span className="flex-1 text-[13.5px] text-gray-600 dark:text-gray-300">{item.text}</span>
                     <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                       {item.badge}
@@ -538,7 +538,7 @@ export function LandingPage() {
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </span>
-                    <span className="flex-1 text-[13.5px] text-brand-black">
+                    <span className="flex-1 text-[13.5px] text-brand-black dark:text-gray-100">
                       {item.text},{" "}
                       <span className="font-semibold text-brand-green bg-green-100/60 px-1 py-0.5 rounded">{item.highlight}</span>
                     </span>
@@ -552,17 +552,17 @@ export function LandingPage() {
           <div className="fade-up flex items-center justify-center gap-10 mt-12">
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">+31 points</div>
-              <div className="text-xs text-brand-gray mt-1">en moyenne</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">en moyenne</div>
             </div>
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">3x</div>
-              <div className="text-xs text-brand-gray mt-1">plus d&apos;entretiens</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">plus d&apos;entretiens</div>
             </div>
             <div className="w-px h-8 bg-gray-200"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">30s</div>
-              <div className="text-xs text-brand-gray mt-1">pour optimiser</div>
+              <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">pour optimiser</div>
             </div>
           </div>
         </div>
@@ -576,17 +576,17 @@ export function LandingPage() {
               Pourquoi choisir CVpass plutôt qu&apos;un{" "}
               <span className="text-brand-green">scanner ATS classique</span> ?
             </h2>
-            <p className="text-brand-gray text-base max-w-[520px] mx-auto mt-4">
+            <p className="text-brand-gray dark:text-gray-400 text-base max-w-[520px] mx-auto mt-4">
               Comparez les fonctionnalités face aux alternatives du marché
             </p>
           </div>
 
           <div className="fade-up overflow-x-auto">
-            <table className="w-full border-collapse bg-white rounded-[14px] border border-[#e5e7eb] overflow-hidden text-left">
+            <table className="w-full border-collapse bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 overflow-hidden text-left">
               <thead>
-                <tr className="border-b border-[#e5e7eb]">
-                  <th className="px-6 py-4 text-[13px] font-bold text-brand-black w-[180px]">Fonctionnalité</th>
-                  <th className="px-6 py-4 bg-green-50/60 border-x border-green-100">
+                <tr className="border-b border-[#e5e7eb] dark:border-gray-700">
+                  <th className="px-6 py-4 text-[13px] font-bold text-brand-black dark:text-gray-100 w-[180px]">Fonctionnalité</th>
+                  <th className="px-6 py-4 bg-green-50/60 dark:bg-green-900/20 border-x border-green-100 dark:border-green-800/40">
                     <div className="flex items-center gap-2">
                       <span className="font-display text-[15px] font-bold text-brand-green">CVpass</span>
                       <span className="text-[10px] font-bold text-brand-green bg-green-100 px-2 py-0.5 rounded-full uppercase tracking-wide">Meilleur</span>
@@ -635,17 +635,17 @@ export function LandingPage() {
                     myperfect: "À partir de 24,95$/mois",
                   },
                 ].map((row, i) => (
-                  <tr key={i} className={i < 4 ? "border-b border-[#e5e7eb]" : ""}>
-                    <td className="px-6 py-5 font-display font-bold text-brand-black text-[13.5px]">{row.feature}</td>
-                    <td className="px-6 py-5 bg-green-50/40 border-x border-green-100">
+                  <tr key={i} className={i < 4 ? "border-b border-[#e5e7eb] dark:border-gray-700" : ""}>
+                    <td className="px-6 py-5 font-display font-bold text-brand-black dark:text-gray-100 text-[13.5px]">{row.feature}</td>
+                    <td className="px-6 py-5 bg-green-50/40 dark:bg-green-900/15 border-x border-green-100 dark:border-green-800/40">
                       <div className="flex items-start gap-2">
                         <svg className="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span className="text-brand-black font-medium">{row.cvpass}</span>
+                        <span className="text-brand-black dark:text-gray-100 font-medium">{row.cvpass}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-gray-500">{row.jobscan}</td>
-                    <td className="px-6 py-5 text-gray-500">{row.enhancv}</td>
-                    <td className="px-6 py-5 text-gray-500">{row.myperfect}</td>
+                    <td className="px-6 py-5 text-gray-500 dark:text-gray-400">{row.jobscan}</td>
+                    <td className="px-6 py-5 text-gray-500 dark:text-gray-400">{row.enhancv}</td>
+                    <td className="px-6 py-5 text-gray-500 dark:text-gray-400">{row.myperfect}</td>
                   </tr>
                 ))}
               </tbody>
@@ -661,7 +661,7 @@ export function LandingPage() {
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
               Analyse <span className="text-brand-green">360&deg;</span> : score ATS, mots-clés et compatibilité recruteur
             </h2>
-            <p className="text-brand-gray text-base mt-3 max-w-[580px] mx-auto">
+            <p className="text-brand-gray dark:text-gray-400 text-base mt-3 max-w-[580px] mx-auto">
               CVpass identifie chaque mot-clé manquant, corrige les blocages de parsing et quantifie votre impact avec son IA avancée.
             </p>
           </div>
@@ -728,22 +728,22 @@ export function LandingPage() {
                 ],
               },
             ].map((f, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+              <div key={i} className={`fade-up d${i + 1} bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
                     {f.icon}
                   </div>
                   <div>
-                    <h3 className="font-display text-[17px] font-bold text-brand-black">{f.title}</h3>
+                    <h3 className="font-display text-[17px] font-bold text-brand-black dark:text-gray-100">{f.title}</h3>
                     <p className="text-[13px] text-brand-green font-medium">{f.subtitle}</p>
                   </div>
                 </div>
-                <p className="text-[14px] text-brand-gray leading-relaxed mb-5">{f.desc}</p>
-                <div className="border-t border-gray-100 pt-4">
+                <p className="text-[14px] text-brand-gray dark:text-gray-400 leading-relaxed mb-5">{f.desc}</p>
+                <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
                   <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">Vérifications techniques</p>
                   <ul className="space-y-2.5">
                     {f.checks.map((check, ci) => (
-                      <li key={ci} className="flex items-start gap-2.5 text-[13px] text-gray-600">
+                      <li key={ci} className="flex items-start gap-2.5 text-[13px] text-gray-600 dark:text-gray-300">
                         <svg className="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg>
                         {check}
                       </li>
@@ -764,7 +764,7 @@ export function LandingPage() {
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
               La confiance des <span className="text-brand-green">chercheurs d&apos;emploi</span>
             </h2>
-            <p className="text-brand-gray text-base mt-3 max-w-[520px] mx-auto">
+            <p className="text-brand-gray dark:text-gray-400 text-base mt-3 max-w-[520px] mx-auto">
               Rejoignez ceux qui ont transformé leur recherche avec CVpass
             </p>
           </div>
@@ -774,14 +774,14 @@ export function LandingPage() {
               { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "Score : 38 → 92 · 3 entretiens", text: "Score passé de 38 à 92. Avant, zéro réponse en 2 mois. Après CVpass, 3 entretiens en 1 semaine. Les autres outils donnent une liste de problèmes sans solution — ici l'IA corrige elle-même." },
               { name: "Sophie C.", role: "Responsable Marketing Digital", initials: "SC", color: "from-amber-400 to-orange-500", result: "Score : 45 → 91 · Poste décroché", text: "De 45 à 91 en quelques clics. Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste. J'ai décroché le job en 2 semaines." },
             ].map((t, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+              <div key={i} className={`fade-up d${i + 1} bg-white dark:bg-[#1e293b] border border-[#e5e7eb] dark:border-gray-700 rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
                 {/* Avatar */}
                 <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${t.color} mx-auto mb-4 flex items-center justify-center text-white text-[18px] font-bold shadow-md`}>
                   {t.initials}
                 </div>
                 {/* Name & role */}
-                <div className="text-[15px] font-bold text-brand-black">{t.name}</div>
-                <div className="text-[13px] text-brand-gray mb-3">{t.role}</div>
+                <div className="text-[15px] font-bold text-brand-black dark:text-gray-100">{t.name}</div>
+                <div className="text-[13px] text-brand-gray dark:text-gray-400 mb-3">{t.role}</div>
                 {/* Verified badge */}
                 <div className="inline-flex items-center gap-1.5 border border-green-200 bg-green-50 rounded-full px-3 py-1 text-[12px] text-green-600 font-medium mb-3">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
@@ -797,7 +797,7 @@ export function LandingPage() {
                 {/* Stars */}
                 <div className="text-yellow-400 text-[16px] mb-4 tracking-wider">★★★★★</div>
                 {/* Quote */}
-                <p className="text-[13.5px] text-gray-500 leading-relaxed italic">
+                <p className="text-[13.5px] text-gray-500 dark:text-gray-400 leading-relaxed italic">
                   &ldquo;{t.text}&rdquo;
                 </p>
               </div>
@@ -834,8 +834,8 @@ export function LandingPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-50 text-brand-green mb-4">
                   {tip.icon}
                 </div>
-                <h3 className="font-display text-[15px] font-bold text-brand-black mb-2">{tip.title}</h3>
-                <p className="text-[13px] text-brand-gray leading-relaxed max-w-[300px] mx-auto">{tip.desc}</p>
+                <h3 className="font-display text-[15px] font-bold text-brand-black dark:text-gray-100 mb-2">{tip.title}</h3>
+                <p className="text-[13px] text-brand-gray dark:text-gray-400 leading-relaxed max-w-[300px] mx-auto">{tip.desc}</p>
               </div>
             ))}
           </div>
@@ -850,20 +850,20 @@ export function LandingPage() {
               Pourquoi nous avons créé <span className="text-brand-green">CVpass</span>
             </h2>
           </div>
-          <div className="fade-up space-y-5 text-[15px] text-gray-600 leading-relaxed">
+          <div className="fade-up space-y-5 text-[15px] text-gray-600 dark:text-gray-300 leading-relaxed">
             <p>
               Tout a commencé par un constat frustrant : des candidats qualifiés qui n&apos;obtenaient aucune réponse. Pas parce qu&apos;ils manquaient de compétences, mais parce que leur CV était rejeté par des machines avant même d&apos;être lu par un humain.
             </p>
             <p>
-              En France, <strong className="text-brand-black">plus de 75% des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
+              En France, <strong className="text-brand-black dark:text-gray-100">plus de 75% des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
             </p>
             <p>
-              Les outils existants ? Ils donnent un score et une liste de problèmes — puis vous laissent vous débrouiller. Nous voulions aller plus loin : <strong className="text-brand-black">un outil qui ne se contente pas de diagnostiquer, mais qui corrige.</strong>
+              Les outils existants ? Ils donnent un score et une liste de problèmes — puis vous laissent vous débrouiller. Nous voulions aller plus loin : <strong className="text-brand-black dark:text-gray-100">un outil qui ne se contente pas de diagnostiquer, mais qui corrige.</strong>
             </p>
             <p>
               CVpass analyse ton CV, identifie chaque point faible et propose une réécriture IA intégrant les mots-clés de l&apos;offre que tu vises. Tu acceptes ou tu ignores. Le score remonte en temps réel. Tu télécharges un PDF propre, optimisé, prêt à postuler.
             </p>
-            <p className="text-brand-black font-semibold">
+            <p className="text-brand-black dark:text-gray-100 font-semibold">
               Notre mission : que le meilleur candidat obtienne l&apos;entretien — pas le mieux formaté.
             </p>
           </div>
@@ -930,21 +930,21 @@ export function LandingPage() {
       {/* ── 12. BLOG LINKS ── */}
       <section className="bg-white dark:bg-[#0f172a] py-16 px-8 border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-[1100px] mx-auto">
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-8">
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 text-center mb-8">
             Guides pour améliorer ton CV ATS
           </h2>
           <div className="grid md:grid-cols-3 gap-6 text-center">
             <Link href="/blog/score-ats-cv" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">Score ATS : comment le calculer et l&apos;améliorer</h3>
-              <p className="text-[13px] text-gray-500">Guide complet 2026</p>
+              <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">Score ATS : comment le calculer et l&apos;améliorer</h3>
+              <p className="text-[13px] text-gray-500 dark:text-gray-400">Guide complet 2026</p>
             </Link>
             <Link href="/blog/cv-canva-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">CV Canva et ATS : le problème et la solution</h3>
-              <p className="text-[13px] text-gray-500">Pourquoi ton CV est invisible</p>
+              <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">CV Canva et ATS : le problème et la solution</h3>
+              <p className="text-[13px] text-gray-500 dark:text-gray-400">Pourquoi ton CV est invisible</p>
             </Link>
             <Link href="/blog/erreurs-cv-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">10 erreurs CV qui font planter les ATS</h3>
-              <p className="text-[13px] text-gray-500">Et comment les corriger</p>
+              <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">10 erreurs CV qui font planter les ATS</h3>
+              <p className="text-[13px] text-gray-500 dark:text-gray-400">Et comment les corriger</p>
             </Link>
           </div>
         </div>
@@ -955,18 +955,18 @@ export function LandingPage() {
         <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="font-display text-[16px] font-extrabold tracking-[-0.5px]">
-              <span className="text-brand-black">CV</span>
+              <span className="text-brand-black dark:text-gray-100">CV</span>
               <span className="text-brand-green">pass</span>
             </span>
             <span className="text-[13px] text-gray-400 ml-2">© 2026 VertexLab SASU. Tous droits réservés.</span>
           </div>
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
-            <Link href="/blog" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Blog</Link>
-            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Mentions légales</Link>
-            <Link href="/politique-confidentialite" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Confidentialité</Link>
-            <Link href="/conditions-generales" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">CGU/CGV</Link>
-            <Link href="/politique-cookies" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Cookies</Link>
-            <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-brand-black transition-colors">Contact</a>
+            <Link href="/blog" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">Blog</Link>
+            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">Mentions légales</Link>
+            <Link href="/politique-confidentialite" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">Confidentialité</Link>
+            <Link href="/conditions-generales" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">CGU/CGV</Link>
+            <Link href="/politique-cookies" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">Cookies</Link>
+            <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
