@@ -6,6 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -89,6 +90,7 @@ export function AppHeader() {
             )}
           </button>
 
+          <ThemeToggle />
           <UserButton />
         </div>
       </div>
