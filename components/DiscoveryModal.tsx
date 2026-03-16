@@ -33,38 +33,35 @@ export function DiscoveryModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center pointer-events-none">
-      <div
-        className="pointer-events-auto w-full max-w-[420px] mx-4 mb-4 sm:mb-0 bg-[#1e293b] rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed bottom-4 right-4 z-[60] pointer-events-auto max-w-[340px] w-full">
+      <div className="relative bg-[#1e293b] rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-200 hover:bg-gray-700 transition-colors z-10"
+          className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-200 hover:bg-gray-700 transition-colors z-10"
         >
           ×
         </button>
 
-        <div className="px-6 pt-6 pb-2">
-          <p className="text-[11px] font-bold text-green-400 uppercase tracking-widest mb-1">Question rapide</p>
-          <p className="text-[15px] font-semibold text-white">Comment avez-vous découvert CVpass ?</p>
+        <div className="px-4 pt-4 pb-1.5">
+          <p className="text-[10px] font-bold text-green-400 uppercase tracking-widest mb-0.5">Question rapide</p>
+          <p className="text-[13px] font-semibold text-white pr-6">Comment avez-vous découvert CVpass ?</p>
         </div>
 
-        <div className="px-4 pb-5 grid grid-cols-3 gap-2">
+        <div className="px-3 pb-3 flex flex-wrap gap-1.5">
           {SOURCES.map((s) => (
             <button
               key={s.id}
               onClick={() => handleSelect(s.id)}
               disabled={!!selected}
-              className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-[12px] font-medium transition-all border ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-all border ${
                 selected === s.id
                   ? "bg-green-500/20 border-green-500 text-green-400"
                   : "bg-[#0f172a] border-gray-700 text-gray-300 hover:border-gray-500 hover:bg-[#1a2744]"
               } disabled:cursor-default`}
             >
-              <span className="text-[14px] flex-shrink-0">{s.icon}</span>
-              <span className="truncate">{s.label}</span>
+              <span className="text-[12px] flex-shrink-0">{s.icon}</span>
+              <span>{s.label}</span>
             </button>
           ))}
         </div>
@@ -80,7 +77,7 @@ export function useDiscoveryModal() {
     if (typeof window !== "undefined" && !sessionStorage.getItem(SESSION_KEY)) {
       sessionStorage.setItem(SESSION_KEY, "1");
       // Show after a short delay to not be intrusive
-      setTimeout(() => setShow(true), 2000);
+      setTimeout(() => setShow(true), 4000);
       return true;
     }
     return false;
