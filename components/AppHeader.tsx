@@ -64,10 +64,10 @@ export function AppHeader() {
           {credits !== null && (
             <Link
               href="/pricing"
-              className="hidden sm:flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
             >
               <span className="text-amber-500">&#9889;</span>
-              <span className="font-semibold text-amber-700">{credits}</span>
+              <span className="font-semibold text-amber-700 dark:text-amber-400">{credits}</span>
             </Link>
           )}
           {/* Mobile hamburger */}
@@ -108,7 +108,7 @@ export function AppHeader() {
                 className={cn(
                   "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                   active
-                    ? "text-[#16a34a] bg-green-50"
+                    ? "text-[#16a34a] bg-green-50 dark:bg-green-900/30"
                     : "text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
                 )}
               >

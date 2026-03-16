@@ -5,7 +5,7 @@ import { getOpenAI } from "@/lib/openai";
 import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { restructureWithGPT } from "@/lib/pdf-restructure";
-import { sendAnalysisEmail } from "@/lib/brevo";
+
 
 export const maxDuration = 60;
 
@@ -339,7 +339,8 @@ export async function POST(req: NextRequest) {
           { role: "system", content: systemPrompt },
           { role: "user", content: userMessage },
         ],
-        temperature: 0.2,
+        temperature: 0,
+        seed: 42,
         max_tokens: analysisType === "jd" ? 6000 : 4500,
         response_format: { type: "json_object" },
       }),
@@ -363,12 +364,6 @@ export async function POST(req: NextRequest) {
     }
 
     const jobTitle = typeof analysis.job_title === "string" ? analysis.job_title : "";
-
-    // Send recap email (non-blocking)
-    if (email) {
-      const firstName = user.firstName ?? "there";
-      sendAnalysisEmail(email, firstName, analysis.score_avant, analysis.score_avant, jobTitle).catch(() => {});
-    }
 
     return NextResponse.json({ ...analysis, job_title: jobTitle, cv_json: cvJson });
   } catch (e: unknown) {

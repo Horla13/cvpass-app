@@ -47,11 +47,19 @@ function CategoryRow({ label, score }: { label: string; score: number }) {
   const { text } = getScoreLabel(score);
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-[13px] text-gray-700 dark:text-gray-100 flex-shrink-0 min-w-[140px]">{label}</span>
-      <span className={cn("text-[11px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap",
+      <span className="text-[13px] text-gray-700 dark:text-gray-100 flex-shrink-0 min-w-[120px]">{label}</span>
+      <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-2 mx-2">
+        <div
+          className={cn("h-2 rounded-full transition-all duration-500",
+            score >= 80 ? "bg-green-500" : score >= 60 ? "bg-amber-500" : "bg-red-500"
+          )}
+          style={{ width: `${score}%` }}
+        />
+      </div>
+      <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap",
         score >= 80 ? "bg-green-50 dark:bg-green-900/30 text-green-600 border-green-200" :
-        score >= 60 ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 border-blue-200" :
-        "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200"
+        score >= 60 ? "bg-amber-50 dark:bg-amber-900/30 text-amber-600 border-amber-200" :
+        "bg-red-50 dark:bg-red-900/30 text-red-500 border-red-200"
       )}>{text}</span>
       <span className="text-[13px] font-bold text-gray-700 dark:text-gray-100 w-[36px] text-right">{score}%</span>
     </div>
@@ -1506,7 +1514,7 @@ export default function ResultsPage() {
           {activeTab === "report" && (
             <div className="grid lg:grid-cols-12 gap-6">
               {/* SIDEBAR — 4 cols */}
-              <aside className="lg:col-span-4 space-y-5">
+              <aside className="lg:col-span-4 space-y-5 lg:sticky lg:top-6 lg:self-start">
                 {/* Score Card */}
                 <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
                   <div className="flex justify-center mb-4">

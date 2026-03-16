@@ -55,23 +55,23 @@ export function LandingPage() {
 
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-7">
-            <a href="#how" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Comment ça marche</a>
-            <a href="#features" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Fonctionnalités</a>
-            <Link href="/pricing" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Tarifs</Link>
-            <Link href="/blog" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Blog</Link>
+            <a href="#how" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Comment ça marche</a>
+            <a href="#features" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Fonctionnalités</a>
+            <Link href="/pricing" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Tarifs</Link>
+            <Link href="/blog" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Blog</Link>
             <ThemeToggle />
             <Show when="signed-out">
-              <Link href="/login" className="text-sm text-brand-gray dark:text-gray-400 dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white dark:text-gray-100 dark:hover:text-white transition-colors">Connexion</Link>
-              <Link href="/signup" className="bg-brand-black dark:bg-white dark:text-brand-black dark:text-gray-100 text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Analyser mon CV</Link>
+              <Link href="/login" className="text-sm text-brand-gray dark:text-gray-400 font-medium hover:text-brand-black dark:hover:text-white transition-colors">Connexion</Link>
+              <Link href="/signup" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Analyser mon CV</Link>
             </Show>
             <Show when="signed-in">
-              <Link href="/analyze" className="bg-brand-black dark:bg-white dark:text-brand-black dark:text-gray-100 text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
+              <Link href="/analyze" className="bg-brand-black dark:bg-white dark:text-brand-black text-white px-[18px] py-2 rounded-lg text-[13px] font-display font-semibold hover:bg-black dark:hover:bg-gray-200 hover:-translate-y-px transition-all">Mon espace &rarr;</Link>
             </Show>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="sm:hidden p-2 rounded-md text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-white dark:text-gray-100 hover:bg-gray-100 transition-colors"
+            className="sm:hidden p-2 rounded-md text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -213,14 +213,14 @@ export function LandingPage() {
               </div>
               <div className="text-xs text-brand-gray dark:text-gray-400 mt-0.5">CVs analysés</div>
             </div>
-            <div className="w-px h-8 bg-gray-200"></div>
+            <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">4.8/5</span>
               </div>
               <div className="text-xs text-brand-gray dark:text-gray-400 mt-0.5">Note moyenne</div>
             </div>
-            <div className="w-px h-8 bg-gray-200"></div>
+            <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">30s</span>
@@ -294,17 +294,17 @@ export function LandingPage() {
                 ],
                 mockup: (
                   <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] dark:bg-[#0f172a] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 space-y-4">
-                      <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5">
+                      <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg px-4 py-2.5">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                         <span className="text-[13px] text-brand-black dark:text-gray-100 font-medium">CV uploadé : MonCV.pdf</span>
                       </div>
                       <div className="space-y-2">
                         <p className="text-[12px] font-display font-bold text-brand-black dark:text-gray-100">Collez l&apos;offre d&apos;emploi</p>
-                        <div className="bg-[#f8f9fa] border border-[#e5e7eb] rounded-lg p-3 h-20">
+                        <div className="bg-[#f8f9fa] dark:bg-[#0f172a] border border-[#e5e7eb] dark:border-gray-700 rounded-lg p-3 h-20">
                           <p className="text-[11px] text-brand-gray dark:text-gray-400">Nous recherchons un chef de chantier VRD expérimenté pour piloter les travaux de voirie...</p>
                         </div>
                       </div>
@@ -327,7 +327,7 @@ export function LandingPage() {
                 ],
                 mockup: (
                   <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] dark:bg-[#0f172a] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 flex items-center gap-6">
@@ -360,7 +360,7 @@ export function LandingPage() {
                 ],
                 mockup: (
                   <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] dark:bg-[#0f172a] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-5 space-y-3">
@@ -398,7 +398,7 @@ export function LandingPage() {
                 ],
                 mockup: (
                   <div className="bg-white dark:bg-[#1e293b] rounded-[14px] border border-[#e5e7eb] dark:border-gray-700 shadow-lg overflow-hidden">
-                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] border-b border-[#e5e7eb] dark:border-gray-700">
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f8f9fa] dark:bg-[#0f172a] border-b border-[#e5e7eb] dark:border-gray-700">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" /><span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" /><span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                     </div>
                     <div className="p-6 text-center space-y-4">
@@ -466,7 +466,7 @@ export function LandingPage() {
 
           <div className="fade-up grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-0 lg:gap-0 items-stretch max-w-[960px] mx-auto">
             {/* BEFORE card */}
-            <div className="rounded-t-[14px] lg:rounded-l-[14px] lg:rounded-tr-none border border-red-200 bg-gradient-to-b from-red-50/80 to-red-50/30 overflow-hidden">
+            <div className="rounded-t-[14px] lg:rounded-l-[14px] lg:rounded-tr-none border border-red-200 dark:border-red-900/50 bg-gradient-to-b from-red-50/80 to-red-50/30 dark:from-red-950/40 dark:to-[#1e293b] overflow-hidden">
               {/* Header */}
               <div className="flex items-center justify-between px-6 pt-6 pb-4">
                 <div className="flex items-center gap-2">
@@ -487,10 +487,10 @@ export function LandingPage() {
                   { text: "Traitement des plaintes clients", badge: "Passif", color: "red" },
                   { text: "Travaillé sur divers projets", badge: "Trop générique", color: "red" },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 bg-white/70 border border-red-100 rounded-[10px] px-4 py-3">
+                  <div key={i} className="flex items-center gap-3 bg-white/70 dark:bg-slate-800/70 border border-red-100 dark:border-red-900/40 rounded-[10px] px-4 py-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-300 shrink-0"></span>
                     <span className="flex-1 text-[13.5px] text-gray-600 dark:text-gray-300">{item.text}</span>
-                    <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                    <span className="shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-red-500 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 px-2 py-0.5 rounded-full">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                       {item.badge}
                     </span>
@@ -513,7 +513,7 @@ export function LandingPage() {
             </div>
 
             {/* AFTER card */}
-            <div className="rounded-b-[14px] lg:rounded-r-[14px] lg:rounded-bl-none border border-green-200 bg-gradient-to-b from-green-50/40 to-white overflow-hidden">
+            <div className="rounded-b-[14px] lg:rounded-r-[14px] lg:rounded-bl-none border border-green-200 dark:border-green-900/50 bg-gradient-to-b from-green-50/40 to-white dark:from-green-950/30 dark:to-[#1e293b] overflow-hidden">
               {/* Header */}
               <div className="flex items-center justify-between px-6 pt-6 pb-4">
                 <div className="flex items-center gap-2">
@@ -534,13 +534,13 @@ export function LandingPage() {
                   { text: "Gestion des réclamations clients", highlight: "98% de satisfaction" },
                   { text: "Coordination de 3 projets logiciels majeurs", highlight: "livrés en avance" },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 bg-green-50/50 border border-green-100 rounded-[10px] px-4 py-3">
+                  <div key={i} className="flex items-start gap-3 bg-green-50/50 dark:bg-green-950/30 border border-green-100 dark:border-green-900/40 rounded-[10px] px-4 py-3">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </span>
                     <span className="flex-1 text-[13.5px] text-brand-black dark:text-gray-100">
                       {item.text},{" "}
-                      <span className="font-semibold text-brand-green bg-green-100/60 px-1 py-0.5 rounded">{item.highlight}</span>
+                      <span className="font-semibold text-brand-green bg-green-100/60 dark:bg-green-900/40 px-1 py-0.5 rounded">{item.highlight}</span>
                     </span>
                   </div>
                 ))}
@@ -554,12 +554,12 @@ export function LandingPage() {
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">+31 points</div>
               <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">en moyenne</div>
             </div>
-            <div className="w-px h-8 bg-gray-200"></div>
+            <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">3x</div>
               <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">plus d&apos;entretiens</div>
             </div>
-            <div className="w-px h-8 bg-gray-200"></div>
+            <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px] text-brand-green">30s</div>
               <div className="text-xs text-brand-gray dark:text-gray-400 mt-1">pour optimiser</div>
@@ -934,15 +934,15 @@ export function LandingPage() {
             Guides pour améliorer ton CV ATS
           </h2>
           <div className="grid md:grid-cols-3 gap-6 text-center">
-            <Link href="/blog/score-ats-cv" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+            <Link href="/blog/score-ats-cv" className="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-800 hover:shadow-sm transition-all">
               <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">Score ATS : comment le calculer et l&apos;améliorer</h3>
               <p className="text-[13px] text-gray-500 dark:text-gray-400">Guide complet 2026</p>
             </Link>
-            <Link href="/blog/cv-canva-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+            <Link href="/blog/cv-canva-ats" className="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-800 hover:shadow-sm transition-all">
               <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">CV Canva et ATS : le problème et la solution</h3>
               <p className="text-[13px] text-gray-500 dark:text-gray-400">Pourquoi ton CV est invisible</p>
             </Link>
-            <Link href="/blog/erreurs-cv-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+            <Link href="/blog/erreurs-cv-ats" className="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-800 hover:shadow-sm transition-all">
               <h3 className="font-display text-[15px] font-bold text-gray-900 dark:text-gray-100 group-hover:text-green-600 transition-colors mb-2">10 erreurs CV qui font planter les ATS</h3>
               <p className="text-[13px] text-gray-500 dark:text-gray-400">Et comment les corriger</p>
             </Link>

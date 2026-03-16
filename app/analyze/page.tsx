@@ -11,6 +11,7 @@ import StepAnalysisType from "@/components/StepAnalysisType";
 import StepJobDescription from "@/components/StepJobDescription";
 import AnalyzingModal from "@/components/AnalyzingModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
+import { DiscoveryModal, useDiscoveryModal } from "@/components/DiscoveryModal";
 
 type Step = "upload" | "type" | "jd" | "analyzing";
 
@@ -43,6 +44,9 @@ function AnalyzePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedFilename, setSelectedFilename] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Discovery modal
+  const discovery = useDiscoveryModal();
 
   // Credits
   const [credits, setCredits] = useState(0);
@@ -111,6 +115,7 @@ function AnalyzePage() {
 
     setIsAnalyzing(true);
     setStep("analyzing");
+    discovery.trigger();
 
     try {
       const res = await fetch("/api/analyze", {
@@ -249,6 +254,9 @@ function AnalyzePage() {
         {step === "analyzing" && isAnalyzing && (
           <AnalyzingModal type={analysisType} />
         )}
+
+        {/* Discovery modal */}
+        {discovery.show && <DiscoveryModal onClose={discovery.close} />}
 
         {/* Insufficient credits modal */}
         {showCreditsModal && (
