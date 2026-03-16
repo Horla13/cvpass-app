@@ -123,7 +123,14 @@ export const useStore = create<CVPassStore>((set, get) => ({
       resume: analysis.resume,
       jobTitle: analysis.job_title ?? "",
       jdMatch: analysis.jd_match ?? null,
-      cvJson: analysis.cv_json ?? null,
+      cvJson: analysis.cv_json ? {
+        ...analysis.cv_json,
+        experiences: Array.isArray(analysis.cv_json.experiences) ? analysis.cv_json.experiences : [],
+        formation: Array.isArray(analysis.cv_json.formation) ? analysis.cv_json.formation : [],
+        competences: Array.isArray(analysis.cv_json.competences) ? analysis.cv_json.competences : [],
+        centres_interet: Array.isArray(analysis.cv_json.centres_interet) ? analysis.cv_json.centres_interet : [],
+        informations: Array.isArray(analysis.cv_json.informations) ? analysis.cv_json.informations : [],
+      } : null,
     });
   },
 

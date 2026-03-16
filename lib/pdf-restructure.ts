@@ -133,5 +133,17 @@ export async function restructureWithGPT(cvText: string, acceptedGaps: Gap[]): P
   });
 
   const raw = response.choices[0]?.message?.content ?? "{}";
-  return JSON.parse(raw) as CVData;
+  const parsed = JSON.parse(raw);
+  return {
+    nom: parsed.nom ?? "",
+    titre: parsed.titre,
+    contact: parsed.contact,
+    profil: parsed.profil,
+    photo: parsed.photo,
+    experiences: Array.isArray(parsed.experiences) ? parsed.experiences : [],
+    formation: Array.isArray(parsed.formation) ? parsed.formation : [],
+    competences: Array.isArray(parsed.competences) ? parsed.competences : [],
+    centres_interet: Array.isArray(parsed.centres_interet) ? parsed.centres_interet : [],
+    informations: Array.isArray(parsed.informations) ? parsed.informations : [],
+  } as CVData;
 }
