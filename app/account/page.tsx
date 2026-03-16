@@ -32,6 +32,56 @@ function formatDate(iso: string): string {
   });
 }
 
+function ReferralCard() {
+  const [referral, setReferral] = useState<{ code: string; referral_count: number; credits_earned: number } | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/referral").then((r) => r.ok ? r.json() : null).then(setReferral).catch(() => {});
+  }, []);
+
+  if (!referral) return null;
+
+  const shareUrl = `https://cvpass.fr/signup?ref=${referral.code}`;
+
+  const copy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-800 p-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h3 className="text-[16px] font-bold text-gray-900 dark:text-gray-100">Parrainez, gagnez des crédits</h3>
+          <p className="text-[13px] text-gray-600 dark:text-gray-400 mt-1">
+            Invitez un ami et recevez <strong className="text-green-600">2 crédits</strong> par parrainage. Votre filleul reçoit <strong className="text-green-600">1 crédit</strong> bonus.
+          </p>
+        </div>
+        <div className="text-right flex-shrink-0 ml-4">
+          <p className="text-[24px] font-bold text-green-600 font-display">{referral.referral_count}</p>
+          <p className="text-[11px] text-gray-500 dark:text-gray-400">parrainage{referral.referral_count !== 1 ? "s" : ""}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 bg-white dark:bg-[#1e293b] rounded-xl p-3 flex items-center gap-3">
+        <code className="flex-1 text-[13px] text-gray-700 dark:text-gray-300 truncate">{shareUrl}</code>
+        <button
+          onClick={copy}
+          className="flex-shrink-0 px-4 py-2 bg-green-500 text-white text-[12px] font-semibold rounded-lg hover:bg-green-600 transition-colors"
+        >
+          {copied ? "Copié !" : "Copier"}
+        </button>
+      </div>
+
+      <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">
+        {referral.credits_earned} crédit{referral.credits_earned !== 1 ? "s" : ""} gagnés · Max 10 parrainages (20 crédits)
+      </p>
+    </div>
+  );
+}
+
 function reasonLabel(reason: string): string {
   const map: Record<string, string> = {
     initial_signup: "Inscription",
@@ -40,6 +90,8 @@ function reasonLabel(reason: string): string {
     pdf_export: "Export PDF",
     purchase_pack: "Achat pack",
     monthly_subscription: "Abonnement mensuel",
+    referral_bonus: "Bonus parrainage",
+    referral_welcome: "Bonus filleul",
   };
   return map[reason] ?? reason;
 }
@@ -185,6 +237,9 @@ export default function AccountPage() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Referral Program */}
+                  <ReferralCard />
 
                   {/* Recent transactions */}
                   {transactions.length > 0 && (
