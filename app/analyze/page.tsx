@@ -13,7 +13,7 @@ import AnalyzingModal from "@/components/AnalyzingModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
 import { DiscoveryModal, useDiscoveryModal } from "@/components/DiscoveryModal";
 
-type Step = "upload" | "type" | "jd" | "analyzing";
+type Step = "upload" | "type" | "jd" | "jd-letter" | "analyzing";
 
 export default function AnalyzePageWrapper() {
   return (
@@ -89,7 +89,11 @@ function AnalyzePage() {
   }, [setCvText, posthog]);
 
   // Choose analysis type
-  const handleChooseType = (type: "ats" | "jd") => {
+  const handleChooseType = (type: "ats" | "jd" | "letter") => {
+    if (type === "letter") {
+      setStep("jd-letter");
+      return;
+    }
     setAnalysisType(type);
     setStoreAnalysisType(type);
     if (type === "jd") {
@@ -103,6 +107,12 @@ function AnalyzePage() {
   const handleSubmitJD = (jobOffer: string) => {
     setJobOffer(jobOffer);
     runAnalysis(jobOffer, "jd");
+  };
+
+  // Submit JD for cover letter generation
+  const handleSubmitJDForLetter = (jobOffer: string) => {
+    setJobOffer(jobOffer);
+    router.push("/cover-letter");
   };
 
   // Run the analysis
@@ -246,6 +256,18 @@ function AnalyzePage() {
               onSubmit={handleSubmitJD}
               onBack={() => setStep("type")}
               isAnalyzing={isAnalyzing}
+            />
+          )}
+
+          {/* Step: Job Description for Cover Letter */}
+          {step === "jd-letter" && (
+            <StepJobDescription
+              onSubmit={handleSubmitJDForLetter}
+              onBack={() => setStep("type")}
+              isAnalyzing={false}
+              title="Collez l&apos;offre d&apos;emploi"
+              subtitle="Votre lettre de motivation sera personnalisée en fonction de cette offre."
+              buttonLabel="Générer la lettre de motivation"
             />
           )}
         </main>

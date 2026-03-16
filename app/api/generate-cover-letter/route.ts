@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
-import { canUsePremiumFeature } from "@/lib/billing";
+import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
@@ -44,16 +44,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Vérifier accès premium (early access, pass48h valide, ou abonnement mensuel)
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
-  const allowed = await canUsePremiumFeature(userId, email);
-  if (!allowed) {
-    return NextResponse.json(
-      { error: "PREMIUM_REQUIRED", message: "Générez votre lettre de motivation avec un pass CVpass." },
-      { status: 403 }
-    );
+
+  // Vérifier crédits ou accès illimité
+  const unlimited = await hasUnlimitedAccess(userId, email);
+  if (!unlimited) {
+    const deduction = await deductCredits(userId, CREDIT_COSTS.cover_letter, "cover_letter");
+    if (!deduction.success) {
+      return NextResponse.json(
+        { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: CREDIT_COSTS.cover_letter },
+        { status: 402 }
+      );
+    }
   }
 
   let body: { cvText?: string; jobOffer?: string };

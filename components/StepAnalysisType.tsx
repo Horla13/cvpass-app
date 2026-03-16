@@ -4,7 +4,7 @@ interface Props {
   credits: number;
   unlimited: boolean;
   filename: string;
-  onChoose: (type: "ats" | "jd") => void;
+  onChoose: (type: "ats" | "jd" | "letter") => void;
   onBack: () => void;
 }
 
@@ -38,12 +38,12 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
           <span className="text-amber-500">&#9889;</span>
           <span className="font-semibold dark:text-gray-100">{unlimited ? "Illimité" : `${credits} crédits`}</span>
           <span className="text-brand-gray dark:text-gray-400">|</span>
-          <span className="text-brand-gray dark:text-gray-400 text-[13px]">ATS : 1 crédit &middot; JD : 2 crédits &middot; PDF : 1 crédit</span>
+          <span className="text-brand-gray dark:text-gray-400 text-[13px]">ATS : 1 &middot; JD : 2 &middot; Lettre : 1 &middot; PDF : 1 crédit</span>
         </div>
       </div>
 
-      {/* 2 cartes */}
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* 3 cartes */}
+      <div className="grid md:grid-cols-3 gap-6">
         {/* Analyse ATS générale */}
         <button
           onClick={() => onChoose("ats")}
@@ -94,6 +94,31 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
           </ul>
           <div className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-xl py-3 text-center font-semibold text-[15px] group-hover:opacity-90 transition-opacity">
             Lancer le Match JD (2 crédits)
+          </div>
+        </button>
+
+        {/* Lettre de motivation */}
+        <button
+          onClick={() => onChoose("letter")}
+          className="group text-left border border-gray-200 dark:border-gray-700 rounded-2xl p-8 hover:border-brand-green/50 hover:shadow-md transition-all dark:bg-[#1e293b]"
+        >
+          <div className="w-12 h-12 bg-amber-50 dark:bg-amber-900/30 rounded-xl flex items-center justify-center mb-6">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M22 7l-10 7L2 7" /></svg>
+          </div>
+          <h3 className="font-display text-[20px] font-bold mb-2 dark:text-gray-100">Lettre de motivation</h3>
+          <p className="text-brand-gray dark:text-gray-400 text-[14px] leading-relaxed mb-6">
+            Générez une lettre de motivation personnalisée à partir de votre CV et de l&apos;offre d&apos;emploi.
+          </p>
+          <ul className="space-y-3 mb-8">
+            {["Adaptée à l'offre d'emploi", "Basée sur votre parcours réel", "Format professionnel français", "Export PDF inclus"].map((f) => (
+              <li key={f} className="flex items-center gap-2 text-[14px] dark:text-gray-200">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <div className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl py-3 text-center font-semibold text-[15px] group-hover:opacity-90 transition-opacity">
+            Générer la lettre (1 crédit)
           </div>
         </button>
       </div>

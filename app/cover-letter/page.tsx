@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useStore } from "@/lib/store";
@@ -25,6 +25,39 @@ export default function CoverLetterPage() {
   const [savedId, setSavedId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [premiumModal, setPremiumModal] = useState<"letter" | null>(null);
+  const autoGenTriggered = useRef(false);
+
+  // Auto-generate if arriving with CV + job offer and no letter yet
+  useEffect(() => {
+    if (cvText && jobOffer && !coverLetter && !autoGenTriggered.current) {
+      autoGenTriggered.current = true;
+      // Trigger generation after render
+      const run = async () => {
+        setIsGenerating(true);
+        setError("");
+        try {
+          const res = await fetch("/api/generate-cover-letter", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cvText, jobOffer }),
+          });
+          if (res.status === 402) { router.push("/pricing"); return; }
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || "Erreur lors de la génération");
+          }
+          const { content } = await res.json();
+          setCoverLetter(content);
+        } catch (e: unknown) {
+          setError(e instanceof Error ? e.message : "Une erreur est survenue.");
+        } finally {
+          setIsGenerating(false);
+        }
+      };
+      run();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // No CV in state — ask user to analyze first
   if (!cvText) {
@@ -67,6 +100,10 @@ export default function CoverLetterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cvText, jobOffer }),
       });
+      if (res.status === 402) {
+        router.push("/pricing");
+        return;
+      }
       if (res.status === 403) {
         setPremiumModal("letter");
         return;

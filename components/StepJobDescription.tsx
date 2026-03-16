@@ -5,9 +5,12 @@ interface Props {
   onSubmit: (jobOffer: string) => void;
   onBack: () => void;
   isAnalyzing: boolean;
+  title?: string;
+  subtitle?: string;
+  buttonLabel?: string;
 }
 
-export default function StepJobDescription({ onSubmit, onBack, isAnalyzing }: Props) {
+export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, title, subtitle, buttonLabel }: Props) {
   const [text, setText] = useState("");
 
   return (
@@ -18,10 +21,10 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing }: Pr
       </button>
 
       <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] text-center mb-2 dark:text-gray-100">
-        Collez l&apos;offre d&apos;emploi
+        {title ?? "Collez l\u0027offre d\u0027emploi"}
       </h1>
       <p className="text-brand-gray dark:text-gray-400 text-center mb-8 max-w-[500px] mx-auto">
-        Notre IA comparera votre CV avec cette offre pour des suggestions sur mesure.
+        {subtitle ?? "Notre IA comparera votre CV avec cette offre pour des suggestions sur mesure."}
       </p>
 
       {/* Tab active */}
@@ -64,7 +67,7 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing }: Pr
           ) : (
             <>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
-              Analyser le match
+              {buttonLabel ?? "Analyser le match"}
             </>
           )}
         </button>

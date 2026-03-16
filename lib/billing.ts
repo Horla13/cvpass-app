@@ -95,6 +95,7 @@ export const CREDIT_COSTS = {
   ats_analysis: 1,
   jd_analysis: 2,
   pdf_export: 1,
+  cover_letter: 1,
 } as const;
 
 export type CreditAction = keyof typeof CREDIT_COSTS;
