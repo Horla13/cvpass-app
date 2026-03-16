@@ -1299,6 +1299,20 @@ export default function ResultsPage() {
       .catch(() => setIsPaid(false));
   }, []);
 
+  // Lazy-load CV JSON structure if not available yet
+  useEffect(() => {
+    if (!cvJson && cvText) {
+      fetch("/api/restructure-cv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cvText }),
+      })
+        .then((r) => r.json())
+        .then((d) => { if (d.cv_json) setCvJson(d.cv_json); })
+        .catch(() => {});
+    }
+  }, [cvJson, cvText, setCvJson]);
+
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
   const acceptedGaps = useMemo(() => gaps.filter((g) => g.status === "accepted"), [gaps]);
   const ignoredGaps = useMemo(() => gaps.filter((g) => g.status === "ignored"), [gaps]);
