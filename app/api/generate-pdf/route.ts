@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { deductCredits, hasUnlimitedAccess, canUsePremiumFeature, CREDIT_COSTS } from "@/lib/billing";
+import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
@@ -82,9 +82,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Watermark pour les utilisateurs gratuits (pas de plan payant actif)
-    const isPaid = await canUsePremiumFeature(userId, email);
-    const buffer = await buildCvPdfBuffer(cvData, { watermark: !isPaid });
+    const buffer = await buildCvPdfBuffer(cvData, { watermark: false });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
