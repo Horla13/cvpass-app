@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { canUsePremiumFeature } from "@/lib/billing";
+import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { buildLetterPdfBuffer, LetterMeta } from "@/lib/pdf-builder";
 
@@ -25,12 +25,16 @@ export async function POST(req: NextRequest) {
   const user = await clerk.users.getUser(userId);
   const userEmail = user.emailAddresses[0]?.emailAddress;
 
-  const allowed = await canUsePremiumFeature(userId, userEmail);
-  if (!allowed) {
-    return NextResponse.json(
-      { error: "PREMIUM_REQUIRED", message: "Générez votre lettre de motivation avec un pass CVpass." },
-      { status: 403 }
-    );
+  // Vérifier crédits ou accès illimité
+  const unlimited = await hasUnlimitedAccess(userId, userEmail);
+  if (!unlimited) {
+    const deduction = await deductCredits(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    if (!deduction.success) {
+      return NextResponse.json(
+        { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
+        { status: 402 }
+      );
+    }
   }
 
   let body: { letterContent: string; jobTitle?: string };
