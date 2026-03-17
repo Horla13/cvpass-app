@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimitWith } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  // Rate limit par IP pour cette route publique
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const { allowed: rateLimitOk } = await checkRateLimitWith(`subscribe:${ip}`, 5, "1 h");
+  if (!rateLimitOk) {
+    return NextResponse.json({ error: "Trop de requêtes. Réessayez plus tard." }, { status: 429 });
+  }
+
   let body: { email?: string; source?: string };
   try {
     body = await req.json();

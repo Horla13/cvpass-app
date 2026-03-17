@@ -124,53 +124,81 @@ export async function canAnalyze(userId: string, email?: string): Promise<Billin
 }
 
 // ── Consume credit (called AFTER successful analysis) ──
+// Uses optimistic concurrency: read balance, then UPDATE ... WHERE credits_remaining = old_balance
+// If another request changed the balance between read and write, the WHERE won't match → retry
 
 export async function consumeCredit(userId: string, amount: number, reason: string): Promise<{ success: boolean; newBalance?: number }> {
   const admin = getSupabaseAdmin();
-  const sub = await getSubscription(userId);
 
-  if (sub.credits_remaining < amount) {
-    return { success: false };
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const sub = await getSubscription(userId);
+
+    if (sub.credits_remaining < amount) {
+      return { success: false };
+    }
+
+    const newBalance = sub.credits_remaining - amount;
+    const { data, error } = await admin
+      .from("subscriptions")
+      .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
+      .eq("user_id", userId)
+      .eq("credits_remaining", sub.credits_remaining) // optimistic lock
+      .select("credits_remaining")
+      .maybeSingle();
+
+    if (error) return { success: false };
+
+    if (!data) {
+      // Another request changed credits_remaining — retry
+      continue;
+    }
+
+    await admin.from("credit_transactions").insert({
+      user_id: userId,
+      amount: -amount,
+      reason,
+    });
+
+    return { success: true, newBalance };
   }
 
-  const newBalance = sub.credits_remaining - amount;
-  const { error } = await admin
-    .from("subscriptions")
-    .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
-    .eq("user_id", userId);
-
-  if (error) return { success: false };
-
-  await admin.from("credit_transactions").insert({
-    user_id: userId,
-    amount: -amount,
-    reason,
-  });
-
-  return { success: true, newBalance };
+  return { success: false };
 }
 
 // ── Add credits ──
 
 export async function addCredits(userId: string, amount: number, reason: string): Promise<{ success: boolean; newBalance?: number }> {
   const admin = getSupabaseAdmin();
-  const sub = await getSubscription(userId);
 
-  const newBalance = sub.credits_remaining + amount;
-  const { error } = await admin
-    .from("subscriptions")
-    .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
-    .eq("user_id", userId);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const sub = await getSubscription(userId);
+    const newBalance = sub.credits_remaining + amount;
 
-  if (error) return { success: false };
+    const { data, error } = await admin
+      .from("subscriptions")
+      .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
+      .eq("user_id", userId)
+      .eq("credits_remaining", sub.credits_remaining) // optimistic lock
+      .select("credits_remaining")
+      .maybeSingle();
 
-  await admin.from("credit_transactions").insert({
-    user_id: userId,
-    amount,
-    reason,
-  });
+    if (error) return { success: false };
 
-  return { success: true, newBalance };
+    if (!data) {
+      // Another request changed credits_remaining — retry
+      continue;
+    }
+
+    await admin.from("credit_transactions").insert({
+      user_id: userId,
+      amount,
+      reason,
+    });
+
+    return { success: true, newBalance };
+  }
+
+  return { success: false };
 }
 
 // ── Get user credits (simple helper) ──

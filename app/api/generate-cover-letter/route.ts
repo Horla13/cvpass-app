@@ -68,7 +68,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }
 
-  const { cvText, jobOffer } = body;
+  const cvText = body.cvText?.slice(0, 50000);
+  const jobOffer = body.jobOffer?.slice(0, 10000);
 
   if (!cvText || !jobOffer) {
     return NextResponse.json({ error: "CV et offre requis" }, { status: 400 });

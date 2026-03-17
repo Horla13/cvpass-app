@@ -240,7 +240,7 @@ export async function sendRetentionEmailJ7(
           <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
           <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a>
           <br/><br/>
-          <a href="${appUrl}/unsubscribe?email=${email}" style="color:#9ca3af;font-size:11px;">Se désabonner</a>
+          <a href="{{unsubscribe}}" style="color:#9ca3af;font-size:11px;">Se désabonner</a>
         </div>
       </div>
     `,
@@ -295,37 +295,3 @@ export async function sendPaymentConfirmationEmail(
   });
 }
 
-export async function sendAnalysisEmail(
-  email: string,
-  firstName: string,
-  score: number,
-  jobTitle: string
-): Promise<void> {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
-  await sendEmail({
-    to: [{ email, name: firstName }],
-    subject: `Votre analyse CV pour "${jobTitle}" — Score ATS : ${score}/100`,
-    htmlContent: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111827;">
-        <h1 style="color:#16a34a;">Votre analyse est terminée !</h1>
-        <p>Bonjour ${firstName}, voici le résumé pour le poste <strong>${jobTitle}</strong> :</p>
-        <div style="background:#f9fafb;border-radius:12px;padding:24px;margin:16px 0;text-align:center;">
-          <span style="font-size:14px;color:#6b7280;">Score ATS actuel</span><br/>
-          <span style="font-size:48px;font-weight:bold;color:${score >= 70 ? '#16a34a' : score >= 50 ? '#ea580c' : '#ef4444'};">${score}</span>
-          <span style="font-size:20px;color:#6b7280;">/100</span>
-        </div>
-        <p style="color:#374151;font-size:14px;">Consultez vos résultats pour découvrir les suggestions d'amélioration et booster votre score.</p>
-        <div style="text-align:center;margin:24px 0;">
-          <a href="${appUrl}/dashboard"
-             style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
-            Voir mes résultats →
-          </a>
-        </div>
-        <p style="color:#6b7280;font-size:12px;margin-top:32px;border-top:1px solid #f3f4f6;padding-top:16px;">
-          CVpass — VertexLab SASU<br/>
-          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a>
-        </p>
-      </div>
-    `,
-  });
-}

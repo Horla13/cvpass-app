@@ -31,8 +31,8 @@ export default function PricingSuccessPage() {
           Paiement confirmé !
         </h1>
         <p className="text-brand-gray mb-8 leading-relaxed">
-          Votre plan est maintenant actif. Vous pouvez dès maintenant analyser
-          votre CV sans limite.
+          Votre plan est maintenant actif. Vos crédits sont disponibles
+          immédiatement.
         </p>
         <Link
           href="/analyze"

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -14,10 +14,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Source manquante" }, { status: 400 });
   }
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = getSupabaseAdmin();
 
   await supabase.from("discovery_sources").upsert(
     { user_id: userId, source },

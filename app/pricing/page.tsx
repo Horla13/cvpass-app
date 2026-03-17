@@ -292,7 +292,7 @@ export default function PricingPage() {
           <div className="flex gap-6">
             <Link href="/blog" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Blog</Link>
             <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Mentions légales</Link>
-            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
+            <Link href="/politique-confidentialite" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Contact</a>
           </div>
         </div>

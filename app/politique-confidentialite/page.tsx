@@ -109,7 +109,7 @@ export default function PolitiqueConfidentialitePage() {
             Sommaire
           </p>
           <ol style={{ margin: 0, paddingLeft: 20 }}>
-            {sections.map((s, i) => (
+            {sections.map((s) => (
               <li key={s.id} style={{ marginBottom: 6, fontSize: 15 }}>
                 <a
                   href={`#${s.id}`}

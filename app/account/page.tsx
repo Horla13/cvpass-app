@@ -90,7 +90,7 @@ function reasonLabel(reason: string): string {
     pdf_export: "Export PDF",
     purchase_pack: "Achat pack",
     purchase_starter: "Achat Starter",
-    monthly_subscription: "Abonnement Pro",
+    pro_subscription: "Abonnement Pro",
     admin_fix_boris: "Correction admin",
     referral_bonus: "Bonus parrainage",
     referral_welcome: "Bonus filleul",
@@ -186,7 +186,7 @@ export default function AccountPage() {
                     <div className="bg-white rounded-2xl border border-gray-200 p-6">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-[13px] text-gray-400 font-medium uppercase tracking-wider">
-                          {plan === "early_access" ? "Early Access" : plan === "pro" ? "Recherche Active" : plan === "starter" ? "Starter" : "Plan Gratuit"}
+                          {plan === "early_access" ? "Early Access" : plan === "pro" ? "Recherche Active" : plan === "starter" ? "Coup de pouce" : "Plan Gratuit"}
                         </h3>
                         <span className="text-amber-500 text-lg">&#9889;</span>
                       </div>

@@ -31,9 +31,10 @@ function getCategoryScore(gaps: Gap[], category: string): number {
 }
 
 function getScoreLabel(score: number): { text: string; color: string } {
-  if (score >= 80) return { text: "Bon", color: "text-green-500" };
-  if (score >= 60) return { text: "À améliorer", color: "text-amber-500" };
-  return { text: "À améliorer", color: "text-red-500" };
+  if (score >= 80) return { text: "Excellent", color: "text-green-500" };
+  if (score >= 60) return { text: "Bon", color: "text-amber-500" };
+  if (score >= 40) return { text: "À améliorer", color: "text-orange-500" };
+  return { text: "Critique", color: "text-red-500" };
 }
 
 /* ─── Score status badge ─── */

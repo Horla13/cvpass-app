@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     if (email) {
       // Créer la subscription free avec 2 crédits + email
-      admin
+      const { error: subError } = await admin
         .from("subscriptions")
         .insert({
           user_id: userId,
@@ -58,18 +58,19 @@ export async function POST(req: NextRequest) {
           status: "active",
           credits_remaining: 2,
           email,
-        })
-        .then(({ error }) => {
-          if (error && !error.message.includes("duplicate")) {
-            console.error("Subscription insert error:", error);
-          }
         });
 
+      if (subError && !subError.message.includes("duplicate")) {
+        console.error("Subscription insert error:", subError);
+        return NextResponse.json({ error: "Erreur création subscription" }, { status: 500 });
+      }
+
       // Log la transaction initiale
-      admin
+      const { error: txError } = await admin
         .from("credit_transactions")
-        .insert({ user_id: userId, amount: 2, reason: "initial_signup" })
-        .then(({ error }) => { if (error) console.error("Credit transaction error:", error); });
+        .insert({ user_id: userId, amount: 2, reason: "initial_signup" });
+
+      if (txError) console.error("Credit transaction error:", txError);
 
       // Sync contact Brevo (liste "Utilisateurs CVpass")
       syncBrevoContact(email, {

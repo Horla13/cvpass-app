@@ -75,7 +75,7 @@ export default function MentionsLegalesPage() {
             Sommaire
           </p>
           <ol style={{ paddingLeft: 20, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-            {sections.map((s, i) => (
+            {sections.map((s) => (
               <li key={s.id} style={{ fontSize: 14, lineHeight: 1.5 }}>
                 <a href={`#${s.id}`} style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>
                   {s.label}

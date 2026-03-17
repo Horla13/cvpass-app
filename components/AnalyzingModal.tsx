@@ -60,9 +60,9 @@ export default function AnalyzingModal({ type }: { type: "ats" | "jd" }) {
           ))}
         </div>
 
-        <p className="text-[12px] text-gray-400 flex items-center justify-center gap-1.5">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-          Powered by advanced AI models for accurate results
+        <p className="text-[12px] text-amber-600 bg-amber-50 rounded-lg px-3 py-2 flex items-center justify-center gap-1.5 font-medium">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+          Ne fermez pas cette page pendant l&apos;analyse
         </p>
       </div>
     </div>
