@@ -27,8 +27,9 @@ export async function POST(req: NextRequest) {
   const email = user.emailAddresses[0]?.emailAddress;
   const unlimited = await hasUnlimitedAccess(userId, email);
   if (!unlimited) {
-    const deduction = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
-    if (!deduction.success) {
+    const { getUserCredits } = await import("@/lib/billing");
+    const credits = await getUserCredits(userId);
+    if (credits < CREDIT_COSTS.pdf_export) {
       return NextResponse.json(
         { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
         { status: 402 }
@@ -83,6 +84,11 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = await buildCvPdfBuffer(cvData, { watermark: false });
+
+    // Consommer le crédit APRÈS génération réussie
+    if (!unlimited) {
+      await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    }
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

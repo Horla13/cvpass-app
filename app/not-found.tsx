@@ -2,14 +2,14 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0f172a] flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
       <div className="text-[120px] font-extrabold leading-none tracking-tighter text-brand-green/20 select-none">
         404
       </div>
-      <h1 className="mt-2 text-2xl font-bold text-brand-black dark:text-gray-100 tracking-tight">
+      <h1 className="mt-2 text-2xl font-bold text-brand-black tracking-tight">
         Page introuvable
       </h1>
-      <p className="mt-3 text-brand-gray dark:text-gray-400 max-w-md text-[15px] leading-relaxed">
+      <p className="mt-3 text-brand-gray max-w-md text-[15px] leading-relaxed">
         Cette page n&apos;existe pas ou a été déplacée. Profitez-en pour analyser votre CV gratuitement.
       </p>
       <div className="mt-8 flex items-center gap-4">
@@ -25,7 +25,7 @@ export default function NotFound() {
         </Link>
         <Link
           href="/"
-          className="text-[14px] font-medium text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-white transition-colors"
+          className="text-[14px] font-medium text-brand-gray hover:text-brand-black transition-colors"
         >
           Retour à l&apos;accueil
         </Link>

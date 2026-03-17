@@ -15,15 +15,15 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
 
   return (
     <div className="max-w-[700px] mx-auto">
-      <button onClick={onBack} className="flex items-center gap-1 text-[14px] text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 mb-6 transition-colors">
+      <button onClick={onBack} className="flex items-center gap-1 text-[14px] text-brand-gray hover:text-brand-black mb-6 transition-colors">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
         Retour
       </button>
 
-      <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] text-center mb-2 dark:text-gray-100">
+      <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] text-center mb-2">
         {title ?? "Collez l\u0027offre d\u0027emploi"}
       </h1>
-      <p className="text-brand-gray dark:text-gray-400 text-center mb-8 max-w-[500px] mx-auto">
+      <p className="text-brand-gray text-center mb-8 max-w-[500px] mx-auto">
         {subtitle ?? "Notre IA comparera votre CV avec cette offre pour des suggestions sur mesure."}
       </p>
 
@@ -36,22 +36,22 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
       </div>
 
       {/* Textarea */}
-      <div className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden mb-6">
+      <div className="border border-gray-200 rounded-xl overflow-hidden mb-6">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Collez la description du poste ici..."
           rows={12}
-          className="w-full p-4 text-base resize-none focus:outline-none dark:bg-[#1e293b] dark:text-gray-100 dark:placeholder-gray-500"
+          className="w-full p-4 text-base resize-none focus:outline-none"
         />
-        <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-[#0f172a] border-t border-gray-100 dark:border-gray-700/50">
+        <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-t border-gray-100">
           <button
             onClick={() => setText("Nous recherchons un développeur full-stack passionné pour rejoindre notre équipe. Compétences requises : React, Node.js, TypeScript, PostgreSQL. Expérience souhaitée : 3-5 ans.")}
             className="text-[13px] text-blue-500 hover:underline"
           >
             Essayer un exemple
           </button>
-          <span className="text-[13px] text-brand-gray dark:text-gray-400">{text.length} caractères</span>
+          <span className="text-[13px] text-brand-gray">{text.length} caractères</span>
         </div>
       </div>
 
@@ -60,7 +60,7 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
         <button
           onClick={() => onSubmit(text)}
           disabled={text.length < 50 || isAnalyzing}
-          className="flex items-center justify-center gap-2 bg-brand-black text-white rounded-xl px-8 py-3 font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+          className="flex items-center justify-center gap-2 bg-brand-black text-white rounded-xl px-8 py-3 font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
         >
           {isAnalyzing ? (
             "Analyse en cours..."
@@ -76,7 +76,7 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
       {/* Tips */}
       <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
         {["Description complète", "Section exigences", "Liste qualifications"].map((tip) => (
-          <span key={tip} className="text-[12px] bg-gray-100 dark:bg-gray-700 text-brand-gray dark:text-gray-400 rounded-full px-3 py-1">
+          <span key={tip} className="text-[12px] bg-gray-100 text-brand-gray rounded-full px-3 py-1">
             {tip}
           </span>
         ))}

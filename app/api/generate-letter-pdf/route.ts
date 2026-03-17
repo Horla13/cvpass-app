@@ -25,11 +25,12 @@ export async function POST(req: NextRequest) {
   const user = await clerk.users.getUser(userId);
   const userEmail = user.emailAddresses[0]?.emailAddress;
 
-  // Vérifier crédits ou accès illimité
+  // Vérifier crédits ou accès illimité (sans consommer — on consomme après succès)
   const unlimited = await hasUnlimitedAccess(userId, userEmail);
   if (!unlimited) {
-    const deduction = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
-    if (!deduction.success) {
+    const { getUserCredits } = await import("@/lib/billing");
+    const credits = await getUserCredits(userId);
+    if (credits < CREDIT_COSTS.pdf_export) {
       return NextResponse.json(
         { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
         { status: 402 }
@@ -78,6 +79,11 @@ export async function POST(req: NextRequest) {
     };
 
     const buffer = await buildLetterPdfBuffer(letterContent, meta);
+
+    // Consommer le crédit APRÈS génération réussie
+    if (!unlimited) {
+      await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    }
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

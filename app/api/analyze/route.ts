@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
-import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, hasUnlimitedAccess, getUserCredits, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 
@@ -311,12 +311,12 @@ export async function POST(req: NextRequest) {
 
   const { cvText, jobOffer, analysisType } = parsed.data;
 
-  // Vérifier crédits ou accès illimité
+  // Vérifier crédits ou accès illimité (sans consommer)
   const unlimited = await hasUnlimitedAccess(userId, email);
+  const cost = analysisType === "jd" ? CREDIT_COSTS.jd_analysis : CREDIT_COSTS.ats_analysis;
   if (!unlimited) {
-    const cost = analysisType === "jd" ? CREDIT_COSTS.jd_analysis : CREDIT_COSTS.ats_analysis;
-    const deduction = await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
-    if (!deduction.success) {
+    const credits = await getUserCredits(userId);
+    if (credits < cost) {
       return NextResponse.json(
         { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: cost },
         { status: 402 }
@@ -353,6 +353,11 @@ export async function POST(req: NextRequest) {
       typeof analysis.resume !== "string"
     ) {
       throw new Error("Format de réponse IA invalide");
+    }
+
+    // Consommer le crédit APRÈS analyse réussie
+    if (!unlimited) {
+      await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
     }
 
     const jobTitle = typeof analysis.job_title === "string" ? analysis.job_title : "";

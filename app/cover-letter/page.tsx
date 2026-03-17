@@ -61,7 +61,7 @@ export default function CoverLetterPage() {
   if (!cvText) {
     return (
       <PageTransition>
-        <div className="min-h-screen bg-gray-50 dark:bg-[#0f172a]">
+        <div className="min-h-screen bg-gray-50">
           <AppHeader />
           <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16 flex flex-col items-center text-center gap-6">
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
@@ -69,8 +69,8 @@ export default function CoverLetterPage() {
               <path d="M22 7l-10 7L2 7" />
             </svg>
             <div>
-              <h1 className="text-xl font-bold text-brand-black dark:text-gray-100 mb-2">Aucun CV analysé</h1>
-              <p className="text-sm text-brand-gray dark:text-gray-400 max-w-xs mx-auto">
+              <h1 className="text-xl font-bold text-brand-black mb-2">Aucun CV analysé</h1>
+              <p className="text-sm text-brand-gray max-w-xs mx-auto">
                 Analysez d&apos;abord votre CV avec une offre d&apos;emploi pour générer une lettre de motivation personnalisée.
               </p>
             </div>
@@ -161,14 +161,14 @@ export default function CoverLetterPage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0f172a]">
+      <div className="min-h-screen bg-gray-50">
         <AppHeader />
         <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-brand-black dark:text-gray-100">
+            <h1 className="text-2xl font-bold text-brand-black">
               Lettre de motivation
             </h1>
-            <p className="text-brand-gray dark:text-gray-400 text-sm mt-1">
+            <p className="text-brand-gray text-sm mt-1">
               Générée à partir de votre CV et de l&apos;offre d&apos;emploi analysée.
             </p>
           </div>
@@ -185,10 +185,10 @@ export default function CoverLetterPage() {
                 <rect x="2" y="4" width="20" height="16" rx="2" />
                 <path d="M22 7l-10 7L2 7" />
               </svg>
-              <h2 className="font-semibold text-brand-black dark:text-gray-100 mb-2">
+              <h2 className="font-semibold text-brand-black mb-2">
                 Prêt à générer votre lettre
               </h2>
-              <p className="text-brand-gray dark:text-gray-400 text-sm mb-6 max-w-sm mx-auto">
+              <p className="text-brand-gray text-sm mb-6 max-w-sm mx-auto">
                 CVpass va rédiger une lettre de motivation personnalisée
                 en français, adaptée au poste et à votre profil.
               </p>
@@ -216,11 +216,11 @@ export default function CoverLetterPage() {
                 isSaving={isSaving}
                 defaultEmail={userEmail}
               />
-              <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/50">
+              <div className="mt-4 pt-4 border-t border-gray-100">
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating}
-                  className="text-sm text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 underline disabled:opacity-50"
+                  className="text-sm text-brand-gray hover:text-brand-black underline disabled:opacity-50"
                 >
                   {isGenerating ? "Régénération..." : "Régénérer une nouvelle version"}
                 </button>

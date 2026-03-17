@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { addCredits } from "@/lib/billing";
+
 import { sendPaymentConfirmationEmail } from "@/lib/brevo";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +74,12 @@ export async function POST(req: NextRequest) {
         { onConflict: "user_id" }
       );
 
-      await addCredits(userId, 4, "purchase_starter");
+      // Log transaction (credits already added via upsert above)
+      await admin.from("credit_transactions").insert({
+        user_id: userId,
+        amount: 4,
+        reason: "purchase_starter",
+      });
 
       if (customerEmail) {
         sendPaymentConfirmationEmail(customerEmail, "starter").catch(console.error);

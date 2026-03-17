@@ -65,13 +65,13 @@ export function ExitIntentModal() {
       onClick={close}
     >
       <div
-        className="relative max-w-sm w-full mx-4 rounded-2xl bg-white dark:bg-[#1e293b] p-8"
+        className="relative max-w-sm w-full mx-4 rounded-2xl bg-white p-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-display text-xl font-bold text-center text-[#111827] dark:text-gray-100">
+        <h2 className="font-display text-xl font-bold text-center text-[#111827]">
           Attendez — votre CV est peut-être invisible aux recruteurs.
         </h2>
-        <p className="text-sm text-center mt-2 text-[#6b7280] dark:text-gray-400">
+        <p className="text-sm text-center mt-2 text-[#6b7280]">
           Testez gratuitement votre score ATS en 30 secondes.
         </p>
         <Link
@@ -84,7 +84,7 @@ export function ExitIntentModal() {
         <button
           type="button"
           onClick={close}
-          className="mt-3 w-full text-sm text-center text-gray-400 dark:text-gray-500 cursor-pointer hover:text-gray-500 dark:hover:text-gray-400 transition-colors"
+          className="mt-3 w-full text-sm text-center text-gray-400 cursor-pointer hover:text-gray-500 transition-colors"
         >
           Non merci
         </button>

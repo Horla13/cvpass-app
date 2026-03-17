@@ -68,7 +68,7 @@ export function CoverLetterEditor({
     <div className="flex flex-col h-full">
       {/* Barre d'état */}
       <div className="flex items-center justify-between mb-2 px-1">
-        <span className="text-sm text-brand-gray dark:text-gray-400">
+        <span className="text-sm text-brand-gray">
           {content.length} caractères
         </span>
         {isDirty && (
@@ -82,7 +82,7 @@ export function CoverLetterEditor({
       <textarea
         value={content}
         onChange={handleChange}
-        className="flex-1 w-full min-h-[500px] p-4 border border-gray-200 dark:border-gray-700 rounded-xl text-base text-brand-black dark:text-gray-100 bg-white dark:bg-[#1e293b] font-mono leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-brand-green"
+        className="flex-1 w-full min-h-[500px] p-4 border border-gray-200 rounded-xl text-base text-brand-black bg-white font-mono leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-brand-green"
         placeholder="Votre lettre de motivation apparaîtra ici..."
         spellCheck={true}
         lang="fr"
@@ -116,12 +116,12 @@ export function CoverLetterEditor({
       <div className="mt-3">
         <button
           onClick={() => { setEmailOpen((v) => !v); setSent(false); setEmailErr(""); }}
-          className="text-sm text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 underline underline-offset-2 transition-colors"
+          className="text-sm text-brand-gray hover:text-brand-black underline underline-offset-2 transition-colors"
         >
           Envoyer par email
         </button>
         {emailOpen && (
-          <div className="mt-2 p-3 bg-gray-50 dark:bg-[#0f172a] rounded-xl border border-gray-200 dark:border-gray-700 space-y-2">
+          <div className="mt-2 p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
             {sent ? (
               <p className="text-sm text-green-700 font-medium text-center">✅ Envoyé à {emailAddr}</p>
             ) : (
@@ -130,7 +130,7 @@ export function CoverLetterEditor({
                   type="email"
                   value={emailAddr}
                   onChange={(e) => setEmailAddr(e.target.value)}
-                  className="w-full px-3 py-2 text-base border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e293b] text-brand-black dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green"
+                  className="w-full px-3 py-2 text-base border border-gray-200 bg-white text-brand-black rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green"
                   placeholder="votre@email.com"
                 />
                 {emailErr && <p className="text-xs text-red-500">{emailErr}</p>}

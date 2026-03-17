@@ -1,18 +1,20 @@
-import { canAnalyze } from "./billing";
-import { createClient } from "@supabase/supabase-js";
-
-jest.mock("@supabase/supabase-js");
-
-const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
-
 const FUTURE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 const PAST = new Date(Date.now() - 1000).toISOString();
 
-function makeMockClient(
+const mockFrom = jest.fn();
+
+jest.mock("./supabase-admin", () => ({
+  getSupabaseAdmin: () => ({ from: mockFrom }),
+}));
+
+import { canAnalyze } from "./billing";
+
+function setupMock(
   subscription: Record<string, unknown> | null,
   earlyAccess: boolean = false
 ) {
-  const mockFrom = jest.fn().mockImplementation((table: string) => {
+  mockFrom.mockReset();
+  mockFrom.mockImplementation((table: string) => {
     if (table === "early_access") {
       return {
         select: jest.fn().mockReturnValue({
@@ -26,7 +28,6 @@ function makeMockClient(
       };
     }
     if (table === "subscriptions") {
-      const upsertMock = jest.fn().mockResolvedValue({ error: null });
       return {
         select: jest.fn().mockReturnValue({
           eq: jest.fn().mockReturnValue({
@@ -36,28 +37,21 @@ function makeMockClient(
             }),
           }),
         }),
-        upsert: upsertMock,
+        upsert: jest.fn().mockResolvedValue({ error: null }),
       };
     }
   });
-
-  mockCreateClient.mockReturnValue({ from: mockFrom } as ReturnType<typeof createClient>);
 }
 
 describe("canAnalyze", () => {
-  beforeEach(() => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://test.supabase.co";
-    process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-key";
-  });
-
   it("autorise si early_access", async () => {
-    makeMockClient(null, true);
+    setupMock(null, true);
     const result = await canAnalyze("user_ea", "ea@test.com");
     expect(result.allowed).toBe(true);
   });
 
   it("autorise si plan pro actif non expiré", async () => {
-    makeMockClient({
+    setupMock({
       user_id: "user_pro",
       plan: "pro",
       status: "active",
@@ -69,7 +63,7 @@ describe("canAnalyze", () => {
   });
 
   it("bloque si plan pro expiré", async () => {
-    makeMockClient({
+    setupMock({
       user_id: "user_pro_expired",
       plan: "pro",
       status: "active",
@@ -82,7 +76,7 @@ describe("canAnalyze", () => {
   });
 
   it("autorise si credits > 0", async () => {
-    makeMockClient({
+    setupMock({
       user_id: "user_free",
       plan: "free",
       status: "active",
@@ -94,7 +88,7 @@ describe("canAnalyze", () => {
   });
 
   it("bloque si credits = 0", async () => {
-    makeMockClient({
+    setupMock({
       user_id: "user_no_credits",
       plan: "free",
       status: "active",

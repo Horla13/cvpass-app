@@ -48,11 +48,12 @@ export async function POST(req: NextRequest) {
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
 
-  // Vérifier crédits ou accès illimité
+  // Vérifier crédits ou accès illimité (sans consommer — on consomme après succès)
   const unlimited = await hasUnlimitedAccess(userId, email);
   if (!unlimited) {
-    const deduction = await consumeCredit(userId, CREDIT_COSTS.cover_letter, "cover_letter");
-    if (!deduction.success) {
+    const { getUserCredits } = await import("@/lib/billing");
+    const credits = await getUserCredits(userId);
+    if (credits < CREDIT_COSTS.cover_letter) {
       return NextResponse.json(
         { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: CREDIT_COSTS.cover_letter },
         { status: 402 }
@@ -94,6 +95,11 @@ export async function POST(req: NextRequest) {
 
     const content = completion.choices[0].message.content;
     if (!content) throw new Error("Réponse vide de l'IA");
+
+    // Consommer le crédit APRÈS génération réussie
+    if (!unlimited) {
+      await consumeCredit(userId, CREDIT_COSTS.cover_letter, "cover_letter");
+    }
 
     return NextResponse.json({ content });
   } catch (e: unknown) {

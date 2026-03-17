@@ -165,26 +165,25 @@ export default function ConditionsGeneralesPage() {
             <div style={planCardStyle}>
               <p style={planTitleStyle}>Plan Gratuit</p>
               <ul style={planListStyle}>
-                <li style={planLiStyle}>1 analyse de CV incluse</li>
+                <li style={planLiStyle}>2 analyses de CV offertes &agrave; l&apos;inscription</li>
                 <li style={planLiStyle}>Score ATS et suggestions d&apos;am&eacute;lioration</li>
-                <li style={planLiStyle}>Sans export PDF ni g&eacute;n&eacute;ration de lettre de motivation</li>
+                <li style={planLiStyle}>Toutes les fonctionnalit&eacute;s accessibles (analyse, export PDF, lettre de motivation)</li>
                 <li style={planLiStyle}>Dur&eacute;e illimit&eacute;e</li>
               </ul>
             </div>
 
-            {/* Candidature Express */}
+            {/* Coup de pouce */}
             <div style={{ ...planCardStyle, borderColor: "#16a34a", borderWidth: 1.5 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 10 }}>
-                <p style={{ ...planTitleStyle, margin: 0 }}>Candidature Express</p>
+                <p style={{ ...planTitleStyle, margin: 0 }}>Coup de pouce</p>
                 <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a" }}>2,90&nbsp;&euro; TTC</span>
                 <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>paiement unique</span>
               </div>
               <ul style={planListStyle}>
-                <li style={planLiStyle}>Analyses de CV illimit&eacute;es pendant 48 heures &agrave; compter du paiement</li>
-                <li style={planLiStyle}>Export PDF du CV optimis&eacute;</li>
-                <li style={planLiStyle}>G&eacute;n&eacute;ration de lettre de motivation IA</li>
-                <li style={planLiStyle}>Historique des analyses</li>
-                <li style={planLiStyle}>Acc&egrave;s r&eacute;voqu&eacute; automatiquement &agrave; l&apos;expiration du d&eacute;lai de 48 heures</li>
+                <li style={planLiStyle}>4 cr&eacute;dits d&apos;analyse ajout&eacute;s au solde existant</li>
+                <li style={planLiStyle}>Cr&eacute;dits sans expiration</li>
+                <li style={planLiStyle}>Rachetable plusieurs fois</li>
+                <li style={planLiStyle}>Toutes les fonctionnalit&eacute;s accessibles (export PDF, lettre de motivation, historique)</li>
               </ul>
             </div>
 
@@ -192,11 +191,11 @@ export default function ConditionsGeneralesPage() {
             <div style={{ ...planCardStyle, borderColor: "#16a34a", borderWidth: 1.5 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 10 }}>
                 <p style={{ ...planTitleStyle, margin: 0 }}>Recherche Active</p>
-                <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a" }}>14,90&nbsp;&euro; TTC/mois</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a" }}>8,90&nbsp;&euro; TTC/mois</span>
               </div>
               <ul style={planListStyle}>
                 <li style={planLiStyle}>Abonnement mensuel avec renouvellement automatique</li>
-                <li style={planLiStyle}>Analyses de CV illimit&eacute;es</li>
+                <li style={planLiStyle}>Analyses illimit&eacute;es pendant 30 jours</li>
                 <li style={planLiStyle}>Export PDF du CV optimis&eacute;</li>
                 <li style={planLiStyle}>G&eacute;n&eacute;ration de lettre de motivation IA</li>
                 <li style={planLiStyle}>Historique complet des analyses</li>
@@ -215,7 +214,7 @@ export default function ConditionsGeneralesPage() {
             <li>Tous les prix sont indiqu&eacute;s en euros, toutes taxes comprises (TTC).</li>
             <li>Le paiement est s&eacute;curis&eacute; et trait&eacute; exclusivement par Stripe, notre prestataire de paiement certifi&eacute; PCI DSS.</li>
             <li>CVpass ne collecte ni ne stocke aucune donn&eacute;e bancaire (num&eacute;ro de carte, CVV, date d&apos;expiration).</li>
-            <li>La facturation est imm&eacute;diate au moment de l&apos;achat pour le Pass 48h, et &agrave; chaque d&eacute;but de p&eacute;riode pour l&apos;abonnement mensuel.</li>
+            <li>La facturation est imm&eacute;diate au moment de l&apos;achat pour le pack Coup de pouce (2,90&nbsp;&euro;), et &agrave; chaque d&eacute;but de p&eacute;riode pour l&apos;abonnement Recherche Active (8,90&nbsp;&euro;/mois).</li>
             <li>VertexLab SASU se r&eacute;serve le droit de modifier ses tarifs. Toute modification sera notifi&eacute;e aux abonn&eacute;s actifs 30 jours avant son entr&eacute;e en vigueur.</li>
           </ul>
         </section>
@@ -239,16 +238,16 @@ export default function ConditionsGeneralesPage() {
 
             <div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", margin: "0 0 8px" }}>
-                Pass Candidature Express (2,90&nbsp;&euro;)
+                Pack Coup de pouce (2,90&nbsp;&euro;)
               </h3>
               <p style={{ margin: 0 }}>
-                Aucun remboursement n&apos;est accord&eacute; une fois l&apos;acc&egrave;s activ&eacute;, quelle que soit la dur&eacute;e d&apos;utilisation effective pendant la p&eacute;riode de 48 heures.
+                Aucun remboursement n&apos;est accord&eacute; une fois les cr&eacute;dits ajout&eacute;s au compte de l&apos;utilisateur.
               </p>
             </div>
 
             <div>
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", margin: "0 0 8px" }}>
-                Abonnement Recherche Active (14,90&nbsp;&euro;/mois)
+                Abonnement Recherche Active (8,90&nbsp;&euro;/mois)
               </h3>
               <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 4 }}>
                 <li>La r&eacute;siliation est possible &agrave; tout moment depuis l&apos;espace &laquo;&nbsp;Mon Compte&nbsp;&raquo; ou par email &agrave;{" "}

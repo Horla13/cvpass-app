@@ -17,9 +17,9 @@ export function CVPreview({ cvText, acceptedGaps }: CVPreviewProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-      <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 flex items-center justify-between">
-        <span className="text-sm font-medium text-brand-black dark:text-gray-100">Aperçu CV</span>
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <span className="text-sm font-medium text-brand-black">Aperçu CV</span>
         {acceptedGaps.length > 0 && (
           <span className="text-xs text-brand-green font-medium">
             {acceptedGaps.length} modification
@@ -29,9 +29,9 @@ export function CVPreview({ cvText, acceptedGaps }: CVPreviewProps) {
         )}
       </div>
       <div className="p-4 max-h-[600px] overflow-y-auto">
-        <pre className="text-xs text-brand-black dark:text-gray-100 whitespace-pre-wrap font-sans leading-relaxed">
+        <pre className="text-xs text-brand-black whitespace-pre-wrap font-sans leading-relaxed">
           {displayText || (
-            <span className="text-brand-gray dark:text-gray-400 italic">
+            <span className="text-brand-gray italic">
               Votre CV apparaîtra ici après upload
             </span>
           )}

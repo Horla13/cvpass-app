@@ -145,8 +145,8 @@ export function UploadZone({ onSuccess }: UploadZoneProps) {
               Importer depuis LinkedIn
             </button>
             {showLinkedInGuide && (
-              <div className="mt-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-left text-[12px] text-gray-600 dark:text-gray-400 leading-relaxed max-w-xs" onClick={(e) => e.stopPropagation()}>
-                <p className="font-semibold text-gray-800 dark:text-gray-200 mb-1.5">Exporter votre profil LinkedIn en PDF :</p>
+              <div className="mt-2 bg-blue-50 rounded-lg p-3 text-left text-[12px] text-gray-600 leading-relaxed max-w-xs" onClick={(e) => e.stopPropagation()}>
+                <p className="font-semibold text-gray-800 mb-1.5">Exporter votre profil LinkedIn en PDF :</p>
                 <ol className="list-decimal list-inside space-y-1">
                   <li>Ouvrez votre profil LinkedIn</li>
                   <li>Cliquez sur <strong>Plus</strong> (sous la photo)</li>

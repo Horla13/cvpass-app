@@ -22,7 +22,7 @@ export function PremiumModal({ feature, onClose }: PremiumModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-[#1e293b] rounded-2xl shadow-xl max-w-sm w-full p-8 text-center"
+        className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-8 text-center"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-12 h-12 rounded-full bg-brand-green/10 flex items-center justify-center mx-auto mb-4">
@@ -30,8 +30,8 @@ export function PremiumModal({ feature, onClose }: PremiumModalProps) {
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
           </svg>
         </div>
-        <h2 className="text-lg font-bold text-brand-black dark:text-gray-100 mb-2">Fonctionnalité premium</h2>
-        <p className="text-sm text-brand-gray dark:text-gray-400 mb-6 leading-relaxed">{MESSAGES[feature]}</p>
+        <h2 className="text-lg font-bold text-brand-black mb-2">Fonctionnalité premium</h2>
+        <p className="text-sm text-brand-gray mb-6 leading-relaxed">{MESSAGES[feature]}</p>
         <div className="flex flex-col gap-3">
           <button
             onClick={() => router.push("/pricing")}
@@ -41,7 +41,7 @@ export function PremiumModal({ feature, onClose }: PremiumModalProps) {
           </button>
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-brand-gray dark:text-gray-400 font-medium text-sm hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+            className="w-full py-3 rounded-xl border border-gray-200 text-brand-gray font-medium text-sm hover:border-gray-300 transition-colors"
           >
             Plus tard
           </button>

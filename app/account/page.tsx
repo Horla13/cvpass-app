@@ -51,22 +51,22 @@ function ReferralCard() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl border border-green-200 dark:border-green-800 p-6">
+    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-200 p-6">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-[16px] font-bold text-gray-900 dark:text-gray-100">Parrainez, gagnez des crédits</h3>
-          <p className="text-[13px] text-gray-600 dark:text-gray-400 mt-1">
+          <h3 className="text-[16px] font-bold text-gray-900">Parrainez, gagnez des crédits</h3>
+          <p className="text-[13px] text-gray-600 mt-1">
             Invitez un ami et recevez <strong className="text-green-600">2 crédits</strong> par parrainage. Votre filleul reçoit <strong className="text-green-600">1 crédit</strong> bonus.
           </p>
         </div>
         <div className="text-right flex-shrink-0 ml-4">
           <p className="text-[24px] font-bold text-green-600 font-display">{referral.referral_count}</p>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400">parrainage{referral.referral_count !== 1 ? "s" : ""}</p>
+          <p className="text-[11px] text-gray-500">parrainage{referral.referral_count !== 1 ? "s" : ""}</p>
         </div>
       </div>
 
-      <div className="mt-4 bg-white dark:bg-[#1e293b] rounded-xl p-3 flex items-center gap-3">
-        <code className="flex-1 text-[13px] text-gray-700 dark:text-gray-300 truncate">{shareUrl}</code>
+      <div className="mt-4 bg-white rounded-xl p-3 flex items-center gap-3">
+        <code className="flex-1 text-[13px] text-gray-700 truncate">{shareUrl}</code>
         <button
           onClick={copy}
           className="flex-shrink-0 px-4 py-2 bg-green-500 text-white text-[12px] font-semibold rounded-lg hover:bg-green-600 transition-colors"
@@ -75,7 +75,7 @@ function ReferralCard() {
         </button>
       </div>
 
-      <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">
+      <p className="text-[11px] text-gray-400 mt-2">
         {referral.credits_earned} crédit{referral.credits_earned !== 1 ? "s" : ""} gagnés · Max 10 parrainages (20 crédits)
       </p>
     </div>
@@ -136,22 +136,22 @@ export default function AccountPage() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-[#f8f9fb] dark:bg-[#0f172a]">
+      <div className="min-h-screen bg-[#f8f9fb]">
         <AppHeader />
 
         <main className="max-w-5xl mx-auto px-6 py-10">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="font-display text-[26px] font-bold text-gray-900 dark:text-gray-100">Mon compte</h1>
-              <p className="text-[14px] text-gray-500 dark:text-gray-400 mt-1">
+              <h1 className="font-display text-[26px] font-bold text-gray-900">Mon compte</h1>
+              <p className="text-[14px] text-gray-500 mt-1">
                 {user?.emailAddresses[0]?.emailAddress ?? ""}
               </p>
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center gap-1 mb-8 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1 mb-8 border-b border-gray-200">
             {([
               { key: "overview", label: "Vue d'ensemble" },
               { key: "history", label: "Historique" },
@@ -163,7 +163,7 @@ export default function AccountPage() {
                 className={`px-4 py-3 text-[14px] font-medium border-b-2 transition-colors -mb-px ${
                   activeTab === tab.key
                     ? "border-green-500 text-green-600"
-                    : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
                 {tab.label}
@@ -173,7 +173,7 @@ export default function AccountPage() {
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-3 border-gray-200 dark:border-gray-700 border-t-green-500 rounded-full animate-spin" />
+              <div className="w-8 h-8 border-3 border-gray-200 border-t-green-500 rounded-full animate-spin" />
             </div>
           ) : (
             <>
@@ -183,9 +183,9 @@ export default function AccountPage() {
                   {/* Credit & Plan cards */}
                   <div className="grid md:grid-cols-2 gap-5">
                     {/* Credits card */}
-                    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-[13px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">
+                        <h3 className="text-[13px] text-gray-400 font-medium uppercase tracking-wider">
                           {plan === "early_access" ? "Early Access" : plan === "pro" ? "Recherche Active" : plan === "starter" ? "Starter" : "Plan Gratuit"}
                         </h3>
                         <span className="text-amber-500 text-lg">&#9889;</span>
@@ -194,12 +194,12 @@ export default function AccountPage() {
                       {plan === "early_access" ? (
                         <div>
                           <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
-                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Accès Early Access — illimité</p>
+                          <p className="text-[13px] text-gray-500 mt-1">Accès Early Access — illimité</p>
                         </div>
                       ) : plan === "pro" && unlimited ? (
                         <div>
                           <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
-                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">
+                          <p className="text-[13px] text-gray-500 mt-1">
                             Expire le {expiresAt ? new Date(expiresAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "—"}
                           </p>
                           {expiresAt && new Date(expiresAt).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 && (
@@ -208,16 +208,16 @@ export default function AccountPage() {
                         </div>
                       ) : plan === "free" ? (
                         <div>
-                          <p className="text-[40px] font-bold text-gray-900 dark:text-gray-100 font-display">{credits}</p>
-                          <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2 mt-2 mb-1">
+                          <p className="text-[40px] font-bold text-gray-900 font-display">{credits}</p>
+                          <div className="w-full bg-gray-100 rounded-full h-2 mt-2 mb-1">
                             <div className="bg-green-500 h-2 rounded-full transition-all" style={{ width: `${Math.min(100, ((2 - credits) / 2) * 100)}%` }} />
                           </div>
-                          <p className="text-[13px] text-gray-500 dark:text-gray-400">{2 - credits} / 2 crédits utilisés</p>
+                          <p className="text-[13px] text-gray-500">{2 - credits} / 2 crédits utilisés</p>
                         </div>
                       ) : (
                         <div>
-                          <p className="text-[40px] font-bold text-gray-900 dark:text-gray-100 font-display">{credits}</p>
-                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">
+                          <p className="text-[40px] font-bold text-gray-900 font-display">{credits}</p>
+                          <p className="text-[13px] text-gray-500 mt-1">
                             {credits === 0 ? "Rechargez vos crédits" : `crédit${credits > 1 ? "s" : ""} restant${credits > 1 ? "s" : ""}`}
                           </p>
                         </div>
@@ -232,18 +232,19 @@ export default function AccountPage() {
                     </div>
 
                     {/* Costs card */}
-                    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-                      <h3 className="text-[13px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-4">Coûts par action</h3>
+                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
+                      <h3 className="text-[13px] text-gray-400 font-medium uppercase tracking-wider mb-4">Coûts par action</h3>
                       <div className="space-y-3">
                         {[
                           { label: "Analyse ATS générale", cost: 1, icon: "📊" },
                           { label: "Match offre d'emploi", cost: 2, icon: "🎯" },
                           { label: "Export PDF", cost: 1, icon: "📄" },
+                          { label: "Lettre de motivation", cost: 1, icon: "✉️" },
                         ].map((item) => (
-                          <div key={item.label} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-gray-700/50 last:border-0">
+                          <div key={item.label} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                             <div className="flex items-center gap-2.5">
                               <span className="text-[16px]">{item.icon}</span>
-                              <span className="text-[14px] text-gray-700 dark:text-gray-200">{item.label}</span>
+                              <span className="text-[14px] text-gray-700">{item.label}</span>
                             </div>
                             <span className="text-[14px] font-semibold text-amber-600">{item.cost} crédit{item.cost > 1 ? "s" : ""}</span>
                           </div>
@@ -259,10 +260,10 @@ export default function AccountPage() {
                       { label: "Score moyen", value: avgScore > 0 ? `${avgScore}/100` : "—", icon: "⭐" },
                       { label: "Suggestions acceptées", value: totalAccepted, icon: "✅" },
                     ].map((stat) => (
-                      <div key={stat.label} className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+                      <div key={stat.label} className="bg-white rounded-2xl border border-gray-200 p-5 text-center">
                         <span className="text-[20px]">{stat.icon}</span>
-                        <p className="text-[24px] font-bold text-gray-900 dark:text-gray-100 font-display mt-1">{stat.value}</p>
-                        <p className="text-[12px] text-gray-400 dark:text-gray-500 mt-1">{stat.label}</p>
+                        <p className="text-[24px] font-bold text-gray-900 font-display mt-1">{stat.value}</p>
+                        <p className="text-[12px] text-gray-400 mt-1">{stat.label}</p>
                       </div>
                     ))}
                   </div>
@@ -272,14 +273,14 @@ export default function AccountPage() {
 
                   {/* Recent transactions */}
                   {transactions.length > 0 && (
-                    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-                      <h3 className="text-[13px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider mb-4">Dernières transactions</h3>
+                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
+                      <h3 className="text-[13px] text-gray-400 font-medium uppercase tracking-wider mb-4">Dernières transactions</h3>
                       <div className="space-y-2">
                         {transactions.slice(0, 5).map((tx) => (
-                          <div key={tx.id} className="flex items-center justify-between py-2.5 border-b border-gray-50 dark:border-gray-700/50 last:border-0">
+                          <div key={tx.id} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
                             <div>
-                              <p className="text-[14px] text-gray-700 dark:text-gray-200">{reasonLabel(tx.reason)}</p>
-                              <p className="text-[12px] text-gray-400 dark:text-gray-500">{formatDate(tx.created_at)}</p>
+                              <p className="text-[14px] text-gray-700">{reasonLabel(tx.reason)}</p>
+                              <p className="text-[12px] text-gray-400">{formatDate(tx.created_at)}</p>
                             </div>
                             <span className={`text-[14px] font-semibold ${tx.amount > 0 ? "text-green-500" : "text-red-400"}`}>
                               {tx.amount > 0 ? "+" : ""}{tx.amount} crédit{Math.abs(tx.amount) > 1 ? "s" : ""}
@@ -296,8 +297,8 @@ export default function AccountPage() {
               {activeTab === "history" && (
                 <div>
                   {analyses.length === 0 ? (
-                    <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center">
-                      <p className="text-[16px] text-gray-400 dark:text-gray-500 mb-4">Aucune analyse pour le moment</p>
+                    <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
+                      <p className="text-[16px] text-gray-400 mb-4">Aucune analyse pour le moment</p>
                       <Link
                         href="/analyze"
                         className="inline-flex px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors"
@@ -308,26 +309,26 @@ export default function AccountPage() {
                   ) : (
                     <div className="space-y-3">
                       {analyses.map((a) => (
-                        <div key={a.id} className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 p-5 flex items-center justify-between hover:shadow-sm transition-shadow">
+                        <div key={a.id} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center justify-between hover:shadow-sm transition-shadow">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-500 font-bold text-[18px]">
+                            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 font-bold text-[18px]">
                               {a.score_apres}
                             </div>
                             <div>
-                              <p className="text-[14px] font-medium text-gray-800 dark:text-gray-200">
+                              <p className="text-[14px] font-medium text-gray-800">
                                 {a.job_title || "Analyse CV"}
                               </p>
-                              <p className="text-[12px] text-gray-400 dark:text-gray-500 mt-0.5">
+                              <p className="text-[12px] text-gray-400 mt-0.5">
                                 {formatDate(a.created_at)} · {a.nb_suggestions} suggestion{a.nb_suggestions > 1 ? "s" : ""} · {a.nb_acceptees} acceptée{a.nb_acceptees > 1 ? "s" : ""}
                               </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="text-right">
-                              <p className="text-[12px] text-gray-400 dark:text-gray-500">Score</p>
+                              <p className="text-[12px] text-gray-400">Score</p>
                               <p className="text-[14px] font-semibold">
                                 <span className="text-red-400">{a.score_avant}</span>
-                                <span className="text-gray-300 dark:text-gray-600 mx-1">→</span>
+                                <span className="text-gray-300 mx-1">→</span>
                                 <span className="text-green-500">{a.score_apres}</span>
                               </p>
                             </div>
@@ -341,7 +342,7 @@ export default function AccountPage() {
 
               {/* ─── PROFILE TAB ─── */}
               {activeTab === "profile" && (
-                <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+                <div className="bg-white rounded-2xl border border-gray-200 p-6">
                   <UserProfile
                     appearance={{
                       elements: {

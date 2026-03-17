@@ -6,7 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { ThemeToggle } from "@/components/ThemeToggle";
+
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -28,12 +28,12 @@ export function AppHeader() {
   }, [isSignedIn]);
 
   return (
-    <header className="bg-white/[0.92] dark:bg-[#0f172a]/[0.92] backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04] dark:border-white/[0.08]">
+    <header className="bg-white/[0.92] backdrop-blur-[16px] sticky top-0 z-40 border-b border-black/[0.04]">
       <div className="max-w-7xl mx-auto px-6 h-[60px] flex items-center justify-between gap-6">
 
         {/* Logo */}
         <Link href="/" className="shrink-0 font-display text-[21px] font-extrabold tracking-[-0.8px]">
-          <span className="text-brand-black dark:text-gray-100">CV</span>
+          <span className="text-brand-black">CV</span>
           <span className="text-brand-green">pass</span>
         </Link>
 
@@ -49,7 +49,7 @@ export function AppHeader() {
                   "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                   active
                     ? "text-brand-green underline underline-offset-4 decoration-brand-green font-display"
-                    : "text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100"
+                    : "text-brand-gray hover:text-brand-black"
                 )}
               >
                 {link.label}
@@ -64,15 +64,15 @@ export function AppHeader() {
           {credits !== null && (
             <Link
               href="/pricing"
-              className="hidden sm:flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 transition-colors"
             >
               <span className="text-amber-500">&#9889;</span>
-              <span className="font-semibold text-amber-700 dark:text-amber-400">{credits}</span>
+              <span className="font-semibold text-amber-700">{credits}</span>
             </Link>
           )}
           {/* Mobile hamburger */}
           <button
-            className="sm:hidden p-2 rounded-md text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="sm:hidden p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -90,14 +90,13 @@ export function AppHeader() {
             )}
           </button>
 
-          <ThemeToggle />
           <UserButton />
         </div>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#0f172a] px-6 py-3 space-y-1">
+        <div className="sm:hidden border-t border-gray-100 bg-white px-6 py-3 space-y-1">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -108,8 +107,8 @@ export function AppHeader() {
                 className={cn(
                   "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                   active
-                    ? "text-[#16a34a] bg-green-50 dark:bg-green-900/30"
-                    : "text-brand-gray dark:text-gray-400 hover:text-brand-black dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    ? "text-[#16a34a] bg-green-50"
+                    : "text-brand-gray hover:text-brand-black hover:bg-gray-50"
                 )}
               >
                 {link.label}
