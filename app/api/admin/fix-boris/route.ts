@@ -26,13 +26,14 @@ export async function POST() {
   const borisUserId = boris.id;
   const admin = getSupabaseAdmin();
 
-  // Upsert into subscriptions with new schema
+  // Upsert into subscriptions with new schema + email
   const { error } = await admin.from("subscriptions").upsert(
     {
       user_id: borisUserId,
       plan: "starter",
       status: "active",
       credits_remaining: 4,
+      email: BORIS_EMAIL,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "user_id" }

@@ -1,4 +1,71 @@
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+const BREVO_CONTACTS_URL = "https://api.brevo.com/v3/contacts";
+
+function getBrevoHeaders(): Record<string, string> {
+  return {
+    "Content-Type": "application/json",
+    "api-key": process.env.BREVO_API_KEY ?? "",
+  };
+}
+
+/**
+ * Add or update a contact in Brevo and assign to the CVpass list.
+ */
+export async function syncBrevoContact(
+  email: string,
+  attributes: { PRENOM?: string; NOM?: string; PLAN?: string }
+): Promise<void> {
+  const apiKey = process.env.BREVO_API_KEY;
+  const listId = process.env.BREVO_LIST_ID;
+
+  if (!apiKey) {
+    console.warn("BREVO_API_KEY non configuré — contact non synchronisé");
+    return;
+  }
+
+  const body: Record<string, unknown> = {
+    email,
+    attributes,
+    updateEnabled: true,
+  };
+
+  if (listId) {
+    body.listIds = [Number(listId)];
+  }
+
+  const res = await fetch(BREVO_CONTACTS_URL, {
+    method: "POST",
+    headers: getBrevoHeaders(),
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error("Brevo contact sync error:", err);
+  }
+}
+
+/**
+ * Update attributes on an existing Brevo contact (e.g. after plan change).
+ */
+export async function updateBrevoContactPlan(
+  email: string,
+  plan: string
+): Promise<void> {
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) return;
+
+  const res = await fetch(`${BREVO_CONTACTS_URL}/${encodeURIComponent(email)}`, {
+    method: "PUT",
+    headers: getBrevoHeaders(),
+    body: JSON.stringify({ attributes: { PLAN: plan } }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error("Brevo contact update error:", err);
+  }
+}
 
 interface EmailPayload {
   to: { email: string; name?: string }[];

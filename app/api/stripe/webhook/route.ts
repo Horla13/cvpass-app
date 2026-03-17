@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
-import { sendPaymentConfirmationEmail } from "@/lib/brevo";
+import { sendPaymentConfirmationEmail, updateBrevoContactPlan } from "@/lib/brevo";
 
 export const dynamic = "force-dynamic";
 
@@ -70,6 +70,7 @@ export async function POST(req: NextRequest) {
           credits_remaining: currentCredits + 4,
           subscription_expires_at: null,
           updated_at: new Date().toISOString(),
+          ...(customerEmail ? { email: customerEmail } : {}),
         },
         { onConflict: "user_id" }
       );
@@ -83,6 +84,7 @@ export async function POST(req: NextRequest) {
 
       if (customerEmail) {
         sendPaymentConfirmationEmail(customerEmail, "starter").catch(console.error);
+        updateBrevoContactPlan(customerEmail, "starter").catch(console.error);
       }
     }
 
@@ -99,12 +101,14 @@ export async function POST(req: NextRequest) {
           credits_remaining: 999999,
           subscription_expires_at: expiresAt,
           updated_at: new Date().toISOString(),
+          ...(customerEmail ? { email: customerEmail } : {}),
         },
         { onConflict: "user_id" }
       );
 
       if (customerEmail) {
         sendPaymentConfirmationEmail(customerEmail, "pro").catch(console.error);
+        updateBrevoContactPlan(customerEmail, "pro").catch(console.error);
       }
     }
   }
@@ -134,6 +138,14 @@ export async function POST(req: NextRequest) {
   // ── Subscription deleted ──
   if (event.type === "customer.subscription.deleted") {
     const sub = event.data.object as Stripe.Subscription;
+
+    // Récupérer l'email avant la mise à jour
+    const { data: row } = await admin
+      .from("subscriptions")
+      .select("email")
+      .eq("stripe_subscription_id", sub.id)
+      .maybeSingle();
+
     await admin
       .from("subscriptions")
       .update({
@@ -144,6 +156,10 @@ export async function POST(req: NextRequest) {
         updated_at: new Date().toISOString(),
       })
       .eq("stripe_subscription_id", sub.id);
+
+    if (row?.email) {
+      updateBrevoContactPlan(row.email, "free").catch(console.error);
+    }
   }
 
   // ── Payment failed ──
