@@ -57,8 +57,15 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
     apple: "/apple-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  other: {
+    "theme-color": "#16a34a",
   },
   verification: {},
 };
