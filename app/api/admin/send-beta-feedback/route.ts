@@ -184,7 +184,7 @@ export async function POST(req: NextRequest) {
 
   const admin = getSupabaseAdmin();
   const { data: whitelist, error: dbError } = await admin
-    .from("beta_whitelist")
+    .from("early_access")
     .select("email");
 
   if (dbError || !whitelist) {

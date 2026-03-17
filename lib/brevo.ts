@@ -182,17 +182,16 @@ export async function sendRetentionEmailJ7(
 
 export async function sendPaymentConfirmationEmail(
   email: string,
-  plan: "pass48h" | "monthly",
-  months?: number
+  plan: "starter" | "pro"
 ): Promise<void> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
 
-  const isPack = plan === "pass48h";
-  const planName = isPack ? "Coup de pouce" : `Recherche Active — ${months ?? 1} mois`;
-  const description = isPack
+  const isStarter = plan === "starter";
+  const planName = isStarter ? "Coup de pouce" : "Recherche Active";
+  const description = isStarter
     ? "4 crédits ont été ajoutés à votre compte. Utilisez-les pour analyser et optimiser vos CVs."
-    : `Vous avez un accès illimité pendant ${months ?? 1} mois. Analysez, optimisez et exportez sans limite.`;
-  const ctaText = isPack ? "Utiliser mes crédits →" : "Commencer à analyser →";
+    : "Vous avez un accès illimité pendant 30 jours. Analysez, optimisez et exportez sans limite.";
+  const ctaText = isStarter ? "Utiliser mes crédits →" : "Commencer à analyser →";
 
   await sendEmail({
     to: [{ email }],

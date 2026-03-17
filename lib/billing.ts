@@ -1,95 +1,24 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
+// ── Types ──
+
+export type PlanType = "free" | "starter" | "pro" | "early_access";
+
+export interface Subscription {
+  user_id: string;
+  plan: PlanType;
+  status: string;
+  credits_remaining: number;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  subscription_expires_at: string | null;
+}
+
 export interface BillingResult {
   allowed: boolean;
-  isPremium?: boolean; // true = accès illimité (crédits non déduits)
-  reason?: "quota_exceeded";
+  reason?: "NO_CREDITS";
+  message?: string;
 }
-
-export async function isEarlyAccess(email: string): Promise<boolean> {
-  try {
-    const admin = getSupabaseAdmin();
-    const { data } = await admin
-      .from("beta_whitelist")
-      .select("email")
-      .eq("email", email.toLowerCase())
-      .maybeSingle();
-    return !!data;
-  } catch {
-    return false;
-  }
-}
-
-export async function checkUserAccess(email: string): Promise<"premium" | "free"> {
-  return (await isEarlyAccess(email)) ? "premium" : "free";
-}
-
-export async function canUsePremiumFeature(userId: string, email?: string): Promise<boolean> {
-  try {
-    if (email && (await isEarlyAccess(email))) return true;
-
-    const admin = getSupabaseAdmin();
-    const { data: sub } = await admin
-      .from("subscriptions")
-      .select("plan, status, pass_expires_at")
-      .eq("user_id", userId)
-      .single();
-
-    if (!sub) return false;
-
-    if (sub.plan === "monthly" && sub.status === "active") return true;
-
-    if (sub.plan === "pass48h") {
-      return !!(sub.pass_expires_at && new Date(sub.pass_expires_at) > new Date());
-    }
-
-    return false;
-  } catch {
-    return false; // Fail closed: if Supabase is down, block premium features
-  }
-}
-
-export async function canAnalyze(userId: string, email?: string): Promise<BillingResult> {
-  try {
-    const admin = getSupabaseAdmin();
-
-    if (email && (await isEarlyAccess(email))) {
-      return { allowed: true, isPremium: true };
-    }
-
-    const { count } = await admin
-      .from("analyses")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", userId);
-
-    if ((count ?? 0) < 1) return { allowed: true, isPremium: false };
-
-    const { data: sub } = await admin
-      .from("subscriptions")
-      .select("plan, status, pass_expires_at")
-      .eq("user_id", userId)
-      .single();
-
-    if (!sub) return { allowed: false, reason: "quota_exceeded" };
-
-    if (sub.plan === "pass48h") {
-      const expired = !sub.pass_expires_at || new Date(sub.pass_expires_at) <= new Date();
-      return expired
-        ? { allowed: false, reason: "quota_exceeded" }
-        : { allowed: true, isPremium: true };
-    }
-
-    if (sub.plan === "monthly" && sub.status === "active") {
-      return { allowed: true, isPremium: true };
-    }
-
-    return { allowed: false, reason: "quota_exceeded" };
-  } catch {
-    return { allowed: false, reason: "quota_exceeded" }; // Fail closed
-  }
-}
-
-// ── Système de crédits ──
 
 export const CREDIT_COSTS = {
   ats_analysis: 1,
@@ -100,46 +29,117 @@ export const CREDIT_COSTS = {
 
 export type CreditAction = keyof typeof CREDIT_COSTS;
 
-export async function getUserCredits(userId: string, email?: string): Promise<number> {
+// ── Early Access (ex beta_whitelist → early_access) ──
+
+export async function isEarlyAccess(email: string): Promise<boolean> {
+  try {
+    const { data } = await getSupabaseAdmin()
+      .from("early_access")
+      .select("email")
+      .eq("email", email.toLowerCase())
+      .maybeSingle();
+    return !!data;
+  } catch {
+    return false;
+  }
+}
+
+// ── Get or create subscription ──
+
+export async function getSubscription(userId: string): Promise<Subscription> {
   const admin = getSupabaseAdmin();
   const { data } = await admin
-    .from("user_credits")
-    .select("balance")
+    .from("subscriptions")
+    .select("user_id, plan, status, credits_remaining, stripe_customer_id, stripe_subscription_id, subscription_expires_at")
     .eq("user_id", userId)
     .maybeSingle();
 
-  if (data) return data.balance;
+  if (data) return data as Subscription;
 
-  // Tous les utilisateurs démarrent avec 2 crédits (beta whitelist = accès illimité via hasUnlimitedAccess)
-  const initialCredits = 2;
-  const { data: inserted } = await admin
-    .from("user_credits")
-    .upsert({ user_id: userId, balance: initialCredits, lifetime_earned: initialCredits })
-    .select("balance")
-    .single();
+  // Auto-create free subscription with 2 credits
+  const newSub: Partial<Subscription> = {
+    user_id: userId,
+    plan: "free",
+    status: "active",
+    credits_remaining: 2,
+  };
 
-  return inserted?.balance ?? initialCredits;
+  await admin.from("subscriptions").upsert(newSub, { onConflict: "user_id" });
+
+  return {
+    user_id: userId,
+    plan: "free",
+    status: "active",
+    credits_remaining: 2,
+    stripe_customer_id: null,
+    stripe_subscription_id: null,
+    subscription_expires_at: null,
+  };
 }
 
-export async function deductCredits(
-  userId: string,
-  amount: number,
-  reason: string
-): Promise<{ success: boolean; newBalance?: number; error?: string }> {
-  const admin = getSupabaseAdmin();
+// ── Has unlimited access ──
 
-  const balance = await getUserCredits(userId);
-  if (balance < amount) {
-    return { success: false, error: "insufficient_credits" };
+export async function hasUnlimitedAccess(userId: string, email?: string): Promise<boolean> {
+  // 1. Early access = unlimited
+  if (email && (await isEarlyAccess(email))) return true;
+
+  // 2. Pro with active subscription
+  const sub = await getSubscription(userId);
+  if (sub.plan === "pro" && sub.status === "active" && sub.subscription_expires_at) {
+    return new Date(sub.subscription_expires_at) > new Date();
   }
 
-  const newBalance = balance - amount;
+  return false;
+}
+
+// ── Can analyze (main billing gate) ──
+
+export async function canAnalyze(userId: string, email?: string): Promise<BillingResult> {
+  // 1. Early access
+  if (email && (await isEarlyAccess(email))) {
+    return { allowed: true };
+  }
+
+  // 2. Get subscription
+  const sub = await getSubscription(userId);
+
+  // 3. Pro active with valid expiration
+  if (sub.plan === "pro" && sub.status === "active" && sub.subscription_expires_at) {
+    if (new Date(sub.subscription_expires_at) > new Date()) {
+      return { allowed: true };
+    }
+  }
+
+  // 4. Has credits remaining
+  if (sub.credits_remaining > 0) {
+    return { allowed: true };
+  }
+
+  // 5. No credits
+  return {
+    allowed: false,
+    reason: "NO_CREDITS",
+    message: "Vous n'avez plus de crédits. Rechargez avec le Pack Starter (2,90\u20ac) ou passez en Recherche Active (8,90\u20ac/mois).",
+  };
+}
+
+// ── Consume credit (called AFTER successful analysis) ──
+
+export async function consumeCredit(userId: string, amount: number, reason: string): Promise<{ success: boolean; newBalance?: number }> {
+  const admin = getSupabaseAdmin();
+  const sub = await getSubscription(userId);
+
+  if (sub.credits_remaining < amount) {
+    return { success: false };
+  }
+
+  const newBalance = sub.credits_remaining - amount;
   const { error } = await admin
-    .from("user_credits")
-    .update({ balance: newBalance, updated_at: new Date().toISOString() })
+    .from("subscriptions")
+    .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
     .eq("user_id", userId);
 
-  if (error) return { success: false, error: error.message };
+  if (error) return { success: false };
 
   await admin.from("credit_transactions").insert({
     user_id: userId,
@@ -150,24 +150,19 @@ export async function deductCredits(
   return { success: true, newBalance };
 }
 
-export async function addCredits(
-  userId: string,
-  amount: number,
-  reason: string
-): Promise<{ success: boolean; newBalance?: number }> {
+// ── Add credits ──
+
+export async function addCredits(userId: string, amount: number, reason: string): Promise<{ success: boolean; newBalance?: number }> {
   const admin = getSupabaseAdmin();
+  const sub = await getSubscription(userId);
 
-  const currentBalance = await getUserCredits(userId);
-  const newBalance = currentBalance + amount;
+  const newBalance = sub.credits_remaining + amount;
+  const { error } = await admin
+    .from("subscriptions")
+    .update({ credits_remaining: newBalance, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
 
-  await admin
-    .from("user_credits")
-    .upsert({
-      user_id: userId,
-      balance: newBalance,
-      lifetime_earned: currentBalance + amount,
-      updated_at: new Date().toISOString(),
-    });
+  if (error) return { success: false };
 
   await admin.from("credit_transactions").insert({
     user_id: userId,
@@ -178,25 +173,36 @@ export async function addCredits(
   return { success: true, newBalance };
 }
 
-export async function hasUnlimitedAccess(userId: string, email?: string): Promise<boolean> {
-  if (email && (await isEarlyAccess(email))) return true;
+// ── Get user credits (simple helper) ──
 
-  const admin = getSupabaseAdmin();
-  const { data: sub } = await admin
-    .from("subscriptions")
-    .select("plan, status, pass_expires_at")
-    .eq("user_id", userId)
-    .single();
+export async function getUserCredits(userId: string): Promise<number> {
+  const sub = await getSubscription(userId);
+  return sub.credits_remaining;
+}
 
-  if (!sub || sub.status !== "active") return false;
+// ── Get user plan info (for dashboard display) ──
 
-  if (sub.plan === "monthly") {
-    // Prepaid plans have an expiration date
-    if (sub.pass_expires_at) {
-      return new Date(sub.pass_expires_at) > new Date();
-    }
-    return true; // Legacy subscriptions without expiration
+export async function getUserPlanInfo(userId: string, email?: string): Promise<{
+  plan: PlanType;
+  credits: number;
+  unlimited: boolean;
+  expiresAt: string | null;
+}> {
+  const earlyAccess = email ? await isEarlyAccess(email) : false;
+
+  if (earlyAccess) {
+    return { plan: "early_access", credits: 999999, unlimited: true, expiresAt: null };
   }
 
-  return false;
+  const sub = await getSubscription(userId);
+  const unlimited = sub.plan === "pro" && sub.status === "active" && sub.subscription_expires_at
+    ? new Date(sub.subscription_expires_at) > new Date()
+    : false;
+
+  return {
+    plan: sub.plan as PlanType,
+    credits: sub.credits_remaining,
+    unlimited,
+    expiresAt: sub.subscription_expires_at,
+  };
 }

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
-import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 
@@ -315,7 +315,7 @@ export async function POST(req: NextRequest) {
   const unlimited = await hasUnlimitedAccess(userId, email);
   if (!unlimited) {
     const cost = analysisType === "jd" ? CREDIT_COSTS.jd_analysis : CREDIT_COSTS.ats_analysis;
-    const deduction = await deductCredits(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
+    const deduction = await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
     if (!deduction.success) {
       return NextResponse.json(
         { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: cost },

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import Stripe from "stripe";
 
-// Singleton — reuse across warm invocations on Vercel
 let _stripe: Stripe | null = null;
 function getStripe() {
   if (!_stripe) {
@@ -14,36 +13,25 @@ function getStripe() {
   return _stripe;
 }
 
-const MONTHLY_PRICES = [
-  { months: 1, price: 8.90, discount: 0 },
-  { months: 2, price: 16.91, discount: 5 },
-  { months: 3, price: 24.03, discount: 10 },
-  { months: 4, price: 30.49, discount: 14 },
-  { months: 5, price: 36.31, discount: 18 },
-  { months: 6, price: 41.34, discount: 23 },
-];
-
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  let body: { plan?: string; months?: number };
+  let body: { plan?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Corps invalide" }, { status: 400 });
   }
 
-  const { plan, months } = body;
-  if (plan !== "monthly" && plan !== "pass48h") {
+  const { plan } = body;
+  if (plan !== "starter" && plan !== "pro") {
     return NextResponse.json({ error: "Plan invalide" }, { status: 400 });
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-
-  let sessionConfig: Stripe.Checkout.SessionCreateParams;
 
   const commonConfig = {
     locale: "fr" as const,
@@ -51,45 +39,31 @@ export async function POST(req: NextRequest) {
     billing_address_collection: "auto" as const,
   };
 
-  if (plan === "pass48h") {
+  let sessionConfig: Stripe.Checkout.SessionCreateParams;
+
+  if (plan === "starter") {
     sessionConfig = {
       ...commonConfig,
       mode: "payment",
-      line_items: [{ price: process.env.STRIPE_PRICE_ID_PASS48H!, quantity: 1 }],
+      line_items: [{ price: process.env.STRIPE_PRICE_ID_STARTER!, quantity: 1 }],
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/pricing`,
-      metadata: { userId, plan: "pass48h" },
+      metadata: { userId, plan: "starter" },
       custom_text: {
-        submit: { message: "Paiement unique — accès immédiat après confirmation" },
+        submit: { message: "Paiement unique — +4 crédits ajoutés immédiatement" },
       },
     };
   } else {
-    // Monthly plan — 1-6 months prepaid
-    const selectedMonths = Math.min(6, Math.max(1, months ?? 1));
-    const monthData = MONTHLY_PRICES[selectedMonths - 1];
-    const priceInCents = Math.round(monthData.price * 100);
-
+    // Pro plan — monthly subscription
     sessionConfig = {
       ...commonConfig,
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: `CVpass Recherche Active — ${selectedMonths} mois`,
-              description: `Analyses illimitées, éditeur CV IA, export PDF illimité, lettre de motivation, historique complet`,
-            },
-            unit_amount: priceInCents,
-          },
-          quantity: 1,
-        },
-      ],
+      mode: "subscription",
+      line_items: [{ price: process.env.STRIPE_PRICE_ID_PRO!, quantity: 1 }],
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/pricing`,
-      metadata: { userId, plan: "monthly", months: String(selectedMonths) },
+      metadata: { userId, plan: "pro" },
       custom_text: {
-        submit: { message: "Résiliable à tout moment depuis votre espace client" },
+        submit: { message: "Analyses illimitées — résiliable à tout moment" },
       },
     };
   }

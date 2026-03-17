@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { canUsePremiumFeature } from "@/lib/billing";
+import { hasUnlimitedAccess, consumeCredit, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { Gap } from "@/lib/store";
 import { restructureWithGPT, buildCvPdfBuffer, buildLetterPdfBuffer, CVData } from "@/lib/pdf-builder";
@@ -25,12 +25,15 @@ export async function POST(req: NextRequest) {
   const userEmail = user.emailAddresses[0]?.emailAddress;
   const firstName = user.firstName ?? "là";
 
-  const isPremium = await canUsePremiumFeature(userId, userEmail);
-  if (!isPremium) {
-    return NextResponse.json(
-      { error: "PREMIUM_REQUIRED", message: "Exportez votre CV optimisé en PDF avec un pass CVpass." },
-      { status: 403 }
-    );
+  const unlimited = await hasUnlimitedAccess(userId, userEmail);
+  if (!unlimited) {
+    const deduction = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export_email");
+    if (!deduction.success) {
+      return NextResponse.json(
+        { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
+        { status: 402 }
+      );
+    }
   }
 
   let body: {

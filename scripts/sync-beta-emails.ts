@@ -66,7 +66,7 @@ async function syncToSupabase(emails: string[]): Promise<number> {
     const batch = emails.slice(i, i + batchSize).map((email) => ({ email }));
 
     const { error, data: upserted } = await supabase
-      .from("beta_whitelist")
+      .from("early_access")
       .upsert(batch, { onConflict: "email", ignoreDuplicates: true })
       .select("email");
 
@@ -81,7 +81,7 @@ async function syncToSupabase(emails: string[]): Promise<number> {
 }
 
 async function main() {
-  console.log("=== Sync Brevo → Supabase beta_whitelist ===\n");
+  console.log("=== Sync Brevo → Supabase early_access ===\n");
 
   console.log("📡 Récupération des contacts Brevo...");
   const emails = await fetchAllBrevoContacts();
@@ -94,7 +94,7 @@ async function main() {
 
   console.log("💾 Insertion dans Supabase...");
   const inserted = await syncToSupabase(emails);
-  console.log(`✅ Insertions dans beta_whitelist : ${inserted}\n`);
+  console.log(`✅ Insertions dans early_access : ${inserted}\n`);
 
   console.log("📋 Liste complète des emails :");
   emails.forEach((email, i) => console.log(`  ${i + 1}. ${email}`));

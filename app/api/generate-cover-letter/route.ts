@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
-import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   // Vérifier crédits ou accès illimité
   const unlimited = await hasUnlimitedAccess(userId, email);
   if (!unlimited) {
-    const deduction = await deductCredits(userId, CREDIT_COSTS.cover_letter, "cover_letter");
+    const deduction = await consumeCredit(userId, CREDIT_COSTS.cover_letter, "cover_letter");
     if (!deduction.success) {
       return NextResponse.json(
         { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: CREDIT_COSTS.cover_letter },

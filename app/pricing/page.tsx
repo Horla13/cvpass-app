@@ -8,29 +8,12 @@ import { AppHeader } from "@/components/AppHeader";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
 
-const MONTHLY_PRICES = [
-  { months: 1, price: 8.90, discount: 0 },
-  { months: 2, price: 16.91, discount: 5 },
-  { months: 3, price: 24.03, discount: 10 },
-  { months: 4, price: 30.49, discount: 14 },
-  { months: 5, price: 36.31, discount: 18 },
-  { months: 6, price: 41.34, discount: 23 },
-];
-
-function formatPrice(n: number): string {
-  return n.toFixed(2).replace(".", ",");
-}
-
 export default function PricingPage() {
   const router = useRouter();
   const posthog = usePostHog();
   const [loading, setLoading] = useState<string | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [unlimited, setUnlimited] = useState(false);
-  const [selectedMonths, setSelectedMonths] = useState(1);
-
-  const monthData = MONTHLY_PRICES[selectedMonths - 1];
-  const fullPrice = selectedMonths * 8.90;
 
   useEffect(() => {
     fetch("/api/credits")
@@ -54,7 +37,7 @@ export default function PricingPage() {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId, months: planId === "monthly" ? selectedMonths : undefined }),
+        body: JSON.stringify({ plan: planId }),
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -122,7 +105,7 @@ export default function PricingPage() {
             </div>
             <div className="mb-6" />
             <ul className="space-y-3 mb-7">
-              {["2 analyses génériques (à vie)", "Vérification compatibilité ATS", "Suggestions en lecture seule", "Export PDF avec filigrane"].map((f) => (
+              {["2 analyses offertes à l'inscription", "Toutes les fonctionnalités accessibles", "Export PDF (1 crédit)", "Crédits sans expiration"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600 dark:text-gray-300">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -149,7 +132,7 @@ export default function PricingPage() {
             </div>
             <p className="text-[13px] text-gray-400 dark:text-gray-500 mb-6">paiement unique</p>
             <ul className="space-y-3 mb-7">
-              {["10 crédits", "Éditeur CV avec corrections IA", "Export PDF propre (sans filigrane)", "Crédits sans expiration"].map((f) => (
+              {["4 crédits d'analyse", "+ vos 2 crédits gratuits = 6 au total", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600 dark:text-gray-300">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -157,11 +140,11 @@ export default function PricingPage() {
               ))}
             </ul>
             <button
-              onClick={() => handlePlanClick("pass48h")}
-              disabled={loading === "pass48h"}
+              onClick={() => handlePlanClick("starter")}
+              disabled={loading === "starter"}
               className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200 dark:shadow-green-900 transition-all disabled:opacity-50"
             >
-              {loading === "pass48h" ? "Redirection..." : "Acheter le pack"}
+              {loading === "starter" ? "Redirection..." : "Acheter le pack"}
             </button>
           </div>
 
@@ -174,45 +157,15 @@ export default function PricingPage() {
               <span className="text-[20px]">👑</span>
               <h3 className="font-display text-[20px] font-bold text-gray-900 dark:text-gray-100">Recherche Active</h3>
             </div>
-            <p className="text-[13px] text-gray-500 dark:text-gray-400 mb-5">Scans illimités pendant {selectedMonths * 30} jours</p>
+            <p className="text-[13px] text-gray-500 dark:text-gray-400 mb-5">Analyses illimitées pendant 30 jours</p>
 
-            {/* Price with discount */}
-            <div className="mb-1">
-              {monthData.discount > 0 && (
-                <div className="text-[13px] text-gray-400 dark:text-gray-500 line-through">{formatPrice(fullPrice)}&euro;</div>
-              )}
-              <span className="font-display text-[38px] font-extrabold text-gray-900 dark:text-gray-100 tracking-tighter">{formatPrice(monthData.price)}&euro;</span>
-              {monthData.discount > 0 && (
-                <div className="text-[13px] text-green-600 font-semibold">
-                  -{monthData.discount}% ({formatPrice(fullPrice - monthData.price)}&euro; d&apos;économie)
-                </div>
-              )}
+            <div className="flex items-baseline gap-1 mb-1">
+              <span className="font-display text-[38px] font-extrabold text-gray-900 dark:text-gray-100 tracking-tighter">8,90&euro;</span>
             </div>
-            <p className="text-[13px] text-gray-400 dark:text-gray-500 mb-4">pour {selectedMonths} mois</p>
-
-            {/* Month selector */}
-            <div className="flex items-center justify-start gap-4 mb-5">
-              <button
-                onClick={() => setSelectedMonths(Math.max(1, selectedMonths - 1))}
-                disabled={selectedMonths <= 1}
-                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              </button>
-              <span className="text-[16px] font-bold text-gray-900 dark:text-gray-100 min-w-[80px] text-center">
-                {selectedMonths} mois
-              </span>
-              <button
-                onClick={() => setSelectedMonths(Math.min(6, selectedMonths + 1))}
-                disabled={selectedMonths >= 6}
-                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:border-blue-400 hover:text-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              </button>
-            </div>
+            <p className="text-[13px] text-gray-400 dark:text-gray-500 mb-6">par mois</p>
 
             <ul className="space-y-3 mb-7">
-              {["Scans illimités", "Éditeur CV avec corrections IA", "Export PDF propre illimité", "Crédits conservés après résiliation"].map((f) => (
+              {["Analyses illimitées pendant 30 jours", "Renouvellement automatique", "Sans engagement", "Résiliable à tout moment"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600 dark:text-gray-300">
                   <svg className="mt-0.5 flex-shrink-0 text-blue-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -220,11 +173,11 @@ export default function PricingPage() {
               ))}
             </ul>
             <button
-              onClick={() => handlePlanClick("monthly")}
-              disabled={loading === "monthly"}
+              onClick={() => handlePlanClick("pro")}
+              disabled={loading === "pro"}
               className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200 dark:shadow-blue-900 transition-all disabled:opacity-50"
             >
-              {loading === "monthly" ? "Redirection..." : "Passer en illimité"}
+              {loading === "pro" ? "Redirection..." : "Passer en illimité"}
             </button>
           </div>
         </div>
@@ -250,7 +203,7 @@ export default function PricingPage() {
                 {[
                   ["Prix", "0€", "2,90€", "8,90€/mois"],
                   ["Idéal pour", "Découvrir", "Postuler à une offre", "Recherche intensive"],
-                  ["Scans", "2 (à vie)", "10 crédits", "Illimité"],
+                  ["Crédits", "2 (à vie)", "+4 par achat", "Illimité"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white dark:bg-[#1e293b]" : "bg-gray-50/50 dark:bg-gray-800/50"}>
                     <td className="py-3.5 px-5 font-medium text-gray-800 dark:text-gray-200">{feature}</td>
@@ -265,9 +218,9 @@ export default function PricingPage() {
                   </td>
                 </tr>
                 {[
-                  ["Édition", "Suggestions seules", "Éditeur IA", "Éditeur IA"],
-                  ["Export PDF", "Avec filigrane", "PDF propre", "PDF illimités"],
-                  ["Lettre de motivation IA", "—", "—", "✓"],
+                  ["Édition", "Éditeur IA", "Éditeur IA", "Éditeur IA"],
+                  ["Export PDF", "1 crédit", "1 crédit", "Illimité"],
+                  ["Lettre de motivation IA", "1 crédit", "1 crédit", "Illimité"],
                   ["Validité", "À vie", "Sans expiration", "30 jours/mois"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white dark:bg-[#1e293b]" : "bg-gray-50/50 dark:bg-gray-800/50"}>
@@ -314,8 +267,8 @@ export default function PricingPage() {
           </h2>
           <FAQAccordion items={[
             { question: "Comment fonctionnent les crédits ?", answer: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." },
-            { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 10 crédits utilisables quand vous voulez, l'accès à l'éditeur IA pour accepter et modifier les suggestions, et l'export PDF sans filigrane. Idéal pour 5-10 candidatures. Pas de renouvellement automatique, les crédits sont à vous." },
-            { question: "Comment fonctionne la réduction fidélité ?", answer: "Avec le plan Recherche Active, vous bénéficiez de -5% chaque mois. Mois 1 : 8,90€, Mois 2 : 8,46€... jusqu'à 6,88€ au mois 6+. La réduction est appliquée automatiquement." },
+            { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 4 crédits supplémentaires qui s'ajoutent à votre solde. Pas de renouvellement automatique, les crédits sont à vous et n'expirent jamais. Vous pouvez racheter le pack autant de fois que vous voulez." },
+            { question: "Que comprend Recherche Active ?", answer: "Le plan Recherche Active vous donne un accès illimité à toutes les fonctionnalités pendant 30 jours. C'est un abonnement mensuel résiliable à tout moment, sans engagement." },
             { question: "Puis-je me faire rembourser ?", answer: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." },
             { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." },
             { question: "Comment résilier Recherche Active ?", answer: "Vous pouvez résilier à tout moment depuis votre espace personnel. Résiliation immédiate, sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." },

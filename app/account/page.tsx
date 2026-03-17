@@ -89,7 +89,9 @@ function reasonLabel(reason: string): string {
     ats_analysis: "Analyse ATS",
     pdf_export: "Export PDF",
     purchase_pack: "Achat pack",
-    monthly_subscription: "Abonnement mensuel",
+    purchase_starter: "Achat Starter",
+    monthly_subscription: "Abonnement Pro",
+    admin_fix_boris: "Correction admin",
     referral_bonus: "Bonus parrainage",
     referral_welcome: "Bonus filleul",
   };
@@ -98,8 +100,10 @@ function reasonLabel(reason: string): string {
 
 export default function AccountPage() {
   const { user } = useUser();
+  const [plan, setPlan] = useState<string>("free");
   const [credits, setCredits] = useState(0);
   const [unlimited, setUnlimited] = useState(false);
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [analyses, setAnalyses] = useState<HistoryAnalysis[]>([]);
   const [transactions, setTransactions] = useState<CreditTransaction[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "profile">("overview");
@@ -111,8 +115,11 @@ export default function AccountPage() {
       fetch("/api/history").then((r) => r.ok ? r.json() : ({} as Record<string, unknown>)).catch(() => ({} as Record<string, unknown>)),
       fetch("/api/credit-transactions").then((r) => r.ok ? r.json() : ({} as Record<string, unknown>)).catch(() => ({} as Record<string, unknown>)),
     ]).then(([creditsData, historyData, txData]) => {
-      setCredits((creditsData as Record<string, number>).credits ?? 0);
-      setUnlimited(!!(creditsData as Record<string, boolean>).unlimited);
+      const cd = creditsData as Record<string, unknown>;
+      setPlan((cd.plan as string) ?? "free");
+      setCredits((cd.credits as number) ?? 0);
+      setUnlimited(!!(cd.unlimited as boolean));
+      setExpiresAt((cd.expiresAt as string) ?? null);
       const hist = historyData as Record<string, HistoryAnalysis[]>;
       if (hist.analyses) setAnalyses(hist.analyses);
       const tx = txData as Record<string, CreditTransaction[]>;
@@ -178,27 +185,49 @@ export default function AccountPage() {
                     {/* Credits card */}
                     <div className="bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-[13px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">Crédits disponibles</h3>
+                        <h3 className="text-[13px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">
+                          {plan === "early_access" ? "Early Access" : plan === "pro" ? "Recherche Active" : plan === "starter" ? "Starter" : "Plan Gratuit"}
+                        </h3>
                         <span className="text-amber-500 text-lg">&#9889;</span>
                       </div>
-                      {unlimited ? (
+
+                      {plan === "early_access" ? (
                         <div>
                           <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
-                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Abonnement Recherche Active</p>
+                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Accès Early Access — illimité</p>
+                        </div>
+                      ) : plan === "pro" && unlimited ? (
+                        <div>
+                          <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
+                          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">
+                            Expire le {expiresAt ? new Date(expiresAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "—"}
+                          </p>
+                          {expiresAt && new Date(expiresAt).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 && (
+                            <p className="text-[12px] text-amber-500 font-medium mt-1">Expire bientôt</p>
+                          )}
+                        </div>
+                      ) : plan === "free" ? (
+                        <div>
+                          <p className="text-[40px] font-bold text-gray-900 dark:text-gray-100 font-display">{credits}</p>
+                          <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2 mt-2 mb-1">
+                            <div className="bg-green-500 h-2 rounded-full transition-all" style={{ width: `${Math.min(100, ((2 - credits) / 2) * 100)}%` }} />
+                          </div>
+                          <p className="text-[13px] text-gray-500 dark:text-gray-400">{2 - credits} / 2 crédits utilisés</p>
                         </div>
                       ) : (
                         <div>
                           <p className="text-[40px] font-bold text-gray-900 dark:text-gray-100 font-display">{credits}</p>
                           <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">
-                            {credits === 0 ? "Achetez des crédits pour continuer" : `crédit${credits > 1 ? "s" : ""} restant${credits > 1 ? "s" : ""}`}
+                            {credits === 0 ? "Rechargez vos crédits" : `crédit${credits > 1 ? "s" : ""} restant${credits > 1 ? "s" : ""}`}
                           </p>
                         </div>
                       )}
+
                       <Link
                         href="/pricing"
                         className="mt-5 block text-center py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors"
                       >
-                        {unlimited ? "Gérer mon abonnement" : "Acheter des crédits"}
+                        {plan === "early_access" ? "Voir les plans" : unlimited ? "Gérer mon abonnement" : plan === "starter" && credits < 2 ? "Recharger (+4 crédits)" : "Obtenir plus de crédits"}
                       </Link>
                     </div>
 

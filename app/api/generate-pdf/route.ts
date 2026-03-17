@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { deductCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   const email = user.emailAddresses[0]?.emailAddress;
   const unlimited = await hasUnlimitedAccess(userId, email);
   if (!unlimited) {
-    const deduction = await deductCredits(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    const deduction = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
     if (!deduction.success) {
       return NextResponse.json(
         { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
