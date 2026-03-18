@@ -51,6 +51,7 @@ export default function BlogPage() {
           CV<span style={{ color: "#16a34a" }}>pass</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <Link href="/" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>Accueil</Link>
           <Link href="/pricing" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>Tarifs</Link>
           <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "#16a34a", textDecoration: "none", padding: "7px 12px", borderRadius: 8, background: "#f0fdf4" }}>Blog</Link>
           <Link href="/analyze" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
