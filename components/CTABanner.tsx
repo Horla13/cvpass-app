@@ -14,14 +14,14 @@ export function CTABanner({
   ctaHref = "/signup",
 }: CTABannerProps) {
   return (
-    <section className="bg-brand-black py-[72px] px-8 text-center">
-      <h2 className="font-display text-4xl font-extrabold tracking-tighter text-white mb-3">
+    <section className="bg-gray-50 border-t border-gray-200 py-[72px] px-8 text-center">
+      <h2 className="font-display text-4xl font-extrabold tracking-tighter text-brand-black mb-3">
         {title}
       </h2>
-      <p className="text-base text-white/60 mb-8">{subtitle}</p>
+      <p className="text-base text-brand-gray mb-8">{subtitle}</p>
       <Link
         href={ctaHref}
-        className="inline-flex items-center gap-2 bg-white text-brand-black px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold transition-all duration-200 hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(255,255,255,0.2)]"
+        className="inline-flex items-center gap-2 bg-brand-green text-white px-7 py-3.5 rounded-[10px] text-[15px] font-display font-bold transition-all duration-200 hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(22,163,74,0.3)]"
       >
         {ctaText}
         <svg width="16" height="16" fill="none">
