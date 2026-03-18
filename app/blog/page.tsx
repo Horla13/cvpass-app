@@ -51,9 +51,9 @@ export default function BlogPage() {
           CV<span style={{ color: "#16a34a" }}>pass</span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link href="/#pricing" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>Tarifs</Link>
+          <Link href="/pricing" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>Tarifs</Link>
           <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "#16a34a", textDecoration: "none", padding: "7px 12px", borderRadius: 8, background: "#f0fdf4" }}>Blog</Link>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
+          <Link href="/analyze" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
             Analyser mon CV →
           </Link>
         </div>
@@ -124,7 +124,7 @@ export default function BlogPage() {
           <p style={{ fontSize: 15, color: "var(--text-secondary)", marginBottom: 28, lineHeight: 1.7 }}>
             Analyse gratuite, score ATS immédiat, réécriture IA en 1 clic.
           </p>
-          <Link href="/" style={{
+          <Link href="/analyze" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 15, fontWeight: 700,
             background: "linear-gradient(135deg,#16a34a,#15803d)",

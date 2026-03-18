@@ -271,7 +271,7 @@ export default async function BlogPostPage(
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <Link href="/blog" style={{ fontSize: 14, fontWeight: 500, color: "var(--text-secondary)", textDecoration: "none", padding: "7px 12px", borderRadius: 8 }}>← Blog</Link>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
+          <Link href="/analyze" style={{ display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 700, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "#fff", padding: "9px 20px", borderRadius: 10, textDecoration: "none", boxShadow: "0 1px 3px rgba(22,163,74,.25)" }}>
             Analyser mon CV →
           </Link>
         </div>
@@ -367,7 +367,7 @@ export default async function BlogPostPage(
           <p style={{ fontSize: 14, color: "#166534", marginBottom: 22 }}>
             Analyse gratuite · Score ATS immédiat · Réécriture IA en 1 clic
           </p>
-          <Link href="/" style={{
+          <Link href="/analyze" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 15, fontWeight: 700,
             background: "linear-gradient(135deg,#16a34a,#15803d)",
