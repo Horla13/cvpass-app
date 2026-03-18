@@ -49,8 +49,9 @@ export async function POST(req: NextRequest) {
     const admin = getSupabaseAdmin();
 
     if (email) {
-      // Créer la subscription free avec 2 crédits + email
-      const { error: subError } = await admin
+      // Tenter l'insert. Si la ligne existe déjà (auto-créée par getSubscription),
+      // mettre à jour uniquement l'email sans toucher aux crédits ni au plan.
+      const { error: insertError } = await admin
         .from("subscriptions")
         .insert({
           user_id: userId,
@@ -60,9 +61,18 @@ export async function POST(req: NextRequest) {
           email,
         });
 
-      if (subError && !subError.message.includes("duplicate")) {
-        console.error("Subscription insert error:", subError);
-        return NextResponse.json({ error: "Erreur création subscription" }, { status: 500 });
+      if (insertError) {
+        if (insertError.message.includes("duplicate") || insertError.code === "23505") {
+          // Ligne déjà existante : on patch juste l'email
+          await admin
+            .from("subscriptions")
+            .update({ email, updated_at: new Date().toISOString() })
+            .eq("user_id", userId)
+            .is("email", null);
+        } else {
+          console.error("Subscription insert error:", insertError);
+          return NextResponse.json({ error: "Erreur création subscription" }, { status: 500 });
+        }
       }
 
       // Log la transaction initiale
