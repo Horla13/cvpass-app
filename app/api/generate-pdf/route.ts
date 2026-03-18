@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const buffer = await buildCvPdfBuffer(cvData, { watermark: true });
+    const buffer = await buildCvPdfBuffer(cvData, { watermark: false });
 
     // Consommer le crédit APRÈS génération réussie
     if (!unlimited) {
