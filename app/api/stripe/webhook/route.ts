@@ -123,6 +123,14 @@ export async function POST(req: NextRequest) {
 
     if (subscriptionId && invoice.billing_reason === "subscription_cycle") {
       const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+      // Récupérer l'email pour mettre à jour Brevo
+      const { data: renewedRow } = await admin
+        .from("subscriptions")
+        .select("email")
+        .eq("stripe_subscription_id", subscriptionId)
+        .maybeSingle();
+
       await admin
         .from("subscriptions")
         .update({
@@ -132,6 +140,10 @@ export async function POST(req: NextRequest) {
           updated_at: new Date().toISOString(),
         })
         .eq("stripe_subscription_id", subscriptionId);
+
+      if (renewedRow?.email) {
+        updateBrevoContactPlan(renewedRow.email, "pro").catch(console.error);
+      }
     }
   }
 

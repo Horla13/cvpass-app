@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       ...commonConfig,
       mode: "payment",
       line_items: [{ price: process.env.STRIPE_PRICE_ID_STARTER!, quantity: 1 }],
-      success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}&plan=starter`,
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "starter" },
       custom_text: {
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       ...commonConfig,
       mode: "subscription",
       line_items: [{ price: process.env.STRIPE_PRICE_ID_PRO!, quantity: 1 }],
-      success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}&plan=pro`,
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "pro" },
       custom_text: {

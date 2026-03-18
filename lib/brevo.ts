@@ -13,7 +13,7 @@ function getBrevoHeaders(): Record<string, string> {
  */
 export async function syncBrevoContact(
   email: string,
-  attributes: { PRENOM?: string; NOM?: string; PLAN?: string }
+  attributes: { PRENOM?: string; NOM?: string; PLAN?: string; SIGNUP_DATE?: string }
 ): Promise<void> {
   const apiKey = process.env.BREVO_API_KEY;
   const listId = process.env.BREVO_LIST_ID;

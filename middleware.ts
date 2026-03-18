@@ -12,6 +12,7 @@ const isPublicRoute = createRouteMatcher([
   "/politique-cookies",
   "/blog(.*)",
   "/demo",
+  "/pricing/success",
   "/api/stripe/checkout",
   "/api/stripe/webhook",
   "/api/clerk/webhook",

@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
         PRENOM: firstName === "là" ? undefined : firstName,
         NOM: lastName || undefined,
         PLAN: "free",
+        SIGNUP_DATE: new Date().toISOString().split("T")[0],
       }).catch(console.error);
 
       sendWelcomeEmail(email, firstName).catch(console.error);
