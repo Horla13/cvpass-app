@@ -1285,20 +1285,11 @@ export default function ResultsPage() {
   const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
-  const [isPaid, setIsPaid] = useState<boolean | null>(null);
   const promo = usePromoModal();
 
   useEffect(() => {
     if (gaps.length === 0 && score_avant === 0) router.push("/analyze");
   }, [gaps.length, score_avant, router]);
-
-  // Fetch paid status to gate editor access
-  useEffect(() => {
-    fetch("/api/credits")
-      .then((r) => r.json())
-      .then((d) => setIsPaid(d.isPaid ?? d.unlimited ?? false))
-      .catch(() => setIsPaid(false));
-  }, []);
 
   // Lazy-load CV JSON structure if not available yet
   useEffect(() => {
@@ -1351,7 +1342,6 @@ export default function ResultsPage() {
   }, [resume]);
 
   const handleAcceptGap = (id: string) => {
-    if (!isPaid) { router.push("/pricing"); return; }
     acceptGap(id);
     setAnalysisId(null);
     posthog?.capture("suggestion_accepted");
@@ -1364,7 +1354,6 @@ export default function ResultsPage() {
   };
 
   const handleAcceptAll = () => {
-    if (!isPaid) { router.push("/pricing"); return; }
     for (const gap of pendingGaps) {
       acceptGap(gap.id);
     }
@@ -1372,7 +1361,6 @@ export default function ResultsPage() {
   };
 
   const handleApplyInEditor = (id: string) => {
-    if (!isPaid) { router.push("/pricing"); return; }
     handleAcceptGap(id);
     setActiveTab("editor");
   };
@@ -1776,22 +1764,7 @@ export default function ResultsPage() {
           {/* ─── EDITOR TAB ─── */}
           {activeTab === "editor" && (
             <div>
-              {!isPaid ? (
-                <div className="bg-white rounded-2xl border-2 border-dashed border-green-300 p-12 text-center">
-                  <div className="text-[40px] mb-4">🔒</div>
-                  <h3 className="text-[18px] font-bold text-gray-900 mb-2">Éditeur CV réservé aux membres</h3>
-                  <p className="text-[14px] text-gray-500 mb-6 max-w-md mx-auto">
-                    Passez au plan Coup de pouce ou Recherche Active pour débloquer l&apos;éditeur IA, accepter les suggestions et exporter un PDF propre.
-                  </p>
-                  <a
-                    href="/pricing"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-[14px] font-semibold rounded-xl hover:bg-green-600 transition-colors"
-                  >
-                    Voir les offres
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                  </a>
-                </div>
-              ) : cvJson ? (
+              {cvJson ? (
                 <CVEditorWithPanel
                   cvJson={cvJson}
                   gaps={gaps}
