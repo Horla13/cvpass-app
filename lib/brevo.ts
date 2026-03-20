@@ -257,7 +257,7 @@ export async function sendPaymentConfirmationEmail(
   const planName = isStarter ? "Coup de pouce" : "Recherche Active";
   const description = isStarter
     ? "4 crédits ont été ajoutés à votre compte. Utilisez-les pour analyser et optimiser vos CVs."
-    : "Vous avez un accès illimité pendant 30 jours. Analysez, optimisez et exportez sans limite.";
+    : "Vous avez un accès illimité pendant 30 jours. Votre abonnement se renouvelle automatiquement chaque mois. Vous pouvez résilier à tout moment depuis votre espace personnel (Mon compte).";
   const ctaText = isStarter ? "Utiliser mes crédits →" : "Commencer à analyser →";
 
   await sendEmail({

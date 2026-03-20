@@ -250,11 +250,11 @@ export default function PricingPage() {
         <div className="flex flex-wrap items-center justify-center gap-6">
           <span className="inline-flex items-center gap-1.5 text-[13px] text-green-600 font-medium">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-            Pas de renouvellement surprise
+            Résiliable en un clic
           </span>
           <span className="inline-flex items-center gap-1.5 text-[13px] text-green-600 font-medium">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-            Crédits sans expiration
+            Crédits Starter sans expiration
           </span>
         </div>
       </section>

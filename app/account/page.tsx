@@ -108,6 +108,8 @@ export default function AccountPage() {
   const [transactions, setTransactions] = useState<CreditTransaction[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "profile">("overview");
   const [loading, setLoading] = useState(true);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelled, setCancelled] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -200,10 +202,13 @@ export default function AccountPage() {
                         <div>
                           <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
                           <p className="text-[13px] text-gray-500 mt-1">
-                            Expire le {expiresAt ? new Date(expiresAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "—"}
+                            {cancelled ? "Accès jusqu'au" : "Renouvellement le"} {expiresAt ? new Date(expiresAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "—"}
                           </p>
-                          {expiresAt && new Date(expiresAt).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 && (
-                            <p className="text-[12px] text-amber-500 font-medium mt-1">Expire bientôt</p>
+                          {cancelled && (
+                            <p className="text-[12px] text-amber-500 font-medium mt-1">Résiliation programmée — accès maintenu jusqu&apos;à la fin de la période</p>
+                          )}
+                          {expiresAt && !cancelled && new Date(expiresAt).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 && (
+                            <p className="text-[12px] text-amber-500 font-medium mt-1">Renouvellement bientôt</p>
                           )}
                         </div>
                       ) : plan === "free" ? (
@@ -227,8 +232,39 @@ export default function AccountPage() {
                         href="/pricing"
                         className="mt-5 block text-center py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors"
                       >
-                        {plan === "early_access" ? "Voir les plans" : unlimited ? "Gérer mon abonnement" : plan === "starter" && credits < 2 ? "Recharger (+4 crédits)" : "Obtenir plus de crédits"}
+                        {plan === "early_access" ? "Voir les plans" : unlimited ? "Voir les plans" : plan === "starter" && credits < 2 ? "Recharger (+4 crédits)" : "Obtenir plus de crédits"}
                       </Link>
+
+                      {plan === "pro" && unlimited && !cancelled && (
+                        <button
+                          onClick={async () => {
+                            if (!confirm("Êtes-vous sûr de vouloir résilier votre abonnement Recherche Active ? Vous conserverez l'accès jusqu'à la fin de la période payée.")) return;
+                            setCancelling(true);
+                            try {
+                              const res = await fetch("/api/stripe/cancel", { method: "POST" });
+                              if (res.ok) {
+                                setCancelled(true);
+                              } else {
+                                const data = await res.json();
+                                alert(data.error ?? "Erreur lors de la résiliation");
+                              }
+                            } catch {
+                              alert("Erreur réseau. Réessayez.");
+                            } finally {
+                              setCancelling(false);
+                            }
+                          }}
+                          disabled={cancelling}
+                          className="mt-2 block w-full text-center py-2.5 text-[13px] font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl border border-red-200 transition-colors disabled:opacity-50"
+                        >
+                          {cancelling ? "Résiliation en cours..." : "Résilier mon abonnement"}
+                        </button>
+                      )}
+                      {cancelled && (
+                        <p className="mt-2 text-center text-[12px] text-gray-400">
+                          Abonnement résilié — accès maintenu jusqu&apos;à la fin de la période
+                        </p>
+                      )}
                     </div>
 
                     {/* Costs card */}
