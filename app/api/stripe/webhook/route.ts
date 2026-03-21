@@ -49,6 +49,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Métadonnées manquantes" }, { status: 400 });
     }
 
+    // Idempotency: check if this checkout session was already processed
+    const { data: existingTx } = await admin
+      .from("credit_transactions")
+      .select("id")
+      .eq("stripe_session_id", session.id)
+      .maybeSingle();
+
+    if (existingTx) {
+      // Already processed — return 200 so Stripe stops retrying
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+
     const customerEmail = session.customer_details?.email ?? session.customer_email;
 
     if (plan === "starter") {
@@ -75,11 +87,12 @@ export async function POST(req: NextRequest) {
         { onConflict: "user_id" }
       );
 
-      // Log transaction (credits already added via upsert above)
+      // Log transaction with stripe_session_id for idempotency
       await admin.from("credit_transactions").insert({
         user_id: userId,
         amount: 4,
         reason: "purchase_starter",
+        stripe_session_id: session.id,
       });
 
       if (customerEmail) {
