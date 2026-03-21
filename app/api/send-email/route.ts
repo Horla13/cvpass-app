@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
   }
 
   const { type, email } = body;
-  if (!email) {
-    return NextResponse.json({ error: "Email destinataire requis" }, { status: 400 });
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Email destinataire invalide" }, { status: 400 });
   }
 
   try {

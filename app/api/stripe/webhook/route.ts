@@ -103,7 +103,17 @@ export async function POST(req: NextRequest) {
     }
 
     if (plan === "pro") {
-      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      // Get actual subscription period from Stripe instead of hardcoding 30 days
+      let expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      if (session.subscription) {
+        try {
+          const sub = await getStripe().subscriptions.retrieve(session.subscription as string, { expand: ["items"] });
+          const periodEnd = sub.items?.data?.[0]?.current_period_end;
+          if (periodEnd) expiresAt = new Date(periodEnd * 1000).toISOString();
+        } catch {
+          // Fallback to 30 days if Stripe API fails
+        }
+      }
 
       await admin.from("subscriptions").upsert(
         {
@@ -136,7 +146,15 @@ export async function POST(req: NextRequest) {
         : undefined;
 
     if (subscriptionId && invoice.billing_reason === "subscription_cycle") {
-      const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      // Get actual period end from Stripe
+      let expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+      try {
+        const sub = await getStripe().subscriptions.retrieve(subscriptionId, { expand: ["items"] });
+        const periodEnd = sub.items?.data?.[0]?.current_period_end;
+        if (periodEnd) expiresAt = new Date(periodEnd * 1000).toISOString();
+      } catch {
+        // Fallback to 30 days
+      }
 
       // Récupérer l'email pour mettre à jour Brevo
       const { data: renewedRow } = await admin

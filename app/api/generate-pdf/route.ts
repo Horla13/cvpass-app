@@ -63,7 +63,11 @@ export async function POST(req: NextRequest) {
         .eq("id", analysisId)
         .eq("user_id", userId)
         .single();
-      if (data?.cv_json) {
+      if (
+        data?.cv_json &&
+        typeof data.cv_json === "object" &&
+        (data.cv_json as Record<string, unknown>).contact
+      ) {
         cvData = data.cv_json as CVData;
       }
     }

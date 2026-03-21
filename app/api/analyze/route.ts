@@ -305,9 +305,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const clerk = await clerkClient();
-  const user = await clerk.users.getUser(userId);
-  const email = user.emailAddresses[0]?.emailAddress;
+  let email: string | undefined;
+  try {
+    const clerk = await clerkClient();
+    const user = await clerk.users.getUser(userId);
+    email = user.emailAddresses[0]?.emailAddress;
+  } catch (clerkErr) {
+    console.error("Clerk API error:", clerkErr);
+    return NextResponse.json({ error: "Erreur d'authentification. Réessaie.", code: "auth_error" }, { status: 503 });
+  }
 
   let rawBody: unknown;
   try {
@@ -360,7 +366,13 @@ export async function POST(req: NextRequest) {
     const content = completion.choices[0].message.content;
     if (!content) throw new Error("Réponse vide de l'IA");
 
-    const analysis = JSON.parse(content);
+    let analysis;
+    try {
+      analysis = JSON.parse(content);
+    } catch {
+      console.error("OpenAI returned invalid JSON:", content.substring(0, 500));
+      throw new Error("L'IA a retourné une réponse invalide. Réessaie.");
+    }
 
     if (
       typeof analysis.score_avant !== "number" ||
