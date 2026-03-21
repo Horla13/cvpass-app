@@ -50,6 +50,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true, error: "metadata_missing" });
     }
 
+    // C1: Defense-in-depth — verify no customer mismatch for this userId
+    const { data: existingSub } = await admin
+      .from("subscriptions")
+      .select("stripe_customer_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (existingSub?.stripe_customer_id && existingSub.stripe_customer_id !== session.customer) {
+      console.error("Stripe webhook: customer mismatch", {
+        session_id: session.id,
+        userId,
+        expected: existingSub.stripe_customer_id,
+        received: session.customer,
+      });
+      return NextResponse.json({ received: true, error: "customer_mismatch" });
+    }
+
     // Idempotency: check if this checkout session was already processed
     const { data: existingTx } = await admin
       .from("credit_transactions")
@@ -146,6 +163,17 @@ export async function POST(req: NextRequest) {
         : undefined;
 
     if (subscriptionId && invoice.billing_reason === "subscription_cycle") {
+      // C3: Idempotency — stripe_session_id stores both checkout IDs (cs_xxx) and invoice IDs (in_xxx)
+      const { data: existingInvoiceTx } = await admin
+        .from("credit_transactions")
+        .select("id")
+        .eq("stripe_session_id", invoice.id)
+        .maybeSingle();
+
+      if (existingInvoiceTx) {
+        return NextResponse.json({ received: true, duplicate: true });
+      }
+
       // Get actual period end from Stripe
       let expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
       try {
@@ -156,10 +184,10 @@ export async function POST(req: NextRequest) {
         // Fallback to 30 days
       }
 
-      // Récupérer l'email pour mettre à jour Brevo
+      // Récupérer l'email + user_id pour mettre à jour Brevo et logger la transaction
       const { data: renewedRow } = await admin
         .from("subscriptions")
-        .select("email")
+        .select("email, user_id")
         .eq("stripe_subscription_id", subscriptionId)
         .maybeSingle();
 
@@ -172,6 +200,16 @@ export async function POST(req: NextRequest) {
           updated_at: new Date().toISOString(),
         })
         .eq("stripe_subscription_id", subscriptionId);
+
+      // Log renewal transaction for idempotency tracking
+      if (renewedRow?.user_id) {
+        await admin.from("credit_transactions").insert({
+          user_id: renewedRow.user_id,
+          amount: 999999,
+          reason: "renewal_pro",
+          stripe_session_id: invoice.id,
+        });
+      }
 
       if (renewedRow?.email) {
         updateBrevoContactPlan(renewedRow.email, "pro").catch(console.error);

@@ -57,18 +57,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Vous ne pouvez pas utiliser votre propre code" }, { status: 400 });
   }
 
-  if (referrer.referral_count >= 10) {
-    return NextResponse.json({ error: "Ce parrain a atteint le maximum de parrainages" }, { status: 400 });
-  }
-
   const { data: existing } = await supabase
     .from("referral_uses")
     .select("id")
     .eq("referred_user_id", userId)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     return NextResponse.json({ error: "Vous avez déjà utilisé un code de parrainage" }, { status: 400 });
+  }
+
+  // C2: Atomic increment with .lt() guard — prevents race condition on referral_count
+  const { data: updated } = await supabase
+    .from("referrals")
+    .update({
+      referral_count: referrer.referral_count + 1,
+      credits_earned: referrer.credits_earned + 2,
+    })
+    .eq("user_id", referrer.user_id)
+    .lt("referral_count", 10)
+    .select("user_id")
+    .maybeSingle();
+
+  if (!updated) {
+    return NextResponse.json({ error: "Ce parrain a atteint le maximum de parrainages" }, { status: 400 });
   }
 
   // Record the referral
@@ -77,15 +89,6 @@ export async function POST(req: NextRequest) {
     referred_user_id: userId,
     code,
   });
-
-  // Update referrer stats
-  await supabase
-    .from("referrals")
-    .update({
-      referral_count: referrer.referral_count + 1,
-      credits_earned: referrer.credits_earned + 2,
-    })
-    .eq("user_id", referrer.user_id);
 
   // Grant 2 credits to referrer via proper billing system
   await addCredits(referrer.user_id, 2, "referral_bonus");
