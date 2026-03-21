@@ -40,7 +40,8 @@ export async function POST() {
   );
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("fix-boris upsert error:", error);
+    return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
   }
 
   // Log transaction

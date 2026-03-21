@@ -37,6 +37,7 @@ export async function syncBrevoContact(
     method: "POST",
     headers: getBrevoHeaders(),
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(15_000),
   });
 
   if (!res.ok) {
@@ -59,6 +60,7 @@ export async function updateBrevoContactPlan(
     method: "PUT",
     headers: getBrevoHeaders(),
     body: JSON.stringify({ attributes: { PLAN: plan } }),
+    signal: AbortSignal.timeout(15_000),
   });
 
   if (!res.ok) {
@@ -106,6 +108,7 @@ async function sendEmail(payload: EmailPayload): Promise<void> {
       "api-key": apiKey,
     },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(15_000),
   });
 
   if (!res.ok) {

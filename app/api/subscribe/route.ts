@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
   const { email, source } = body;
 
-  if (!email || !email.includes("@") || !email.includes(".")) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "Adresse email invalide." }, { status: 400 });
   }
 
@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
           SIGNUP_DATE: new Date().toISOString().split("T")[0],
         },
       }),
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (response.ok || response.status === 201 || response.status === 204) {

@@ -116,7 +116,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ analysis: data });
   }
 
-  // List
+  // List with pagination
+  const page = Math.max(1, parseInt(request.nextUrl.searchParams.get("page") ?? "1", 10) || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(request.nextUrl.searchParams.get("limit") ?? "20", 10) || 20));
+  const offset = (page - 1) * limit;
+
   const { data: analyses, error } = await getSupabaseAdmin()
     .from("analyses")
     .select(`
@@ -135,12 +139,18 @@ export async function GET(request: NextRequest) {
     `)
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
-    .limit(50);
+    .range(offset, offset + limit);
 
   if (error) {
     console.error("History fetch error:", error);
     return NextResponse.json({ error: "Erreur de chargement" }, { status: 500 });
   }
 
-  return NextResponse.json({ analyses: analyses ?? [] });
+  const items = analyses ?? [];
+  return NextResponse.json({
+    analyses: items.slice(0, limit),
+    hasMore: items.length > limit,
+    page,
+    limit,
+  });
 }
