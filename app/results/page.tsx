@@ -1291,6 +1291,17 @@ export default function ResultsPage() {
     if (gaps.length === 0 && score_avant === 0) router.push("/analyze");
   }, [gaps.length, score_avant, router]);
 
+  // Warn user before closing/refreshing tab if they have pending work
+  useEffect(() => {
+    const hasWork = gaps.length > 0;
+    if (!hasWork) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [gaps.length]);
+
   // Lazy-load CV JSON structure if not available yet
   useEffect(() => {
     if (!cvJson && cvText) {
@@ -1526,6 +1537,9 @@ export default function ResultsPage() {
                   <div className="text-center mb-5">
                     <p className="text-[13px] text-gray-400">{isJdMatch ? "Taux de correspondance" : "Score CV"}</p>
                     <ScoreStatusBadge score={scoreActuel} />
+                    {scoreActuel > score_avant && (
+                      <p className="text-[11px] text-gray-400 mt-1">Score estimé après optimisations (+{scoreActuel - score_avant} pts)</p>
+                    )}
                   </div>
 
                   {/* Category breakdown */}

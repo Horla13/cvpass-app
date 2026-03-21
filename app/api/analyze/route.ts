@@ -91,6 +91,12 @@ SECTIONS AUTORISÉES À AMÉLIORER (les SEULES que tu peux modifier) :
 
 GAPS — identifie entre 5 et 8 suggestions, triées par impact ATS décroissant.
 
+RÈGLE CRITIQUE SUR LES COMPÉTENCES :
+Chaque compétence doit être UN gap séparé. Ne JAMAIS regrouper plusieurs compétences dans un seul gap.
+❌ INTERDIT : { "texte_suggere": "Python, SQL, Docker" } (3 compétences dans 1 gap)
+✅ CORRECT : 3 gaps séparés, un pour "Python", un pour "SQL", un pour "Docker"
+L'utilisateur doit pouvoir accepter ou refuser CHAQUE compétence individuellement.
+
 LANGUE — toutes les reformulations en français.
 
 RÈGLE ABSOLUE SUR LA RÉDACTION DES MISSIONS CV :
@@ -108,7 +114,7 @@ Retourne UNIQUEMENT un JSON valide, sans markdown :
       "id": string ("g1", "g2"... — trié par impact décroissant),
       "section": string ("Expérience", "Compétences", "Profil", "Titre"),
       "texte_original": string (phrase EXACTE du CV à améliorer, ou "" si compétence à ajouter),
-      "texte_suggere": string (amélioration fidèle avec mots-clés ATS du secteur),
+      "texte_suggere": string (UNE SEULE compétence ou amélioration par gap — jamais de liste),
       "raison": string (1 phrase : cite le mot-clé ATS ajouté et explique pourquoi il est standard dans ce secteur. Ex: "Ajout de 'conduite de travaux' — terme ATS incontournable dans le BTP"),
       "impact": "high" | "medium" | "low",
       "category": "titre" | "accroche" | "experience" | "competence"
@@ -218,9 +224,16 @@ Tu peux UNIQUEMENT suggérer des modifications sur :
 ✅ L'ajout de mots-clés ATS manquants dans les missions
 
 GAPS — identifie entre 5 et 8 suggestions de reformulation, triées par impact ATS décroissant.
+
+RÈGLE CRITIQUE SUR LES COMPÉTENCES :
+Chaque compétence doit être UN gap séparé. Ne JAMAIS regrouper plusieurs compétences dans un seul gap.
+❌ INTERDIT : { "texte_suggere": "Python, SQL, Docker" } (3 compétences dans 1 gap)
+✅ CORRECT : 3 gaps séparés, un pour "Python", un pour "SQL", un pour "Docker"
+L'utilisateur doit pouvoir accepter ou refuser CHAQUE compétence individuellement.
+
 Pour chaque suggestion :
 - texte_original : copie EXACTE de la phrase du CV (ou "" si ajout)
-- texte_suggere : reformulation qui intègre des mots-clés de l'offre tout en restant fidèle au vécu
+- texte_suggere : UNE SEULE compétence ou amélioration par gap — jamais de liste
 - raison : explique QUEL mot-clé ATS est ajouté et POURQUOI il est pertinent pour cette offre spécifique
 
 RÈGLE ABSOLUE SUR LA RÉDACTION DES MISSIONS CV :
@@ -354,6 +367,32 @@ export async function POST(req: NextRequest) {
     ) {
       throw new Error("Format de réponse IA invalide");
     }
+
+    // Post-process: split grouped competence gaps into individual ones
+    const splitGaps: typeof analysis.gaps = [];
+    for (const gap of analysis.gaps) {
+      if (
+        gap.category === "competence" &&
+        gap.texte_original === "" &&
+        gap.texte_suggere &&
+        /[,;]/.test(gap.texte_suggere)
+      ) {
+        const parts = gap.texte_suggere.split(/[,;]\s*/).map((s: string) => s.trim()).filter(Boolean);
+        if (parts.length > 1) {
+          for (let i = 0; i < parts.length; i++) {
+            splitGaps.push({
+              ...gap,
+              id: `${gap.id}_${i + 1}`,
+              texte_suggere: parts[i],
+              raison: `${gap.raison} (${parts[i]})`,
+            });
+          }
+          continue;
+        }
+      }
+      splitGaps.push(gap);
+    }
+    analysis.gaps = splitGaps;
 
     // Consommer le crédit APRÈS analyse réussie
     if (!unlimited) {

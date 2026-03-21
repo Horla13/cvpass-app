@@ -144,7 +144,7 @@ export function buildContent(cv: CVData): unknown[] {
         ],
         margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
-      const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" \u2014 ");
+      const subline = [exp.entreprise, exp.lieu].filter(Boolean).join(" - ");
       if (subline) {
         content.push({
           text: subline,
@@ -157,7 +157,7 @@ export function buildContent(cv: CVData): unknown[] {
       }
       for (const mission of exp.missions ?? []) {
         content.push({
-          text: `\u2013 ${mission}`,
+          text: `- ${mission}`,
           font: "Helvetica",
           fontSize: 10,
           color: "#111827",
@@ -196,7 +196,7 @@ export function buildContent(cv: CVData): unknown[] {
   if (cv.competences?.length > 0) {
     content.push(...sectionTitle("Comp\u00e9tences"));
     content.push({
-      text: cv.competences.join("  \u2022  "),
+      text: cv.competences.join("  |  "),
       font: "Helvetica",
       fontSize: 10,
       color: "#111827",
@@ -208,7 +208,7 @@ export function buildContent(cv: CVData): unknown[] {
   if (cv.centres_interet?.length > 0) {
     content.push(...sectionTitle("Centres d\u2019int\u00e9r\u00eat"));
     content.push({
-      text: cv.centres_interet.join("  \u2022  "),
+      text: cv.centres_interet.join("  |  "),
       font: "Helvetica",
       fontSize: 10,
       color: "#111827",
@@ -243,11 +243,12 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
     pageMargins: [40, 40, 40, options?.watermark ? 50 : 40] as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
     info: {
-      title: `${cv.nom || "CV"} \u2014 CV`,
+      title: `${cv.nom || "CV"} - CV`,
       author: cv.nom || "CVpass",
-      subject: "CV optimis\u00e9 ATS",
-      keywords: "CV, ATS, optimis\u00e9",
+      subject: "CV optimise ATS",
+      keywords: "CV, ATS, optimise",
       creator: "CVpass",
+      producer: "CVpass",
     },
     content: buildContent(cv),
   };

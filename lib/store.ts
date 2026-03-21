@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import type { CVData } from "@/lib/pdf-restructure";
 
 export interface Gap {
@@ -93,10 +94,26 @@ function recalculateScore(score_avant: number, gaps: Gap[]): number {
   const total = gaps.length;
   if (total === 0) return score_avant;
   const accepted = gaps.filter((g) => g.status === "accepted").length;
-  return Math.round(score_avant + (accepted / total) * (100 - score_avant));
+  // Weighted ratio: high-impact suggestions count more toward the bonus
+  const weights = { high: 3, medium: 2, low: 1 };
+  let weightedAccepted = 0;
+  let weightedTotal = 0;
+  for (const g of gaps) {
+    const w = weights[g.impact ?? "medium"];
+    weightedTotal += w;
+    if (g.status === "accepted") weightedAccepted += w;
+  }
+  const ratio = weightedTotal > 0 ? weightedAccepted / weightedTotal : 0;
+  // Fill up to 65% of the remaining gap — never claim 100%
+  // Ex: score_avant=38, gap=62, max bonus=62×0.65=40 → max score ~78
+  // Ex: score_avant=55, gap=45, max bonus=45×0.65=29 → max score ~84
+  const maxBonus = (100 - score_avant) * 0.65;
+  return Math.round(score_avant + maxBonus * ratio);
 }
 
-export const useStore = create<CVPassStore>((set, get) => ({
+export const useStore = create<CVPassStore>()(
+  persist(
+    (set, get) => ({
   cvText: "",
   jobOffer: "",
   gaps: [],
@@ -209,4 +226,29 @@ export const useStore = create<CVPassStore>((set, get) => ({
       jdMatch: null,
       cvJson: null,
     }),
-}));
+}),
+    {
+      name: "cvpass-session",
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? sessionStorage : {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        }
+      ),
+      partialize: (state) => ({
+        cvText: state.cvText,
+        jobOffer: state.jobOffer,
+        gaps: state.gaps,
+        score_avant: state.score_avant,
+        scoreActuel: state.scoreActuel,
+        resume: state.resume,
+        jobTitle: state.jobTitle,
+        coverLetter: state.coverLetter,
+        analysisType: state.analysisType,
+        jdMatch: state.jdMatch,
+        cvJson: state.cvJson,
+      }),
+    }
+  )
+);
