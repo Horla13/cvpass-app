@@ -41,8 +41,9 @@ describe("CVpass store — score recalculation", () => {
       useStore.getState().acceptGap("1");
     });
 
-    // 40 + (1/2) * (100 - 40) = 40 + 30 = 70
-    expect(useStore.getState().scoreActuel).toBe(70);
+    // New formula: 65% of gap, weighted by impact (default medium=2)
+    // weightedAccepted=2, weightedTotal=4, ratio=0.5, maxBonus=60*0.65=39, score=40+39*0.5=60
+    expect(useStore.getState().scoreActuel).toBe(60);
   });
 
   test("score reaches max when all gaps accepted", () => {
@@ -60,8 +61,9 @@ describe("CVpass store — score recalculation", () => {
       useStore.getState().acceptGap("1");
     });
 
-    // 50 + (1/1) * (100 - 50) = 50 + 50 = 100
-    expect(useStore.getState().scoreActuel).toBe(100);
+    // New formula: 65% of gap, weighted by impact (default medium=2)
+    // ratio=1, maxBonus=50*0.65=32.5, score=50+33=83
+    expect(useStore.getState().scoreActuel).toBe(83);
   });
 });
 
