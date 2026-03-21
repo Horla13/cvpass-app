@@ -5,6 +5,7 @@ const _limiters = new Map<string, Ratelimit>();
 
 function getLimiter(requests: number, window: Duration): Ratelimit | null {
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    console.warn("[CVPass] Rate limiting DISABLED — UPSTASH_REDIS_REST_URL or TOKEN missing");
     return null;
   }
   const key = `${requests}:${window}`;

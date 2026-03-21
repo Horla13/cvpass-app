@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { getOpenAI } from "@/lib/openai";
-import { consumeCredit, hasUnlimitedAccess, getUserCredits, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, addCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 
@@ -324,17 +324,19 @@ export async function POST(req: NextRequest) {
 
   const { cvText, jobOffer, analysisType } = parsed.data;
 
-  // Vérifier crédits ou accès illimité (sans consommer)
+  // Vérifier crédits ou accès illimité — consommer AVANT l'appel OpenAI (optimistic debit)
   const unlimited = await hasUnlimitedAccess(userId, email);
   const cost = analysisType === "jd" ? CREDIT_COSTS.jd_analysis : CREDIT_COSTS.ats_analysis;
+  let creditConsumed = false;
   if (!unlimited) {
-    const credits = await getUserCredits(userId);
-    if (credits < cost) {
+    const result = await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
+    if (!result.success) {
       return NextResponse.json(
         { error: "insufficient_credits", code: "insufficient_credits", creditsNeeded: cost },
         { status: 402 }
       );
     }
+    creditConsumed = true;
   }
 
   const userMessage = analysisType === "jd"
@@ -394,15 +396,18 @@ export async function POST(req: NextRequest) {
     }
     analysis.gaps = splitGaps;
 
-    // Consommer le crédit APRÈS analyse réussie
-    if (!unlimited) {
-      await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
-    }
-
     const jobTitle = typeof analysis.job_title === "string" ? analysis.job_title : "";
 
     return NextResponse.json({ ...analysis, job_title: jobTitle, cv_json: null });
   } catch (e: unknown) {
+    // Rembourser le crédit si l'analyse a échoué (optimistic debit rollback)
+    if (creditConsumed) {
+      try {
+        await addCredits(userId, cost, `refund_${analysisType}_analysis_error`);
+      } catch (refundErr) {
+        console.error("CRITICAL: credit refund failed", { userId, cost, reason: analysisType, error: refundErr });
+      }
+    }
     const isTimeout = e instanceof Error && e.message.toLowerCase().includes("timed out");
     if (isTimeout) {
       return NextResponse.json(

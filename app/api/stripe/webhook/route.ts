@@ -46,7 +46,8 @@ export async function POST(req: NextRequest) {
     const plan = session.metadata?.plan;
 
     if (!userId || !plan) {
-      return NextResponse.json({ error: "Métadonnées manquantes" }, { status: 400 });
+      console.error("Stripe webhook: metadata manquante", { session_id: session.id, userId, plan });
+      return NextResponse.json({ received: true, error: "metadata_missing" });
     }
 
     // Idempotency: check if this checkout session was already processed

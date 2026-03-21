@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { consumeCredit, addCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
@@ -25,16 +25,18 @@ export async function POST(req: NextRequest) {
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
+  // Optimistic debit — consommer AVANT la génération PDF
   const unlimited = await hasUnlimitedAccess(userId, email);
+  let creditConsumed = false;
   if (!unlimited) {
-    const { getUserCredits } = await import("@/lib/billing");
-    const credits = await getUserCredits(userId);
-    if (credits < CREDIT_COSTS.pdf_export) {
+    const result = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
+    if (!result.success) {
       return NextResponse.json(
         { error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.pdf_export },
         { status: 402 }
       );
     }
+    creditConsumed = true;
   }
 
   let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string };
@@ -85,11 +87,6 @@ export async function POST(req: NextRequest) {
 
     const buffer = await buildCvPdfBuffer(cvData, { watermark: false });
 
-    // Consommer le crédit APRÈS génération réussie
-    if (!unlimited) {
-      await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
-    }
-
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",
@@ -98,6 +95,14 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (e: unknown) {
+    // Rembourser le crédit si la génération a échoué (optimistic debit rollback)
+    if (creditConsumed) {
+      try {
+        await addCredits(userId, CREDIT_COSTS.pdf_export, "refund_pdf_export_error");
+      } catch (refundErr) {
+        console.error("CRITICAL: credit refund failed", { userId, cost: CREDIT_COSTS.pdf_export, error: refundErr });
+      }
+    }
     const msg = e instanceof Error ? e.message : "Erreur de génération PDF";
     console.error("PDF generation error:", e);
     return NextResponse.json({ error: msg }, { status: 500 });
