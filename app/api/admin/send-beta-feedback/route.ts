@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-
-const ADMIN_EMAILS = ["giovannirusso2004@gmail.com"];
+import { isAdmin } from "@/lib/admin";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
@@ -155,17 +154,8 @@ async function sendOne(email: string, apiKey: string, senderEmail: string, html:
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
-  }
-
-  const { clerkClient } = await import("@clerk/nextjs/server");
-  const clerk = await clerkClient();
-  const user = await clerk.users.getUser(userId);
-  const email = user.emailAddresses[0]?.emailAddress;
-
-  if (!email || !ADMIN_EMAILS.includes(email)) {
-    return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
+  if (!userId || !(await isAdmin(userId))) {
+    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
   }
 
   // Check for dry-run mode (preview without sending)

@@ -1,22 +1,18 @@
 import { NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { isAdmin } from "@/lib/admin";
 
-const ADMIN_EMAILS = ["giovannirusso@cvpass.fr", "giovanni@vertexlab.fr", "giovannirusso.dev@gmail.com"];
 const BORIS_EMAIL = "borisjuniorkoulevo@gmail.com";
 
 export async function POST() {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
-
-  const clerk = await clerkClient();
-  const adminUser = await clerk.users.getUser(userId);
-  const adminEmail = adminUser.emailAddresses[0]?.emailAddress;
-  if (!adminEmail || !ADMIN_EMAILS.includes(adminEmail)) {
-    return NextResponse.json({ error: "Admin uniquement" }, { status: 403 });
+  if (!userId || !(await isAdmin(userId))) {
+    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
   }
 
   // Find Boris's Clerk user ID
+  const clerk = await clerkClient();
   const users = await clerk.users.getUserList({ emailAddress: [BORIS_EMAIL] });
   const boris = users.data[0];
   if (!boris) {
