@@ -14,6 +14,7 @@ export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [unlimited, setUnlimited] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     fetch("/api/credits")
@@ -47,12 +48,12 @@ export default function PricingPage() {
 
       const data = await res.json();
       if (!res.ok || !data.url) {
-        alert(data.error ?? "Impossible d'ouvrir le paiement. Réessayez.");
+        setErrorMsg(data.error ?? "Impossible d'ouvrir le paiement. Réessayez.");
         return;
       }
       window.location.href = data.url;
     } catch {
-      alert("Une erreur est survenue. Réessayez.");
+      setErrorMsg("Une erreur est survenue. Réessayez.");
     } finally {
       setLoading(null);
     }
@@ -62,8 +63,17 @@ export default function PricingPage() {
     <div className="min-h-screen bg-white">
       <AppHeader />
 
+      {errorMsg && (
+        <div className="max-w-xl mx-auto mt-4 mb-0 flex items-center justify-between gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-[14px] mx-8">
+          <span>{errorMsg}</span>
+          <button onClick={() => setErrorMsg("")} className="text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Fermer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          </button>
+        </div>
+      )}
+
       {/* Hero */}
-      <section className="pt-20 pb-6 px-8 text-center">
+      <section className="pt-20 pb-6 px-4 md:px-8 text-center">
         <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-5 py-2 text-[13px] text-green-700 font-medium mb-6">
           <span>✨</span> Tarification simple et transparente
         </div>

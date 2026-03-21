@@ -37,7 +37,9 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
 
       {/* Textarea */}
       <div className="border border-gray-200 rounded-xl overflow-hidden mb-6">
+        <label htmlFor="jobOffer" className="sr-only">Description du poste</label>
         <textarea
+          id="jobOffer"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Collez la description du poste ici..."

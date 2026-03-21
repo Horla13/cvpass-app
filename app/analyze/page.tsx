@@ -53,6 +53,7 @@ function AnalyzePage() {
   const [unlimited, setUnlimited] = useState(false);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [creditsNeeded, setCreditsNeeded] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Load credits on mount
   useEffect(() => {
@@ -82,7 +83,7 @@ function AnalyzePage() {
       }
       setStep("type");
     } catch {
-      alert("Erreur lors de l'upload du CV. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
+      setErrorMsg("Erreur lors de l'upload du CV. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
     } finally {
       setIsUploading(false);
     }
@@ -118,7 +119,7 @@ function AnalyzePage() {
   // Run the analysis
   const runAnalysis = async (jobOffer: string, type: "ats" | "jd") => {
     if (!cvText) {
-      alert("Veuillez d'abord uploader un CV.");
+      setErrorMsg("Veuillez d'abord uploader un CV.");
       setStep("upload");
       return;
     }
@@ -152,7 +153,7 @@ function AnalyzePage() {
         const msg = res.status === 504
           ? "L'analyse a pris trop de temps. Réessayez."
           : data.error ?? "Erreur lors de l'analyse. Réessayez.";
-        alert(msg);
+        setErrorMsg(msg);
         setIsAnalyzing(false);
         setStep("type");
         return;
@@ -178,11 +179,11 @@ function AnalyzePage() {
           nb_acceptees: 0,
           job_title: data.job_title ?? "",
         }),
-      }).catch(() => {});
+      }).catch((e: unknown) => console.error("save-analysis error:", e));
 
       router.push("/results");
     } catch {
-      alert("Une erreur est survenue. Réessayez.");
+      setErrorMsg("Une erreur est survenue. Réessayez.");
       setIsAnalyzing(false);
       setStep("type");
     }
@@ -193,7 +194,15 @@ function AnalyzePage() {
       <div className="min-h-screen bg-[#fafafa]">
         <AppHeader />
 
-        <main className="max-w-5xl mx-auto px-6 py-12">
+        <main className="max-w-5xl mx-auto px-4 md:px-6 py-12">
+          {errorMsg && (
+            <div className="max-w-[600px] mx-auto mb-6 flex items-center justify-between gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-[14px]">
+              <span>{errorMsg}</span>
+              <button onClick={() => setErrorMsg("")} className="text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Fermer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+              </button>
+            </div>
+          )}
           {/* Step: Upload CV */}
           {step === "upload" && (
             <div className="max-w-[600px] mx-auto text-center">

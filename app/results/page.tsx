@@ -238,7 +238,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accepter
                   </button>
-                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors">
+                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-600 font-medium hover:text-gray-800 transition-colors">
                     Ignorer
                   </button>
                 </div>
@@ -277,6 +277,8 @@ function QualitySectionCard({ section, defaultOpen = false }: { section: Quality
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-label={open ? `Masquer ${section.title}` : `Voir ${section.title}`}
         className="w-full text-left px-6 py-5 hover:bg-gray-50/50 transition-colors"
       >
         <div className="flex items-center justify-between">
@@ -403,6 +405,8 @@ function CategorySection({
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-label={open ? `Masquer ${label}` : `Voir ${label}`}
         className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 transition-colors"
       >
         <div className="flex items-center gap-3">

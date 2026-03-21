@@ -110,6 +110,8 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState(false);
   const [cancelled, setCancelled] = useState(false);
+  const [cancelError, setCancelError] = useState("");
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -235,30 +237,51 @@ export default function AccountPage() {
                         {plan === "early_access" ? "Voir les plans" : unlimited ? "Voir les plans" : plan === "starter" && credits < 2 ? "Recharger (+4 crédits)" : "Obtenir plus de crédits"}
                       </Link>
 
-                      {plan === "pro" && unlimited && !cancelled && (
+                      {plan === "pro" && unlimited && !cancelled && !showCancelConfirm && (
                         <button
-                          onClick={async () => {
-                            if (!confirm("Êtes-vous sûr de vouloir résilier votre abonnement Recherche Active ? Vous conserverez l'accès jusqu'à la fin de la période payée.")) return;
-                            setCancelling(true);
-                            try {
-                              const res = await fetch("/api/stripe/cancel", { method: "POST" });
-                              if (res.ok) {
-                                setCancelled(true);
-                              } else {
-                                const data = await res.json();
-                                alert(data.error ?? "Erreur lors de la résiliation");
-                              }
-                            } catch {
-                              alert("Erreur réseau. Réessayez.");
-                            } finally {
-                              setCancelling(false);
-                            }
-                          }}
-                          disabled={cancelling}
-                          className="mt-2 block w-full text-center py-2.5 text-[13px] font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl border border-red-200 transition-colors disabled:opacity-50"
+                          onClick={() => setShowCancelConfirm(true)}
+                          className="mt-2 block w-full text-center py-2.5 text-[13px] font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl border border-red-200 transition-colors"
                         >
-                          {cancelling ? "Résiliation en cours..." : "Résilier mon abonnement"}
+                          Résilier mon abonnement
                         </button>
+                      )}
+                      {plan === "pro" && unlimited && !cancelled && showCancelConfirm && (
+                        <div className="mt-2 border border-red-200 rounded-xl p-3 bg-red-50/50">
+                          <p className="text-[13px] text-red-700 mb-3">Êtes-vous sûr ? Vous conserverez l&apos;accès jusqu&apos;à la fin de la période payée.</p>
+                          {cancelError && <p className="text-[12px] text-red-600 mb-2">{cancelError}</p>}
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                setCancelling(true);
+                                setCancelError("");
+                                try {
+                                  const res = await fetch("/api/stripe/cancel", { method: "POST" });
+                                  if (res.ok) {
+                                    setCancelled(true);
+                                    setShowCancelConfirm(false);
+                                  } else {
+                                    const data = await res.json();
+                                    setCancelError(data.error ?? "Erreur lors de la résiliation");
+                                  }
+                                } catch {
+                                  setCancelError("Erreur réseau. Réessayez.");
+                                } finally {
+                                  setCancelling(false);
+                                }
+                              }}
+                              disabled={cancelling}
+                              className="flex-1 py-2 text-[13px] font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors disabled:opacity-50"
+                            >
+                              {cancelling ? "Résiliation..." : "Confirmer"}
+                            </button>
+                            <button
+                              onClick={() => { setShowCancelConfirm(false); setCancelError(""); }}
+                              className="flex-1 py-2 text-[13px] font-medium text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              Annuler
+                            </button>
+                          </div>
+                        </div>
                       )}
                       {cancelled && (
                         <p className="mt-2 text-center text-[12px] text-gray-400">

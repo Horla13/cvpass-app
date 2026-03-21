@@ -63,9 +63,9 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <button
               onClick={() => handleBuy("starter")}
               disabled={loading === "starter"}
-              className="w-full bg-green-500 text-white rounded-xl py-3 font-semibold hover:bg-green-600 transition-colors disabled:opacity-50"
+              className="w-full bg-green-500 text-white rounded-xl py-3 font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading === "starter" ? "Redirection..." : "Acheter le pack"}
+              {loading === "starter" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Acheter le pack"}
             </button>
           </div>
 
@@ -95,9 +95,9 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <button
               onClick={() => handleBuy("pro")}
               disabled={loading === "pro"}
-              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-3 font-semibold hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 shadow-md shadow-blue-200"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-3 font-semibold hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 shadow-md shadow-blue-200 flex items-center justify-center gap-2"
             >
-              {loading === "pro" ? "Redirection..." : "Passer en illimité"}
+              {loading === "pro" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Passer en illimité"}
             </button>
           </div>
         </div>
