@@ -5,6 +5,7 @@ export interface BlogPost {
   metaDescription: string;
   description: string;
   date: string;
+  dateModified?: string;
   readTime: string;
   category: string;
   tags: string[];

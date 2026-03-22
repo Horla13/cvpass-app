@@ -704,7 +704,7 @@ export function LandingPage() {
                 ),
                 title: "Mise en forme & Lisibilité",
                 subtitle: "Détection des blocages parseur",
-                desc: "Nous détectons les erreurs de formatage qui causent le rejet de 70% des CV par les logiciels ATS.",
+                desc: "Nous détectons les erreurs de formatage qui empêchent les logiciels ATS de lire correctement votre CV.",
                 checks: [
                   "Vérification de la structure des sections",
                   "Détection des éléments non lisibles par les ATS",
@@ -854,7 +854,7 @@ export function LandingPage() {
               Tout a commencé par un constat frustrant : des candidats qualifiés qui n&apos;obtenaient aucune réponse. Pas parce qu&apos;ils manquaient de compétences, mais parce que leur CV était rejeté par des machines avant même d&apos;être lu par un humain.
             </p>
             <p>
-              En France, <strong className="text-brand-black">plus de 75% des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
+              En France, <strong className="text-brand-black">la majorité des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
             </p>
             <p>
               Les outils existants ? Ils donnent un score et une liste de problèmes — puis vous laissent vous débrouiller. Nous voulions aller plus loin : <strong className="text-brand-black">un outil qui ne se contente pas de diagnostiquer, mais qui corrige.</strong>

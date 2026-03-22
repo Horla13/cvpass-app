@@ -64,8 +64,26 @@ export default function PricingPage() {
     }
   }
 
+  // SYNC with FAQAccordion items below (FAQ section)
+  const pricingFaqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      { "@type": "Question", name: "Comment fonctionnent les crédits ?", acceptedAnswer: { "@type": "Answer", text: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." } },
+      { "@type": "Question", name: "Que comprend le Pack Coup de pouce ?", acceptedAnswer: { "@type": "Answer", text: "Le Pack Coup de pouce vous donne 4 crédits supplémentaires qui s'ajoutent à votre solde. Pas de renouvellement automatique, les crédits sont à vous et n'expirent jamais. Vous pouvez racheter le pack autant de fois que vous voulez." } },
+      { "@type": "Question", name: "Que comprend Recherche Active ?", acceptedAnswer: { "@type": "Answer", text: "Le plan Recherche Active vous donne un accès illimité à toutes les fonctionnalités pendant 30 jours. C'est un abonnement mensuel résiliable à tout moment, sans engagement." } },
+      { "@type": "Question", name: "Puis-je me faire rembourser ?", acceptedAnswer: { "@type": "Answer", text: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." } },
+      { "@type": "Question", name: "Mon CV est-il stocké ?", acceptedAnswer: { "@type": "Answer", text: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." } },
+      { "@type": "Question", name: "Comment résilier Recherche Active ?", acceptedAnswer: { "@type": "Answer", text: "Vous pouvez résilier à tout moment depuis votre espace personnel. Résiliation immédiate, sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." } },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqJsonLd) }}
+      />
       <AppHeader />
 
       {errorMsg && (
@@ -83,7 +101,7 @@ export default function PricingPage() {
           <span>✨</span> Tarification simple et transparente
         </div>
         <h1 className="font-display text-[32px] md:text-[44px] font-extrabold tracking-[-1.5px] text-gray-900 mb-4 leading-tight">
-          Investissez dans votre carrière,<br className="hidden md:block" /> pas dans la complexité
+          Optimisez votre CV pour les ATS<br className="hidden md:block" /> — Choisissez votre formule
         </h1>
         <p className="text-brand-green font-semibold text-[15px] mb-3">
           1 crédit = Analyse générale &nbsp;|&nbsp; 2 crédits = Match offre d&apos;emploi &nbsp;|&nbsp; 1 crédit = Téléchargement PDF &nbsp;|&nbsp; 1 crédit = Lettre de motivation
@@ -305,10 +323,10 @@ export default function PricingPage() {
             <p className="text-[13px] text-gray-400">&copy; 2026 VertexLab SASU. Tous droits réservés.</p>
           </div>
           <div className="flex gap-6">
-            <Link href="/blog" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Blog</Link>
-            <Link href="/mentions-legales" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Mentions légales</Link>
-            <Link href="/politique-confidentialite" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
-            <a href="mailto:contact@cvpass.fr" className="text-[13px] text-gray-400 hover:text-gray-700 transition-colors">Contact</a>
+            <Link href="/blog" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Blog</Link>
+            <Link href="/mentions-legales" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Mentions légales</Link>
+            <Link href="/politique-confidentialite" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
+            <a href="mailto:contact@cvpass.fr" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Contact</a>
           </div>
         </div>
       </footer>

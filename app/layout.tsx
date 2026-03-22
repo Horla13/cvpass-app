@@ -117,6 +117,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
+        <link rel="preconnect" href="https://clerk.cvpass.fr" />
+        <link rel="dns-prefetch" href="https://clerk.cvpass.fr" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
