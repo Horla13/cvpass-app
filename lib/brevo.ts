@@ -55,6 +55,7 @@ export async function updateBrevoContactPlan(
 ): Promise<void> {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) return;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
 
   const res = await fetch(`${BREVO_CONTACTS_URL}/${encodeURIComponent(email)}`, {
     method: "PUT",

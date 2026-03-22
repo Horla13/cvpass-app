@@ -124,6 +124,15 @@ function AnalyzePage() {
       return;
     }
 
+    if (cvText.length > 50_000) {
+      setErrorMsg("CV trop long (max 50 000 caractères).");
+      return;
+    }
+    if (jobOffer.length > 10_000) {
+      setErrorMsg("Offre trop longue (max 10 000 caractères).");
+      return;
+    }
+
     setIsAnalyzing(true);
     setStep("analyzing");
     discovery.trigger();

@@ -38,6 +38,10 @@ export function CoverLetterEditor({
   };
 
   const handleSendEmail = async () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddr)) {
+      setEmailErr("Adresse email invalide.");
+      return;
+    }
     setSending(true);
     setEmailErr("");
     try {

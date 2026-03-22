@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { isStripeUrl } from "@/lib/utils";
 
 interface Props {
   creditsNeeded: number;
@@ -18,7 +19,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
         body: JSON.stringify({ plan }),
       });
       const data = await res.json();
-      if (data.url) window.location.href = data.url;
+      if (data.url && isStripeUrl(data.url)) window.location.href = data.url;
     } finally {
       setLoading(null);
     }

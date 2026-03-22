@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
+import { isStripeUrl } from "@/lib/utils";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
 
@@ -49,6 +50,10 @@ export default function PricingPage() {
       const data = await res.json();
       if (!res.ok || !data.url) {
         setErrorMsg(data.error ?? "Impossible d'ouvrir le paiement. Réessayez.");
+        return;
+      }
+      if (!isStripeUrl(data.url)) {
+        setErrorMsg("URL de paiement invalide. Réessayez.");
         return;
       }
       window.location.href = data.url;

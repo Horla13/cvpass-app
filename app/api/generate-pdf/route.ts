@@ -48,6 +48,10 @@ export async function POST(req: NextRequest) {
 
   const { cvText, acceptedGaps = [], cvJson, analysisId } = body;
 
+  if (analysisId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(analysisId)) {
+    return NextResponse.json({ error: "analysisId invalide" }, { status: 400 });
+  }
+
   if (!cvText && !cvJson && !analysisId) {
     return NextResponse.json({ error: "Texte ou JSON du CV requis" }, { status: 400 });
   }
