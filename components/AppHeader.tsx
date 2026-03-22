@@ -73,7 +73,7 @@ export function AppHeader() {
           )}
           {/* Mobile hamburger */}
           <button
-            className="sm:hidden p-2 rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"
+            className="sm:hidden p-2 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-md text-brand-gray hover:text-brand-black hover:bg-gray-100 transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
           >

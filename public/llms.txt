@@ -1,0 +1,20 @@
+# CVpass
+> Scanner CV ATS gratuit propulsé par l'IA — Analyse, score et réécriture automatique pour passer les filtres ATS.
+
+## Pages principales
+- https://cvpass.fr — Accueil, scanner CV ATS gratuit
+- https://cvpass.fr/pricing — Tarifs : gratuit, 2,90€ (4 crédits), 8,90€/mois (illimité)
+- https://cvpass.fr/blog — 17 guides CV, ATS et recherche d'emploi en France
+
+## Fonctionnalités
+- Score ATS instantané (mots-clés 40%, mise en forme 20%, sections 20%, chiffres 20%)
+- Réécriture IA ciblée pour chaque point faible
+- Comparaison CV vs offre d'emploi
+- Export PDF optimisé ATS
+- Compatible PDF et Word (.docx)
+- Détection automatique des CVs Canva (format image)
+
+## À propos
+Éditeur : VertexLab SASU, 198 boulevard Ange Martin, 13190 Allauch, France
+Contact : contact@cvpass.fr
+Langue : Français

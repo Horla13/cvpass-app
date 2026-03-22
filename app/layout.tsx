@@ -76,7 +76,10 @@ const jsonLd = {
       url: "https://cvpass.fr",
       logo: "https://cvpass.fr/icon.png",
       description: "Scanner IA gratuit pour optimiser votre CV et passer les filtres ATS des recruteurs en France.",
-      sameAs: [],
+      sameAs: [
+        "https://www.linkedin.com/in/giovanni-russo-a0b437300/",
+        "https://www.instagram.com/cvpass.fr/",
+      ],
     },
     {
       "@type": "WebSite",
@@ -98,9 +101,9 @@ const jsonLd = {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       offers: [
-        { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Gratuit" },
-        { "@type": "Offer", price: "2.90", priceCurrency: "EUR", name: "Coup de pouce" },
-        { "@type": "Offer", price: "8.90", priceCurrency: "EUR", name: "Recherche Active", priceSpecification: { "@type": "UnitPriceSpecification", price: "8.90", priceCurrency: "EUR", unitText: "MONTH" } },
+        { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Gratuit", url: "https://cvpass.fr/pricing", availability: "https://schema.org/InStock" },
+        { "@type": "Offer", price: "2.90", priceCurrency: "EUR", name: "Coup de pouce", url: "https://cvpass.fr/pricing", availability: "https://schema.org/InStock" },
+        { "@type": "Offer", price: "8.90", priceCurrency: "EUR", name: "Recherche Active", url: "https://cvpass.fr/pricing", availability: "https://schema.org/InStock", priceSpecification: { "@type": "UnitPriceSpecification", price: "8.90", priceCurrency: "EUR", unitText: "MONTH" } },
       ],
     },
   ],
