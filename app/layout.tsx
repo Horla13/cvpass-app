@@ -33,9 +33,6 @@ export const metadata: Metadata = {
     "améliorer CV ATS", "score ATS CV",
   ],
   metadataBase: new URL("https://cvpass.fr"),
-  alternates: {
-    canonical: "https://cvpass.fr",
-  },
   openGraph: {
     title: "CVpass — Scanner CV ATS gratuit | Optimise ton CV avec l'IA",
     description:
