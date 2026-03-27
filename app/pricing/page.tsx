@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
@@ -10,8 +10,18 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
 
 export default function PricingPage() {
+  return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
+  );
+}
+
+function PricingContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const posthog = usePostHog();
+  const promoCode = searchParams.get("promo") ?? undefined;
   const [loading, setLoading] = useState<string | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [unlimited, setUnlimited] = useState(false);
@@ -39,7 +49,7 @@ export default function PricingPage() {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId }),
+        body: JSON.stringify({ plan: planId, promoCode }),
       });
 
       if (res.status === 401 || res.status === 403) {

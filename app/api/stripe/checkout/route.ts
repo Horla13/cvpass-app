@@ -19,23 +19,38 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  let body: { plan?: string };
+  let body: { plan?: string; promoCode?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Corps invalide" }, { status: 400 });
   }
 
-  const { plan } = body;
+  const { plan, promoCode } = body;
   if (plan !== "starter" && plan !== "pro") {
     return NextResponse.json({ error: "Plan invalide" }, { status: 400 });
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-  const commonConfig = {
+  // Resolve promo code to Stripe promotion_code ID if provided
+  let promoDiscount: { promotion_code: string } | undefined;
+  if (promoCode && /^[A-Z0-9]{3,20}$/i.test(promoCode)) {
+    try {
+      const promos = await getStripe().promotionCodes.list({ code: promoCode, active: true, limit: 1 });
+      if (promos.data.length > 0) {
+        promoDiscount = { promotion_code: promos.data[0].id };
+      }
+    } catch {
+      // Ignore — fallback to manual entry
+    }
+  }
+
+  const commonConfig: Partial<Stripe.Checkout.SessionCreateParams> = {
     locale: "fr" as const,
-    allow_promotion_codes: true,
+    ...(promoDiscount
+      ? { discounts: [promoDiscount] }
+      : { allow_promotion_codes: true }),
     billing_address_collection: "auto" as const,
   };
 
