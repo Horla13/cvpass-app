@@ -230,15 +230,15 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
 
               {gap.status === "pending" && (
                 <div className="flex items-center gap-3">
-                  <button onClick={() => onApplyInEditor(gap.id)} className="inline-flex items-center gap-1.5 min-h-[44px] text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors">
+                  <button onClick={() => onApplyInEditor(gap.id)} className="inline-flex items-center gap-1.5 min-h-[48px] px-3 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                     Appliquer dans l&apos;éditeur
                   </button>
-                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 min-h-[44px] text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors">
+                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 min-h-[48px] px-3 text-[14px] text-green-600 font-semibold hover:text-green-700 transition-colors">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accepter
                   </button>
-                  <button onClick={() => onIgnore(gap.id)} className="min-h-[44px] text-[12px] text-gray-600 font-medium hover:text-gray-800 transition-colors">
+                  <button onClick={() => onIgnore(gap.id)} className="min-h-[48px] px-3 text-[14px] text-gray-500 font-medium hover:text-gray-700 transition-colors">
                     Ignorer
                   </button>
                 </div>
@@ -476,7 +476,7 @@ function CategorySection({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => onApplyInEditor(gap.id)}
-                    className="inline-flex items-center gap-1.5 min-h-[44px] text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors"
+                    className="inline-flex items-center gap-1.5 min-h-[48px] px-3 text-[13px] text-blue-500 font-semibold hover:text-blue-600 transition-colors"
                   >
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                     Appliquer dans l&apos;éditeur
@@ -484,14 +484,14 @@ function CategorySection({
                   </button>
                   <button
                     onClick={() => onAccept(gap.id)}
-                    className="inline-flex items-center gap-1 min-h-[44px] text-[12px] text-green-500 font-medium hover:text-green-600 transition-colors"
+                    className="inline-flex items-center gap-1 min-h-[48px] px-3 text-[14px] text-green-600 font-semibold hover:text-green-700 transition-colors"
                   >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accept
                   </button>
                   <button
                     onClick={() => onIgnore(gap.id)}
-                    className="min-h-[44px] text-[12px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
+                    className="min-h-[48px] px-3 text-[14px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
                   >
                     Dismiss
                   </button>
@@ -560,7 +560,7 @@ function InlineField({
 /* ─── Add Button ─── */
 function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <button onClick={onClick} className="flex items-center gap-1.5 text-[12px] text-green-600 hover:text-green-700 font-medium mt-2 transition-colors">
+    <button onClick={onClick} className="flex items-center gap-1.5 min-h-[48px] text-[14px] text-green-600 hover:text-green-700 font-medium mt-2 transition-colors">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
       {label}
     </button>
@@ -737,7 +737,7 @@ function SuggestionPanel({
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       {/* Quick Fix — Accept All */}
       <div className="px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 border-b border-green-600">
-        <button onClick={onAcceptAll} className="w-full flex items-center justify-center gap-2 py-2.5 min-h-[44px] bg-white/20 hover:bg-white/30 rounded-xl text-white text-[14px] font-bold transition-colors">
+        <button onClick={onAcceptAll} className="w-full flex items-center justify-center gap-2 py-2.5 min-h-[48px] bg-white/20 hover:bg-white/30 rounded-xl text-white text-[14px] font-bold transition-colors">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
           Tout accepter ({pendingGaps.length} suggestions)
         </button>
@@ -785,11 +785,11 @@ function SuggestionPanel({
 
       {/* Actions */}
       <div className="flex border-t border-gray-100">
-        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
+        <button onClick={() => onIgnore(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[48px] text-[14px] font-semibold text-gray-500 hover:bg-gray-50 transition-colors border-r border-gray-100">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
           Rejeter
         </button>
-        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[44px] text-[13px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
+        <button onClick={() => onAccept(current.id)} className="flex-1 flex items-center justify-center gap-1.5 px-4 py-3 min-h-[48px] text-[14px] font-semibold text-green-600 hover:bg-green-50 transition-colors">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
           Accepter
         </button>
@@ -1457,51 +1457,54 @@ export default function ResultsPage() {
               Retour
             </button>
 
-            <div className={cn(
-              "flex items-center gap-1 px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-all border-2",
-              activeTab === "report"
-                ? "bg-white border-gray-300 shadow-sm text-gray-900"
-                : "bg-transparent border-transparent text-gray-400 hover:text-gray-600"
-            )}>
-              <button onClick={() => setActiveTab("report")} className="flex flex-col">
+            <button
+              onClick={() => setActiveTab("report")}
+              className={cn(
+                "flex items-center gap-1 px-5 py-2.5 min-h-[48px] rounded-xl text-[14px] font-semibold transition-all border-2 cursor-pointer",
+                activeTab === "report"
+                  ? "bg-white border-gray-300 shadow-sm text-gray-900"
+                  : "bg-transparent border-transparent text-gray-400 hover:text-gray-600"
+              )}
+            >
+              <span className="flex flex-col">
                 <span className="flex items-center gap-2">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /></svg>
                   Rapport CV
                 </span>
                 <span className="text-[11px] text-gray-400 font-normal block">Score & Analyse</span>
-              </button>
-              {/* Match/Quality sub-tabs for JD mode */}
-              {isJdMatch && activeTab === "report" && (
-                <div className="flex items-center gap-1 ml-3">
-                  <button
-                    onClick={() => { setActiveTab("report"); setReportSubTab("match"); }}
-                    className={cn("px-3 py-1 rounded-lg text-[12px] font-semibold transition-all",
-                      reportSubTab === "match"
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-400 hover:text-gray-600"
-                    )}
-                  >
-                    Correspondance
-                  </button>
-                  <button
-                    onClick={() => { setActiveTab("report"); setReportSubTab("quality"); }}
-                    className={cn("px-3 py-1 rounded-lg text-[12px] font-semibold transition-all",
-                      reportSubTab === "quality"
-                        ? "bg-purple-100 text-purple-700"
-                        : "text-gray-400 hover:text-gray-600"
-                    )}
-                  >
-                    Qualité
-                  </button>
-                </div>
-              )}
-            </div>
+              </span>
+            </button>
+            {/* Match/Quality sub-tabs for JD mode */}
+            {isJdMatch && activeTab === "report" && (
+              <div className="flex items-center gap-1 ml-1">
+                <button
+                  onClick={() => { setActiveTab("report"); setReportSubTab("match"); }}
+                  className={cn("px-3 py-1.5 min-h-[36px] rounded-lg text-[12px] font-semibold transition-all",
+                    reportSubTab === "match"
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-400 hover:text-gray-600"
+                  )}
+                >
+                  Correspondance
+                </button>
+                <button
+                  onClick={() => { setActiveTab("report"); setReportSubTab("quality"); }}
+                  className={cn("px-3 py-1.5 min-h-[36px] rounded-lg text-[12px] font-semibold transition-all",
+                    reportSubTab === "quality"
+                      ? "bg-purple-100 text-purple-700"
+                      : "text-gray-400 hover:text-gray-600"
+                  )}
+                >
+                  Qualité
+                </button>
+              </div>
+            )}
 
             <div className="relative">
               <button
                 onClick={() => setActiveTab("editor")}
                 className={cn(
-                  "px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-all border-2",
+                  "px-5 py-2.5 min-h-[48px] rounded-xl text-[14px] font-semibold transition-all border-2 cursor-pointer",
                   activeTab === "editor"
                     ? "bg-white border-gray-300 shadow-sm text-gray-900"
                     : "bg-transparent border-transparent text-gray-400 hover:text-gray-600"
@@ -1513,17 +1516,49 @@ export default function ResultsPage() {
                 </span>
                 <span className="text-[11px] text-gray-400 font-normal block">Modifier & Corriger</span>
               </button>
-              <div className="absolute -top-2 -right-2 flex items-center gap-1">
-                <span className="bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
-                  À essayer
+              {pendingGaps.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {pendingGaps.length}
                 </span>
-                {pendingGaps.length > 0 && (
-                  <span className="bg-blue-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                    {pendingGaps.length}
-                  </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ─── Progress bar (mobile-first) ─── */}
+        <div className="bg-white border-b border-gray-100 py-3">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-[13px]">
+                <span className="flex items-center gap-1.5 text-green-600 font-semibold">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  Analyse
+                </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                <span className={cn("font-semibold", pendingGaps.length > 0 ? "text-amber-500" : "text-green-600")}>
+                  {pendingGaps.length > 0 ? `${pendingGaps.length} suggestions` : "Suggestions ✓"}
+                </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                <span className={cn("font-semibold", acceptedGaps.length > 0 ? "text-gray-900" : "text-gray-300")}>
+                  Télécharger
+                </span>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 text-[13px]">
+                <span className="font-bold text-gray-900">{scoreActuel}/100</span>
+                {scoreActuel > score_avant && (
+                  <span className="text-green-600 font-semibold text-[12px]">+{scoreActuel - score_avant} pts</span>
                 )}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ─── Sticky mobile score counter ─── */}
+        <div className="sm:hidden sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-200 px-4 py-2.5 flex items-center justify-between">
+          <span className="text-[14px] font-bold text-gray-900">Score : {scoreActuel}/100</span>
+          <div className="flex items-center gap-3 text-[13px]">
+            <span className="text-green-600 font-semibold">{acceptedGaps.length} acceptées</span>
+            <span className="text-amber-500 font-semibold">{pendingGaps.length} restantes</span>
           </div>
         </div>
 

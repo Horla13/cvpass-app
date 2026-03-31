@@ -46,5 +46,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Mark user as having analyzed (for retention emails)
+  getSupabaseAdmin()
+    .from("subscriptions")
+    .update({ has_analyzed: true })
+    .eq("user_id", userId)
+    .eq("has_analyzed", false)
+    .then(({ error: updErr }) => {
+      if (updErr) console.error("has_analyzed update error:", updErr);
+    });
+
   return NextResponse.json({ success: true, id: data?.id });
 }
