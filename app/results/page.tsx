@@ -1460,20 +1460,47 @@ export default function ResultsPage() {
   };
 
   const handlePreview = async () => {
-    if (!cvJson) return;
     setIsPreviewing(true);
     setDownloadError(null);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
+
     try {
+      // If cvJson not ready yet, restructure on the fly
+      let jsonData = cvJson;
+      if (!jsonData && cvText) {
+        const restructRes = await fetch("/api/restructure-cv", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cvText }),
+        });
+        if (restructRes.ok) {
+          const d = await restructRes.json();
+          if (d.cv_json) {
+            jsonData = d.cv_json;
+            setCvJson(d.cv_json);
+          }
+        }
+      }
+
+      if (!jsonData) {
+        setDownloadError("Le CV n'a pas pu être structuré. Réessayez dans quelques secondes.");
+        return;
+      }
+
       const res = await fetch("/api/preview-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvJson, templateId }),
+        body: JSON.stringify({ cvJson: jsonData, templateId }),
       });
       if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "Erreur aperçu" }));
-        setDownloadError(err.error ?? "Erreur lors de la génération de l'aperçu");
+        const contentType = res.headers.get("content-type") ?? "";
+        if (contentType.includes("json")) {
+          const err = await res.json().catch(() => ({ error: "Erreur aperçu" }));
+          setDownloadError(err.error ?? "Erreur lors de la génération de l'aperçu");
+        } else {
+          setDownloadError(`Erreur serveur (${res.status})`);
+        }
         return;
       }
       const blob = await res.blob();
@@ -1771,7 +1798,7 @@ export default function ResultsPage() {
                   {/* Preview button */}
                   <button
                     onClick={handlePreview}
-                    disabled={isPreviewing || !cvJson}
+                    disabled={isPreviewing}
                     className="w-full py-3 border-2 border-gray-200 text-gray-700 text-[14px] font-semibold rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isPreviewing ? (
