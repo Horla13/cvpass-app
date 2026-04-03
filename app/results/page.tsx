@@ -1299,6 +1299,8 @@ export default function ResultsPage() {
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [templateId, setTemplateId] = useState("modern");
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
   const promo = usePromoModal();
 
   // Check if user has premium access (for template lock)
@@ -1455,6 +1457,24 @@ export default function ResultsPage() {
     } finally {
       setIsDownloading(false);
     }
+  };
+
+  const handlePreview = async () => {
+    if (!cvJson) return;
+    setIsPreviewing(true);
+    // Revoke previous URL to avoid memory leak
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    try {
+      const res = await fetch("/api/preview-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cvJson, templateId }),
+      });
+      if (!res.ok) return;
+      const blob = await res.blob();
+      setPreviewUrl(URL.createObjectURL(blob));
+    } catch { /* ignore */ }
+    finally { setIsPreviewing(false); }
   };
 
   if (!cvText) return null;
@@ -1738,8 +1758,28 @@ export default function ResultsPage() {
                   isPremiumUser={isPremiumUser}
                 />
 
-                {/* Download CTA */}
+                {/* Preview + Download CTA */}
                 <div className="space-y-3">
+                  {/* Preview button */}
+                  <button
+                    onClick={handlePreview}
+                    disabled={isPreviewing || !cvJson}
+                    className="w-full py-3 border-2 border-gray-200 text-gray-700 text-[14px] font-semibold rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {isPreviewing ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                        Génération aperçu...
+                      </>
+                    ) : (
+                      <>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                        Prévisualiser le PDF
+                      </>
+                    )}
+                  </button>
+
+                  {/* Download button */}
                   <button
                     onClick={handleDownload}
                     disabled={acceptedGaps.length === 0 || isDownloading}
@@ -1865,6 +1905,43 @@ export default function ResultsPage() {
         </main>
 
         {promo.show && <PromoModal onClose={promo.close} />}
+
+        {/* PDF Preview Modal */}
+        {previewUrl && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+            <div className="bg-white rounded-2xl w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div>
+                  <h2 className="font-bold text-gray-900 text-[16px]">Aperçu du CV</h2>
+                  <p className="text-[12px] text-gray-400">Le filigrane sera retiré au téléchargement</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { handleDownload(); setPreviewUrl(null); }}
+                    disabled={acceptedGaps.length === 0 || isDownloading}
+                    className="px-5 py-2.5 min-h-[44px] bg-green-500 text-white text-[13px] font-semibold rounded-xl hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                    Télécharger sans filigrane
+                  </button>
+                  <button
+                    onClick={() => { URL.revokeObjectURL(previewUrl); setPreviewUrl(null); }}
+                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div className="flex-1 bg-gray-100 p-4 overflow-hidden">
+                <iframe
+                  src={previewUrl}
+                  className="w-full h-full rounded-lg border border-gray-200 bg-white"
+                  title="Aperçu PDF"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </PageTransition>
   );

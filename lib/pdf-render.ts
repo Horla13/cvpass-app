@@ -527,18 +527,47 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
     content: buildContent(cv, options?.templateId),
   };
 
-  // Sidebar background
-  if (tpl.layout === "sidebar" && tpl.colors.sidebarBg) {
+  // Background layers (sidebar bg + watermark)
+  if (tpl.layout === "sidebar" && tpl.colors.sidebarBg && !options?.watermark) {
     docDef.background = () => ({
       canvas: [{ type: "rect", x: 0, y: 0, w: 200, h: 842, color: tpl.colors.sidebarBg }],
     });
   }
 
   if (options?.watermark) {
+    // Diagonal watermark anti-screenshot — repeated across the page
+    docDef.background = () => {
+      const items: unknown[] = [];
+      // Sidebar bg first if needed
+      if (tpl.layout === "sidebar" && tpl.colors.sidebarBg) {
+        items.push({ type: "rect", x: 0, y: 0, w: 200, h: 842, color: tpl.colors.sidebarBg });
+      }
+      // Diagonal watermark text pattern
+      for (let y = 80; y < 842; y += 200) {
+        for (let x = -100; x < 595; x += 280) {
+          items.push({
+            type: "rect",
+            x: x, y: y, w: 250, h: 30,
+            color: "",
+          });
+        }
+      }
+      return { canvas: items };
+    };
+    // Use pdfmake watermark for diagonal text
+    docDef.watermark = {
+      text: "APERÇU  cvpass.fr",
+      color: "#d1d5db",
+      opacity: 0.15,
+      bold: true,
+      fontSize: 54,
+      angle: -35,
+    };
     docDef.footer = () => ({
-      text: "Généré avec CVpass.fr",
+      text: "APERÇU — Téléchargez le PDF pour retirer le filigrane  |  cvpass.fr",
       font: "Helvetica",
-      fontSize: 8,
+      fontSize: 9,
+      bold: true,
       color: "#9CA3AF",
       alignment: "center" as const,
       margin: [0, 15, 0, 0],
