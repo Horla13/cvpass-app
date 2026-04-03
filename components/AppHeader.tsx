@@ -8,13 +8,15 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 
 
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
+const NAV_LINKS_AUTH = [
   { href: "/analyze", label: "Analyser" },
   { href: "/tracker", label: "Candidatures" },
   { href: "/pricing", label: "Tarifs" },
+];
+
+const NAV_LINKS_PUBLIC = [
+  { href: "/pricing", label: "Tarifs" },
   { href: "/blog", label: "Blog" },
-  { href: "/account", label: "Mon compte" },
 ];
 
 export function AppHeader() {
@@ -41,7 +43,7 @@ export function AppHeader() {
 
         {/* Navigation desktop */}
         <nav className="hidden sm:flex items-center gap-1 flex-1 justify-center">
-          {NAV_LINKS.map((link) => {
+          {(isSignedIn ? NAV_LINKS_AUTH : NAV_LINKS_PUBLIC).map((link) => {
             const active = pathname === link.href;
             return (
               <Link
@@ -60,10 +62,20 @@ export function AppHeader() {
           })}
         </nav>
 
-        {/* Right — Credits + UserButton + mobile hamburger */}
+        {/* Right — CTA / Credits + UserButton + mobile hamburger */}
         <div className="flex items-center gap-3 shrink-0">
+          {/* Non-connected: CTA button */}
+          {!isSignedIn && (
+            <Link
+              href="/signup"
+              className="hidden sm:inline-flex items-center gap-2 bg-brand-green text-white px-5 py-2 rounded-lg text-[14px] font-semibold hover:bg-green-600 transition-colors"
+            >
+              Analyser mon CV
+              <svg width="14" height="14" fill="none"><path d="M3 7h8m0 0L8 4m3 3L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </Link>
+          )}
           {/* Credit badge */}
-          {credits !== null && (
+          {isSignedIn && credits !== null && (
             <Link
               href="/pricing"
               className="hidden sm:flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 text-[13px] hover:bg-amber-100 transition-colors"
@@ -99,7 +111,7 @@ export function AppHeader() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="sm:hidden border-t border-gray-100 bg-white px-6 py-3 space-y-1">
-          {NAV_LINKS.map((link) => {
+          {(isSignedIn ? NAV_LINKS_AUTH : NAV_LINKS_PUBLIC).map((link) => {
             const active = pathname === link.href;
             return (
               <Link
@@ -117,6 +129,15 @@ export function AppHeader() {
               </Link>
             );
           })}
+          {!isSignedIn && (
+            <Link
+              href="/signup"
+              onClick={() => setMobileOpen(false)}
+              className="block px-3 py-2.5 rounded-md text-sm font-semibold text-brand-green"
+            >
+              Analyser mon CV →
+            </Link>
+          )}
         </div>
       )}
     </header>

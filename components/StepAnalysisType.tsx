@@ -26,10 +26,10 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
       </div>
 
       <h1 className="font-display text-[32px] font-extrabold tracking-[-1.5px] text-center mb-2">
-        Choisissez le type d&apos;analyse
+        Que souhaitez-vous faire ?
       </h1>
       <p className="text-brand-gray text-center mb-4">
-        Sélectionnez comment analyser et optimiser votre CV
+        Choisissez une option pour commencer
       </p>
 
       {/* Crédits restants */}
@@ -52,9 +52,9 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
           <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
           </div>
-          <h3 className="font-display text-[20px] font-bold mb-2">Analyse ATS générale</h3>
+          <h3 className="font-display text-[20px] font-bold mb-2">Analyser mon CV</h3>
           <p className="text-brand-gray text-[14px] leading-relaxed mb-6">
-            Analysez votre CV par rapport aux standards de recrutement et bonnes pratiques ATS.
+            Vérifiez si votre CV est bien lu par les logiciels de recrutement et obtenez des suggestions d&apos;amélioration.
           </p>
           <ul className="space-y-3 mb-8">
             {["Analyse d'impact & résultats", "Clarté & concision", "Format & compatibilité ATS", "Détection de répétitions"].map((f) => (
@@ -65,7 +65,7 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
             ))}
           </ul>
           <div className="w-full bg-brand-black text-white rounded-xl py-3 text-center font-semibold text-[15px] group-hover:bg-gray-800 transition-colors">
-            Lancer l&apos;analyse ATS (1 crédit)
+            Analyser mon CV (1 crédit)
           </div>
         </button>
 
@@ -80,9 +80,9 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
           <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-6">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" /></svg>
           </div>
-          <h3 className="font-display text-[20px] font-bold mb-2">Match offre d&apos;emploi</h3>
+          <h3 className="font-display text-[20px] font-bold mb-2">Comparer à une offre</h3>
           <p className="text-brand-gray text-[14px] leading-relaxed mb-6">
-            Comparez votre CV avec une offre d&apos;emploi précise pour des suggestions ciblées.
+            Collez une offre d&apos;emploi et voyez si votre CV correspond — avec des suggestions ciblées pour chaque lacune.
           </p>
           <ul className="space-y-3 mb-8">
             {["Analyse mots-clés ciblée", "Compétences manquantes", "Suggestions personnalisées", "Taux de correspondance"].map((f) => (
@@ -93,7 +93,7 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
             ))}
           </ul>
           <div className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-xl py-3 text-center font-semibold text-[15px] group-hover:opacity-90 transition-opacity">
-            Lancer le Match JD (2 crédits)
+            Comparer à une offre (2 crédits)
           </div>
         </button>
 
@@ -105,9 +105,9 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
           <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mb-6">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M22 7l-10 7L2 7" /></svg>
           </div>
-          <h3 className="font-display text-[20px] font-bold mb-2">Lettre de motivation</h3>
+          <h3 className="font-display text-[20px] font-bold mb-2">Générer une lettre</h3>
           <p className="text-brand-gray text-[14px] leading-relaxed mb-6">
-            Générez une lettre de motivation personnalisée à partir de votre CV et de l&apos;offre d&apos;emploi.
+            Créez une lettre de motivation personnalisée en quelques secondes, adaptée à l&apos;offre que vous visez.
           </p>
           <ul className="space-y-3 mb-8">
             {["Adaptée à l'offre d'emploi", "Basée sur votre parcours réel", "Format professionnel français", "Export PDF inclus"].map((f) => (
@@ -118,7 +118,7 @@ export default function StepAnalysisType({ credits, unlimited, filename, onChoos
             ))}
           </ul>
           <div className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl py-3 text-center font-semibold text-[15px] group-hover:opacity-90 transition-opacity">
-            Générer la lettre (1 crédit)
+            Générer ma lettre (1 crédit)
           </div>
         </button>
       </div>

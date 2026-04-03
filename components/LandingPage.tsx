@@ -114,7 +114,7 @@ export function LandingPage() {
           {/* H1 */}
           <h1 className="fade-up font-display text-[32px] md:text-[42px] lg:text-[52px] font-extrabold tracking-[-2.5px] leading-[1.06] mb-6">
             Scanner CV ATS gratuit —{" "}
-            <span className="text-brand-green">Optimise ton CV</span>
+            <span className="text-brand-green">Optimisez votre CV</span>
             <br />
             pour les recruteurs avec l&apos;IA
           </h1>
@@ -259,7 +259,7 @@ export function LandingPage() {
           <div className="text-center mb-16 fade-up">
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-3">Comment ça marche</p>
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
-              Comment optimiser ton CV ATS en <span className="text-brand-green">3 étapes</span>
+              Comment optimiser votre CV ATS en <span className="text-brand-green">3 étapes</span>
             </h2>
             <p className="text-brand-gray text-base max-w-[500px] mx-auto">
               De l&apos;upload à l&apos;entretien, suivez le processus complet pour maximiser vos chances.
@@ -796,69 +796,9 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── ANATOMY ── */}
-      <section className="py-20 bg-[#fafafa]">
-        <div className="max-w-[1100px] mx-auto px-8">
-          <h2 className="fade-up font-display text-[24px] md:text-[30px] font-extrabold tracking-[-1.2px] text-center mb-12">
-            L&apos;anatomie d&apos;un <span className="text-brand-green">CV parfait</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {[
-              {
-                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>,
-                title: "Polices standards",
-                desc: "Utilisez Arial, Calibri ou Times New Roman. Les polices décoratives ne sont pas lues correctement par les logiciels ATS.",
-              },
-              {
-                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>,
-                title: "Ordre antéchronologique",
-                desc: "Listez votre expérience la plus récente en premier. Les ATS et les recruteurs s'attendent à ce format.",
-              },
-              {
-                icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
-                title: "Coordonnées en haut",
-                desc: "Nom, téléphone, email et LinkedIn en en-tête. Les ATS extraient ces informations en priorité.",
-              },
-            ].map((tip, i) => (
-              <div key={i} className={`fade-up d${i + 1}`}>
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-50 text-brand-green mb-4">
-                  {tip.icon}
-                </div>
-                <h3 className="font-display text-[15px] font-bold text-brand-black mb-2">{tip.title}</h3>
-                <p className="text-[13px] text-brand-gray leading-relaxed max-w-[300px] mx-auto">{tip.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Section "Anatomie CV" supprimée — contenu déplacé vers le blog */}
 
-      {/* ── NOTRE HISTOIRE ── */}
-      <section className="py-20 bg-white border-t border-gray-100">
-        <div className="max-w-[720px] mx-auto px-8">
-          <div className="text-center mb-10 fade-up">
-            <h2 className="font-display text-[28px] md:text-[36px] font-extrabold tracking-[-1.5px] leading-tight">
-              Pourquoi nous avons créé <span className="text-brand-green">CVpass</span>
-            </h2>
-          </div>
-          <div className="fade-up space-y-5 text-[15px] text-gray-600 leading-relaxed">
-            <p>
-              Tout a commencé par un constat frustrant : des candidats qualifiés qui n&apos;obtenaient aucune réponse. Pas parce qu&apos;ils manquaient de compétences, mais parce que leur CV était rejeté par des machines avant même d&apos;être lu par un humain.
-            </p>
-            <p>
-              En France, <strong className="text-brand-black">la majorité des grandes entreprises</strong> utilisent un ATS pour trier les candidatures. Ces logiciels éliminent automatiquement les CV mal formatés, sans les bons mots-clés ou avec une structure incompatible. Des milliers de profils excellents passent à la trappe chaque jour.
-            </p>
-            <p>
-              Les outils existants ? Ils donnent un score et une liste de problèmes — puis vous laissent vous débrouiller. Nous voulions aller plus loin : <strong className="text-brand-black">un outil qui ne se contente pas de diagnostiquer, mais qui corrige.</strong>
-            </p>
-            <p>
-              CVpass analyse ton CV, identifie chaque point faible et propose une réécriture IA intégrant les mots-clés de l&apos;offre que tu vises. Tu acceptes ou tu ignores. Le score remonte en temps réel. Tu télécharges un PDF propre, optimisé, prêt à postuler.
-            </p>
-            <p className="text-brand-black font-semibold">
-              Notre mission : que le meilleur candidat obtienne l&apos;entretien — pas le mieux formaté.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Section "Notre histoire" supprimée — autocentré, pas utile pour la conversion */}
 
       {/* ── FEATURES TOUT-EN-UN ── */}
       <section className="py-24 bg-white border-t border-gray-100">
@@ -970,50 +910,13 @@ export function LandingPage() {
                   question: "Combien de temps prend l'analyse ?",
                   answer: "L'analyse complète prend environ 30 secondes. Vous obtenez votre score ATS, la liste des points faibles et les suggestions de réécriture IA en une seule opération. L'export PDF est instantané.",
                 },
-                {
-                  question: "Quels formats de CV sont acceptés ?",
-                  answer: "CVpass accepte les fichiers PDF et Word (.docx). Les PDF générés depuis Word, Google Docs ou LibreOffice fonctionnent parfaitement. Les PDF images (captures d'écran, exports Canva non-texte) sont détectés et vous êtes guidé pour les corriger.",
-                },
-                {
-                  question: "Est-ce que CVpass fonctionne pour tous les secteurs ?",
-                  answer: "Oui. L'IA analyse les mots-clés spécifiques à votre offre d'emploi, quel que soit le secteur : tech, commerce, finance, RH, marketing, industrie, santé. Les suggestions sont toujours adaptées au vocabulaire de votre domaine.",
-                },
-                {
-                  question: "L'IA réécrit-elle tout mon CV ?",
-                  answer: "Non. CVpass identifie uniquement les points faibles et propose des améliorations ciblées. Pour chaque suggestion, vous choisissez d'accepter ou d'ignorer. Votre CV reste le vôtre — l'IA l'optimise, elle ne le réinvente pas.",
-                },
-                {
-                  question: "Les crédits expirent-ils ?",
-                  answer: "Non. Les crédits achetés avec le Pack Coup de pouce n'expirent jamais. Vous pouvez les utiliser à votre rythme, sans pression. Les crédits gratuits (2 analyses) sont également sans limite de temps.",
-                },
               ]}
             />
           </div>
         </div>
       </section>
 
-      {/* ── 12. BLOG LINKS ── */}
-      <section className="bg-white py-16 px-8 border-t border-gray-100">
-        <div className="max-w-[1100px] mx-auto">
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-gray-900 text-center mb-8">
-            Guides pour améliorer ton CV ATS
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6 text-center">
-            <Link href="/blog/score-ats-cv" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">Score ATS : comment le calculer et l&apos;améliorer</h3>
-              <p className="text-[13px] text-gray-500">Guide complet 2026</p>
-            </Link>
-            <Link href="/blog/cv-canva-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">CV Canva et ATS : le problème et la solution</h3>
-              <p className="text-[13px] text-gray-500">Pourquoi ton CV est invisible</p>
-            </Link>
-            <Link href="/blog/erreurs-cv-ats" className="group p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
-              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-2">10 erreurs CV qui font planter les ATS</h3>
-              <p className="text-[13px] text-gray-500">Et comment les corriger</p>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Section "Blog links" supprimée — accessible via footer */}
 
       {/* ── 13. FOOTER ── */}
       <footer className="bg-gray-50 border-t border-gray-200 py-8 px-8">

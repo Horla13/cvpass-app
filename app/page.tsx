@@ -53,38 +53,6 @@ const faqJsonLd = {
         text: "L'analyse complète prend environ 30 secondes. Vous obtenez votre score ATS, la liste des points faibles et les suggestions de réécriture IA en une seule opération. L'export PDF est instantané.",
       },
     },
-    {
-      "@type": "Question",
-      name: "Quels formats de CV sont acceptés ?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "CVpass accepte les fichiers PDF et Word (.docx). Les PDF générés depuis Word, Google Docs ou LibreOffice fonctionnent parfaitement. Les PDF images (captures d'écran, exports Canva non-texte) sont détectés et vous êtes guidé pour les corriger.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Est-ce que CVpass fonctionne pour tous les secteurs ?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Oui. L'IA analyse les mots-clés spécifiques à votre offre d'emploi, quel que soit le secteur : tech, commerce, finance, RH, marketing, industrie, santé. Les suggestions sont toujours adaptées au vocabulaire de votre domaine.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "L'IA réécrit-elle tout mon CV ?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Non. CVpass identifie uniquement les points faibles et propose des améliorations ciblées. Pour chaque suggestion, vous choisissez d'accepter ou d'ignorer. Votre CV reste le vôtre — l'IA l'optimise, elle ne le réinvente pas.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Les crédits expirent-ils ?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Non. Les crédits achetés avec le Pack Coup de pouce n'expirent jamais. Vous pouvez les utiliser à votre rythme, sans pression. Les crédits gratuits (2 analyses) sont également sans limite de temps.",
-      },
-    },
   ],
 };
 

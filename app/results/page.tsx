@@ -1910,6 +1910,31 @@ export default function ResultsPage() {
                     <p className="text-gray-400 text-[15px]">Aucune suggestion générée pour cette analyse.</p>
                   </div>
                 )}
+
+                {gaps.length > 0 && pendingGaps.length === 0 && (
+                  <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+                    <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                    </div>
+                    <p className="text-[18px] font-bold text-gray-900 mb-2">Toutes les suggestions sont traitées !</p>
+                    <p className="text-[14px] text-gray-500 mb-5">
+                      {acceptedGaps.length > 0
+                        ? `Vous avez accepté ${acceptedGaps.length} suggestion${acceptedGaps.length > 1 ? "s" : ""}. Prévisualisez et téléchargez votre CV optimisé.`
+                        : "Vous pouvez prévisualiser votre CV ou relancer une analyse."
+                      }
+                    </p>
+                    {acceptedGaps.length > 0 && (
+                      <button
+                        onClick={handlePreview}
+                        disabled={isPreviewing}
+                        className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-green-500 text-white text-[15px] font-semibold rounded-xl hover:bg-green-600 transition-colors disabled:opacity-50"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                        Prévisualiser le PDF
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
