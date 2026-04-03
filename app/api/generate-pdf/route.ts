@@ -7,6 +7,7 @@ import { Gap } from "@/lib/store";
 import { restructureWithGPT, renderCvPdf, CVData } from "@/lib/pdf-builder";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();

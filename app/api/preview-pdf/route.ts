@@ -5,6 +5,7 @@ import { renderCvPdf } from "@/lib/pdf-templates";
 import type { CVData } from "@/lib/pdf-restructure";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 /** Preview PDF — free, always watermarked, rate-limited */
 export async function POST(req: NextRequest) {

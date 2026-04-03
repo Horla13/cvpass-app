@@ -2,6 +2,7 @@ import React from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import type { CVData } from "@/lib/pdf-restructure";
 import { getTemplate } from "@/lib/cv-templates";
+import { buildCvPdfBuffer } from "@/lib/pdf-render";
 
 import { ModernTemplate } from "./ModernTemplate";
 import { ClassicTemplate } from "./ClassicTemplate";
@@ -14,9 +15,8 @@ function getTemplateComponent(templateId: string) {
     case "classic": return ClassicTemplate;
     case "sidebar": return SidebarTemplate;
     case "executive": return ExecutiveTemplate;
-    case "creative":
-    case "timeline": return TimelineTemplate; // creative uses timeline layout
-    default: return ModernTemplate; // modern, minimal, tech, compact all use modern with different tpl config
+    case "creative": return TimelineTemplate;
+    default: return ModernTemplate;
   }
 }
 
@@ -25,9 +25,14 @@ export async function renderCvPdf(cv: CVData, options?: { watermark?: boolean; t
   const tpl = getTemplate(templateId);
   const Component = getTemplateComponent(templateId);
 
-  const buffer = await renderToBuffer(
-    <Component cv={cv} tpl={tpl} watermark={options?.watermark} />
-  );
-
-  return Buffer.from(buffer);
+  try {
+    const buffer = await renderToBuffer(
+      <Component cv={cv} tpl={tpl} watermark={options?.watermark} />
+    );
+    return Buffer.from(buffer);
+  } catch (e) {
+    // Fallback to pdfmake if @react-pdf fails (e.g. serverless cold start timeout)
+    console.warn("react-pdf render failed, falling back to pdfmake:", (e as Error).message);
+    return buildCvPdfBuffer(cv, options);
+  }
 }
