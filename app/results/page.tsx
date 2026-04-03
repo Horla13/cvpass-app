@@ -12,6 +12,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
 import { PromoModal, usePromoModal } from "@/components/PromoModal";
 import { cn } from "@/lib/utils";
+import { TemplateSelector } from "@/components/TemplateSelector";
 
 /* ─── Category config matching cvcomp ─── */
 const CATEGORY_MAP: Record<string, { label: string; color: string }> = {
@@ -1289,7 +1290,17 @@ export default function ResultsPage() {
   const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [pdfDownloaded, setPdfDownloaded] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [templateId, setTemplateId] = useState("modern");
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
   const promo = usePromoModal();
+
+  // Check if user has premium access (for template lock)
+  useEffect(() => {
+    fetch("/api/credits")
+      .then((r) => r.json())
+      .then((d) => setIsPremiumUser(d.unlimited === true || d.plan === "starter" || d.plan === "pro"))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (gaps.length === 0 && score_avant === 0) router.push("/analyze");
@@ -1407,7 +1418,7 @@ export default function ResultsPage() {
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvJson, cvText, analysisId: savedId }),
+        body: JSON.stringify({ cvJson, cvText, analysisId: savedId, templateId }),
       });
 
       if (res.status === 402) {
@@ -1712,6 +1723,13 @@ export default function ResultsPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Template Selector */}
+                <TemplateSelector
+                  selectedId={templateId}
+                  onSelect={setTemplateId}
+                  isPremiumUser={isPremiumUser}
+                />
 
                 {/* Download CTA */}
                 <div className="space-y-3">

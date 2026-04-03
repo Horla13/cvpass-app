@@ -1,4 +1,5 @@
 import { CVData, Experience, Formation, LetterMeta } from "@/lib/pdf-restructure";
+import { getTemplate, type CvTemplate } from "@/lib/cv-templates";
 export type { CVData, Experience, Formation, LetterMeta };
 
 function getPdfMake() {
@@ -21,38 +22,42 @@ const PAGE_INNER = 515;
 
 // ─── Section title: UPPERCASE green, green underline, letter-spacing ─────────
 
-function sectionTitle(label: string): unknown[] {
-  return [
+function sectionTitle(label: string, tpl: CvTemplate): unknown[] {
+  const formatted = tpl.sectionStyle === "uppercase" ? label.toUpperCase() : label;
+  const items: unknown[] = [
     {
-      text: label.toUpperCase(),
+      text: formatted,
       font: "Helvetica",
-      fontSize: 11,
+      fontSize: tpl.fontSize.section,
       bold: true,
-      color: "#16a34a",
+      color: tpl.colors.primary,
       characterSpacing: 2.2,
       margin: [0, 14, 0, 3],
     },
-    {
+  ];
+  if (tpl.lineStyle !== "none") {
+    items.push({
       canvas: [
-        { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 1.5, lineColor: "#16a34a" },
+        { type: "line", x1: 0, y1: 0, x2: tpl.lineStyle === "short" ? 80 : PAGE_INNER, y2: 0, lineWidth: 1.5, lineColor: tpl.colors.primary },
       ],
       margin: [0, 0, 0, 6],
-    },
-  ];
+    });
+  }
+  return items;
 }
 
 // ─── Header: fond blanc, nom vert, contact noir — 100% ATS-safe ─────────────
 
-function buildHeader(cv: CVData): unknown[] {
+function buildHeader(cv: CVData, tpl: CvTemplate): unknown[] {
   const items: unknown[] = [];
 
   // Nom + photo side by side
   const nameBlock: unknown = {
     text: cv.nom || "CV",
     font: "Helvetica",
-    fontSize: 22,
+    fontSize: tpl.fontSize.name,
     bold: true,
-    color: "#16a34a",
+    color: tpl.colors.heading,
   };
 
   if (cv.photo) {
@@ -78,8 +83,8 @@ function buildHeader(cv: CVData): unknown[] {
     items.push({
       text: cv.titre,
       font: "Helvetica",
-      fontSize: 12,
-      color: "#111827",
+      fontSize: tpl.fontSize.title,
+      color: tpl.colors.text,
       margin: [0, 0, 0, 4],
     });
   }
@@ -94,8 +99,8 @@ function buildHeader(cv: CVData): unknown[] {
     items.push({
       text: contactParts.join("  |  "),
       font: "Helvetica",
-      fontSize: 10,
-      color: "#6b7280",
+      fontSize: tpl.fontSize.body,
+      color: tpl.colors.subtext,
       margin: [0, 0, 0, 4],
     });
   }
@@ -103,7 +108,7 @@ function buildHeader(cv: CVData): unknown[] {
   // Ligne verte séparatrice
   items.push({
     canvas: [
-      { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 2, lineColor: "#16a34a" },
+      { type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: 2, lineColor: tpl.colors.primary },
     ],
     margin: [0, 4, 0, 0],
   });
@@ -113,20 +118,21 @@ function buildHeader(cv: CVData): unknown[] {
 
 // ─── CV content builder ──────────────────────────────────────────────────────
 
-export function buildContent(cv: CVData): unknown[] {
+export function buildContent(cv: CVData, templateId?: string): unknown[] {
+  const tpl = getTemplate(templateId ?? "modern");
   const content: unknown[] = [];
 
   // ── Header ──
-  content.push(...buildHeader(cv));
+  content.push(...buildHeader(cv, tpl));
 
   // ── Profil ──
   if (cv.profil) {
-    content.push(...sectionTitle("Profil"));
+    content.push(...sectionTitle("Profil", tpl));
     content.push({
       text: cv.profil,
       font: "Helvetica",
-      fontSize: 10,
-      color: "#111827",
+      fontSize: tpl.fontSize.body,
+      color: tpl.colors.text,
       lineHeight: 1.5,
       margin: [0, 0, 0, 2],
     });
@@ -134,13 +140,13 @@ export function buildContent(cv: CVData): unknown[] {
 
   // ── Expériences professionnelles ──
   if (cv.experiences?.length > 0) {
-    content.push(...sectionTitle("Exp\u00e9riences professionnelles"));
+    content.push(...sectionTitle("Exp\u00e9riences professionnelles", tpl));
     for (let i = 0; i < cv.experiences.length; i++) {
       const exp: Experience = cv.experiences[i];
       content.push({
         columns: [
-          { text: exp.poste || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
-          { text: exp.periode || "", font: "Helvetica", fontSize: 9, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: exp.poste || "", font: "Helvetica", fontSize: tpl.fontSize.section, bold: true, color: tpl.colors.text, width: "*" },
+          { text: exp.periode || "", font: "Helvetica", fontSize: tpl.fontSize.small, italics: true, color: tpl.colors.subtext, alignment: "right", width: "auto" },
         ],
         margin: [0, i > 0 ? 8 : 4, 0, 1],
       });
@@ -149,9 +155,9 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: subline,
           font: "Helvetica",
-          fontSize: 9,
+          fontSize: tpl.fontSize.small,
           italics: true,
-          color: "#6b7280",
+          color: tpl.colors.subtext,
           margin: [0, 0, 0, 2],
         });
       }
@@ -159,8 +165,8 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: `- ${mission}`,
           font: "Helvetica",
-          fontSize: 10,
-          color: "#111827",
+          fontSize: tpl.fontSize.body,
+          color: tpl.colors.text,
           margin: [8, 0, 0, 1],
         });
       }
@@ -169,13 +175,13 @@ export function buildContent(cv: CVData): unknown[] {
 
   // ── Formation ──
   if (cv.formation?.length > 0) {
-    content.push(...sectionTitle("Formation"));
+    content.push(...sectionTitle("Formation", tpl));
     for (let i = 0; i < cv.formation.length; i++) {
       const f: Formation = cv.formation[i];
       content.push({
         columns: [
-          { text: f.diplome || "", font: "Helvetica", fontSize: 11, bold: true, color: "#111827", width: "*" },
-          { text: f.periode || "", font: "Helvetica", fontSize: 9, italics: true, color: "#6b7280", alignment: "right", width: "auto" },
+          { text: f.diplome || "", font: "Helvetica", fontSize: tpl.fontSize.section, bold: true, color: tpl.colors.text, width: "*" },
+          { text: f.periode || "", font: "Helvetica", fontSize: tpl.fontSize.small, italics: true, color: tpl.colors.subtext, alignment: "right", width: "auto" },
         ],
         margin: [0, i > 0 ? 6 : 4, 0, 1],
       });
@@ -183,9 +189,9 @@ export function buildContent(cv: CVData): unknown[] {
         content.push({
           text: f.etablissement,
           font: "Helvetica",
-          fontSize: 9,
+          fontSize: tpl.fontSize.small,
           italics: true,
-          color: "#6b7280",
+          color: tpl.colors.subtext,
           margin: [0, 0, 0, 2],
         });
       }
@@ -194,37 +200,37 @@ export function buildContent(cv: CVData): unknown[] {
 
   // ── Compétences ──
   if (cv.competences?.length > 0) {
-    content.push(...sectionTitle("Comp\u00e9tences"));
+    content.push(...sectionTitle("Comp\u00e9tences", tpl));
     content.push({
       text: cv.competences.join("  |  "),
       font: "Helvetica",
-      fontSize: 10,
-      color: "#111827",
+      fontSize: tpl.fontSize.body,
+      color: tpl.colors.text,
       margin: [0, 0, 0, 2],
     });
   }
 
   // ── Centres d'intérêt ──
   if (cv.centres_interet?.length > 0) {
-    content.push(...sectionTitle("Centres d\u2019int\u00e9r\u00eat"));
+    content.push(...sectionTitle("Centres d\u2019int\u00e9r\u00eat", tpl));
     content.push({
       text: cv.centres_interet.join("  |  "),
       font: "Helvetica",
-      fontSize: 10,
-      color: "#111827",
+      fontSize: tpl.fontSize.body,
+      color: tpl.colors.text,
       margin: [0, 0, 0, 2],
     });
   }
 
   // ── Informations ──
   if (cv.informations?.length > 0) {
-    content.push(...sectionTitle("Informations"));
+    content.push(...sectionTitle("Informations", tpl));
     for (const info of cv.informations) {
       content.push({
         text: info,
         font: "Helvetica",
-        fontSize: 10,
-        color: "#111827",
+        fontSize: tpl.fontSize.body,
+        color: tpl.colors.text,
         margin: [0, 1, 0, 1],
       });
     }
@@ -235,7 +241,7 @@ export function buildContent(cv: CVData): unknown[] {
 
 // ─── CV PDF buffer generation ────────────────────────────────────────────────
 
-export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boolean }): Promise<Buffer> {
+export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boolean; templateId?: string }): Promise<Buffer> {
   const pdfmake = getPdfMake();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const docDef: any = {
@@ -250,7 +256,7 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
       creator: "CVpass",
       producer: "CVpass",
     },
-    content: buildContent(cv),
+    content: buildContent(cv, options?.templateId),
   };
 
   if (options?.watermark) {

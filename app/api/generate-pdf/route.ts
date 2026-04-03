@@ -39,14 +39,25 @@ export async function POST(req: NextRequest) {
     creditConsumed = true;
   }
 
-  let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string };
+  let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string; templateId?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }
 
-  const { cvText, acceptedGaps = [], cvJson, analysisId } = body;
+  const { cvText, acceptedGaps = [], cvJson, analysisId, templateId } = body;
+
+  // Premium template check: non-free templates require starter or pro plan
+  if (templateId) {
+    const { isFreeTemplate } = await import("@/lib/cv-templates");
+    if (!isFreeTemplate(templateId) && !unlimited) {
+      return NextResponse.json(
+        { error: "Ce template nécessite un plan Starter ou Pro." },
+        { status: 403 }
+      );
+    }
+  }
 
   if (analysisId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(analysisId)) {
     return NextResponse.json({ error: "analysisId invalide" }, { status: 400 });
@@ -93,7 +104,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const buffer = await buildCvPdfBuffer(cvData, { watermark: false });
+    const buffer = await buildCvPdfBuffer(cvData, { watermark: false, templateId: templateId ?? "modern" });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
