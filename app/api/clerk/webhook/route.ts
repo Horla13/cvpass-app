@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
-import { sendWelcomeEmail, sendRetentionEmailJ3, sendRetentionEmailJ7, syncBrevoContact } from "@/lib/brevo";
+import { sendWelcomeEmail, sendRetentionEmailJ3, syncBrevoContact } from "@/lib/brevo";
 import { captureServerEvent } from "@/lib/posthog-server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
 
       sendWelcomeEmail(email, firstName).catch(console.error);
       sendRetentionEmailJ3(email, firstName).catch(console.error);
-      sendRetentionEmailJ7(email, firstName).catch(console.error);
+      // J+7 email: handled via Brevo automation (API limit: max 3 days scheduledAt)
 
       captureServerEvent(userId, "signup_completed", { email }).catch(console.error);
     }
