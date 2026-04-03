@@ -12,6 +12,7 @@ const NAV_LINKS_AUTH = [
   { href: "/analyze", label: "Analyser" },
   { href: "/tracker", label: "Candidatures" },
   { href: "/pricing", label: "Tarifs" },
+  { href: "/affiliate", label: "Affiliation" },
 ];
 
 const NAV_LINKS_PUBLIC = [
