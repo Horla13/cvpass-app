@@ -4,7 +4,7 @@ import { consumeCredit, addCredits, hasUnlimitedAccess, CREDIT_COSTS } from "@/l
 import { checkRateLimitWith } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { Gap } from "@/lib/store";
-import { restructureWithGPT, buildCvPdfBuffer, CVData } from "@/lib/pdf-builder";
+import { restructureWithGPT, renderCvPdf, CVData } from "@/lib/pdf-builder";
 
 export const dynamic = "force-dynamic";
 
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const buffer = await buildCvPdfBuffer(cvData, { watermark: false, templateId: templateId ?? "modern" });
+    const buffer = await renderCvPdf(cvData, { watermark: false, templateId: templateId ?? "modern" });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

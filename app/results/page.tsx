@@ -1462,19 +1462,27 @@ export default function ResultsPage() {
   const handlePreview = async () => {
     if (!cvJson) return;
     setIsPreviewing(true);
-    // Revoke previous URL to avoid memory leak
+    setDownloadError(null);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
     try {
       const res = await fetch("/api/preview-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cvJson, templateId }),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Erreur aperçu" }));
+        setDownloadError(err.error ?? "Erreur lors de la génération de l'aperçu");
+        return;
+      }
       const blob = await res.blob();
       setPreviewUrl(URL.createObjectURL(blob));
-    } catch { /* ignore */ }
-    finally { setIsPreviewing(false); }
+    } catch (e) {
+      setDownloadError(e instanceof Error ? e.message : "Erreur réseau");
+    } finally {
+      setIsPreviewing(false);
+    }
   };
 
   if (!cvText) return null;

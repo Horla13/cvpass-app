@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { checkRateLimitWith } from "@/lib/rate-limit";
-import { buildCvPdfBuffer, CVData } from "@/lib/pdf-render";
+import { renderCvPdf } from "@/lib/pdf-templates";
+import type { CVData } from "@/lib/pdf-restructure";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const buffer = await buildCvPdfBuffer(body.cvJson, {
+    const buffer = await renderCvPdf(body.cvJson, {
       watermark: true,
       templateId: body.templateId ?? "modern",
     });
