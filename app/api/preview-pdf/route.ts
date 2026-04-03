@@ -29,7 +29,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const buffer = await renderCvPdf(body.cvJson, {
+    // Pre-process photo to circular crop
+    let cvData = body.cvJson;
+    if (cvData.photo) {
+      const { circularCrop } = await import("@/lib/photo-circle");
+      cvData = { ...cvData, photo: await circularCrop(cvData.photo, 120) };
+    }
+
+    const buffer = await renderCvPdf(cvData, {
       watermark: true,
       templateId: body.templateId ?? "modern",
     });

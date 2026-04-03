@@ -105,6 +105,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Pre-process photo to circular crop (PDF renderers don't support borderRadius)
+    if (cvData.photo) {
+      const { circularCrop } = await import("@/lib/photo-circle");
+      cvData = { ...cvData, photo: await circularCrop(cvData.photo, 120) };
+    }
+
     const buffer = await renderCvPdf(cvData, { watermark: false, templateId: templateId ?? "modern" });
 
     return new NextResponse(new Uint8Array(buffer), {

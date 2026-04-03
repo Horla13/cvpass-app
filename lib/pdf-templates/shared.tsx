@@ -32,10 +32,10 @@ export function Watermark() {
   );
 }
 
-/** Photo component — only renders if photo exists */
+/** Photo component — image arrives already circular-cropped via sharp */
 export function Photo({ src, size = 52 }: { src?: string; size?: number }) {
   if (!src) return null;
-  return <Image src={src} style={{ width: size, height: size, borderRadius: size / 2, objectFit: "cover" }} />;
+  return <Image src={src} style={{ width: size, height: size }} />;
 }
 
 /** Section title variants */
