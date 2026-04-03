@@ -326,6 +326,7 @@ export default function PricingPage() {
             <Link href="/blog" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Blog</Link>
             <Link href="/mentions-legales" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Mentions légales</Link>
             <Link href="/politique-confidentialite" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
+            <Link href="/affiliate/join" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Affiliation</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Contact</a>
           </div>
         </div>

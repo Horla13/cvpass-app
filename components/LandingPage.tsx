@@ -13,7 +13,7 @@ import { useStore } from "@/lib/store";
 export function LandingPage() {
   const router = useRouter();
   const setCvText = useStore((s) => s.setCvText);
-  const [counterValue, setCounterValue] = useState("+1 200");
+  const counterValue = "+1 200";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,15 +32,6 @@ export function LandingPage() {
     );
     document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    fetch("/api/count")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (d?.count > 0) setCounterValue(d.count.toLocaleString("fr-FR"));
-      })
-      .catch(() => {});
   }, []);
 
   return (
@@ -869,6 +860,81 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* ── FEATURES TOUT-EN-UN ── */}
+      <section className="py-24 bg-white border-t border-gray-100">
+        <div className="max-w-[1100px] mx-auto px-8">
+          <div className="text-center mb-14 fade-up">
+            <span className="inline-block bg-green-50 text-green-600 text-[13px] font-semibold px-4 py-1.5 rounded-full mb-4">
+              Plateforme complète
+            </span>
+            <h2 className="font-display text-[28px] md:text-[36px] font-extrabold tracking-[-1.5px] leading-tight">
+              Bien plus qu&apos;un scanner CV
+            </h2>
+            <p className="text-gray-500 text-[16px] mt-3 max-w-lg mx-auto">
+              Tout ce dont vous avez besoin pour décrocher des entretiens, dans un seul outil.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 fade-up">
+            {/* Templates */}
+            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">8 templates ATS</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Des templates optimisés pour passer les filtres automatiques. Sobre, moderne, technique, créatif — choisissez le style qui vous ressemble.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Classic</span>
+                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Modern</span>
+                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Executive</span>
+                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Tech</span>
+                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">+4</span>
+              </div>
+            </div>
+
+            {/* Tracker */}
+            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Tracker de candidatures</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Suivez toutes vos candidatures sur un tableau Kanban. Plus besoin de fichier Excel — voyez en un coup d&apos;oeil où en est chaque candidature.
+              </p>
+              <div className="flex items-center gap-2">
+                {["Souhaitée", "Postulée", "Entretien", "Offre"].map((s) => (
+                  <span key={s} className="text-[10px] bg-white border border-gray-200 rounded-full px-2 py-0.5 text-gray-500">{s}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Lettre de motivation */}
+            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Lettre de motivation IA</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Générez une lettre de motivation personnalisée à partir de votre CV et de l&apos;offre d&apos;emploi. Adaptée au poste, prête à envoyer.
+              </p>
+              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Personnalisée par l&apos;IA</span>
+            </div>
+          </div>
+
+          <div className="text-center mt-10 fade-up">
+            <Link
+              href="/analyze"
+              className="inline-flex items-center gap-2 px-8 py-3.5 min-h-[48px] bg-brand-green text-white text-[15px] font-semibold rounded-xl hover:bg-green-700 transition-colors"
+            >
+              Essayer gratuitement
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── 11. FAQ ── */}
       <section className="py-24 bg-[#fafafa]">
         <div className="max-w-[1100px] mx-auto px-8">
@@ -965,6 +1031,7 @@ export function LandingPage() {
             <Link href="/politique-confidentialite" className="text-[14px] md:text-[13px] text-gray-400 hover:text-brand-black transition-colors py-1">Confidentialité</Link>
             <Link href="/conditions-generales" className="text-[14px] md:text-[13px] text-gray-400 hover:text-brand-black transition-colors py-1">CGU/CGV</Link>
             <Link href="/politique-cookies" className="text-[14px] md:text-[13px] text-gray-400 hover:text-brand-black transition-colors py-1">Cookies</Link>
+            <Link href="/affiliate/join" className="text-[14px] md:text-[13px] text-gray-400 hover:text-brand-black transition-colors py-1">Affiliation</Link>
             <a href="mailto:contact@cvpass.fr" className="text-[14px] md:text-[13px] text-gray-400 hover:text-brand-black transition-colors py-1">Contact</a>
           </div>
         </div>
