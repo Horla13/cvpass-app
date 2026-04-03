@@ -31,6 +31,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Plan invalide" }, { status: 400 });
   }
 
+  // Read affiliate ref cookie
+  const refCode = req.cookies.get("cvpass_ref")?.value ?? "";
+
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
   const commonConfig = {
@@ -48,7 +51,7 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: process.env.STRIPE_PRICE_ID_STARTER!, quantity: 1 }],
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}&plan=starter`,
       cancel_url: `${appUrl}/pricing`,
-      metadata: { userId, plan: "starter" },
+      metadata: { userId, plan: "starter", ...(refCode ? { ref: refCode } : {}) },
       custom_text: {
         submit: { message: "Paiement unique — +4 crédits ajoutés immédiatement" },
       },
@@ -61,7 +64,7 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: process.env.STRIPE_PRICE_ID_PRO!, quantity: 1 }],
       success_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}&plan=pro`,
       cancel_url: `${appUrl}/pricing`,
-      metadata: { userId, plan: "pro" },
+      metadata: { userId, plan: "pro", ...(refCode ? { ref: refCode } : {}) },
       custom_text: {
         submit: { message: "Analyses illimitées — résiliable à tout moment" },
       },

@@ -81,6 +81,37 @@ export async function POST(req: NextRequest) {
 
     const customerEmail = session.customer_details?.email ?? session.customer_email;
 
+    // Affiliate conversion tracking
+    const refCode = session.metadata?.ref;
+    if (refCode) {
+      const { data: affiliate } = await admin
+        .from("affiliates")
+        .select("id, commission_rate, user_id")
+        .eq("code", refCode)
+        .eq("status", "active")
+        .maybeSingle();
+
+      if (affiliate && affiliate.user_id !== userId) {
+        const amount = (session.amount_total ?? 0) / 100;
+        const commission = +(amount * (affiliate.commission_rate ?? 0.5)).toFixed(2);
+
+        await admin.from("affiliate_conversions").insert({
+          affiliate_id: affiliate.id,
+          referred_user_id: userId,
+          stripe_payment_id: session.id,
+          amount,
+          commission,
+          status: "pending",
+        });
+
+        const currentEarned = Number((affiliate as Record<string, unknown>).total_earned ?? 0);
+        await admin
+          .from("affiliates")
+          .update({ total_earned: currentEarned + commission })
+          .eq("id", affiliate.id);
+      }
+    }
+
     if (plan === "starter") {
       // Starter: +4 credits, stacks on existing
       const { data: existing } = await admin
