@@ -818,6 +818,7 @@ function CVDocumentEditable({
   templateId?: string;
 }) {
   const tpl = getTemplate(templateId);
+  const isLightHeader = ["#ffffff", "#faf5ff", "#f0f9ff", "#f1f5f9"].includes(tpl.colors.headerBg);
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
   const acceptedGaps = useMemo(() => gaps.filter((g) => g.status === "accepted"), [gaps]);
 
@@ -935,10 +936,10 @@ function CVDocumentEditable({
       style={{ minHeight: 600 }}
     >
       {/* Header — styled by template */}
-      <div className="px-10 py-7" style={{ backgroundColor: tpl.id === "minimal" ? "#f9fafb" : "#111827" }}>
+      <div className="px-10 py-7" style={{ backgroundColor: tpl.colors.headerBg }}>
         <div className="flex items-start gap-6">
           {/* Left: name + contact */}
-          <div className="flex-1 min-w-0" style={{ color: tpl.id === "minimal" ? tpl.colors.heading : tpl.colors.heading === "#111827" ? "#ffffff" : tpl.colors.heading }}>
+          <div className="flex-1 min-w-0" style={{ color: tpl.colors.headerBg === "#ffffff" || tpl.colors.headerBg === "#faf5ff" || tpl.colors.headerBg === "#f0f9ff" ? tpl.colors.heading : tpl.colors.heading === "#111827" ? "#ffffff" : tpl.colors.heading }}>
             <GapField
               value={cv.nom}
               onSave={(v) => updateField("nom", v)}
@@ -952,7 +953,7 @@ function CVDocumentEditable({
           />
         </div>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mt-3">
-          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+          <span className={`flex items-center gap-1.5 text-[12px] ${isLightHeader ? "text-gray-500" : "text-gray-400"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
               <polyline points="22,6 12,13 2,6" />
@@ -964,7 +965,7 @@ function CVDocumentEditable({
               placeholder="Email"
             />
           </span>
-          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+          <span className={`flex items-center gap-1.5 text-[12px] ${isLightHeader ? "text-gray-500" : "text-gray-400"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.64.32 1.26.56 1.85l.04.1c.16.39.08.84-.2 1.16L8.09 9.91a16 16 0 006 6l1.27-1.27c.32-.28.77-.36 1.16-.2l.1.04c.59.24 1.21.43 1.85.56A2 2 0 0120 16.92v3z" />
             </svg>
@@ -975,7 +976,7 @@ function CVDocumentEditable({
               placeholder="Téléphone"
             />
           </span>
-          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+          <span className={`flex items-center gap-1.5 text-[12px] ${isLightHeader ? "text-gray-500" : "text-gray-400"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
               <circle cx="12" cy="10" r="3" />
@@ -987,7 +988,7 @@ function CVDocumentEditable({
               placeholder="Ville"
             />
           </span>
-          <span className="flex items-center gap-1.5 text-[12px] text-gray-400">
+          <span className={`flex items-center gap-1.5 text-[12px] ${isLightHeader ? "text-gray-500" : "text-gray-400"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
             </svg>
