@@ -61,25 +61,41 @@ function buildHeader(cv: CVData, tpl: CvTemplate): unknown[] {
   };
 
   if (cv.photo) {
+    // Photo positioned right, small enough not to interfere with ATS text extraction
+    // ATS parsers (Workday, Greenhouse, Lever) extract text column-first —
+    // keeping photo in a separate column ensures name/title are always parsed correctly
     items.push({
       columns: [
-        { ...(nameBlock as Record<string, unknown>), width: "*", margin: [0, 10, 0, 0] },
+        {
+          stack: [
+            { ...(nameBlock as Record<string, unknown>) },
+            ...(cv.titre ? [{
+              text: cv.titre,
+              font: "Helvetica",
+              fontSize: tpl.fontSize.title,
+              color: tpl.colors.text,
+              margin: [0, 3, 0, 0] as [number, number, number, number],
+            }] : []),
+          ],
+          width: "*",
+          margin: [0, 6, 0, 0] as [number, number, number, number],
+        },
         {
           image: cv.photo,
-          width: 60,
-          height: 60,
+          width: 56,
+          height: 56,
           alignment: "right" as const,
         },
       ],
-      columnGap: 16,
+      columnGap: 12,
       margin: [0, 0, 0, 4],
     });
   } else {
     items.push({ ...(nameBlock as Record<string, unknown>), margin: [0, 0, 0, 4] });
   }
 
-  // Titre du poste
-  if (cv.titre) {
+  // Titre du poste (skip if already in photo column stack)
+  if (cv.titre && !cv.photo) {
     items.push({
       text: cv.titre,
       font: "Helvetica",
@@ -89,12 +105,16 @@ function buildHeader(cv: CVData, tpl: CvTemplate): unknown[] {
     });
   }
 
-  // Contact — texte noir lisible sur fond blanc
+  // Contact — ATS-safe plain text, parsers extract emails and URLs from text content
   const contactParts: string[] = [];
   if (cv.contact?.email) contactParts.push(cv.contact.email);
   if (cv.contact?.telephone) contactParts.push(cv.contact.telephone);
   if (cv.contact?.ville) contactParts.push(cv.contact.ville);
-  if (cv.contact?.linkedin) contactParts.push(cv.contact.linkedin);
+  if (cv.contact?.linkedin) {
+    // Strip protocol for cleaner display — ATS parsers still extract the URL
+    const linkedinClean = cv.contact.linkedin.replace(/^https?:\/\/(www\.)?/, "");
+    contactParts.push(linkedinClean);
+  }
   if (contactParts.length > 0) {
     items.push({
       text: contactParts.join("  |  "),

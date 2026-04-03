@@ -13,6 +13,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { PromoModal, usePromoModal } from "@/components/PromoModal";
 import { cn } from "@/lib/utils";
 import { TemplateSelector } from "@/components/TemplateSelector";
+import { getTemplate } from "@/lib/cv-templates";
 
 /* ─── Category config matching cvcomp ─── */
 const CATEGORY_MAP: Record<string, { label: string; color: string }> = {
@@ -578,10 +579,10 @@ function DeleteBtn({ onClick, size = "sm" }: { onClick: () => void; size?: "sm" 
 }
 
 /* ─── Section title ─── */
-function SectionTitle({ title }: { title: string }) {
+function SectionTitle({ title, color = "#16a34a" }: { title: string; color?: string }) {
   return (
     <div className="mt-6 mb-2 first:mt-0">
-      <h2 className="text-[12px] font-bold text-[#16a34a] uppercase tracking-[0.2em] border-b-2 border-[#16a34a] pb-1.5 inline-block">{title}</h2>
+      <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] pb-1.5 inline-block" style={{ color, borderBottom: `2px solid ${color}` }}>{title}</h2>
     </div>
   );
 }
@@ -809,11 +810,14 @@ function CVDocumentEditable({
   cvJson,
   gaps,
   onUpdate,
+  templateId = "modern",
 }: {
   cvJson: CVData;
   gaps: Gap[];
   onUpdate: (updated: CVData) => void;
+  templateId?: string;
 }) {
+  const tpl = getTemplate(templateId);
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
   const acceptedGaps = useMemo(() => gaps.filter((g) => g.status === "accepted"), [gaps]);
 
@@ -930,15 +934,15 @@ function CVDocumentEditable({
       className="w-full max-w-[794px] mx-auto bg-white shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden"
       style={{ minHeight: 600 }}
     >
-      {/* Dark Header */}
-      <div className="bg-[#111827] px-10 py-7">
+      {/* Header — styled by template */}
+      <div className="px-10 py-7" style={{ backgroundColor: tpl.id === "minimal" ? "#f9fafb" : "#111827" }}>
         <div className="flex items-start gap-6">
           {/* Left: name + contact */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0" style={{ color: tpl.id === "minimal" ? tpl.colors.heading : tpl.colors.heading === "#111827" ? "#ffffff" : tpl.colors.heading }}>
             <GapField
               value={cv.nom}
               onSave={(v) => updateField("nom", v)}
-              className="text-[24px] font-bold text-white tracking-tight leading-tight"
+              className="text-[24px] font-bold tracking-tight leading-tight"
             />
           </div>
           {/* Right: photo */}
@@ -1000,7 +1004,7 @@ function CVDocumentEditable({
       {/* CV Body */}
       <div className="px-10 py-8">
         {/* Profil */}
-        <SectionTitle title="Profil" />
+        <SectionTitle title="Profil" color={tpl.colors.primary} />
         <GapField
           value={cv.profil ?? ""}
           onSave={(v) => updateField("profil", v)}
@@ -1010,7 +1014,7 @@ function CVDocumentEditable({
         />
 
         {/* Expériences */}
-        {cv.experiences.length > 0 && <SectionTitle title="Expérience professionnelle" />}
+        {cv.experiences.length > 0 && <SectionTitle title="Expérience professionnelle" color={tpl.colors.primary} />}
         {cv.experiences.map((exp, ei) => (
           <div key={ei} className="mb-4 group/exp relative">
             <div className="absolute -left-6 top-3 opacity-0 group-hover/exp:opacity-100 transition-opacity">
@@ -1046,7 +1050,7 @@ function CVDocumentEditable({
             </div>
             {exp.missions.map((mission, mi) => (
               <div key={mi} className="flex items-start gap-2 pl-2 mb-1 group/mission">
-                <span className="text-[#16a34a] mt-[7px] text-[5px] flex-shrink-0">&#9679;</span>
+                <span className="mt-[7px] text-[5px] flex-shrink-0" style={{ color: tpl.colors.primary }}>&#9679;</span>
                 <GapField
                   value={mission}
                   onSave={(v) => updateMission(ei, mi, v)}
@@ -1063,7 +1067,7 @@ function CVDocumentEditable({
         <AddButton label="Ajouter une expérience" onClick={addExperience} />
 
         {/* Formation */}
-        {cv.formation.length > 0 && <SectionTitle title="Formation" />}
+        {cv.formation.length > 0 && <SectionTitle title="Formation" color={tpl.colors.primary} />}
         {cv.formation.map((f, fi) => (
           <div key={fi} className="mb-2 group/form relative">
             <div className="absolute -left-6 top-3 opacity-0 group-hover/form:opacity-100 transition-opacity">
@@ -1093,7 +1097,7 @@ function CVDocumentEditable({
         <AddButton label="Ajouter une formation" onClick={addFormation} />
 
         {/* Compétences */}
-        <SectionTitle title="Compétences" />
+        <SectionTitle title="Compétences" color={tpl.colors.primary} />
         <div className="flex flex-wrap gap-2 mt-1">
           {cv.competences.map((c, ci) => (
             <span key={ci} className="flex items-center gap-1 bg-gray-100 rounded px-2.5 py-1 group/comp">
@@ -1113,7 +1117,7 @@ function CVDocumentEditable({
         {/* Centres d'intérêt */}
         {cv.centres_interet.length > 0 && (
           <>
-            <SectionTitle title="Centres d&apos;intérêt" />
+            <SectionTitle title="Centres d&apos;intérêt" color={tpl.colors.primary} />
             <div className="flex flex-wrap gap-2 mt-1">
               {cv.centres_interet.map((c, ci) => (
                 <span key={ci} className="flex items-center gap-1 group/ci">
@@ -1136,7 +1140,7 @@ function CVDocumentEditable({
         {/* Informations */}
         {cv.informations.length > 0 && (
           <>
-            <SectionTitle title="Informations" />
+            <SectionTitle title="Informations" color={tpl.colors.primary} />
             {cv.informations.map((info, ii) => (
               <div key={ii} className="flex items-start gap-2 mb-0.5 group/info">
                 <InlineField
@@ -1168,6 +1172,7 @@ function CVEditorWithPanel({
   onDownload,
   isDownloading,
   downloadError,
+  templateId,
 }: {
   cvJson: CVData;
   gaps: Gap[];
@@ -1178,6 +1183,7 @@ function CVEditorWithPanel({
   onDownload: () => void;
   isDownloading: boolean;
   downloadError: string | null;
+  templateId?: string;
 }) {
   const [suggestionIdx, setSuggestionIdx] = useState(0);
   const pendingGaps = useMemo(() => gaps.filter((g) => g.status === "pending"), [gaps]);
@@ -1240,7 +1246,7 @@ function CVEditorWithPanel({
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div className="md:col-span-7 max-h-[85vh] overflow-y-auto pb-4">
-          <CVDocumentEditable cvJson={cvJson} gaps={gaps} onUpdate={onUpdate} />
+          <CVDocumentEditable cvJson={cvJson} gaps={gaps} onUpdate={onUpdate} templateId={templateId} />
         </div>
         <div className="md:col-span-5 md:sticky md:top-0 md:self-start">
           <SuggestionPanel
@@ -1846,6 +1852,7 @@ export default function ResultsPage() {
                   onDownload={handleDownload}
                   isDownloading={isDownloading}
                   downloadError={downloadError}
+                  templateId={templateId}
                 />
               ) : (
                 <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
