@@ -137,6 +137,8 @@ export default function AccountPage() {
     ? Math.round(analyses.reduce((sum, a) => sum + a.score_apres, 0) / totalAnalyses)
     : 0;
   const totalAccepted = analyses.reduce((sum, a) => sum + a.nb_acceptees, 0);
+  const ADMIN_EMAILS = ["armagio13@gmail.com", "contact@cvpass.fr"];
+  const isAdminUser = !!user?.emailAddresses[0]?.emailAddress && ADMIN_EMAILS.includes(user.emailAddresses[0].emailAddress);
 
   return (
     <PageTransition>
@@ -329,6 +331,24 @@ export default function AccountPage() {
 
                   {/* Referral Program */}
                   <ReferralCard />
+
+                  {/* Admin panel — visible only for admin emails */}
+                  {isAdminUser && (
+                    <div className="bg-gray-900 rounded-2xl p-6 text-white">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <h3 className="text-[14px] font-bold uppercase tracking-wider">Administration</h3>
+                      </div>
+                      <div className="space-y-2">
+                        <Link href="/admin/affiliates" className="flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                          <span className="text-[14px]">Gestion des affiliés</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Recent transactions */}
                   {transactions.length > 0 && (
