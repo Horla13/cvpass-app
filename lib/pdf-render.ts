@@ -254,92 +254,6 @@ function buildSingleColumn(cv: CVData, tpl: CvTemplate): unknown[] {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  LAYOUT: SIDEBAR (2-column with left sidebar)
-// ═══════════════════════════════════════════════════════════════
-
-function buildSidebar(cv: CVData, tpl: CvTemplate): unknown[] {
-  const sideW = 160;
-  const mainW = PAGE_INNER - sideW - 16;
-
-  // --- Sidebar content ---
-  const side: unknown[] = [];
-
-  // Photo
-  if (cv.photo) {
-    side.push({ image: cv.photo, width: 70, height: 70, alignment: "center", margin: [0, 0, 0, 10] });
-  }
-
-  // Contact
-  side.push({ text: "CONTACT", font: "Helvetica", fontSize: 8, bold: true, color: tpl.colors.primary, characterSpacing: 2, margin: [0, 6, 0, 4] });
-  if (cv.contact?.email) side.push({ text: cv.contact.email, font: "Helvetica", fontSize: 8, color: tpl.colors.text, margin: [0, 0, 0, 2] });
-  if (cv.contact?.telephone) side.push({ text: cv.contact.telephone, font: "Helvetica", fontSize: 8, color: tpl.colors.text, margin: [0, 0, 0, 2] });
-  if (cv.contact?.ville) side.push({ text: cv.contact.ville, font: "Helvetica", fontSize: 8, color: tpl.colors.text, margin: [0, 0, 0, 2] });
-  if (cv.contact?.linkedin) side.push({ text: cv.contact.linkedin.replace(/^https?:\/\/(www\.)?/, ""), font: "Helvetica", fontSize: 7.5, color: tpl.colors.primary, margin: [0, 0, 0, 2] });
-
-  // Compétences in sidebar
-  if (cv.competences?.length > 0) {
-    side.push({ text: "COMPÉTENCES", font: "Helvetica", fontSize: 8, bold: true, color: tpl.colors.primary, characterSpacing: 2, margin: [0, 12, 0, 4] });
-    for (const c of cv.competences) {
-      side.push({ text: `${bullet(tpl)}${c}`, font: "Helvetica", fontSize: 8.5, color: tpl.colors.text, margin: [0, 1, 0, 1] });
-    }
-  }
-
-  // Centres d'intérêt in sidebar
-  if (cv.centres_interet?.length > 0) {
-    side.push({ text: "INTÉRÊTS", font: "Helvetica", fontSize: 8, bold: true, color: tpl.colors.primary, characterSpacing: 2, margin: [0, 12, 0, 4] });
-    for (const c of cv.centres_interet) {
-      side.push({ text: c, font: "Helvetica", fontSize: 8.5, color: tpl.colors.text, margin: [0, 1, 0, 1] });
-    }
-  }
-
-  // Informations
-  if (cv.informations?.length > 0) {
-    side.push({ text: "INFORMATIONS", font: "Helvetica", fontSize: 8, bold: true, color: tpl.colors.primary, characterSpacing: 2, margin: [0, 12, 0, 4] });
-    for (const info of cv.informations) {
-      side.push({ text: info, font: "Helvetica", fontSize: 8.5, color: tpl.colors.text, margin: [0, 1, 0, 1] });
-    }
-  }
-
-  // --- Main content ---
-  const main: unknown[] = [];
-
-  // Name + title
-  main.push({ text: cv.nom || "CV", font: "Helvetica", fontSize: tpl.fontSize.name, bold: true, color: tpl.colors.primary, margin: [0, 0, 0, 2] });
-  if (cv.titre) main.push({ text: cv.titre, font: "Helvetica", fontSize: tpl.fontSize.title, color: tpl.colors.text, margin: [0, 0, 0, 6] });
-
-  // Profil
-  if (cv.profil) {
-    main.push(...sectionTitle("Profil", tpl, mainW));
-    main.push({ text: cv.profil, font: "Helvetica", fontSize: tpl.fontSize.body, color: tpl.colors.text, lineHeight: 1.5, margin: [0, 0, 0, 2] });
-  }
-  // Experiences
-  if (cv.experiences?.length > 0) {
-    main.push(...sectionTitle("Expériences", tpl, mainW));
-    cv.experiences.forEach((exp, i) => main.push(...experienceBlock(exp, i, tpl)));
-  }
-  // Formation
-  if (cv.formation?.length > 0) {
-    main.push(...sectionTitle("Formation", tpl, mainW));
-    cv.formation.forEach((f, i) => main.push(...formationBlock(f, i, tpl)));
-  }
-
-  return [{
-    columns: [
-      {
-        width: sideW,
-        stack: side,
-        margin: [0, 0, 0, 0],
-      },
-      {
-        width: "*",
-        stack: main,
-      },
-    ],
-    columnGap: 16,
-  }];
-}
-
-// ═══════════════════════════════════════════════════════════════
 //  LAYOUT: BANNER (Full-width colored header)
 // ═══════════════════════════════════════════════════════════════
 
@@ -497,7 +411,6 @@ function buildTimeline(cv: CVData, tpl: CvTemplate): unknown[] {
 export function buildContent(cv: CVData, templateId?: string): unknown[] {
   const tpl = getTemplate(templateId ?? "modern");
   switch (tpl.layout) {
-    case "sidebar": return buildSidebar(cv, tpl);
     case "banner": return buildBanner(cv, tpl);
     case "timeline": return buildTimeline(cv, tpl);
     default: return buildSingleColumn(cv, tpl);
@@ -509,12 +422,12 @@ export function buildContent(cv: CVData, templateId?: string): unknown[] {
 export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boolean; templateId?: string }): Promise<Buffer> {
   const tpl = getTemplate(options?.templateId ?? "modern");
   const pdfmake = getPdfMake();
-  const sidebarMargins = tpl.layout === "sidebar" ? [M, M, M, options?.watermark ? 50 : M] : [M, M, M, options?.watermark ? 50 : M];
+  const margins = [M, M, M, options?.watermark ? 50 : M];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const docDef: any = {
     pageSize: "A4" as const,
-    pageMargins: sidebarMargins as [number, number, number, number],
+    pageMargins: margins as [number, number, number, number],
     defaultStyle: { font: "Helvetica", fontSize: 10, lineHeight: 1.4 },
     info: {
       title: `${cv.nom || "CV"} - CV`,
@@ -527,21 +440,10 @@ export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boole
     content: buildContent(cv, options?.templateId),
   };
 
-  // Background layers (sidebar bg + watermark)
-  if (tpl.layout === "sidebar" && tpl.colors.sidebarBg && !options?.watermark) {
-    docDef.background = () => ({
-      canvas: [{ type: "rect", x: 0, y: 0, w: 200, h: 842, color: tpl.colors.sidebarBg }],
-    });
-  }
-
   if (options?.watermark) {
     // Diagonal watermark anti-screenshot — repeated across the page
     docDef.background = () => {
       const items: unknown[] = [];
-      // Sidebar bg first if needed
-      if (tpl.layout === "sidebar" && tpl.colors.sidebarBg) {
-        items.push({ type: "rect", x: 0, y: 0, w: 200, h: 842, color: tpl.colors.sidebarBg });
-      }
       // Diagonal watermark text pattern
       for (let y = 80; y < 842; y += 200) {
         for (let x = -100; x < 595; x += 280) {

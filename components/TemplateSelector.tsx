@@ -42,29 +42,6 @@ function LayoutPreview({ tpl }: { tpl: CvTemplate }) {
   const h = tpl.colors.headerBg;
   const isLight = h === "#ffffff" || h === "#faf5ff" || h === "#f0f9ff";
 
-  if (tpl.layout === "sidebar") {
-    return (
-      <div className="w-full h-20 rounded-md border border-gray-100 flex overflow-hidden" style={{ background: "#fff" }}>
-        {/* Sidebar */}
-        <div className="w-[30%] h-full flex flex-col items-center gap-1 py-2" style={{ background: tpl.colors.sidebarBg || "#f1f5f9" }}>
-          <div className="w-5 h-5 rounded-full" style={{ background: p, opacity: 0.3 }} />
-          <div className="w-6 h-0.5 rounded-full" style={{ background: p, opacity: 0.5 }} />
-          <div className="w-8 h-0.5 rounded-full bg-gray-300" />
-          <div className="w-7 h-0.5 rounded-full bg-gray-300" />
-          <div className="w-6 h-0.5 rounded-full bg-gray-300" />
-        </div>
-        {/* Main */}
-        <div className="flex-1 flex flex-col gap-1 py-2 px-2">
-          <div className="h-2 rounded-full w-14" style={{ background: p }} />
-          <div className="h-1 rounded-full w-10 bg-gray-200" />
-          <div className="h-0.5 mt-1 rounded-full w-full" style={{ background: p, opacity: 0.3 }} />
-          <div className="h-1 rounded-full w-12 bg-gray-200" />
-          <div className="h-1 rounded-full w-10 bg-gray-200" />
-        </div>
-      </div>
-    );
-  }
-
   if (tpl.layout === "banner") {
     return (
       <div className="w-full h-20 rounded-md border border-gray-100 flex flex-col overflow-hidden" style={{ background: "#fff" }}>

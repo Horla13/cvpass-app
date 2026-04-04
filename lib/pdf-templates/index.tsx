@@ -6,14 +6,12 @@ import { buildCvPdfBuffer } from "@/lib/pdf-render";
 
 import { ModernTemplate } from "./ModernTemplate";
 import { ClassicTemplate } from "./ClassicTemplate";
-import { SidebarTemplate } from "./SidebarTemplate";
 import { ExecutiveTemplate } from "./ExecutiveTemplate";
 import { TimelineTemplate } from "./TimelineTemplate";
 
 function getTemplateComponent(templateId: string) {
   switch (templateId) {
     case "classic": return ClassicTemplate;
-    case "sidebar": return SidebarTemplate;
     case "executive": return ExecutiveTemplate;
     case "creative": return TimelineTemplate;
     default: return ModernTemplate;

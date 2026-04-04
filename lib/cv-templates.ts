@@ -5,7 +5,7 @@ export interface CvTemplate {
   atsScore: number;
   premium: boolean;
   /** Layout type determines the overall structure */
-  layout: "single" | "sidebar" | "banner" | "timeline";
+  layout: "single" | "banner" | "timeline";
   colors: {
     primary: string;
     heading: string;
@@ -65,19 +65,6 @@ export const CV_TEMPLATES: CvTemplate[] = [
     sectionStyle: "minimal",
     bulletStyle: "none",
     competenceStyle: "comma",
-  },
-  {
-    id: "sidebar",
-    name: "Sidebar",
-    description: "2 colonnes avec sidebar. Moderne et structuré.",
-    atsScore: 93,
-    premium: true,
-    layout: "sidebar",
-    colors: { primary: "#1e3a5f", heading: "#ffffff", text: "#111827", subtext: "#6b7280", headerBg: "#1e3a5f", sidebarBg: "#f1f5f9" },
-    fontSize: { name: 20, title: 11, section: 10, body: 9.5, small: 8.5 },
-    sectionStyle: "leftBorder",
-    bulletStyle: "arrow",
-    competenceStyle: "tags",
   },
   {
     id: "executive",
