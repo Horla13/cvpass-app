@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import { PostHogProvider } from "@/components/PostHogProvider";
 
 import "./globals.css";
+import { Footer } from "@/components/Footer";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -128,6 +129,7 @@ export default function RootLayout({
         <ClerkProvider localization={frFR}>
           <PostHogProvider>
               {children}
+              <Footer />
           </PostHogProvider>
         </ClerkProvider>
       </body>

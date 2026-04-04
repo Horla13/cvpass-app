@@ -25,10 +25,17 @@ export function AppHeader() {
   const { isSignedIn } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (isSignedIn) {
-      fetch("/api/credits").then((r) => r.json()).then((d) => setCredits(d.credits ?? null)).catch(() => {});
+      fetch("/api/credits").then((r) => r.json()).then((d) => {
+        setCredits(d.credits ?? null);
+        // Check admin status from email
+        if (d.email && ["armagio13@gmail.com", "contact@cvpass.fr"].includes(d.email)) {
+          setIsAdmin(true);
+        }
+      }).catch(() => {});
     }
   }, [isSignedIn]);
 
@@ -61,6 +68,19 @@ export function AppHeader() {
               </Link>
             );
           })}
+          {isAdmin && (
+            <Link
+              href="/admin/affiliates"
+              className={cn(
+                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                pathname === "/admin/affiliates"
+                  ? "text-brand-green underline underline-offset-4 decoration-brand-green font-display"
+                  : "text-amber-600 hover:text-amber-700"
+              )}
+            >
+              Admin
+            </Link>
+          )}
         </nav>
 
         {/* Right — CTA / Credits + UserButton + mobile hamburger */}
@@ -137,6 +157,15 @@ export function AppHeader() {
               className="block px-3 py-2.5 rounded-md text-sm font-semibold text-brand-green"
             >
               Analyser mon CV →
+            </Link>
+          )}
+          {isAdmin && (
+            <Link
+              href="/admin/affiliates"
+              onClick={() => setMobileOpen(false)}
+              className="block px-3 py-2.5 rounded-md text-sm font-semibold text-amber-600"
+            >
+              Admin
             </Link>
           )}
         </div>

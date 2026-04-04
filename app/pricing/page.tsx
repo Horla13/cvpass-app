@@ -312,25 +312,7 @@ export default function PricingPage() {
       {/* CTA Banner */}
       <CTABanner />
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 py-12 px-8">
-        <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div>
-            <div className="font-display text-[21px] font-extrabold tracking-[-0.8px] mb-2">
-              <span className="text-gray-900">CV</span>
-              <span className="text-green-500">pass</span>
-            </div>
-            <p className="text-[13px] text-gray-400">&copy; 2026 VertexLab SASU. Tous droits réservés.</p>
-          </div>
-          <div className="flex gap-6">
-            <Link href="/blog" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Blog</Link>
-            <Link href="/mentions-legales" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Mentions légales</Link>
-            <Link href="/politique-confidentialite" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Confidentialité</Link>
-            <Link href="/affiliate/join" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Affiliation</Link>
-            <a href="mailto:contact@cvpass.fr" className="text-[14px] md:text-[13px] py-1 text-gray-400 hover:text-gray-700 transition-colors">Contact</a>
-          </div>
-        </div>
-      </footer>
+      {/* Footer is in the global layout */}
     </div>
   );
 }

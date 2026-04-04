@@ -18,5 +18,6 @@ export async function GET() {
     unlimited: planInfo.unlimited,
     expiresAt: planInfo.expiresAt,
     costs: CREDIT_COSTS,
+    email,
   });
 }
