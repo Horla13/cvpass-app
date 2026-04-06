@@ -92,8 +92,12 @@ export async function POST(req: NextRequest) {
         .maybeSingle();
 
       if (affiliate && affiliate.user_id !== userId) {
-        const amount = (session.amount_total ?? 0) / 100;
-        const commission = +(amount * (affiliate.commission_rate ?? 0.5)).toFixed(2);
+        // Commission calculated on original price (before -15% discount)
+        // Starter = 2.90€, Pro = 8.90€
+        const paidAmount = (session.amount_total ?? 0) / 100;
+        const originalAmount = plan === "starter" ? 2.90 : 8.90;
+        const commission = +(originalAmount * (affiliate.commission_rate ?? 0.3)).toFixed(2);
+        const amount = paidAmount;
 
         await admin.from("affiliate_conversions").insert({
           affiliate_id: affiliate.id,

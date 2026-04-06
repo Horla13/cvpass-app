@@ -36,10 +36,17 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
+  // If affiliate ref cookie, auto-apply -15% discount (no manual promo code)
+  // Otherwise allow user to enter their own promo code
+  const hasAffiliateRef = !!refCode;
+  const discountConfig: Partial<Stripe.Checkout.SessionCreateParams> = hasAffiliateRef
+    ? { discounts: [{ coupon: "AFFILIATE15" }] }
+    : { allow_promotion_codes: true };
+
   const commonConfig = {
     locale: "fr" as const,
-    allow_promotion_codes: true,
     billing_address_collection: "auto" as const,
+    ...discountConfig,
   };
 
   let sessionConfig: Stripe.Checkout.SessionCreateParams;
@@ -53,11 +60,13 @@ export async function POST(req: NextRequest) {
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "starter", ...(refCode ? { ref: refCode } : {}) },
       custom_text: {
-        submit: { message: "Paiement unique — +4 crédits ajoutés immédiatement" },
+        submit: { message: hasAffiliateRef
+          ? "Paiement unique — -15% appliqué via votre lien de parrainage"
+          : "Paiement unique — +4 crédits ajoutés immédiatement"
+        },
       },
     };
   } else {
-    // Pro plan — monthly subscription
     sessionConfig = {
       ...commonConfig,
       mode: "subscription",
@@ -66,7 +75,10 @@ export async function POST(req: NextRequest) {
       cancel_url: `${appUrl}/pricing`,
       metadata: { userId, plan: "pro", ...(refCode ? { ref: refCode } : {}) },
       custom_text: {
-        submit: { message: "Analyses illimitées — résiliable à tout moment" },
+        submit: { message: hasAffiliateRef
+          ? "Analyses illimitées — -15% appliqué via votre lien de parrainage"
+          : "Analyses illimitées — résiliable à tout moment"
+        },
       },
     };
   }

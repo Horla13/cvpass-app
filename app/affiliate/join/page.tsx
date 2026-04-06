@@ -19,7 +19,7 @@ const FAQ_TABS = [
     label: "Conditions",
     items: [
       { q: "Quelle est la durée du cookie ?", a: "Le cookie de tracking dure 30 jours. Si un visiteur clique sur votre lien et achète dans les 30 jours, la commission vous est attribuée." },
-      { q: "Sur quels achats je gagne ?", a: "Vous gagnez 50% de commission sur le premier achat de chaque utilisateur parrainé (Pack Coup de pouce ou abonnement Pro)." },
+      { q: "Sur quels achats je gagne ?", a: "Vous gagnez 30% de commission sur le premier achat de chaque utilisateur parrainé (Pack Coup de pouce ou abonnement Pro). Votre filleul reçoit automatiquement -15% de réduction." },
       { q: "Puis-je parrainer quelqu'un que je connais ?", a: "Oui, mais vous ne pouvez pas vous parrainer vous-même. Les auto-parrainages sont automatiquement rejetés." },
     ],
   },
@@ -44,7 +44,7 @@ export default function AffiliateJoinPage() {
   const [visitors, setVisitors] = useState(500);
   const [faqTab, setFaqTab] = useState(0);
 
-  const estimatedEarnings = Math.round(visitors * 0.05 * 0.5 * 5.9);
+  const estimatedEarnings = Math.round(visitors * 0.05 * 0.3 * 5.9);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,10 +85,10 @@ export default function AffiliateJoinPage() {
             Programme Affilié
           </span>
           <h1 className="font-display text-[36px] md:text-[52px] font-extrabold tracking-[-2px] leading-[1.08] mb-5">
-            Gagnez <span className="text-green-400">50%</span> de commission<br className="hidden md:block" /> en recommandant CVpass
+            Gagnez <span className="text-green-400">30%</span> de commission<br className="hidden md:block" /> en recommandant CVpass
           </h1>
           <p className="text-gray-400 text-[17px] max-w-xl mx-auto mb-10 leading-relaxed">
-            Rejoignez notre programme d&apos;affiliation et gagnez 50% de commission sur chaque premier achat. Fenêtre d&apos;attribution de 30 jours.
+            Vos filleuls reçoivent <strong className="text-white">-15% automatiquement</strong> sur leur premier achat. Vous gagnez 30% de commission. Tout le monde y gagne.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -104,9 +104,9 @@ export default function AffiliateJoinPage() {
           {/* Stats bar */}
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
             {[
-              { value: "50%", label: "Commission" },
-              { value: "~5%", label: "Taux de conversion" },
-              { value: "~3€", label: "Payout moyen" },
+              { value: "30%", label: "Votre commission" },
+              { value: "-15%", label: "Réduction filleul" },
+              { value: "~2,70€", label: "Payout moyen" },
               { value: "30j", label: "Fenêtre attribution" },
             ].map((s) => (
               <div key={s.label} className="text-center">
@@ -152,7 +152,7 @@ export default function AffiliateJoinPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                 ),
                 title: "Gagnez des commissions",
-                desc: "50% de commission sur chaque premier achat effectué via votre lien. Plus vous partagez, plus vous gagnez.",
+                desc: "30% de commission sur chaque premier achat. Votre filleul reçoit -15% automatiquement. Tout le monde y gagne.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center p-8 rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-lg transition-all">
@@ -203,8 +203,8 @@ export default function AffiliateJoinPage() {
                 <div className="font-display font-bold text-[22px] text-gray-900">{Math.round(visitors * 0.05)}</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-4">
-                <div className="text-[12px] text-gray-400 mb-1">Commission (50%)</div>
-                <div className="font-display font-bold text-[22px] text-gray-900">~2,95€</div>
+                <div className="text-[12px] text-gray-400 mb-1">Commission (30%)</div>
+                <div className="font-display font-bold text-[22px] text-gray-900">~1,77€</div>
               </div>
               <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                 <div className="text-[12px] text-green-600 font-medium mb-1">Gains estimés</div>
@@ -228,7 +228,7 @@ export default function AffiliateJoinPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { title: "50% de commission", desc: "Le taux le plus généreux du marché. Vous gagnez la moitié de chaque vente.", icon: "\uD83D\uDCB0" },
+              { title: "30% pour vous, -15% pour eux", desc: "Vous gagnez sur chaque vente et vos filleuls obtiennent une réduction. Tout le monde y gagne.", icon: "\uD83D\uDCB0" },
               { title: "Paiement mensuel", desc: "Vos gains sont versés chaque mois, dès 20€ de solde.", icon: "\uD83D\uDCC5" },
               { title: "Produit qui convertit", desc: "+1 200 CVs analysés. Un produit éprouvé avec une vraie traction.", icon: "\uD83D\uDE80" },
               { title: "Dashboard en temps réel", desc: "Suivez vos clics, conversions et commissions en direct.", icon: "\uD83D\uDCCA" },

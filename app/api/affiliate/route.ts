@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
 
   const { data, error } = await admin
     .from("affiliates")
-    .insert({ user_id: userId, email, code, commission_rate: 0.50 })
+    .insert({ user_id: userId, email, code, commission_rate: 0.30 })
     .select("*")
     .single();
 
