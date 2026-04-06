@@ -29,6 +29,7 @@ export default function TrackerPage() {
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
   const [editingApp, setEditingApp] = useState<Application | null>(null);
+  const [saveError, setSaveError] = useState("");
 
   const fetchApps = useCallback(() => {
     fetch("/api/applications")
@@ -56,31 +57,40 @@ export default function TrackerPage() {
   };
 
   const handleSave = async (data: { company: string; job_title: string; url: string; notes: string; status: string; id?: string }) => {
-    if (data.id) {
-      // Update
-      const res = await fetch("/api/applications", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
+    setSaveError("");
+    try {
+      if (data.id) {
+        const res = await fetch("/api/applications", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          setSaveError(err.error ?? "Erreur lors de la mise à jour");
+          return;
+        }
         const { application } = await res.json();
         setApps((prev) => prev.map((a) => a.id === application.id ? application : a));
-      }
-    } else {
-      // Create
-      const res = await fetch("/api/applications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
+      } else {
+        const res = await fetch("/api/applications", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          setSaveError(err.error ?? "Erreur lors de la création");
+          return;
+        }
         const { application } = await res.json();
         setApps((prev) => [application, ...prev]);
       }
+      setShowAdd(false);
+      setEditingApp(null);
+    } catch {
+      setSaveError("Erreur réseau");
     }
-    setShowAdd(false);
-    setEditingApp(null);
   };
 
   if (loading) {
@@ -149,7 +159,8 @@ export default function TrackerPage() {
         <ApplicationModal
           app={editingApp}
           onSave={handleSave}
-          onClose={() => { setShowAdd(false); setEditingApp(null); }}
+          onClose={() => { setShowAdd(false); setEditingApp(null); setSaveError(""); }}
+          error={saveError}
         />
       )}
     </div>
@@ -241,10 +252,12 @@ function ApplicationModal({
   app,
   onSave,
   onClose,
+  error,
 }: {
   app: Application | null;
   onSave: (data: { company: string; job_title: string; url: string; notes: string; status: string; id?: string }) => void;
   onClose: () => void;
+  error?: string;
 }) {
   const [company, setCompany] = useState(app?.company ?? "");
   const [jobTitle, setJobTitle] = useState(app?.job_title ?? "");
@@ -314,6 +327,12 @@ function ApplicationModal({
             placeholder="Notes personnelles..."
           />
         </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-[13px] text-red-600">
+            {error}
+          </div>
+        )}
 
         <div className="flex gap-3 pt-2">
           <button
