@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface ProofItem {
   job_title: string;
@@ -28,7 +28,7 @@ export function SocialProofToast() {
   const [items, setItems] = useState<ProofItem[]>([]);
   const [current, setCurrent] = useState<ProofItem | null>(null);
   const [visible, setVisible] = useState(false);
-  const indexRef = { current: 0 };
+  const indexRef = useRef(0);
 
   // Fetch recent analyses on mount
   useEffect(() => {
