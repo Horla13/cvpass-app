@@ -11,6 +11,8 @@ import { ScoreGauge } from "@/components/ScoreGauge";
 import { AppHeader } from "@/components/AppHeader";
 import { PageTransition } from "@/components/PageTransition";
 import { PromoModal, usePromoModal } from "@/components/PromoModal";
+import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
+import { ResultsOnboarding } from "@/components/ResultsOnboarding";
 import { cn } from "@/lib/utils";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import { getTemplate } from "@/lib/cv-templates";
@@ -1301,6 +1303,7 @@ export default function ResultsPage() {
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
   const promo = usePromoModal();
 
   // Check if user has premium access (for template lock)
@@ -1431,9 +1434,7 @@ export default function ResultsPage() {
       });
 
       if (res.status === 402) {
-        if (!promo.trigger()) {
-          setDownloadError("Crédits insuffisants pour générer le PDF.");
-        }
+        setShowCreditsModal(true);
         return;
       }
       if (!res.ok) {
@@ -1986,15 +1987,36 @@ export default function ResultsPage() {
         </main>
 
         {promo.show && <PromoModal onClose={promo.close} />}
+        <ResultsOnboarding />
+
+        {showCreditsModal && (
+          <InsufficientCreditsModal
+            creditsNeeded={1}
+            onClose={() => setShowCreditsModal(false)}
+            scoreAvant={score_avant}
+            scoreApres={scoreActuel}
+            nbAccepted={acceptedGaps.length}
+          />
+        )}
 
         {/* PDF Preview Modal */}
         {previewUrl && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
             <div className="bg-white rounded-2xl w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden shadow-2xl">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                <div>
-                  <h2 className="font-bold text-gray-900 text-[16px]">Aperçu du CV</h2>
-                  <p className="text-[12px] text-gray-400">Le filigrane sera retiré au téléchargement</p>
+              <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-200 gap-3">
+                <div className="flex items-center gap-4">
+                  <div>
+                    <h2 className="font-bold text-gray-900 text-[16px]">Aperçu du CV</h2>
+                    <p className="text-[12px] text-gray-400">Le filigrane sera retiré au téléchargement</p>
+                  </div>
+                  {scoreActuel > score_avant && (
+                    <div className="hidden sm:flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-4 py-1.5">
+                      <span className="text-[14px] font-bold text-red-400">{score_avant}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+                      <span className="text-[14px] font-bold text-green-600">{scoreActuel}</span>
+                      <span className="text-[11px] text-green-600 font-semibold">+{scoreActuel - score_avant} pts</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
                   <button

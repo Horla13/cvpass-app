@@ -251,6 +251,53 @@ export async function sendRetentionEmailJ7(
   });
 }
 
+export async function sendCvExpiresEmail(
+  email: string,
+  firstName: string,
+  scoreAvant: number,
+  scoreApres: number
+): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
+  const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  await sendEmail({
+    to: [{ email, name: firstName }],
+    subject: `Votre CV optimise vous attend (${scoreAvant} → ${scoreApres}/100)`,
+    scheduledAt,
+    htmlContent: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#111827;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+          <span style="color:white;font-weight:bold;font-size:20px;">CV<span style="color:#16a34a">pass</span></span>
+        </div>
+        <div style="padding:28px 24px;color:#111827;">
+          <p>Bonjour ${firstName},</p>
+          <div style="text-align:center;margin:24px 0;">
+            <div style="display:inline-block;text-align:center;margin-right:20px;">
+              <span style="font-size:36px;font-weight:bold;color:#ef4444;">${scoreAvant}</span>
+              <br/><span style="font-size:12px;color:#6b7280;">Avant</span>
+            </div>
+            <span style="font-size:24px;color:#16a34a;">→</span>
+            <div style="display:inline-block;text-align:center;margin-left:20px;">
+              <span style="font-size:36px;font-weight:bold;color:#16a34a;">${scoreApres}</span>
+              <br/><span style="font-size:12px;color:#6b7280;">Apres</span>
+            </div>
+          </div>
+          <p>Vous avez ameliore votre CV hier. <strong>Vos modifications sont encore disponibles</strong> — telechargez votre PDF avant qu'elles ne disparaissent.</p>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="${appUrl}/analyze"
+               style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+              Recuperer mon CV optimise →
+            </a>
+          </div>
+        </div>
+        <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
+          <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions legales</a>
+        </div>
+      </div>
+    `,
+  });
+}
+
 export async function sendPaymentConfirmationEmail(
   email: string,
   plan: "starter" | "pro"

@@ -5,10 +5,14 @@ import { isStripeUrl } from "@/lib/utils";
 interface Props {
   creditsNeeded: number;
   onClose: () => void;
+  scoreAvant?: number;
+  scoreApres?: number;
+  nbAccepted?: number;
 }
 
-export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Props) {
+export default function InsufficientCreditsModal({ creditsNeeded, onClose, scoreAvant, scoreApres, nbAccepted }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
+  const hasScoreData = scoreAvant !== undefined && scoreApres !== undefined && scoreApres > scoreAvant;
 
   const handleBuy = async (plan: string) => {
     setLoading(plan);
@@ -26,16 +30,48 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl p-8 max-w-[740px] w-full mx-4 shadow-xl relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-[740px] w-full shadow-xl relative">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 min-h-[44px] min-w-[44px] flex items-center justify-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
         </button>
 
-        <h2 className="font-display text-[24px] font-bold mb-1">Crédits insuffisants</h2>
-        <p className="text-brand-gray text-[14px] mb-6">
-          Il vous faut {creditsNeeded} crédit{creditsNeeded > 1 ? "s" : ""} pour cette action. Rechargez ou passez en illimité.
-        </p>
+        {/* Score showcase — if user has improved their CV */}
+        {hasScoreData ? (
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-3 mb-3">
+              <div className="text-center">
+                <div className="text-[32px] font-extrabold text-red-400">{scoreAvant}</div>
+                <div className="text-[11px] text-gray-400">Avant</div>
+              </div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+              <div className="text-center">
+                <div className="text-[32px] font-extrabold text-green-500">{scoreApres}</div>
+                <div className="text-[11px] text-gray-400">Apres</div>
+              </div>
+            </div>
+            <h2 className="font-display text-[22px] font-bold text-gray-900 mb-1">
+              Votre CV est pret — debloquez le PDF
+            </h2>
+            <p className="text-gray-500 text-[14px]">
+              {nbAccepted && nbAccepted > 0
+                ? `${nbAccepted} amelioration${nbAccepted > 1 ? "s" : ""} appliquee${nbAccepted > 1 ? "s" : ""}. Telechargez votre CV optimise.`
+                : `Il vous faut ${creditsNeeded} credit${creditsNeeded > 1 ? "s" : ""} pour telecharger.`
+              }
+            </p>
+            <div className="mt-3 inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-[12px] text-amber-600 font-medium">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+              Vos modifications sont en memoire — elles disparaitront a la fermeture
+            </div>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <h2 className="font-display text-[22px] font-bold text-gray-900 mb-1">Debloquez cette fonctionnalite</h2>
+            <p className="text-gray-500 text-[14px]">
+              Il vous faut {creditsNeeded} credit{creditsNeeded > 1 ? "s" : ""} pour continuer. Rechargez ou passez en illimite.
+            </p>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-5">
           {/* Pack Starter */}
@@ -44,7 +80,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <div className="flex items-start justify-between mb-1">
               <div>
                 <h3 className="font-display text-[18px] font-bold text-gray-900">Coup de pouce</h3>
-                <p className="text-gray-500 text-[13px]">+4 crédits immédiatement</p>
+                <p className="text-gray-500 text-[13px]">+4 credits immediatement</p>
               </div>
               <div className="text-right">
                 <div className="text-[24px] font-extrabold text-gray-900">2,90&euro;</div>
@@ -53,7 +89,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             </div>
 
             <ul className="space-y-2.5 my-5 text-[13.5px] text-gray-600">
-              {["4 crédits ajoutés à votre solde", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
+              {["4 credits ajoutes a votre solde", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
                 <li key={f} className="flex items-start gap-2">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   {f}
@@ -64,9 +100,9 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <button
               onClick={() => handleBuy("starter")}
               disabled={loading === "starter"}
-              className="w-full bg-green-500 text-white rounded-xl py-3 font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] bg-green-500 text-white rounded-xl py-3 font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading === "starter" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Acheter le pack"}
+              {loading === "starter" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Debloquer pour 2,90\u20AC"}
             </button>
           </div>
 
@@ -76,7 +112,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <div className="flex items-start justify-between mb-1">
               <div>
                 <h3 className="font-display text-[18px] font-bold text-gray-900">Recherche Active</h3>
-                <p className="text-gray-500 text-[13px]">Analyses illimitées pendant 30 jours</p>
+                <p className="text-gray-500 text-[13px]">Tout illimite pendant 30 jours</p>
               </div>
               <div className="text-right">
                 <div className="text-[24px] font-extrabold text-gray-900">8,90&euro;</div>
@@ -85,7 +121,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             </div>
 
             <ul className="space-y-2.5 my-5 text-[13.5px] text-gray-600">
-              {["Analyses illimitées", "Export PDF illimité", "Sans engagement"].map((f) => (
+              {["Analyses + PDF illimites", "Tous les templates premium", "Sans engagement"].map((f) => (
                 <li key={f} className="flex items-start gap-2">
                   <svg className="mt-0.5 flex-shrink-0 text-blue-500" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   {f}
@@ -96,15 +132,15 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose }: Pro
             <button
               onClick={() => handleBuy("pro")}
               disabled={loading === "pro"}
-              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-3 font-semibold hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 shadow-md shadow-blue-200 flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-3 font-semibold hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 shadow-md shadow-blue-200 flex items-center justify-center gap-2"
             >
-              {loading === "pro" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Passer en illimité"}
+              {loading === "pro" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : "Passer en illimite"}
             </button>
           </div>
         </div>
 
         <p className="text-center text-[13px] text-gray-400 mt-5">
-          Sans engagement &middot; Paiement sécurisé Stripe
+          Sans engagement &middot; Paiement securise Stripe &middot; Satisfait ou rembourse 7j
         </p>
       </div>
     </div>

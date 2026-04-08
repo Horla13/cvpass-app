@@ -21,6 +21,7 @@ export function ScoreGauge({
   className,
 }: ScoreGaugeProps) {
   const [displayScore, setDisplayScore] = useState(animate ? 0 : score);
+  const [flash, setFlash] = useState(false);
   const radius = (size - strokeWidth * 2) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - Math.min(displayScore, 100) / 100);
@@ -39,15 +40,19 @@ export function ScoreGauge({
     }
     let frame: number;
     const start = performance.now();
-    const duration = 1500;
+    const from = displayScore;
+    const isUpdate = from > 0 && score > from;
+    const duration = isUpdate ? 600 : 1500;
+    if (isUpdate) { setFlash(true); setTimeout(() => setFlash(false), 800); }
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayScore(Math.round(eased * score));
+      setDisplayScore(Math.round(from + (score - from) * eased));
       if (progress < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score, animate]);
 
   return (
@@ -59,7 +64,7 @@ export function ScoreGauge({
       aria-valuemax={100}
       aria-label={label || "Score ATS"}
     >
-      <div className="relative" style={{ width: size, height: size }}>
+      <div className={cn("relative transition-transform duration-300", flash && "scale-110")} style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           <circle
             cx={size / 2}

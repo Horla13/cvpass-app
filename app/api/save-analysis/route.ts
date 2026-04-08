@@ -46,14 +46,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Mark user as having analyzed (for retention emails)
-  getSupabaseAdmin()
+  // Mark user as having analyzed + send J+1 "CV expires" email
+  const admin = getSupabaseAdmin();
+  admin
     .from("subscriptions")
-    .update({ has_analyzed: true })
+    .select("email, has_analyzed")
     .eq("user_id", userId)
-    .eq("has_analyzed", false)
-    .then(({ error: updErr }) => {
-      if (updErr) console.error("has_analyzed update error:", updErr);
+    .maybeSingle()
+    .then(({ data: sub }) => {
+      if (!sub) return;
+      // Update has_analyzed
+      if (!sub.has_analyzed) {
+        admin.from("subscriptions").update({ has_analyzed: true }).eq("user_id", userId).then(() => {});
+      }
+      // Send J+1 email (only if score improved and email exists)
+      if (sub.email && score_apres && score_avant && score_apres > score_avant) {
+        import("@/lib/brevo").then(({ sendCvExpiresEmail }) => {
+          sendCvExpiresEmail(sub.email, "there", score_avant, score_apres).catch(console.error);
+        });
+      }
     });
 
   return NextResponse.json({ success: true, id: data?.id });
