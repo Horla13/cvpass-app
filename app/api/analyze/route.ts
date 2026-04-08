@@ -89,7 +89,7 @@ SECTIONS AUTORISÉES À AMÉLIORER (les SEULES que tu peux modifier) :
 ✅ Les compétences (reformulation + ajout mots-clés métier standards) — impact: "medium", category: "competence"
 ✅ L'ajout de mots-clés ATS manquants dans les missions — impact: "high", category: "experience"
 
-GAPS — identifie entre 5 et 8 suggestions, triées par impact ATS décroissant.
+GAPS — identifie entre 6 et 10 suggestions, triées par impact ATS décroissant. Privilégie les suggestions à fort impact (accroche, missions clés) en premier.
 
 RÈGLE CRITIQUE SUR LES COMPÉTENCES :
 Chaque compétence doit être UN gap séparé. Ne JAMAIS regrouper plusieurs compétences dans un seul gap.
@@ -223,7 +223,7 @@ Tu peux UNIQUEMENT suggérer des modifications sur :
 ✅ Les compétences
 ✅ L'ajout de mots-clés ATS manquants dans les missions
 
-GAPS — identifie entre 5 et 8 suggestions de reformulation, triées par impact ATS décroissant.
+GAPS — identifie entre 6 et 10 suggestions de reformulation, triées par impact ATS décroissant. Privilégie les suggestions à fort impact (mots-clés manquants de l'offre, accroche, missions clés) en premier.
 
 RÈGLE CRITIQUE SUR LES COMPÉTENCES :
 Chaque compétence doit être UN gap séparé. Ne JAMAIS regrouper plusieurs compétences dans un seul gap.
