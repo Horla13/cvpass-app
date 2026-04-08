@@ -196,7 +196,7 @@ export function LandingPage() {
           </div>
 
           {/* Proof stats */}
-          <div className="fade-up flex items-center justify-center gap-8">
+          <div className="fade-up flex flex-wrap items-center justify-center gap-6 sm:gap-8">
             <div className="text-center">
               <div className="font-display font-extrabold text-[22px] tracking-[-0.8px]">
                 <span className="text-brand-green">{counterValue}</span>

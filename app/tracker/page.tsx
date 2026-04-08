@@ -123,11 +123,11 @@ export default function TrackerPage() {
         </div>
 
         {/* Kanban board */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="flex md:grid md:grid-cols-5 gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:snap-none md:overflow-visible">
           {COLUMNS.map((col) => {
             const colApps = apps.filter((a) => a.status === col.id);
             return (
-              <div key={col.id} className="space-y-3">
+              <div key={col.id} className="min-w-[260px] md:min-w-0 snap-start space-y-3">
                 <div className={cn("rounded-xl border-2 px-4 py-3 flex items-center justify-between", col.color)}>
                   <span className="text-[14px] font-bold text-gray-800">
                     {col.icon} {col.label}
@@ -203,19 +203,19 @@ function ApplicationCard({
             <>
               <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
               <div className="absolute right-0 top-8 z-20 bg-white border border-gray-200 rounded-xl shadow-lg py-1 w-40">
-                <button onClick={() => { onEdit(); setMenuOpen(false); }} className="w-full text-left px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50">
+                <button onClick={() => { onEdit(); setMenuOpen(false); }} className="w-full text-left px-4 py-3 min-h-[44px] text-[14px] text-gray-700 hover:bg-gray-50">
                   Modifier
                 </button>
                 {COLUMNS.filter((c) => c.id !== app.status).map((c) => (
                   <button
                     key={c.id}
                     onClick={() => { onStatusChange(app.id, c.id); setMenuOpen(false); }}
-                    className="w-full text-left px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50"
+                    className="w-full text-left px-4 py-3 min-h-[44px] text-[14px] text-gray-700 hover:bg-gray-50"
                   >
                     {c.icon} {c.label}
                   </button>
                 ))}
-                <button onClick={() => { onDelete(); setMenuOpen(false); }} className="w-full text-left px-4 py-2 text-[13px] text-red-500 hover:bg-red-50">
+                <button onClick={() => { onDelete(); setMenuOpen(false); }} className="w-full text-left px-4 py-3 min-h-[44px] text-[14px] text-red-500 hover:bg-red-50">
                   Supprimer
                 </button>
               </div>

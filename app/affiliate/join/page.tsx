@@ -255,7 +255,7 @@ export default function AffiliateJoinPage() {
           </h2>
 
           {/* Tabs */}
-          <div className="flex items-center justify-center gap-2 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
             {FAQ_TABS.map((tab, i) => (
               <button
                 key={tab.label}

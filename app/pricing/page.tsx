@@ -87,7 +87,7 @@ export default function PricingPage() {
       <AppHeader />
 
       {errorMsg && (
-        <div className="max-w-xl mx-auto mt-4 mb-0 flex items-center justify-between gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-[14px] mx-8">
+        <div className="max-w-xl mx-auto mt-4 mb-0 flex items-center justify-between gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-[14px]">
           <span>{errorMsg}</span>
           <button onClick={() => setErrorMsg("")} className="text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Fermer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
