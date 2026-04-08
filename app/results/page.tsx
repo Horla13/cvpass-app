@@ -1876,6 +1876,23 @@ export default function ResultsPage() {
 
               {/* MAIN CONTENT — 8 cols */}
               <div className="lg:col-span-8 space-y-4">
+                {/* Accept All banner — visible when pending suggestions exist */}
+                {pendingGaps.length > 0 && (
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-white text-center sm:text-left">
+                      <p className="text-[16px] font-bold">{pendingGaps.length} suggestion{pendingGaps.length > 1 ? "s" : ""} disponible{pendingGaps.length > 1 ? "s" : ""}</p>
+                      <p className="text-[13px] text-green-100">Acceptez-les pour améliorer votre score — estimation +{Math.round(pendingGaps.length * 4)} pts</p>
+                    </div>
+                    <button
+                      onClick={handleAcceptAll}
+                      className="px-6 py-3 min-h-[48px] bg-white text-green-600 text-[15px] font-bold rounded-xl hover:bg-green-50 transition-colors flex items-center gap-2 shrink-0"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                      Tout accepter (+{Math.round(pendingGaps.length * 4)} pts)
+                    </button>
+                  </div>
+                )}
+
                 {isJdMatch && jdMatch ? (
                   reportSubTab === "quality" && jdMatch.quality_sections?.length > 0 ? (
                     <JdQualityReport qualitySections={jdMatch.quality_sections} />

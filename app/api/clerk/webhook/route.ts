@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
           user_id: userId,
           plan: "free",
           status: "active",
-          credits_remaining: 2,
+          credits_remaining: 1,
           email,
         });
 
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
       // Log la transaction initiale
       const { error: txError } = await admin
         .from("credit_transactions")
-        .insert({ user_id: userId, amount: 2, reason: "initial_signup" });
+        .insert({ user_id: userId, amount: 1, reason: "initial_signup" });
 
       if (txError) console.error("Credit transaction error:", txError);
 

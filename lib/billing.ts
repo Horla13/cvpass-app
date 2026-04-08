@@ -61,7 +61,7 @@ export async function getSubscription(userId: string): Promise<Subscription> {
     user_id: userId,
     plan: "free",
     status: "active",
-    credits_remaining: 2,
+    credits_remaining: 1,
   };
 
   await admin.from("subscriptions").upsert(newSub, { onConflict: "user_id" });
@@ -70,7 +70,7 @@ export async function getSubscription(userId: string): Promise<Subscription> {
     user_id: userId,
     plan: "free",
     status: "active",
-    credits_remaining: 2,
+    credits_remaining: 1,
     stripe_customer_id: null,
     stripe_subscription_id: null,
     subscription_expires_at: null,

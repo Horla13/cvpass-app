@@ -80,7 +80,7 @@ describe("canAnalyze", () => {
       user_id: "user_free",
       plan: "free",
       status: "active",
-      credits_remaining: 2,
+      credits_remaining: 1,
       subscription_expires_at: null,
     });
     const result = await canAnalyze("user_free");

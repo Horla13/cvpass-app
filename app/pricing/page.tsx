@@ -138,7 +138,7 @@ export default function PricingPage() {
             </div>
             <div className="mb-6" />
             <ul className="space-y-3 mb-7">
-              {["2 analyses offertes à l'inscription", "Toutes les fonctionnalités accessibles", "Export PDF (1 crédit)", "Crédits sans expiration"].map((f) => (
+              {["1 analyse offerte à l'inscription", "Toutes les fonctionnalités accessibles", "Export PDF (1 crédit)", "Crédits sans expiration"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -165,7 +165,7 @@ export default function PricingPage() {
             </div>
             <p className="text-[13px] text-gray-400 mb-6">paiement unique</p>
             <ul className="space-y-3 mb-7">
-              {["4 crédits d'analyse", "+ vos 2 crédits gratuits = 6 au total", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
+              {["4 crédits d'analyse", "+ votre crédit gratuit = 5 au total", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
