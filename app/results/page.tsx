@@ -137,7 +137,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {jdMatch.missing_hard_skills.map((skill, i) => (
-                    <tr key={i} className="hover:bg-gray-50/50">
+                    <tr key={i}>
                       <td className="py-3 px-3 font-medium text-gray-800">{skill.keyword}</td>
                       <td className="py-3 px-3 text-center">
                         <span className="text-red-500">
@@ -171,7 +171,7 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {jdMatch.keyword_frequency.map((kw, i) => (
-                    <tr key={i} className="hover:bg-gray-50/50">
+                    <tr key={i}>
                       <td className="py-3 px-3 font-medium text-gray-800">{kw.keyword}</td>
                       <td className="py-3 px-3 text-center text-gray-600">{kw.jd_count}</td>
                       <td className="py-3 px-3 text-center text-gray-600">{kw.resume_count}</td>
@@ -236,11 +236,11 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
                     Appliquer dans l&apos;éditeur
                   </button>
-                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1 min-h-[48px] px-3 text-[14px] text-green-600 font-semibold hover:text-green-700 transition-colors">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <button onClick={() => onAccept(gap.id)} className="inline-flex items-center gap-1.5 min-h-[48px] px-4 py-2 text-[14px] text-green-600 font-semibold bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                     Accepter
                   </button>
-                  <button onClick={() => onIgnore(gap.id)} className="min-h-[48px] px-3 text-[14px] text-gray-500 font-medium hover:text-gray-700 transition-colors">
+                  <button onClick={() => onIgnore(gap.id)} className="min-h-[48px] px-4 py-2 text-[14px] text-gray-500 font-medium bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     Ignorer
                   </button>
                 </div>
@@ -486,27 +486,27 @@ function CategorySection({
                   </button>
                   <button
                     onClick={() => onAccept(gap.id)}
-                    className="inline-flex items-center gap-1 min-h-[48px] px-3 text-[14px] text-green-600 font-semibold hover:text-green-700 transition-colors"
+                    className="inline-flex items-center gap-1.5 min-h-[48px] px-4 py-2 text-[14px] text-green-600 font-semibold bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
                   >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                    Accept
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                    Accepter
                   </button>
                   <button
                     onClick={() => onIgnore(gap.id)}
-                    className="min-h-[48px] px-3 text-[14px] text-gray-400 font-medium hover:text-gray-600 transition-colors"
+                    className="min-h-[48px] px-4 py-2 text-[14px] text-gray-500 font-medium bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    Dismiss
+                    Ignorer
                   </button>
                 </div>
               )}
               {gap.status === "accepted" && (
                 <span className="inline-flex items-center gap-1.5 text-[13px] text-green-500 font-medium">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  Applied
+                  Appliqué
                 </span>
               )}
               {gap.status === "ignored" && (
-                <span className="text-[13px] text-gray-400 font-medium">Dismissed</span>
+                <span className="text-[13px] text-gray-400 font-medium">Ignoré</span>
               )}
             </div>
           ))}
