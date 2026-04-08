@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Show } from "@clerk/nextjs";
 import { ExitIntentModal } from "@/components/ExitIntentModal";
+import { SocialProofToast } from "@/components/SocialProofToast";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ScoreGauge } from "@/components/ScoreGauge";
 
@@ -921,6 +922,7 @@ export function LandingPage() {
       {/* Footer is in the global layout */}
 
       <ExitIntentModal />
+      <SocialProofToast />
     </div>
   );
 }

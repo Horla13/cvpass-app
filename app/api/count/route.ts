@@ -1,38 +1,49 @@
 import { NextResponse } from "next/server";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 300; // 5 min cache
+export const revalidate = 300;
 
 export async function GET() {
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
   const BREVO_LIST_ID = process.env.BREVO_LIST_ID ?? "3";
 
-  if (!BREVO_API_KEY) {
-    return NextResponse.json({ count: 0 });
-  }
-
+  let count = 0;
   try {
-    const response = await fetch(
-      `https://api.brevo.com/v3/contacts/lists/${BREVO_LIST_ID}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "api-key": BREVO_API_KEY,
-        },
-        next: { revalidate: 300 },
+    if (BREVO_API_KEY) {
+      const response = await fetch(
+        `https://api.brevo.com/v3/contacts/lists/${BREVO_LIST_ID}`,
+        {
+          headers: { Accept: "application/json", "api-key": BREVO_API_KEY },
+          next: { revalidate: 300 },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        count = data.totalSubscribers ?? 0;
       }
-    );
-
-    if (!response.ok) {
-      return NextResponse.json({ count: 0 });
     }
+  } catch { /* ignore */ }
 
-    const data = await response.json();
-    return NextResponse.json(
-      { count: data.totalSubscribers ?? 0 },
-      { headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" } }
-    );
-  } catch {
-    return NextResponse.json({ count: 0 });
-  }
+  // Fetch recent analyses with score improvement (for social proof)
+  let recent: { job_title: string; score_avant: number; score_apres: number; created_at: string }[] = [];
+  try {
+    const { data } = await getSupabaseAdmin()
+      .from("analyses")
+      .select("job_title, score_avant, score_apres, created_at")
+      .gt("score_apres", 0)
+      .not("job_title", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    if (data) {
+      recent = data
+        .filter((a) => a.score_apres > a.score_avant && a.job_title)
+        .slice(0, 10);
+    }
+  } catch { /* ignore */ }
+
+  return NextResponse.json(
+    { count, recent },
+    { headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" } }
+  );
 }

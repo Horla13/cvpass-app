@@ -1599,33 +1599,51 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        {/* ─── Progress bar (mobile-first) ─── */}
-        <div className="bg-white border-b border-gray-100 py-3">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 text-[13px]">
-                <span className="flex items-center gap-1.5 text-green-600 font-semibold">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  Analyse
-                </span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
-                <span className={cn("font-semibold", pendingGaps.length > 0 ? "text-amber-500" : "text-green-600")}>
-                  {pendingGaps.length > 0 ? `${pendingGaps.length} suggestions` : "Suggestions ✓"}
-                </span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
-                <span className={cn("font-semibold", acceptedGaps.length > 0 ? "text-gray-900" : "text-gray-300")}>
-                  Télécharger
-                </span>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 text-[13px]">
-                <span className="font-bold text-gray-900">{scoreActuel}/100</span>
-                {scoreActuel > score_avant && (
-                  <span className="text-green-600 font-semibold text-[12px]">+{scoreActuel - score_avant} pts</span>
-                )}
+        {/* ─── Gamified progress bar ─── */}
+        {(() => {
+          const total = gaps.length || 1;
+          const treated = acceptedGaps.length + ignoredGaps.length;
+          const pct = Math.round((treated / total) * 100);
+          const allDone = pendingGaps.length === 0 && gaps.length > 0;
+          return (
+            <div className="bg-white border-b border-gray-100 py-3">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <div className="flex items-center gap-3 text-[13px]">
+                    <span className="flex items-center gap-1.5 text-green-600 font-semibold">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                      Analyse
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                    <span className={cn("font-semibold", allDone ? "text-green-600" : "text-amber-500")}>
+                      {allDone ? "Suggestions ✓" : `${treated}/${total} traitées`}
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+                    <span className={cn("font-semibold", allDone && acceptedGaps.length > 0 ? "text-gray-900" : "text-gray-300")}>
+                      Télécharger
+                    </span>
+                  </div>
+                  <div className="hidden sm:flex items-center gap-2 text-[13px]">
+                    <span className="font-bold text-gray-900">{scoreActuel}/100</span>
+                    {scoreActuel > score_avant && (
+                      <span className="text-green-600 font-semibold text-[12px]">+{scoreActuel - score_avant} pts</span>
+                    )}
+                  </div>
+                </div>
+                {/* Animated progress bar */}
+                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className={cn(
+                      "h-full rounded-full transition-all duration-500 ease-out",
+                      allDone ? "bg-green-500" : "bg-amber-400"
+                    )}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          );
+        })()}
 
         {/* ─── Sticky mobile score counter (below header at 60px) ─── */}
         <div className="sm:hidden sticky top-[60px] z-30 bg-white/95 backdrop-blur border-b border-gray-200 px-4 py-2.5 flex items-center justify-between">
