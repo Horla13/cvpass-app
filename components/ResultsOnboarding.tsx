@@ -73,7 +73,7 @@ export function ResultsOnboarding() {
         <div className="flex items-center justify-between">
           <button
             onClick={handleSkip}
-            className="text-[13px] text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-[14px] min-h-[44px] px-3 text-gray-400 hover:text-gray-600 transition-colors"
           >
             Passer
           </button>
@@ -85,7 +85,7 @@ export function ResultsOnboarding() {
             </div>
             <button
               onClick={handleNext}
-              className="px-4 py-2 min-h-[40px] bg-green-500 text-white text-[13px] font-semibold rounded-lg hover:bg-green-600 transition-colors"
+              className="px-5 py-2.5 min-h-[44px] bg-green-500 text-white text-[14px] font-semibold rounded-lg hover:bg-green-600 transition-colors"
             >
               {step === STEPS.length - 1 ? "Compris !" : "Suivant"}
             </button>
