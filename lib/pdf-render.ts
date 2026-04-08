@@ -420,7 +420,6 @@ export function buildContent(cv: CVData, templateId?: string): unknown[] {
 // ─── CV PDF buffer generation ────────────────────────────────────────────────
 
 export async function buildCvPdfBuffer(cv: CVData, options?: { watermark?: boolean; templateId?: string }): Promise<Buffer> {
-  const tpl = getTemplate(options?.templateId ?? "modern");
   const pdfmake = getPdfMake();
   const margins = [M, M, M, options?.watermark ? 50 : M];
 

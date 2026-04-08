@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
-import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { isStripeUrl } from "@/lib/utils";
 import { FAQAccordion } from "@/components/FAQAccordion";

@@ -91,9 +91,7 @@ interface CVPassStore {
 }
 
 function recalculateScore(score_avant: number, gaps: Gap[]): number {
-  const total = gaps.length;
-  if (total === 0) return score_avant;
-  const accepted = gaps.filter((g) => g.status === "accepted").length;
+  if (gaps.length === 0) return score_avant;
   // Weighted ratio: high-impact suggestions count more toward the bonus
   const weights = { high: 3, medium: 2, low: 1 };
   let weightedAccepted = 0;

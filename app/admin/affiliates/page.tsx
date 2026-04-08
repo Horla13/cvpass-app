@@ -108,6 +108,7 @@ export default function AdminAffiliatesPage() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <StatCard label="Affiliés" value={affiliates.length} />
           <StatCard label="Conversions" value={totalConversions} />
+          <StatCard label="Total gagné" value={`${totalEarned.toFixed(2)}€`} />
           <StatCard label="En attente" value={`${totalPending.toFixed(2)}€`} color="text-amber-500" />
           <StatCard label="À payer" value={`${totalApproved.toFixed(2)}€`} color="text-blue-500" />
           <StatCard label="Déjà payé" value={`${totalPaid.toFixed(2)}€`} color="text-green-600" />

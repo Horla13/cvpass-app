@@ -137,8 +137,6 @@ export default function AccountPage() {
     ? Math.round(analyses.reduce((sum, a) => sum + a.score_apres, 0) / totalAnalyses)
     : 0;
   const totalAccepted = analyses.reduce((sum, a) => sum + a.nb_acceptees, 0);
-  const ADMIN_EMAILS = ["armagio13@gmail.com", "contact@cvpass.fr"];
-  const isAdminUser = !!user?.emailAddresses[0]?.emailAddress && ADMIN_EMAILS.includes(user.emailAddresses[0].emailAddress);
 
   return (
     <PageTransition>

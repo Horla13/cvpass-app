@@ -35,6 +35,7 @@ export function Watermark() {
 /** Photo component — image arrives already circular-cropped via sharp */
 export function Photo({ src, size = 52 }: { src?: string; size?: number }) {
   if (!src) return null;
+  // eslint-disable-next-line jsx-a11y/alt-text
   return <Image src={src} style={{ width: size, height: size }} />;
 }
 
