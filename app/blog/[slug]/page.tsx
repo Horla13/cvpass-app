@@ -348,6 +348,20 @@ export default async function BlogPostPage(
           {renderContent(post.content)}
         </article>
 
+        {/* AUTHOR BIO */}
+        <div style={{ marginTop: 32, padding: "20px 24px", borderRadius: 16, border: "1px solid #e5e7eb", background: "#f9fafb", display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #16a34a, #15803d)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 18, flexShrink: 0 }}>GR</div>
+          <div>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: 0 }}>
+              Giovanni Russo
+              <a href="https://www.linkedin.com/in/giovanni-russo-a0b437300/" target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8, fontSize: 12, color: "#16a34a", textDecoration: "none" }}>LinkedIn</a>
+            </p>
+            <p style={{ fontSize: 13, color: "#6b7280", margin: "2px 0 0", lineHeight: 1.5 }}>
+              Fondateur de CVpass. Expert en optimisation CV et systèmes ATS pour le marché français.
+            </p>
+          </div>
+        </div>
+
         {/* SHARE BUTTONS */}
         <div style={{ marginTop: 24, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-secondary)" }}>Partager cet article</span>

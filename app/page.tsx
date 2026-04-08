@@ -56,12 +56,30 @@ const faqJsonLd = {
   ],
 };
 
+// SYNC with "Comment ça marche" section in LandingPage.tsx
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "Comment optimiser votre CV pour les ATS",
+  description: "Uploadez votre CV, obtenez un score ATS et des suggestions IA pour passer les filtres automatiques des recruteurs.",
+  step: [
+    { "@type": "HowToStep", position: 1, name: "Importez votre CV", text: "Uploadez votre CV au format PDF ou DOCX. CVpass extrait automatiquement le contenu." },
+    { "@type": "HowToStep", position: 2, name: "Recevez votre score ATS", text: "L'IA analyse votre CV et attribue un score sur 100 basé sur les mots-clés, la mise en forme et la quantification." },
+    { "@type": "HowToStep", position: 3, name: "Acceptez les suggestions", text: "Pour chaque point faible, l'IA propose une réécriture. Acceptez ou ignorez chaque suggestion." },
+    { "@type": "HowToStep", position: 4, name: "Téléchargez votre CV optimisé", text: "Téléchargez un PDF propre, optimisé pour les ATS, prêt à envoyer aux recruteurs." },
+  ],
+};
+
 export default function HomePage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <LandingPage />
     </>

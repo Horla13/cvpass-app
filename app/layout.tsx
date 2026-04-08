@@ -22,9 +22,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CVpass — Scanner CV ATS gratuit | Optimise ton CV en ligne avec l'IA",
+  title: "CVpass — Scanner CV ATS gratuit | Optimisez votre CV en ligne avec l'IA",
   description:
-    "CVpass analyse ton CV, calcule ton score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
+    "CVpass analyse votre CV, calcule votre score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
+  alternates: {
+    canonical: "https://cvpass.fr",
+  },
   keywords: [
     "scanner ATS", "optimiser CV", "score ATS", "CV ATS France",
     "analyse CV IA", "CV compatible ATS", "améliorer CV",
@@ -35,9 +38,9 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://cvpass.fr"),
   openGraph: {
-    title: "CVpass — Scanner CV ATS gratuit | Optimise ton CV avec l'IA",
+    title: "CVpass — Scanner CV ATS gratuit | Optimisez votre CV avec l'IA",
     description:
-      "CVpass analyse ton CV, calcule ton score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
+      "CVpass analyse votre CV, calcule votre score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
     url: "https://cvpass.fr",
     siteName: "CVpass",
     type: "website",
@@ -45,9 +48,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CVpass — Scanner CV ATS gratuit | Optimise ton CV avec l'IA",
+    title: "CVpass — Scanner CV ATS gratuit | Optimisez votre CV avec l'IA",
     description:
-      "CVpass analyse ton CV, calcule ton score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
+      "CVpass analyse votre CV, calcule votre score ATS et corrige chaque point faible avec l'IA. Scanner gratuit, compatible PDF et Word. Résultats en 30 secondes.",
   },
   robots: {
     index: true,
@@ -86,7 +89,7 @@ const jsonLd = {
       "@type": "WebSite",
       name: "CVpass",
       url: "https://cvpass.fr",
-      description: "Scanner IA gratuit : analyse ton CV, calcule ton score ATS et réécrit automatiquement chaque point faible.",
+      description: "Scanner IA gratuit : analyse votre CV, calcule votre score ATS et corrige chaque point faible automatiquement.",
       inLanguage: "fr",
       potentialAction: {
         "@type": "SearchAction",

@@ -917,7 +917,28 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Section "Blog links" supprimée — accessible via footer */}
+      {/* ── BLOG LINKS — topical authority ── */}
+      <section className="bg-white py-14 px-8 border-t border-gray-100">
+        <div className="max-w-[1100px] mx-auto">
+          <h2 className="font-display text-[22px] font-extrabold tracking-tight text-gray-900 text-center mb-8">
+            Guides populaires
+          </h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            <Link href="/blog/score-ats-cv" className="group p-5 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-1">Score ATS : comment le calculer et l&apos;améliorer</h3>
+              <p className="text-[13px] text-gray-500">Guide complet 2026</p>
+            </Link>
+            <Link href="/blog/optimiser-cv-ats-france" className="group p-5 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-1">Optimiser son CV pour les ATS en France</h3>
+              <p className="text-[13px] text-gray-500">Guide pratique étape par étape</p>
+            </Link>
+            <Link href="/blog/erreurs-cv-ats" className="group p-5 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all">
+              <h3 className="font-display text-[15px] font-bold text-gray-900 group-hover:text-green-600 transition-colors mb-1">10 erreurs CV qui font planter les ATS</h3>
+              <p className="text-[13px] text-gray-500">Et comment les corriger</p>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Footer is in the global layout */}
 
