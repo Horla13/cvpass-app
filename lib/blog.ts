@@ -1632,6 +1632,246 @@ CVpass analyse ton CV ingénieur par rapport à l'offre et identifie les logicie
 **Ton CV ingénieur passe-t-il les ATS ?** [Teste-le gratuitement sur CVpass →](https://cvpass.fr)
     `.trim(),
   },
+
+  {
+    slug: "entreprises-ats-france",
+    title: "Quelles entreprises utilisent un ATS en France ? La liste qui va vous surprendre",
+    metaTitle: "Entreprises qui utilisent un ATS en France : la liste 2026 | CVpass",
+    metaDescription: "Quelles entreprises filtrent les CV avec un ATS en France ? LVMH, Decathlon, BNP, startups... Decouvrez qui utilise ces logiciels et comment adapter votre CV.",
+    description: "La liste des entreprises francaises qui filtrent les CV avec un logiciel ATS. Et comment ne pas se faire eliminer.",
+    date: "2026-04-02",
+    readTime: "6 min",
+    category: "ATS France",
+    tags: ["Guide ATS", "France", "Recrutement"],
+    image: "/blog/optimiser-cv-ats-france.svg",
+    content: `
+## La vraie question que personne ne pose
+
+Quand je discute avec des candidats, ils me demandent souvent "c'est quoi un ATS ?". Mais la question qui devrait venir juste apres, et que personne ne pose, c'est : "est-ce que l'entreprise ou je postule en utilise un ?"
+
+Parce que la reponse change completement la facon dont vous devez preparer votre CV.
+
+Spoiler : si vous postulez dans une boite de plus de 200 salaries, il y a de tres fortes chances que votre CV passe par un filtre automatique avant d'atterrir sur le bureau de qui que ce soit.
+
+## Les grands groupes : 100% sous ATS
+
+La, pas de surprise. Toutes les entreprises du CAC 40 utilisent un ATS. Toutes. Sans exception.
+
+LVMH utilise Workday. L'Oreal aussi. Sanofi est sur Taleo (Oracle). BNP Paribas, Societe Generale, Credit Agricole : ils ont tous leur systeme maison ou un gros editeur du marche.
+
+Decathlon utilise SmartRecruiters. Carrefour est sur SuccessFactors (SAP). Total, Airbus, Safran : pareil.
+
+Ce que ca veut dire concretement : quand vous postulez sur le site carriere de LVMH, votre CV est d'abord lu par un robot. Si le robot ne trouve pas les bons mots-cles, votre candidature est classee en bas de la pile. Vous pouvez etre le candidat parfait, ca ne change rien.
+
+## Les ETI et PME en croissance : la surprise
+
+C'est la ou ca devient interessant. On pourrait penser que les PME recrutent encore "a l'ancienne" avec des piles de CV papier. C'est de moins en moins vrai.
+
+Des qu'une boite depasse 50 recrutements par an, elle investit dans un outil. Pas forcement un monstre comme Workday, mais des solutions plus accessibles : Teamtailor, Recruitee, Flatchr, Taleez.
+
+J'ai discute avec le DRH d'une PME industrielle de 180 salaries en Rhone-Alpes. Ils utilisent Flatchr depuis 2024. Avant, la RH passait 3 heures par jour a trier des CV. Maintenant, le logiciel fait un premier filtre et elle ne regarde que les 20 meilleurs. Les 80 autres ? Elle ne les voit jamais.
+
+Ca fait reflechir.
+
+## Les startups et scale-ups : ca depend
+
+Les startups de moins de 20 personnes recrutent souvent par reseau. Pas d'ATS, pas de filtre. Le fondateur lit les CV lui-meme.
+
+Mais des que la boite leve des fonds et passe en mode croissance, elle s'equipe. Lever, Greenhouse, Ashby : ce sont les outils preferes des startups tech francaises.
+
+Welcome to the Jungle a son propre systeme de matching integre. LinkedIn a son ATS interne (LinkedIn Recruiter). Indeed fait du pre-filtrage algorithmique.
+
+## Les plateformes emploi : le filtre invisible
+
+C'est le point que beaucoup de candidats ignorent. Meme si l'entreprise finale n'a pas d'ATS, la plateforme par laquelle vous postulez en a un.
+
+Quand vous postulez via Indeed, votre CV est filtre par l'algorithme d'Indeed AVANT d'arriver chez l'employeur. Meme chose sur LinkedIn, APEC, ou [Welcome to the Jungle](/blog/postuler-welcome-to-the-jungle).
+
+En gros : meme pour postuler dans une boulangerie qui recrute sur Indeed, votre CV est filtre par un robot.
+
+## Comment savoir si une entreprise utilise un ATS ?
+
+Methode simple : allez sur la page "Carrieres" de l'entreprise. Si le formulaire de candidature vous demande d'uploader un CV et de remplir des champs (nom, experience, competences), c'est un ATS.
+
+Si c'est juste un bouton "Envoyer un email a rh@entreprise.com", il n'y a probablement pas d'ATS.
+
+Autre indice : si l'URL du formulaire contient "workday", "greenhouse", "lever", "smartrecruiters", "teamtailor" ou "recruitee", vous etes sur un ATS.
+
+## Que faire concretement ?
+
+La reponse est simple : partez du principe que CHAQUE candidature en ligne passe par un filtre. Preparez votre CV en consequence.
+
+Ca veut dire : les bons mots-cles du poste, une structure simple, pas de colonnes Canva, pas de PDF image. Les bases que [notre guide complet](/blog/optimiser-cv-ats-france) couvre en detail.
+
+Et si vous voulez savoir exactement comment votre CV sera lu par ces systemes, testez-le. C'est gratuit, ca prend 30 secondes, et vous aurez votre reponse.
+
+---
+
+**Testez votre CV contre les filtres ATS.** [Analyse gratuite sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "postuler-welcome-to-the-jungle",
+    title: "Postuler sur Welcome to the Jungle : comment passer les filtres (guide pratique)",
+    metaTitle: "Postuler sur Welcome to the Jungle : passer les filtres ATS 2026 | CVpass",
+    metaDescription: "Comment postuler efficacement sur Welcome to the Jungle en 2026. Filtres ATS, mots-cles, format CV et erreurs a eviter pour maximiser vos chances.",
+    description: "Guide pratique pour postuler sur Welcome to the Jungle et ne pas se faire filtrer par leur systeme.",
+    date: "2026-04-05",
+    readTime: "7 min",
+    category: "Guide ATS",
+    tags: ["Guide ATS", "France", "Recrutement"],
+    image: "/blog/optimiser-cv-ats-france.svg",
+    content: `
+## Welcome to the Jungle, c'est pas juste un joli site
+
+Je vais etre honnete : quand j'ai decouvert Welcome to the Jungle, j'ai trouve le concept genial. Des pages entreprise bien designees, des photos d'equipe, des valeurs affichees. Ca donne envie de postuler.
+
+Mais derriere cette interface soignee, il y a un systeme de matching et de filtrage qui fonctionne exactement comme les ATS des grands groupes. Et beaucoup de candidats ne le realisent pas.
+
+Resultat : ils postulent avec un beau CV Canva, recoivent la confirmation "Candidature envoyee" et... silence radio. Pendant des semaines.
+
+## Comment fonctionne le filtrage sur WTTJ
+
+Welcome to the Jungle utilise un systeme de matching proprietaire. Quand vous postulez, votre CV est analyse automatiquement. Le systeme extrait vos competences, votre experience, vos mots-cles et les compare avec les criteres du poste.
+
+Le recruteur voit ensuite un classement des candidatures. Les CV avec la meilleure correspondance apparaissent en haut. Les autres sont en bas, parfois sur la deuxieme ou troisieme page. Et honnement, combien de recruteurs vont jusqu'a la page 3 ? Pas beaucoup.
+
+Ce n'est pas tout a fait un filtre binaire "oui/non" comme Workday ou Taleo. C'est plus un systeme de scoring et de tri. Mais le resultat est le meme : si votre CV ne matche pas, il est enterre.
+
+## Les erreurs qui plombent votre candidature
+
+**Le CV generique.** Vous envoyez le meme CV pour tous les postes sur WTTJ. Le systeme compare votre CV avec les mots-cles specifiques de CHAQUE offre. Un CV generique aura un score moyen sur toutes les offres et un bon score sur aucune.
+
+**Le format Canva multi-colonnes.** WTTJ extrait le texte de votre PDF. Si votre mise en page est en deux colonnes, le texte est melange. "Developpeur 2022-2024 React Paris Node.js" au lieu de "Developpeur React / Node.js, Paris, 2022-2024". Le matching est fausse.
+
+**Les competences implicites.** Vous avez utilise React pendant 3 ans mais le mot "React" n'apparait nulle part dans votre CV parce que vous l'avez mis sous "Technologies web". Le systeme ne fait pas le rapprochement.
+
+**Pas de titre de poste clair.** Le matching commence par le titre. Si votre CV dit "Professionnel motive en quete de nouveaux defis" au lieu de "Developpeur Full-Stack JavaScript", vous partez avec un handicap.
+
+## Comment optimiser votre candidature
+
+### Adaptez votre CV a chaque offre
+
+Je sais, c'est penible. Mais c'est la difference entre etre vu et etre ignore. Lisez l'offre, identifiez les 5-6 competences cles mentionnees et assurez-vous qu'elles apparaissent dans votre CV avec exactement les memes termes.
+
+L'offre dit "gestion de projet Agile" ? Votre CV doit dire "gestion de projet Agile", pas "methodes agiles" ni "Scrum Master".
+
+### Utilisez un format simple
+
+Une colonne. Des sections claires : Experience, Formation, Competences. Pas de tableaux, pas d'icones dans les sections, pas de barres de progression pour les competences.
+
+Un PDF texte genere depuis Word ou Google Docs. Pas un export Canva.
+
+### Soignez la section Competences
+
+WTTJ accorde beaucoup de poids aux competences listees explicitement. Ajoutez une section "Competences" avec 8-12 termes qui correspondent au vocabulaire des offres que vous visez.
+
+Melangez hard skills (les outils, langages, methodes) et soft skills (les competences relationnelles mentionnees dans l'offre).
+
+### Remplissez votre profil WTTJ
+
+Ce que beaucoup oublient : WTTJ a aussi un profil candidat. Remplissez-le completement. Le systeme utilise les infos de votre profil EN PLUS de votre CV pour le matching. Un profil vide = un matching partiel.
+
+## Le test que je recommande
+
+Avant de postuler sur WTTJ, faites le test : analysez votre CV avec un [scanner ATS](/blog/scanner-cv-gratuit). Vous verrez exactement quels mots-cles manquent et comment votre CV sera interprete par le systeme de matching.
+
+Si votre score est en dessous de 60, vous avez du travail. Au-dessus de 75, vous etes en bonne position. L'ideal c'est 80+.
+
+Ce n'est pas une garantie de decrocher le poste. Mais c'est la garantie que votre CV sera VU par un humain. Et c'est deja enorme.
+
+---
+
+**Verifiez que votre CV passe les filtres WTTJ.** [Analyse gratuite sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+
+  {
+    slug: "pas-de-reponse-indeed",
+    title: "Pas de reponse sur Indeed ? Voila probablement pourquoi",
+    metaTitle: "Pas de reponse sur Indeed : 5 raisons et comment y remedier | CVpass",
+    metaDescription: "Vous postulez sur Indeed sans jamais recevoir de reponse ? Les 5 raisons les plus courantes et comment corriger votre CV pour enfin etre vu.",
+    description: "Pourquoi vos candidatures Indeed restent sans reponse et comment y remedier concretement.",
+    date: "2026-04-08",
+    readTime: "6 min",
+    category: "Guide ATS",
+    tags: ["Guide ATS", "France", "Recrutement"],
+    image: "/blog/erreurs-cv-ats.svg",
+    content: `
+## Le silence qui rend fou
+
+Si vous lisez cet article, il y a des chances que vous connaissiez ce sentiment. Vous passez une heure a chercher la bonne offre sur Indeed. Vous adaptez votre CV (ou pas, on en reparlera). Vous cliquez "Postuler". La page de confirmation apparait. Et ensuite... rien.
+
+Pas de reponse. Pas meme un mail automatique de refus. Juste le vide.
+
+Vous recommencez le lendemain. Et le surlendemain. Apres 50 candidatures sans retour, vous commencez a vous demander si le probleme c'est vous.
+
+Spoiler : le probleme c'est probablement pas vous. C'est votre CV. Ou plus precisement, la facon dont votre CV est traite par Indeed.
+
+## Raison 1 : Indeed filtre votre CV avant le recruteur
+
+Ce que beaucoup de gens ne savent pas, c'est qu'Indeed a son propre systeme de filtrage. Quand vous postulez, votre CV est analyse par un algorithme AVANT d'etre transmis a l'employeur.
+
+L'employeur peut configurer des filtres : "minimum 3 ans d'experience", "diplome Bac+5", "competence Excel obligatoire". Si votre CV ne coche pas ces cases selon l'algorithme, votre candidature est filtree.
+
+Le recruteur ne la voit meme pas. Il ne sait meme pas que vous avez postule.
+
+C'est dur a entendre, mais c'est la realite du recrutement en ligne en 2026.
+
+## Raison 2 : Vous envoyez le meme CV partout
+
+C'est l'erreur numero un. Et croyez-moi, je l'ai faite aussi pendant longtemps.
+
+Un CV generique c'est comme un email envoye a "Cher Monsieur/Madame". Ca marche techniquement, mais ca ne convainc personne. Et surtout, ca ne convainc pas les algorithmes.
+
+Chaque offre sur Indeed a ses propres mots-cles. "Gestionnaire de paie" et "Responsable paie" c'est le meme job. Mais si l'offre dit "Gestionnaire de paie" et que votre CV dit "Responsable paie", l'algorithme peut considerer que ca ne matche pas.
+
+Je sais que c'est absurde. Mais c'est comme ca que ces systemes fonctionnent.
+
+La solution : pour chaque candidature importante, verifiez que les termes cles de l'offre apparaissent dans votre CV. Pas besoin de tout reecrire. Juste ajuster les formulations.
+
+## Raison 3 : Votre CV est un PDF image
+
+Si vous avez cree votre CV sur Canva et que vous l'avez exporte en PDF, faites ce test : ouvrez le PDF, essayez de selectionner du texte. Si vous ne pouvez pas le selectionner, votre CV est une image.
+
+Et une image, pour l'algorithme d'Indeed, c'est un fichier vide. Zero mot-cle detecte. Zero competence. Votre candidature part directement a la poubelle numerique.
+
+J'ai vu des candidats avec 10 ans d'experience, un parcours impeccable, se faire filtrer parce que leur [CV Canva etait illisible](/blog/cv-canva-ats) pour le systeme.
+
+## Raison 4 : Vous postulez trop tard
+
+Sur Indeed, les offres recentes recoivent un afflux de candidatures dans les premieres 24 heures. Le recruteur commence a regarder les CV rapidement, parfois le jour meme de la publication.
+
+Si vous postulez 5 jours apres la mise en ligne, votre CV arrive en bas d'une pile de 200 candidatures. Meme sans filtre ATS, vos chances sont faibles.
+
+Mon conseil : activez les alertes Indeed pour vos mots-cles. Postulez dans les 24 premieres heures. Ca fait une difference enorme.
+
+## Raison 5 : Votre profil Indeed est incomplet
+
+Indeed a un systeme de matching similaire a [Welcome to the Jungle](/blog/postuler-welcome-to-the-jungle). Votre profil Indeed est pris en compte dans le classement des candidatures.
+
+Un profil avec juste votre nom et un CV uploade sera moins bien classe qu'un profil complete avec vos competences, votre resume, votre experience detaillee.
+
+Prenez 15 minutes pour remplir votre profil Indeed completement. C'est un investissement qui paie sur chaque candidature.
+
+## Comment corriger le tir
+
+Voila ce que je ferais si j'etais a votre place, dans cet ordre :
+
+Premiere chose : verifiez que votre CV est lisible par un robot. Testez-le avec un [scanner ATS](/blog/scanner-cv-gratuit). Si le score est en dessous de 50, c'est probablement la raison principale de vos non-reponses.
+
+Deuxieme chose : pour vos 3 prochaines candidatures, prenez 5 minutes pour adapter votre CV a chaque offre. Pas une refonte complete. Juste verifier que les [mots-cles de l'offre](/blog/mots-cles-cv-ats) sont dans votre CV.
+
+Troisieme chose : postulez vite. Alertes Indeed activees, candidature dans les 24h.
+
+Ce n'est pas de la magie. Mais j'ai vu des gens passer de 0 reponse en 2 mois a 3 entretiens en 2 semaines juste en appliquant ces trois choses.
+
+---
+
+**Testez votre CV Indeed gratuitement.** [Analyse sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

@@ -20,6 +20,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/subscribe",
   "/api/count",
   "/api/affiliate/check-ref",
+  "/embed(.*)",
   "/affiliate/join",
   "/sitemap.xml",
   "/robots.txt",
