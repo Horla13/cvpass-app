@@ -12,6 +12,9 @@ export async function GET() {
 
   const planInfo = await getUserPlanInfo(userId, email);
 
+  // Get signup date for promo timer
+  const createdAt = user.createdAt ? new Date(user.createdAt).toISOString() : null;
+
   return NextResponse.json({
     plan: planInfo.plan,
     credits: planInfo.credits,
@@ -19,5 +22,6 @@ export async function GET() {
     expiresAt: planInfo.expiresAt,
     costs: CREDIT_COSTS,
     email,
+    createdAt,
   });
 }

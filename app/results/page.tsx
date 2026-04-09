@@ -14,6 +14,7 @@ import { PromoModal, usePromoModal } from "@/components/PromoModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
 import { ResultsOnboarding } from "@/components/ResultsOnboarding";
 import { BlurredSuggestion } from "@/components/BlurredSuggestion";
+import { usePromoTimer } from "@/components/PromoTimer";
 import { cn } from "@/lib/utils";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import { getTemplate } from "@/lib/cv-templates";
@@ -1308,16 +1309,21 @@ export default function ResultsPage() {
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [templateId, setTemplateId] = useState("modern");
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [userCreatedAt, setUserCreatedAt] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
+  const promoTimer = usePromoTimer(userCreatedAt);
   const promo = usePromoModal();
 
   // Check if user has premium access (for template lock)
   useEffect(() => {
     fetch("/api/credits")
       .then((r) => r.json())
-      .then((d) => setIsPremiumUser(d.unlimited === true || d.plan === "starter" || d.plan === "pro"))
+      .then((d) => {
+        setIsPremiumUser(d.unlimited === true || d.plan === "starter" || d.plan === "pro");
+        setUserCreatedAt(d.createdAt ?? null);
+      })
       .catch(() => {});
   }, []);
 
@@ -2021,6 +2027,8 @@ export default function ResultsPage() {
             scoreAvant={score_avant}
             scoreApres={scoreActuel}
             nbAccepted={acceptedGaps.length}
+            promoActive={promoTimer.isActive && !isPremiumUser}
+            promoFormatted={promoTimer.formatted}
           />
         )}
 

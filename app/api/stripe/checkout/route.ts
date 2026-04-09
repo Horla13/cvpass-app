@@ -36,12 +36,22 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-  // If affiliate ref cookie, auto-apply -15% discount (no manual promo code)
-  // Otherwise allow user to enter their own promo code
+  // Check if user is within 48h promo window (for Pro plan)
+  const clerk = await (await import("@clerk/nextjs/server")).clerkClient();
+  const user = await clerk.users.getUser(userId);
+  const signupAge = Date.now() - (user.createdAt ?? Date.now());
+  const isWithinPromo = plan === "pro" && signupAge < 48 * 60 * 60 * 1000;
+
+  // Discount priority: affiliate ref > 48h promo > manual promo code
   const hasAffiliateRef = !!refCode;
-  const discountConfig: Partial<Stripe.Checkout.SessionCreateParams> = hasAffiliateRef
-    ? { discounts: [{ coupon: "AFFILIATE15" }] }
-    : { allow_promotion_codes: true };
+  let discountConfig: Partial<Stripe.Checkout.SessionCreateParams>;
+  if (hasAffiliateRef) {
+    discountConfig = { discounts: [{ coupon: "AFFILIATE15" }] };
+  } else if (isWithinPromo) {
+    discountConfig = { discounts: [{ coupon: "PRO15" }] };
+  } else {
+    discountConfig = { allow_promotion_codes: true };
+  }
 
   const commonConfig = {
     locale: "fr" as const,

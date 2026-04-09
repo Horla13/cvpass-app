@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { isStripeUrl } from "@/lib/utils";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
+import { usePromoTimer, PromoTimerBadge } from "@/components/PromoTimer";
 
 export default function PricingPage() {
   const router = useRouter();
@@ -15,6 +16,9 @@ export default function PricingPage() {
   const [credits, setCredits] = useState<number | null>(null);
   const [unlimited, setUnlimited] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
+  const [plan, setPlan] = useState<string>("free");
+  const promo = usePromoTimer(createdAt);
 
   useEffect(() => {
     fetch("/api/credits")
@@ -22,6 +26,8 @@ export default function PricingPage() {
       .then((d) => {
         setCredits(d.credits ?? null);
         setUnlimited(d.unlimited ?? false);
+        setCreatedAt(d.createdAt ?? null);
+        setPlan(d.plan ?? "free");
       })
       .catch(() => {});
   }, []);
@@ -110,17 +116,20 @@ export default function PricingPage() {
         </p>
       </section>
 
-      {/* Credits badge */}
-      {credits !== null && (
-        <div className="text-center pb-10">
+      {/* Credits badge + promo timer */}
+      <div className="flex flex-col items-center gap-3 pb-10">
+        {credits !== null && (
           <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-[13px]">
             <span className="text-amber-500">&#9889;</span>
             <span className="font-semibold text-amber-700">
               Votre solde : {unlimited ? "Accès illimité" : `${credits} crédit${credits !== 1 ? "s" : ""}`}
             </span>
           </div>
-        </div>
-      )}
+        )}
+        {promo.isActive && plan === "free" && (
+          <PromoTimerBadge remaining={promo.remaining} formatted={promo.formatted} />
+        )}
+      </div>
 
       {/* Pricing cards */}
       <section className="max-w-[1060px] mx-auto px-8 pb-20">
@@ -128,16 +137,16 @@ export default function PricingPage() {
           {/* Free */}
           <div className="relative bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-gray-300 hover:shadow-sm transition-all">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[20px]">⚡</span>
+              <span className="text-[20px]">&#9889;</span>
               <h3 className="font-display text-[20px] font-bold text-gray-900">Gratuit</h3>
             </div>
-            <p className="text-[13px] text-gray-500 mb-5">Pour découvrir, sans engagement</p>
+            <p className="text-[13px] text-gray-500 mb-5">Pour d&eacute;couvrir, sans engagement</p>
             <div className="mb-1">
               <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">Gratuit</span>
             </div>
             <div className="mb-6" />
             <ul className="space-y-3 mb-7">
-              {["1 analyse offerte à l'inscription", "Toutes les fonctionnalités accessibles", "Export PDF (1 crédit)", "Crédits sans expiration"].map((f) => (
+              {["1 analyse offerte", "Toutes les fonctionnalit\u00E9s accessibles", "Export PDF (1 cr\u00E9dit)", "Cr\u00E9dits sans expiration"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -149,22 +158,37 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Coup de pouce */}
-          <div className="relative bg-white rounded-2xl border-2 border-green-300 shadow-[0_4px_24px_rgba(22,163,74,0.12)] p-8 transition-all">
+          {/* Recherche Active (PRO) — MIS EN AVANT */}
+          <div className="relative bg-white rounded-2xl border-2 border-green-400 shadow-[0_4px_32px_rgba(22,163,74,0.15)] p-8 transition-all md:-mt-4 md:mb-4">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap">
-              Le plus populaire
+              Recommand&eacute;
             </div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[20px]">🚀</span>
-              <h3 className="font-display text-[20px] font-bold text-gray-900">Coup de pouce</h3>
+              <span className="text-[20px]">&#128081;</span>
+              <h3 className="font-display text-[20px] font-bold text-gray-900">Recherche Active</h3>
             </div>
-            <p className="text-[13px] text-gray-500 mb-5">Idéal pour postuler à cette offre rêvée</p>
-            <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">2,90&euro;</span>
-            </div>
-            <p className="text-[13px] text-gray-400 mb-6">paiement unique</p>
+            <p className="text-[13px] text-gray-500 mb-5">Analyses illimit&eacute;es pendant 30 jours</p>
+
+            {/* Price — with promo if active */}
+            {promo.isActive && plan === "free" ? (
+              <div className="mb-1">
+                <span className="font-display text-[22px] font-bold text-gray-400 line-through tracking-tighter mr-2">8,90&euro;</span>
+                <span className="font-display text-[38px] font-extrabold text-green-600 tracking-tighter">7,57&euro;</span>
+                <span className="ml-2 text-[12px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">-15%</span>
+              </div>
+            ) : (
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">8,90&euro;</span>
+              </div>
+            )}
+            <p className="text-[13px] text-gray-400 mb-2">par mois &middot; sans engagement</p>
+            {promo.isActive && plan === "free" && promo.formatted && (
+              <p className="text-[12px] text-amber-600 font-semibold mb-4">&#9200; Offre 1er mois &agrave; -15% — expire dans {promo.formatted}</p>
+            )}
+            {!(promo.isActive && plan === "free") && <div className="mb-4" />}
+
             <ul className="space-y-3 mb-7">
-              {["4 crédits d'analyse", "+ votre crédit gratuit = 5 au total", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
+              {["Analyses + PDF illimit\u00E9s", "Tous les templates premium", "Lettre de motivation IA", "Tracker candidatures", "R\u00E9siliable \u00E0 tout moment"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -172,44 +196,40 @@ export default function PricingPage() {
               ))}
             </ul>
             <button
-              onClick={() => handlePlanClick("starter")}
-              disabled={loading === "starter"}
-              className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md shadow-green-200 transition-all disabled:opacity-50"
+              onClick={() => handlePlanClick("pro")}
+              disabled={loading === "pro"}
+              className="w-full py-3.5 min-h-[48px] rounded-xl text-[15px] font-bold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-lg shadow-green-200 transition-all disabled:opacity-50"
             >
-              {loading === "starter" ? "Redirection..." : "Acheter le pack"}
+              {loading === "pro" ? "Redirection..." : promo.isActive && plan === "free" ? "Passer en illimit\u00E9 \u00E0 7,57\u20AC" : "Passer en illimit\u00E9"}
             </button>
+            <p className="text-[11px] text-gray-400 text-center mt-3">Moins cher que 3 packs Coup de pouce</p>
           </div>
 
-          {/* Recherche Active — with month selector */}
-          <div className="relative bg-white rounded-2xl border-2 border-blue-200 shadow-sm p-8 transition-all">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-[11px] font-bold whitespace-nowrap">
-              Meilleure valeur
-            </div>
+          {/* Coup de pouce */}
+          <div className="relative bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-gray-300 hover:shadow-sm transition-all">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[20px]">👑</span>
-              <h3 className="font-display text-[20px] font-bold text-gray-900">Recherche Active</h3>
+              <span className="text-[20px]">&#128640;</span>
+              <h3 className="font-display text-[20px] font-bold text-gray-900">Coup de pouce</h3>
             </div>
-            <p className="text-[13px] text-gray-500 mb-5">Analyses illimitées pendant 30 jours</p>
-
+            <p className="text-[13px] text-gray-500 mb-5">Id&eacute;al pour postuler &agrave; une offre pr&eacute;cise</p>
             <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">8,90&euro;</span>
+              <span className="font-display text-[38px] font-extrabold text-gray-900 tracking-tighter">2,90&euro;</span>
             </div>
-            <p className="text-[13px] text-gray-400 mb-6">par mois</p>
-
+            <p className="text-[13px] text-gray-400 mb-6">paiement unique</p>
             <ul className="space-y-3 mb-7">
-              {["Analyses illimitées pendant 30 jours", "Renouvellement automatique", "Sans engagement", "Résiliable à tout moment"].map((f) => (
+              {["+4 cr\u00E9dits imm\u00E9diatement", "Sans expiration", "Rachetable plusieurs fois"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
-                  <svg className="mt-0.5 flex-shrink-0 text-blue-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <svg className="mt-0.5 flex-shrink-0 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
                 </li>
               ))}
             </ul>
             <button
-              onClick={() => handlePlanClick("pro")}
-              disabled={loading === "pro"}
-              className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-200 transition-all disabled:opacity-50"
+              onClick={() => handlePlanClick("starter")}
+              disabled={loading === "starter"}
+              className="w-full py-3.5 min-h-[48px] rounded-xl text-[14px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all disabled:opacity-50"
             >
-              {loading === "pro" ? "Redirection..." : "Passer en illimité"}
+              {loading === "starter" ? "Redirection..." : "Acheter le pack"}
             </button>
           </div>
         </div>
