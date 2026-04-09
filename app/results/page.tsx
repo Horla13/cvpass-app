@@ -13,6 +13,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { PromoModal, usePromoModal } from "@/components/PromoModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
 import { ResultsOnboarding } from "@/components/ResultsOnboarding";
+import { BlurredSuggestion } from "@/components/BlurredSuggestion";
 import { cn } from "@/lib/utils";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import { getTemplate } from "@/lib/cv-templates";
@@ -226,7 +227,9 @@ function JdMatchReport({ jdMatch, gaps, onAccept, onIgnore, onApplyInEditor }: {
               <div className="mb-3">
                 <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
                 <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
-                  <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
+                  <p className="text-[13px] text-green-800 leading-relaxed">
+                    <BlurredSuggestion text={gap.texte_suggere} status={gap.status} />
+                  </p>
                 </div>
               </div>
 
@@ -468,7 +471,9 @@ function CategorySection({
               <div className="mb-3">
                 <p className="text-[11px] text-gray-400 font-medium mb-1">Suggéré :</p>
                 <div className="bg-green-50 border-l-3 border-green-300 rounded-r-lg px-4 py-2.5">
-                  <p className="text-[13px] text-green-800 leading-relaxed">{gap.texte_suggere}</p>
+                  <p className="text-[13px] text-green-800 leading-relaxed">
+                    <BlurredSuggestion text={gap.texte_suggere} status={gap.status} />
+                  </p>
                 </div>
               </div>
 
@@ -778,7 +783,9 @@ function SuggestionPanel({
       {/* Suggested text */}
       <div className="px-5 pt-3">
         <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Suggéré</p>
-        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">{current.texte_suggere}</p>
+        <p className="text-[13px] text-green-700 leading-relaxed bg-green-50 rounded px-3 py-2">
+          <BlurredSuggestion text={current.texte_suggere} status={current.status} />
+        </p>
       </div>
 
       {/* Reason + Feedback */}
