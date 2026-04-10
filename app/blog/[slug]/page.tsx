@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { ShareButtons } from "@/components/ShareButtons";
+import { BlogHero } from "@/components/BlogHero";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -289,16 +290,9 @@ export default async function BlogPostPage(
         </nav>
       </div>
 
-      {/* HERO IMAGE */}
+      {/* HERO IMAGE — gradient + icon */}
       <div style={{ maxWidth: 720, margin: "12px auto 0", padding: "0 40px" }}>
-        <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1200/630", position: "relative" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={post.image}
-            alt={post.title}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        </div>
+        <BlogHero category={post.category} title={post.title} />
       </div>
 
       {/* ARTICLE HEADER */}

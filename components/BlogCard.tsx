@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import type { BlogPost } from "@/lib/blog";
+import { BlogCardGradient } from "@/components/BlogCardGradient";
 
 const CATEGORY_COLORS: Record<string, string> = {
   "Score ATS": "#f0fdf4",
@@ -59,12 +59,7 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
             minHeight: 280,
             overflow: "hidden",
           }}>
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              style={{ objectFit: "cover" }}
-            />
+            <BlogCardGradient category={post.category} />
           </div>
 
           {/* Content */}
@@ -148,12 +143,7 @@ export function BlogCard({ post, featured }: { post: BlogPost; featured?: boolea
           overflow: "hidden",
           borderBottom: "1px solid var(--border-light)",
         }}>
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            style={{ objectFit: "cover" }}
-          />
+          <BlogCardGradient category={post.category} />
         </div>
 
         <div style={{ padding: "20px 24px 22px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
