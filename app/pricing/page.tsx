@@ -255,7 +255,7 @@ export default function PricingPage() {
                 {[
                   ["Prix", "0€", "2,90€", "8,90€/mois"],
                   ["Idéal pour", "Découvrir", "Postuler à une offre", "Recherche intensive"],
-                  ["Crédits", "2 (à vie)", "+4 par achat", "Illimité"],
+                  ["Crédits", "1 (à vie)", "+4 par achat", "Illimité"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
                     <td className="py-3.5 px-5 font-medium text-gray-800">{feature}</td>
