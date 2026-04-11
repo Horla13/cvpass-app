@@ -44,6 +44,7 @@ export function Footer() {
           <div>
             <h4 className="text-white text-[13px] font-bold uppercase tracking-wider mb-4">Programmes</h4>
             <div className="space-y-2.5">
+              <Link href="/challenge" className="block text-[14px] hover:text-white transition-colors py-0.5">Challenge #MonScoreATS</Link>
               <Link href="/affiliate/join" className="block text-[14px] hover:text-white transition-colors py-0.5">Affiliation (30%)</Link>
               <a href="mailto:contact@cvpass.fr" className="block text-[14px] hover:text-white transition-colors py-0.5">Partenariats</a>
               <a href="mailto:contact@cvpass.fr" className="block text-[14px] hover:text-white transition-colors py-0.5">Contact</a>
