@@ -116,7 +116,7 @@ export default function AboutPage() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="font-display text-[28px] font-extrabold mb-6 tracking-[-1px]">L&apos;entreprise</h2>
           <div className="text-[15px] text-gray-600 space-y-3">
-            <p><strong>VertexLab SASU</strong></p>
+            <p><strong>VertexLab</strong></p>
             <p>Societe francaise enregistree au RCS</p>
             <p>RGPD compliant — donnees traitees en memoire, jamais stockees</p>
             <p>Paiement securise par Stripe</p>

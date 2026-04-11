@@ -323,7 +323,7 @@ export default function PolitiqueCookiesPage() {
             6. Modifications
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0 }}>
-            VertexLab SASU se r&eacute;serve le droit de modifier la pr&eacute;sente Politique de cookies. La date de derni&egrave;re mise &agrave; jour est indiqu&eacute;e en haut de cette page.
+            VertexLab se r&eacute;serve le droit de modifier la pr&eacute;sente Politique de cookies. La date de derni&egrave;re mise &agrave; jour est indiqu&eacute;e en haut de cette page.
           </p>
         </section>
 

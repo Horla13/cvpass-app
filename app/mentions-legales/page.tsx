@@ -99,7 +99,7 @@ export default function MentionsLegalesPage() {
               <a href="https://cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>https://cvpass.fr</a>
             </p>
             <p style={{ margin: "0 0 8px" }}>
-              <strong style={{ color: "var(--text-primary)" }}>Société :</strong> VertexLab SASU
+              <strong style={{ color: "var(--text-primary)" }}>Société :</strong> VertexLab
             </p>
             <p style={{ margin: "0 0 8px" }}>
               <strong style={{ color: "var(--text-primary)" }}>Adresse :</strong> 198 boulevard Ange Martin, 13190 Allauch, France
@@ -117,7 +117,7 @@ export default function MentionsLegalesPage() {
             2. Directeur de la publication
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0 }}>
-            Giovanni Russo, en qualité de Président de VertexLab SASU.
+            Giovanni Russo, en qualité de Président de VertexLab.
           </p>
         </section>
 
@@ -147,10 +147,10 @@ export default function MentionsLegalesPage() {
               L&apos;ensemble du contenu du site CVpass (textes, graphismes, logiciels, images, bases de données, etc.) est protégé par le droit d&apos;auteur et le droit de la propriété intellectuelle, conformément aux dispositions du Code de la propriété intellectuelle.
             </p>
             <p style={{ margin: 0 }}>
-              Toute reproduction, représentation, modification, publication, transmission ou dénaturation, totale ou partielle, du site ou de son contenu, par quelque procédé que ce soit, et sur quelque support que ce soit est interdite sans autorisation écrite préalable de VertexLab SASU.
+              Toute reproduction, représentation, modification, publication, transmission ou dénaturation, totale ou partielle, du site ou de son contenu, par quelque procédé que ce soit, et sur quelque support que ce soit est interdite sans autorisation écrite préalable de VertexLab.
             </p>
             <p style={{ margin: 0 }}>
-              La marque CVpass et le logo associé sont la propriété exclusive de VertexLab SASU. Toute utilisation non autorisée de ces éléments constitue une contrefaçon sanctionnée par la loi.
+              La marque CVpass et le logo associé sont la propriété exclusive de VertexLab. Toute utilisation non autorisée de ces éléments constitue une contrefaçon sanctionnée par la loi.
             </p>
             <p style={{ margin: 0 }}>
               Les CVs uploadés par les utilisateurs restent leur propriété exclusive. CVpass ne revendique aucun droit de propriété sur les documents soumis par ses utilisateurs.
@@ -168,7 +168,7 @@ export default function MentionsLegalesPage() {
               Le site CVpass peut contenir des liens hypertextes vers d&apos;autres sites internet. CVpass n&apos;exerce aucun contrôle sur le contenu de ces sites tiers et décline toute responsabilité quant à leur contenu, leurs pratiques en matière de protection des données ou leur disponibilité.
             </p>
             <p style={{ margin: 0 }}>
-              La mise en place de liens hypertextes vers le site CVpass nécessite une autorisation préalable et écrite de VertexLab SASU. Toute demande peut être adressée à{" "}
+              La mise en place de liens hypertextes vers le site CVpass nécessite une autorisation préalable et écrite de VertexLab. Toute demande peut être adressée à{" "}
               <a href="mailto:contact@cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>contact@cvpass.fr</a>.
             </p>
           </div>
@@ -184,10 +184,10 @@ export default function MentionsLegalesPage() {
               CVpass est un outil d&apos;aide à l&apos;optimisation de CV. Les suggestions générées par l&apos;intelligence artificielle sont fournies à titre indicatif et ne constituent en aucun cas un conseil professionnel garanti. L&apos;utilisateur reste seul responsable de l&apos;utilisation qu&apos;il fait des résultats fournis.
             </p>
             <p style={{ margin: 0 }}>
-              VertexLab SASU ne saurait être tenue responsable des décisions prises par les utilisateurs sur la base des résultats fournis par CVpass, ni des conséquences directes ou indirectes pouvant en découler.
+              VertexLab ne saurait être tenue responsable des décisions prises par les utilisateurs sur la base des résultats fournis par CVpass, ni des conséquences directes ou indirectes pouvant en découler.
             </p>
             <p style={{ margin: 0 }}>
-              VertexLab SASU s&apos;efforce de fournir un service disponible 24h/24, 7j/7 mais ne peut garantir une disponibilité continue et sans interruption. Des opérations de maintenance, des mises à jour ou des circonstances indépendantes de notre volonté peuvent entraîner des interruptions temporaires du service.
+              VertexLab s&apos;efforce de fournir un service disponible 24h/24, 7j/7 mais ne peut garantir une disponibilité continue et sans interruption. Des opérations de maintenance, des mises à jour ou des circonstances indépendantes de notre volonté peuvent entraîner des interruptions temporaires du service.
             </p>
           </div>
         </section>

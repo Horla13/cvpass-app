@@ -67,7 +67,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-[13px] text-gray-500">© 2026 VertexLab SASU. Tous droits réservés.</p>
+          <p className="text-[13px] text-gray-500">© 2026 VertexLab. Tous droits réservés.</p>
           <p className="text-[13px] text-gray-600">
             Fait avec <span className="text-green-500">&#9829;</span> en France
           </p>

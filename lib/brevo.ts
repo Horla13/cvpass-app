@@ -336,7 +336,7 @@ export async function sendPaymentConfirmationEmail(
           </div>
         </div>
         <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
-          <p>L'équipe CVpass — VertexLab SASU</p>
+          <p>L'équipe CVpass — VertexLab</p>
           <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a> &middot;
           <a href="${appUrl}/mentions-legales" style="color:#6b7280;">Mentions légales</a> &middot;
           <a href="${appUrl}/conditions-generales" style="color:#6b7280;">CGV</a>

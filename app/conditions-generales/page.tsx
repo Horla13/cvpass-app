@@ -126,7 +126,7 @@ export default function ConditionsGeneralesPage() {
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0 }}>
             Les pr&eacute;sentes Conditions G&eacute;n&eacute;rales d&apos;Utilisation et de Vente (ci-apr&egrave;s &laquo;&nbsp;CGU/CGV&nbsp;&raquo;) r&eacute;gissent l&apos;utilisation du service CVpass, accessible &agrave; l&apos;adresse{" "}
-            <a href="https://cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>https://cvpass.fr</a>, &eacute;dit&eacute; par VertexLab SASU. CVpass est un service en ligne d&apos;analyse et d&apos;optimisation de CV par intelligence artificielle, permettant aux utilisateurs de calculer leur score de compatibilit&eacute; ATS (Applicant Tracking System), de recevoir des suggestions d&apos;am&eacute;lioration personnalis&eacute;es et de g&eacute;n&eacute;rer des documents optimis&eacute;s.
+            <a href="https://cvpass.fr" style={{ color: "#16a34a", textDecoration: "none", fontWeight: 500 }}>https://cvpass.fr</a>, &eacute;dit&eacute; par VertexLab. CVpass est un service en ligne d&apos;analyse et d&apos;optimisation de CV par intelligence artificielle, permettant aux utilisateurs de calculer leur score de compatibilit&eacute; ATS (Applicant Tracking System), de recevoir des suggestions d&apos;am&eacute;lioration personnalis&eacute;es et de g&eacute;n&eacute;rer des documents optimis&eacute;s.
           </p>
         </section>
 
@@ -149,7 +149,7 @@ export default function ConditionsGeneralesPage() {
             <li>L&apos;utilisation de CVpass n&eacute;cessite la cr&eacute;ation d&apos;un compte utilisateur via notre partenaire d&apos;authentification Clerk.</li>
             <li>L&apos;utilisateur s&apos;engage &agrave; fournir des informations exactes et &agrave; maintenir la confidentialit&eacute; de ses identifiants de connexion.</li>
             <li>L&apos;utilisateur est responsable de toute activit&eacute; effectu&eacute;e sous son compte.</li>
-            <li>VertexLab SASU se r&eacute;serve le droit de suspendre ou supprimer tout compte en cas de violation des pr&eacute;sentes CGU/CGV ou d&apos;utilisation frauduleuse du service.</li>
+            <li>VertexLab se r&eacute;serve le droit de suspendre ou supprimer tout compte en cas de violation des pr&eacute;sentes CGU/CGV ou d&apos;utilisation frauduleuse du service.</li>
           </ul>
         </section>
 
@@ -215,7 +215,7 @@ export default function ConditionsGeneralesPage() {
             <li>Le paiement est s&eacute;curis&eacute; et trait&eacute; exclusivement par Stripe, notre prestataire de paiement certifi&eacute; PCI DSS.</li>
             <li>CVpass ne collecte ni ne stocke aucune donn&eacute;e bancaire (num&eacute;ro de carte, CVV, date d&apos;expiration).</li>
             <li>La facturation est imm&eacute;diate au moment de l&apos;achat pour le pack Coup de pouce (2,90&nbsp;&euro;), et &agrave; chaque d&eacute;but de p&eacute;riode pour l&apos;abonnement Recherche Active (8,90&nbsp;&euro;/mois).</li>
-            <li>VertexLab SASU se r&eacute;serve le droit de modifier ses tarifs. Toute modification sera notifi&eacute;e aux abonn&eacute;s actifs 30 jours avant son entr&eacute;e en vigueur.</li>
+            <li>VertexLab se r&eacute;serve le droit de modifier ses tarifs. Toute modification sera notifi&eacute;e aux abonn&eacute;s actifs 30 jours avant son entr&eacute;e en vigueur.</li>
           </ul>
         </section>
 
@@ -291,7 +291,7 @@ export default function ConditionsGeneralesPage() {
             <li>La r&eacute;siliation prend effet &agrave; la fin de la p&eacute;riode de facturation en cours.</li>
             <li>Aucune p&eacute;nalit&eacute; de r&eacute;siliation n&apos;est appliqu&eacute;e.</li>
             <li>Apr&egrave;s r&eacute;siliation, l&apos;utilisateur conserve l&apos;acc&egrave;s au service jusqu&apos;&agrave; la fin de la p&eacute;riode d&eacute;j&agrave; factur&eacute;e.</li>
-            <li>VertexLab SASU se r&eacute;serve le droit de r&eacute;silier le compte d&apos;un utilisateur en cas de violation des pr&eacute;sentes CGU/CGV, avec notification pr&eacute;alable par email sauf en cas d&apos;urgence.</li>
+            <li>VertexLab se r&eacute;serve le droit de r&eacute;silier le compte d&apos;un utilisateur en cas de violation des pr&eacute;sentes CGU/CGV, avec notification pr&eacute;alable par email sauf en cas d&apos;urgence.</li>
           </ul>
         </section>
 
@@ -301,8 +301,8 @@ export default function ConditionsGeneralesPage() {
             8. Propri&eacute;t&eacute; intellectuelle
           </h2>
           <ul style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 8 }}>
-            <li>L&apos;ensemble des &eacute;l&eacute;ments constituant le service CVpass (logiciel, algorithmes, interface, textes, graphismes, logo, base de donn&eacute;es) est la propri&eacute;t&eacute; exclusive de VertexLab SASU et est prot&eacute;g&eacute; par les lois fran&ccedil;aises et internationales relatives &agrave; la propri&eacute;t&eacute; intellectuelle.</li>
-            <li>La marque &laquo;&nbsp;CVpass&nbsp;&raquo; et le logo associ&eacute; sont la propri&eacute;t&eacute; exclusive de VertexLab SASU. Toute reproduction ou utilisation non autoris&eacute;e est interdite.</li>
+            <li>L&apos;ensemble des &eacute;l&eacute;ments constituant le service CVpass (logiciel, algorithmes, interface, textes, graphismes, logo, base de donn&eacute;es) est la propri&eacute;t&eacute; exclusive de VertexLab et est prot&eacute;g&eacute; par les lois fran&ccedil;aises et internationales relatives &agrave; la propri&eacute;t&eacute; intellectuelle.</li>
+            <li>La marque &laquo;&nbsp;CVpass&nbsp;&raquo; et le logo associ&eacute; sont la propri&eacute;t&eacute; exclusive de VertexLab. Toute reproduction ou utilisation non autoris&eacute;e est interdite.</li>
             <li>Les CVs upload&eacute;s par les utilisateurs restent leur propri&eacute;t&eacute; exclusive. CVpass ne revendique aucun droit de propri&eacute;t&eacute; sur les contenus upload&eacute;s par les utilisateurs.</li>
             <li>L&apos;utilisateur accorde &agrave; CVpass une licence temporaire, limit&eacute;e et non exclusive de traitement de son CV aux seules fins de fourniture du service (analyse, suggestions, export).</li>
           </ul>
@@ -317,9 +317,9 @@ export default function ConditionsGeneralesPage() {
             <li>CVpass est un outil d&apos;aide &agrave; l&apos;optimisation de CV et ne garantit en aucun cas l&apos;obtention d&apos;un entretien ou d&apos;un emploi.</li>
             <li>Les suggestions g&eacute;n&eacute;r&eacute;es par l&apos;intelligence artificielle sont fournies &agrave; titre indicatif et ne constituent pas un conseil professionnel garanti.</li>
             <li>L&apos;utilisateur reste seul responsable du contenu de son CV et des informations qu&apos;il y fait figurer.</li>
-            <li>VertexLab SASU ne saurait &ecirc;tre tenue responsable des d&eacute;cisions de recrutement prises par des tiers sur la base d&apos;un CV analys&eacute; ou optimis&eacute; via CVpass.</li>
-            <li>La responsabilit&eacute; totale de VertexLab SASU est limit&eacute;e au montant effectivement pay&eacute; par l&apos;utilisateur au cours des 12 derniers mois.</li>
-            <li>VertexLab SASU ne peut &ecirc;tre tenue responsable en cas de force majeure, de dysfonctionnement du r&eacute;seau Internet, ou de toute cause ind&eacute;pendante de sa volont&eacute;.</li>
+            <li>VertexLab ne saurait &ecirc;tre tenue responsable des d&eacute;cisions de recrutement prises par des tiers sur la base d&apos;un CV analys&eacute; ou optimis&eacute; via CVpass.</li>
+            <li>La responsabilit&eacute; totale de VertexLab est limit&eacute;e au montant effectivement pay&eacute; par l&apos;utilisateur au cours des 12 derniers mois.</li>
+            <li>VertexLab ne peut &ecirc;tre tenue responsable en cas de force majeure, de dysfonctionnement du r&eacute;seau Internet, ou de toute cause ind&eacute;pendante de sa volont&eacute;.</li>
           </ul>
         </section>
 
@@ -340,7 +340,7 @@ export default function ConditionsGeneralesPage() {
             11. Modification des conditions
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.78, color: "var(--text-body)", margin: 0 }}>
-            VertexLab SASU se r&eacute;serve le droit de modifier les pr&eacute;sentes CGU/CGV. En cas de modification substantielle, les utilisateurs seront notifi&eacute;s par email au moins 30 jours avant l&apos;entr&eacute;e en vigueur des nouvelles conditions. La poursuite de l&apos;utilisation du service apr&egrave;s cette date vaut acceptation des conditions modifi&eacute;es.
+            VertexLab se r&eacute;serve le droit de modifier les pr&eacute;sentes CGU/CGV. En cas de modification substantielle, les utilisateurs seront notifi&eacute;s par email au moins 30 jours avant l&apos;entr&eacute;e en vigueur des nouvelles conditions. La poursuite de l&apos;utilisation du service apr&egrave;s cette date vaut acceptation des conditions modifi&eacute;es.
           </p>
         </section>
 

@@ -139,7 +139,7 @@ export default function PolitiqueConfidentialitePage() {
               fontSize: 15,
             }}
           >
-            <strong>VertexLab SASU</strong>
+            <strong>VertexLab</strong>
             <br />
             Représentée par Giovanni Russo, Président
             <br />
@@ -462,7 +462,7 @@ export default function PolitiqueConfidentialitePage() {
         <section id="modifications" style={{ marginBottom: 0 }}>
           <h2 style={sectionTitle}>10. Modifications de la politique</h2>
           <p style={paragraph}>
-            VertexLab SASU se réserve le droit de modifier la présente politique
+            VertexLab se réserve le droit de modifier la présente politique
             de confidentialité. En cas de modification substantielle, les
             utilisateurs seront informés par email ou par une notification sur le
             site. La date de dernière mise à jour est indiquée en haut de cette
