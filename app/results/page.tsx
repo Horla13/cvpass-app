@@ -14,6 +14,7 @@ import { PromoModal, usePromoModal } from "@/components/PromoModal";
 import InsufficientCreditsModal from "@/components/InsufficientCreditsModal";
 import { ResultsOnboarding } from "@/components/ResultsOnboarding";
 import { BlurredSuggestion } from "@/components/BlurredSuggestion";
+import { ShareScorePopup } from "@/components/ShareScorePopup";
 import { usePromoTimer } from "@/components/PromoTimer";
 import { cn } from "@/lib/utils";
 import { TemplateSelector } from "@/components/TemplateSelector";
@@ -1313,6 +1314,8 @@ export default function ResultsPage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
+  const [showSharePopup, setShowSharePopup] = useState(false);
+  const [shareShown, setShareShown] = useState(false);
   const promoTimer = usePromoTimer(userCreatedAt);
   const promo = usePromoModal();
 
@@ -1391,6 +1394,14 @@ export default function ResultsPage() {
       quickWins: lines.slice(mid),
     };
   }, [resume]);
+
+  // Show share popup when all suggestions are treated and score improved
+  useEffect(() => {
+    if (!shareShown && gaps.length > 0 && pendingGaps.length === 0 && scoreActuel > score_avant && acceptedGaps.length > 0) {
+      const t = setTimeout(() => { setShowSharePopup(true); setShareShown(true); }, 1500);
+      return () => clearTimeout(t);
+    }
+  }, [pendingGaps.length, gaps.length, scoreActuel, score_avant, acceptedGaps.length, shareShown]);
 
   const handleAcceptGap = (id: string) => {
     acceptGap(id);
@@ -2029,6 +2040,14 @@ export default function ResultsPage() {
             nbAccepted={acceptedGaps.length}
             promoActive={promoTimer.isActive && !isPremiumUser}
             promoFormatted={promoTimer.formatted}
+          />
+        )}
+
+        {showSharePopup && scoreActuel > score_avant && (
+          <ShareScorePopup
+            scoreAvant={score_avant}
+            scoreApres={scoreActuel}
+            onClose={() => setShowSharePopup(false)}
           />
         )}
 
