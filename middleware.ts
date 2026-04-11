@@ -22,6 +22,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/affiliate/check-ref",
   "/embed(.*)",
   "/challenge",
+  "/a-propos",
+  "/comparaison",
   "/affiliate/join",
   "/sitemap.xml",
   "/robots.txt",

@@ -37,6 +37,8 @@ export function Footer() {
               <Link href="/tracker" className="block text-[14px] hover:text-white transition-colors py-0.5">Tracker candidatures</Link>
               <Link href="/pricing" className="block text-[14px] hover:text-white transition-colors py-0.5">Tarifs</Link>
               <Link href="/blog" className="block text-[14px] hover:text-white transition-colors py-0.5">Blog</Link>
+              <Link href="/comparaison" className="block text-[14px] hover:text-white transition-colors py-0.5">CVpass vs concurrents</Link>
+              <Link href="/a-propos" className="block text-[14px] hover:text-white transition-colors py-0.5">A propos</Link>
             </div>
           </div>
 
