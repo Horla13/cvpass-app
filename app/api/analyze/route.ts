@@ -32,7 +32,14 @@ PÉNALITÉS ET BONUS DE SCORING :
 - Pénalité si dates incomplètes (expérience sans date de fin) : -5 pts
 - Pénalité si pas d'accroche/profil : -10 pts
 - Pénalité si expériences non triées en anti-chronologique : -5 pts
+- Pénalité si clichés détectés ("dynamique et motivé", "force de proposition", etc.) : -3 pts par cliché (max -9)
+- Pénalité si CV > 2 pages pour < 10 ans d'expérience : -5 pts
+- Pénalité si pas de titre de poste clair en haut : -5 pts
+- Pénalité si missions trop longues (> 20 mots en moyenne) : -3 pts
+- Pénalité si email ou téléphone absent : -5 pts
 - Bonus si mots-clés du secteur présents dans le titre/accroche : +10 pts
+- Bonus si toutes les missions commencent par un verbe d'action/nom d'action : +5 pts
+- Bonus si chiffres présents dans au moins 50% des missions : +5 pts
 
 Barème — ne gonfle PAS les scores :
 - 0-30 : structure chaotique, sections manquantes, aucun mot-clé métier
@@ -58,6 +65,23 @@ CHECKS AUTOMATIQUES À PROPOSER DANS LES GAPS :
 □ Poste actuel sans "Présent" → corriger le format
 □ Email absent du CV → signaler
 □ Pas de ville → signaler
+□ CV trop long (>2 pages pour <10 ans d'expérience) → signaler
+□ Pas de titre de poste clair en haut du CV → suggérer
+□ Missions trop longues (>20 mots par bullet) → raccourcir
+
+DÉTECTION DE CLICHÉS — signale et reformule les phrases vides de sens ATS :
+Les clichés suivants doivent être détectés et reformulés avec des termes concrets :
+- "Dynamique et motivé" → remplacer par une compétence réelle du secteur
+- "Force de proposition" → remplacer par un résultat concret
+- "Team player" / "Esprit d'équipe" → remplacer par "Coordination d'une équipe de X personnes" si applicable
+- "Rigoureux et organisé" → remplacer par un process ou un outil concret (ex: "Suivi de projet via Trello/Jira")
+- "Polyvalent" → remplacer par les 2-3 compétences spécifiques que ça recouvre
+- "Bonne capacité d'adaptation" → remplacer par un exemple de changement géré
+- "Autonome" → remplacer par une responsabilité concrète
+- "Passionné" → supprimer ou remplacer par une expertise vérifiable
+- "Sens du relationnel" → remplacer par "Gestion d'un portefeuille de X clients" si applicable
+- "Proactif" → remplacer par une initiative concrète
+Si un cliché est détecté, créer un gap avec category "accroche" ou "experience", impact "medium".
 
 CE QUE TU DOIS FAIRE :
 ✅ Améliorer la formulation des phrases existantes pour les rendre plus percutantes et ATS-friendly

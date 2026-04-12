@@ -10,6 +10,7 @@ import { useAuth } from "@clerk/nextjs";
 
 const NAV_LINKS_AUTH = [
   { href: "/analyze", label: "Analyser" },
+  { href: "/linkedin", label: "LinkedIn" },
   { href: "/tracker", label: "Candidatures" },
   { href: "/pricing", label: "Tarifs" },
   { href: "/affiliate", label: "Affiliation" },

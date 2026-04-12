@@ -34,6 +34,7 @@ export function Footer() {
             <h4 className="text-white text-[13px] font-bold uppercase tracking-wider mb-4">Produit</h4>
             <div className="space-y-2.5">
               <Link href="/analyze" className="block text-[14px] hover:text-white transition-colors py-0.5">Analyser un CV</Link>
+              <Link href="/linkedin" className="block text-[14px] hover:text-white transition-colors py-0.5">Optimiseur LinkedIn</Link>
               <Link href="/tracker" className="block text-[14px] hover:text-white transition-colors py-0.5">Tracker candidatures</Link>
               <Link href="/pricing" className="block text-[14px] hover:text-white transition-colors py-0.5">Tarifs</Link>
               <Link href="/blog" className="block text-[14px] hover:text-white transition-colors py-0.5">Blog</Link>
