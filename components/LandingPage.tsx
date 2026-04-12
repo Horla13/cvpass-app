@@ -816,51 +816,86 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 fade-up">
-            {/* Templates */}
-            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></svg>
+          <div className="grid md:grid-cols-3 gap-6 fade-up">
+            {/* LinkedIn Optimizer — NOUVEAU, mis en avant */}
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-blue-200 hover:border-blue-300 hover:shadow-md transition-all relative">
+              <span className="absolute -top-2.5 right-6 bg-blue-500 text-white text-[10px] font-bold px-3 py-0.5 rounded-full">Nouveau</span>
+              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077b5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </div>
-              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">8 templates ATS</h3>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Optimiseur LinkedIn</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Des templates optimisés pour passer les filtres automatiques. Sobre, moderne, technique, créatif — choisissez le style qui vous ressemble.
+                L&apos;IA analyse votre profil LinkedIn et propose un titre, un r&eacute;sum&eacute; et des comp&eacute;tences optimis&eacute;s pour les recruteurs. Copiez-collez, c&apos;est fait.
               </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Classic</span>
-                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Modern</span>
-                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Executive</span>
-                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">Tech</span>
-                <span className="text-[11px] bg-white border border-gray-200 rounded-full px-2.5 py-0.5 text-gray-500">+4</span>
+              <Link href="/linkedin" className="text-[13px] text-blue-600 font-semibold hover:text-blue-700">Optimiser mon LinkedIn &rarr;</Link>
+            </div>
+
+            {/* Scan 20+ parametres */}
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /><path d="M9 14l2 2 4-4" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">20+ v&eacute;rifications ATS</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Mots-cl&eacute;s, format, dates, longueur, clich&eacute;s, verbes d&apos;action, contact, structure des sections. Chaque d&eacute;tail compte pour passer les filtres.
+              </p>
+              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">D&eacute;tection de clich&eacute;s incluse</span>
+            </div>
+
+            {/* Templates */}
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">7 templates CV</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Choisissez un template et t&eacute;l&eacute;chargez votre CV optimis&eacute; en PDF. Modern, Classic, Executive, Tech, Creative, Compact, Timeline.
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {["Modern", "Classic", "Executive", "Tech", "+3"].map((s) => (
+                  <span key={s} className="text-[10px] bg-white border border-gray-200 rounded-full px-2 py-0.5 text-gray-500">{s}</span>
+                ))}
               </div>
             </div>
 
             {/* Tracker */}
-            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-5">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
               </div>
-              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Tracker de candidatures</h3>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Tracker candidatures</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Suivez toutes vos candidatures sur un tableau Kanban. Plus besoin de fichier Excel — voyez en un coup d&apos;oeil où en est chaque candidature.
+                Tableau Kanban pour suivre vos candidatures. Fini le fichier Excel, voyez o&ugrave; en est chaque candidature en un coup d&apos;oeil.
               </p>
-              <div className="flex items-center gap-2">
-                {["Souhaitée", "Postulée", "Entretien", "Offre"].map((s) => (
+              <div className="flex items-center gap-1.5">
+                {["Souhait\u00E9e", "Postul\u00E9e", "Entretien", "Offre"].map((s) => (
                   <span key={s} className="text-[10px] bg-white border border-gray-200 rounded-full px-2 py-0.5 text-gray-500">{s}</span>
                 ))}
               </div>
             </div>
 
             {/* Lettre de motivation */}
-            <div className="bg-[#fafafa] rounded-2xl p-8 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
-              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-5">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e11d48" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M22 7l-10 7L2 7" /></svg>
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Lettre de motivation IA</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Générez une lettre de motivation personnalisée à partir de votre CV et de l&apos;offre d&apos;emploi. Adaptée au poste, prête à envoyer.
+                G&eacute;n&eacute;rez une lettre personnalis&eacute;e &agrave; partir de votre CV et de l&apos;offre. Adapt&eacute;e au poste, pr&ecirc;te &agrave; envoyer.
               </p>
-              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Personnalisée par l&apos;IA</span>
+              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Personnalis&eacute;e par l&apos;IA</span>
+            </div>
+
+            {/* Match offre */}
+            <div className="bg-[#fafafa] rounded-2xl p-7 border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all">
+              <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mb-5">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2"><path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" /></svg>
+              </div>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Match CV + offre</h3>
+              <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
+                Collez une offre d&apos;emploi, l&apos;IA compare avec votre CV. Mots-cl&eacute;s manquants, comp&eacute;tences &agrave; ajouter, taux de correspondance.
+              </p>
+              <span className="text-[11px] bg-teal-50 text-teal-600 border border-teal-200 rounded-full px-2.5 py-0.5 font-medium">Analyse contextuelle</span>
             </div>
           </div>
 
