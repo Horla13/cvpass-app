@@ -4,5 +4,11 @@
     "app/api/**/*.ts": {
       "maxDuration": 30
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/retention-emails",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }
