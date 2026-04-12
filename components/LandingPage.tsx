@@ -114,7 +114,7 @@ export function LandingPage() {
 
           {/* H1 */}
           <h1 className="fade-up font-display text-[32px] md:text-[42px] lg:text-[52px] font-extrabold tracking-[-2.5px] leading-[1.06] mb-6">
-            Scanner CV ATS gratuit —{" "}
+            Scanner CV ATS gratuit :{" "}
             <span className="text-brand-green">Optimisez votre CV</span>
             <br />
             pour les recruteurs avec l&apos;IA
@@ -122,7 +122,7 @@ export function LandingPage() {
 
           {/* Subtitle */}
           <p className="fade-up text-brand-gray text-lg leading-relaxed max-w-[580px] mx-auto mb-10">
-            Uploadez votre CV, obtenez un score ATS instant, des suggestions IA précises et un CV optimisé — prêt à télécharger.
+            Uploadez votre CV, obtenez un score ATS instant, des suggestions IA précises et un CV optimisé, prêt à télécharger.
           </p>
 
           {/* Actions */}
@@ -277,7 +277,7 @@ export function LandingPage() {
                 n: "1",
                 label: "ÉTAPE 1",
                 title: "Importez votre CV et l'offre d'emploi",
-                desc: "Uploadez votre CV en PDF ou Word — même s'il a été créé avec Canva. Puis collez l'offre d'emploi ciblée. Notre IA a besoin des deux pour comparer précisément votre profil aux attentes du recruteur.",
+                desc: "Uploadez votre CV en PDF ou Word, même s'il a été créé avec Canva. Puis collez l'offre d'emploi ciblée. Notre IA a besoin des deux pour comparer précisément votre profil aux attentes du recruteur.",
                 details: [
                   "Formats acceptés : PDF, DOCX",
                   "Détection automatique des CV Canva (image)",
@@ -347,7 +347,7 @@ export function LandingPage() {
                   "Suggestions triées par impact ATS décroissant",
                   "Badge d'impact : fort, moyen, faible",
                   "Explication du mot-clé ATS ciblé",
-                  "Aucune invention — fidélité au parcours réel",
+                  "Aucune invention, fidélité au parcours réel",
                 ],
                 mockup: (
                   <div className="bg-white rounded-[14px] border border-[#e5e7eb] shadow-lg overflow-hidden">
@@ -356,7 +356,7 @@ export function LandingPage() {
                     </div>
                     <div className="p-5 space-y-3">
                       {[
-                        { label: "Impact fort", color: "red", orig: "Géré les chantiers", sugg: "Gestion des chantiers VRD — coordination équipe et sous-traitants" },
+                        { label: "Impact fort", color: "red", orig: "Géré les chantiers", sugg: "Gestion des chantiers VRD, coordination équipe et sous-traitants" },
                         { label: "Impact moyen", color: "amber", orig: "Responsable sécurité", sugg: "Suivi et application des normes PPSPS et port des EPI" },
                       ].map((s, i) => (
                         <div key={i} className="border border-[#e5e7eb] rounded-[10px] p-3 space-y-2">
@@ -380,7 +380,7 @@ export function LandingPage() {
                 n: "4",
                 label: "ÉTAPE 4",
                 title: "Téléchargez votre CV optimisé",
-                desc: "Votre CV est régénéré en PDF propre, sans colonnes ni icônes — conçu spécifiquement pour être lu par les logiciels ATS des recruteurs. Votre score passe en vert.",
+                desc: "Votre CV est régénéré en PDF propre, sans colonnes ni icônes. Conçu pour être lu par les logiciels ATS des recruteurs. Votre score passe en vert.",
                 details: [
                   "PDF sobre et ATS-compatible",
                   "Toutes les suggestions acceptées intégrées",
@@ -395,7 +395,7 @@ export function LandingPage() {
                     <div className="p-6 text-center space-y-4">
                       <ScoreGauge score={87} size={90} strokeWidth={6} animate={false} />
                       <div>
-                        <p className="font-display text-[15px] font-bold text-brand-black">CV optimisé — prêt !</p>
+                        <p className="font-display text-[15px] font-bold text-brand-black">CV optimisé, prêt !</p>
                         <p className="text-[11px] text-brand-gray mt-1">6/8 suggestions acceptées · Score : 42 → 87</p>
                       </div>
                       <div className="flex gap-2 justify-center">
@@ -606,7 +606,7 @@ export function LandingPage() {
                   },
                   {
                     feature: "Expérience utilisateur",
-                    cvpass: "100% focus sur votre CV — zéro distraction",
+                    cvpass: "100% focus sur votre CV, zéro distraction",
                     jobscan: "Distraction : job trackers, audits LinkedIn, upsells",
                     enhancv: "Pousse les templates visuels et options payantes",
                     myperfect: "Upselling agressif, paywalls multiples",
@@ -761,8 +761,8 @@ export function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {[
-              { name: "Marie L.", role: "Chef de projet IT", initials: "ML", color: "from-pink-400 to-rose-500", result: "Score : 41 → 89", text: "Mon score ATS est passé de 41 à 89 en 10 minutes. L'outil ne dit pas juste \"verbe trop faible\" — il réécrit la phrase entière avec les mots-clés de l'offre. J'ai eu 3 réponses en une semaine." },
-              { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "Score : 38 → 92 · 3 entretiens", text: "Score passé de 38 à 92. Avant, zéro réponse en 2 mois. Après CVpass, 3 entretiens en 1 semaine. Les autres outils donnent une liste de problèmes sans solution — ici l'IA corrige elle-même." },
+              { name: "Marie L.", role: "Chef de projet IT", initials: "ML", color: "from-pink-400 to-rose-500", result: "Score : 41 → 89", text: "Mon score ATS est passé de 41 à 89 en 10 minutes. L'outil ne dit pas juste \"verbe trop faible\", il réécrit la phrase entière avec les mots-clés de l'offre. J'ai eu 3 réponses en une semaine." },
+              { name: "Thomas K.", role: "Développeur Full-Stack", initials: "TK", color: "from-blue-400 to-indigo-500", result: "Score : 38 → 92 · 3 entretiens", text: "Score passé de 38 à 92. Avant, zéro réponse en 2 mois. Après CVpass, 3 entretiens en 1 semaine. Les autres outils donnent une liste de problèmes sans solution. Ici l'IA corrige elle-même." },
               { name: "Sophie C.", role: "Responsable Marketing Digital", initials: "SC", color: "from-amber-400 to-orange-500", result: "Score : 45 → 91 · Poste décroché", text: "De 45 à 91 en quelques clics. Le fait que ça intègre les mots-clés de l'offre dans la réécriture c'est génial. Mon CV collait enfin exactement au poste. J'ai décroché le job en 2 semaines." },
             ].map((t, i) => (
               <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-7 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
@@ -825,7 +825,7 @@ export function LandingPage() {
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Optimiseur LinkedIn</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                L&apos;IA analyse votre profil LinkedIn et propose un titre, un r&eacute;sum&eacute; et des comp&eacute;tences optimis&eacute;s pour les recruteurs. Copiez-collez, c&apos;est fait.
+                L&apos;IA analyse votre profil LinkedIn et propose un titre, un résumé et des compétences optimisés pour les recruteurs. Copiez-collez, c&apos;est fait.
               </p>
               <Link href="/linkedin" className="text-[13px] text-blue-600 font-semibold hover:text-blue-700">Optimiser mon LinkedIn &rarr;</Link>
             </div>
@@ -835,11 +835,11 @@ export function LandingPage() {
               <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" /><rect x="9" y="3" width="6" height="4" rx="1" /><path d="M9 14l2 2 4-4" /></svg>
               </div>
-              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">20+ v&eacute;rifications ATS</h3>
+              <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">20+ vérifications ATS</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Mots-cl&eacute;s, format, dates, longueur, clich&eacute;s, verbes d&apos;action, contact, structure des sections. Chaque d&eacute;tail compte pour passer les filtres.
+                Mots-clés, format, dates, longueur, clichés, verbes d&apos;action, contact, structure des sections. Chaque détail compte pour passer les filtres.
               </p>
-              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">D&eacute;tection de clich&eacute;s incluse</span>
+              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Détection de clichés incluse</span>
             </div>
 
             {/* Templates */}
@@ -849,7 +849,7 @@ export function LandingPage() {
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">7 templates CV</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Choisissez un template et t&eacute;l&eacute;chargez votre CV optimis&eacute; en PDF. Modern, Classic, Executive, Tech, Creative, Compact, Timeline.
+                Choisissez un template et téléchargez votre CV optimisé en PDF. Modern, Classic, Executive, Tech, Creative, Compact, Timeline.
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {["Modern", "Classic", "Executive", "Tech", "+3"].map((s) => (
@@ -865,10 +865,10 @@ export function LandingPage() {
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Tracker candidatures</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Tableau Kanban pour suivre vos candidatures. Fini le fichier Excel, voyez o&ugrave; en est chaque candidature en un coup d&apos;oeil.
+                Tableau Kanban pour suivre vos candidatures. Fini le fichier Excel, voyez où en est chaque candidature en un coup d&apos;oeil.
               </p>
               <div className="flex items-center gap-1.5">
-                {["Souhait\u00E9e", "Postul\u00E9e", "Entretien", "Offre"].map((s) => (
+                {["Souhaitée", "Postulée", "Entretien", "Offre"].map((s) => (
                   <span key={s} className="text-[10px] bg-white border border-gray-200 rounded-full px-2 py-0.5 text-gray-500">{s}</span>
                 ))}
               </div>
@@ -881,9 +881,9 @@ export function LandingPage() {
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Lettre de motivation IA</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                G&eacute;n&eacute;rez une lettre personnalis&eacute;e &agrave; partir de votre CV et de l&apos;offre. Adapt&eacute;e au poste, pr&ecirc;te &agrave; envoyer.
+                Générez une lettre personnalisée à partir de votre CV et de l&apos;offre. Adaptée au poste, prête à envoyer.
               </p>
-              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Personnalis&eacute;e par l&apos;IA</span>
+              <span className="text-[11px] bg-green-50 text-green-600 border border-green-200 rounded-full px-2.5 py-0.5 font-medium">Personnalisée par l&apos;IA</span>
             </div>
 
             {/* Match offre */}
@@ -893,7 +893,7 @@ export function LandingPage() {
               </div>
               <h3 className="font-display text-[18px] font-bold text-gray-900 mb-2">Match CV + offre</h3>
               <p className="text-[14px] text-gray-500 leading-relaxed mb-4">
-                Collez une offre d&apos;emploi, l&apos;IA compare avec votre CV. Mots-cl&eacute;s manquants, comp&eacute;tences &agrave; ajouter, taux de correspondance.
+                Collez une offre d&apos;emploi, l&apos;IA compare avec votre CV. Mots-clés manquants, compétences à ajouter, taux de correspondance.
               </p>
               <span className="text-[11px] bg-teal-50 text-teal-600 border border-teal-200 rounded-full px-2.5 py-0.5 font-medium">Analyse contextuelle</span>
             </div>
@@ -940,7 +940,7 @@ export function LandingPage() {
                 },
                 {
                   question: "Quelle est la différence avec les autres outils ?",
-                  answer: "Les autres scanners ATS vous donnent un score et une liste de problèmes. CVpass va plus loin : pour chaque point faible, l'IA propose une réécriture complète intégrant les mots-clés de votre offre. Vous acceptez ou ignorez — c'est tout.",
+                  answer: "Les autres scanners ATS vous donnent un score et une liste de problèmes. CVpass va plus loin : pour chaque point faible, l'IA propose une réécriture complète intégrant les mots-clés de votre offre. Vous acceptez ou ignorez, c'est tout.",
                 },
                 {
                   question: "Combien de temps prend l'analyse ?",
