@@ -2,145 +2,157 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "A propos de CVpass — Notre mission | CVpass",
-  description: "Decouvrez qui est derriere CVpass, pourquoi nous avons cree cet outil et notre mission : que le meilleur candidat obtienne l entretien.",
+  title: "Qui est derriere CVpass ? | CVpass",
+  description: "CVpass est un scanner CV ATS francais cree par Giovanni Russo. Pourquoi cet outil existe et comment il fonctionne.",
   alternates: { canonical: "https://cvpass.fr/a-propos" },
   openGraph: {
-    title: "A propos de CVpass",
-    description: "Notre mission : que le meilleur candidat obtienne l entretien, pas le mieux formate.",
+    title: "Qui est derriere CVpass ?",
+    description: "Un outil cree par un fondateur francais pour que les bons candidats ne soient plus filtres par des robots.",
     url: "https://cvpass.fr/a-propos",
   },
   twitter: {
     card: "summary_large_image",
-    title: "A propos de CVpass",
-    description: "Notre mission : que le meilleur candidat obtienne l entretien, pas le mieux formate.",
+    title: "Qui est derriere CVpass ?",
+    description: "Un outil cree par un fondateur francais pour que les bons candidats ne soient plus filtres par des robots.",
   },
 };
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="bg-gray-900 text-white py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="font-display text-[36px] md:text-[48px] font-extrabold tracking-[-2px] leading-[1.08] mb-6">
-            Le meilleur candidat devrait obtenir<br className="hidden md:block" /> <span className="text-green-400">l&apos;entretien</span>
+      {/* Header */}
+      <section className="pt-20 pb-10 px-4">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-green-600 text-[14px] font-semibold mb-4">A propos</p>
+          <h1 className="font-display text-[32px] md:text-[42px] font-extrabold tracking-[-1.5px] text-gray-900 leading-tight mb-6">
+            Pourquoi j&apos;ai cr&eacute;&eacute; CVpass
           </h1>
-          <p className="text-gray-400 text-[17px] max-w-xl mx-auto leading-relaxed">
-            Pas le mieux formate. C&apos;est pour ca que CVpass existe.
-          </p>
         </div>
       </section>
 
-      {/* Story */}
-      <section className="py-16 px-4">
+      {/* Story — voix perso Giovanni, pas de corporate speak */}
+      <section className="pb-16 px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold text-[20px]">
+          <div className="flex items-center gap-4 mb-10">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold text-[20px] shrink-0">
               GR
             </div>
             <div>
               <p className="font-bold text-gray-900 text-[16px]">Giovanni Russo</p>
-              <p className="text-[14px] text-gray-500">Fondateur de CVpass</p>
+              <p className="text-[14px] text-gray-500">Fondateur</p>
             </div>
           </div>
 
-          <div className="prose prose-gray max-w-none space-y-5 text-[16px] text-gray-600 leading-relaxed">
+          <div className="space-y-5 text-[16px] text-gray-600 leading-[1.7]">
             <p>
-              Tout a commence par un constat frustrant. Des gens competents, qualifies, avec de vraies experiences, qui envoyaient des dizaines de candidatures sans jamais recevoir de reponse.
+              Un truc m&apos;a toujours &eacute;nerv&eacute; dans la recherche d&apos;emploi : le silence. Vous postulez, vous attendez, rien ne se passe. Vous recommencez. Toujours rien.
             </p>
             <p>
-              Pas parce qu&apos;ils manquaient de competences. Mais parce que leur CV etait rejete par une machine avant meme qu&apos;un humain ne le lise.
+              Pendant longtemps, j&apos;ai cru que c&apos;&eacute;tait normal. Que les recruteurs &eacute;taient juste d&eacute;bord&eacute;s. Et c&apos;est vrai, ils le sont. Mais ce que je ne savais pas, c&apos;est qu&apos;un logiciel &eacute;liminait mon CV avant qu&apos;un humain ne le voie.
             </p>
             <p>
-              En France, la majorite des grandes entreprises utilisent un logiciel ATS pour trier les candidatures. Ces logiciels eliminent automatiquement les CV mal formates, sans les bons mots-cles ou avec une structure incompatible. Des milliers de profils excellents passent a la trappe chaque jour.
+              Ces logiciels s&apos;appellent des ATS. Quasiment toutes les entreprises de plus de 50 salari&eacute;s en utilisent un. Le principe est simple : le robot scanne votre CV, cherche des mots-cl&eacute;s, et si votre CV ne colle pas, il est class&eacute; en bas de la pile. Ou carr&eacute;ment supprim&eacute;.
             </p>
             <p>
-              Les outils qui existaient donnaient un score et une liste de problemes. Point. Vous vous retrouviez seul face a votre CV sans savoir comment corriger.
+              J&apos;ai cherch&eacute; des outils pour v&eacute;rifier si mon CV passait ces filtres. J&apos;en ai trouv&eacute;. Ils donnaient un score et une liste de probl&egrave;mes. Et apr&egrave;s ? Rien. D&eacute;brouillez-vous.
             </p>
-            <p className="font-semibold text-gray-900">
-              J&apos;ai voulu aller plus loin : un outil qui ne se contente pas de diagnostiquer, mais qui corrige.
+            <p className="text-gray-900 font-medium">
+              C&apos;est l&agrave; que j&apos;ai eu l&apos;id&eacute;e de CVpass. Un outil qui ne se contente pas de pointer les probl&egrave;mes, mais qui les corrige.
             </p>
             <p>
-              CVpass analyse votre CV, identifie chaque point faible et propose une reecriture IA integrant les mots-cles de l&apos;offre que vous visez. Vous acceptez ou vous ignorez. Le score remonte en temps reel. Vous telechargez un PDF propre, optimise, pret a postuler.
+              Concr&egrave;tement : vous uploadez votre CV, l&apos;IA identifie ce qui bloque et propose une reformulation pour chaque point faible. Vous cliquez Accepter si &ccedil;a vous va, Ignorer sinon. Le score remonte en temps r&eacute;el. Vous t&eacute;l&eacute;chargez le PDF corrig&eacute;.
+            </p>
+            <p>
+              Pas de magie. Pas de promesse de &quot;d&eacute;crocher un job en 24h&quot;. Juste un CV qui sera lu par un humain au lieu d&apos;&ecirc;tre filtr&eacute; par un robot.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Valeurs */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-display text-[28px] font-extrabold text-center mb-12 tracking-[-1px]">
-            Ce en quoi on croit
+      {/* Comment ca marche — concret, pas de bullshit */}
+      <section className="py-16 px-4 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="font-display text-[24px] font-extrabold text-gray-900 mb-8 tracking-[-0.5px]">
+            Ce que fait CVpass (et ce qu&apos;il ne fait pas)
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: "Transparence", desc: "Votre CV est traite en memoire vive et jamais stocke en base de donnees. On ne vend pas vos donnees. Point." },
-              { title: "Efficacite", desc: "30 secondes pour analyser un CV. Pas 30 minutes. Votre temps de recherche d emploi est precieux." },
-              { title: "Accessibilite", desc: "La premiere analyse est gratuite. Pas de carte bancaire demandee. Tout le monde merite un CV qui passe les filtres." },
-            ].map((v) => (
-              <div key={v.title} className="text-center">
-                <h3 className="font-bold text-gray-900 text-[18px] mb-2">{v.title}</h3>
-                <p className="text-[14px] text-gray-500 leading-relaxed">{v.desc}</p>
-              </div>
-            ))}
+          <div className="space-y-6 text-[15px] text-gray-600 leading-[1.7]">
+            <div className="flex gap-3">
+              <span className="text-green-500 text-[18px] mt-0.5 shrink-0">&#10003;</span>
+              <p>Analyse votre CV comme le ferait un logiciel ATS de recruteur. Score sur 100, mots-cl&eacute;s manquants, probl&egrave;mes de format.</p>
+            </div>
+            <div className="flex gap-3">
+              <span className="text-green-500 text-[18px] mt-0.5 shrink-0">&#10003;</span>
+              <p>Propose des corrections IA pour chaque point faible. Vous choisissez ce que vous gardez.</p>
+            </div>
+            <div className="flex gap-3">
+              <span className="text-green-500 text-[18px] mt-0.5 shrink-0">&#10003;</span>
+              <p>Compare votre CV avec une offre d&apos;emploi pr&eacute;cise pour adapter les mots-cl&eacute;s.</p>
+            </div>
+            <div className="flex gap-3">
+              <span className="text-green-500 text-[18px] mt-0.5 shrink-0">&#10003;</span>
+              <p>G&eacute;n&egrave;re un PDF propre, lisible par tous les ATS du march&eacute;.</p>
+            </div>
+            <div className="flex gap-3 mt-4">
+              <span className="text-red-400 text-[18px] mt-0.5 shrink-0">&#10007;</span>
+              <p>Ne stocke jamais votre CV. Il est trait&eacute; en m&eacute;moire et dispara&icirc;t &agrave; la fermeture de l&apos;onglet.</p>
+            </div>
+            <div className="flex gap-3">
+              <span className="text-red-400 text-[18px] mt-0.5 shrink-0">&#10007;</span>
+              <p>Ne garantit pas un emploi. Personne ne peut faire &ccedil;a. Mais &ccedil;a augmente vos chances d&apos;&ecirc;tre lu.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Chiffres */}
+      {/* Chiffres — sans titre pompeux */}
       <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-display text-[28px] font-extrabold text-center mb-12 tracking-[-1px]">
-            CVpass en chiffres
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { value: "+1 200", label: "CVs analyses" },
-              { value: "+30 pts", label: "Gain moyen de score" },
-              { value: "30s", label: "Pour optimiser" },
-              { value: "7", label: "Templates ATS" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="font-display font-extrabold text-[28px] text-green-600">{s.value}</div>
-                <div className="text-[13px] text-gray-500 mt-1">{s.label}</div>
-              </div>
-            ))}
+        <div className="max-w-2xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="font-display font-extrabold text-[28px] text-green-600">+1 200</div>
+              <div className="text-[13px] text-gray-500 mt-1">CVs analys&eacute;s</div>
+            </div>
+            <div>
+              <div className="font-display font-extrabold text-[28px] text-green-600">+30 pts</div>
+              <div className="text-[13px] text-gray-500 mt-1">de gain en moyenne</div>
+            </div>
+            <div>
+              <div className="font-display font-extrabold text-[28px] text-green-600">30s</div>
+              <div className="text-[13px] text-gray-500 mt-1">par analyse</div>
+            </div>
+            <div>
+              <div className="font-display font-extrabold text-[28px] text-green-600">0</div>
+              <div className="text-[13px] text-gray-500 mt-1">CV stock&eacute; en base</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Entreprise */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-display text-[28px] font-extrabold mb-6 tracking-[-1px]">L&apos;entreprise</h2>
-          <div className="text-[15px] text-gray-600 space-y-3">
-            <p><strong>VertexLab</strong></p>
-            <p>Societe francaise enregistree au RCS</p>
-            <p>RGPD compliant — donnees traitees en memoire, jamais stockees</p>
-            <p>Paiement securise par Stripe</p>
+      {/* Entreprise — factuel */}
+      <section className="py-16 px-4 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="font-display text-[24px] font-extrabold text-gray-900 mb-6 tracking-[-0.5px]">L&apos;entreprise</h2>
+          <div className="text-[15px] text-gray-600 space-y-2 leading-[1.7]">
+            <p>CVpass est &eacute;dit&eacute; par <strong className="text-gray-900">VertexLab</strong>, soci&eacute;t&eacute; fran&ccedil;aise (SASU) enregistr&eacute;e au RCS.</p>
+            <p>Si&egrave;ge en France. Donn&eacute;es trait&eacute;es en m&eacute;moire, jamais stock&eacute;es. Paiements s&eacute;curis&eacute;s par Stripe.</p>
+            <p>Contact : <a href="mailto:contact@cvpass.fr" className="text-green-600 hover:underline">contact@cvpass.fr</a></p>
           </div>
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <a href="https://www.instagram.com/cvpass.fr/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors">Instagram</a>
-            <span className="text-gray-300">|</span>
-            <a href="https://x.com/cvpassfr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors">X / Twitter</a>
-            <span className="text-gray-300">|</span>
-            <a href="https://www.tiktok.com/@cvpass4?lang=fr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors">TikTok</a>
-            <span className="text-gray-300">|</span>
-            <a href="mailto:contact@cvpass.fr" className="text-gray-400 hover:text-gray-600 transition-colors">Contact</a>
+          <div className="flex items-center gap-4 mt-6">
+            <a href="https://www.instagram.com/cvpass.fr/" target="_blank" rel="noopener noreferrer" className="text-[14px] text-gray-400 hover:text-gray-600 transition-colors">Instagram</a>
+            <a href="https://x.com/cvpassfr" target="_blank" rel="noopener noreferrer" className="text-[14px] text-gray-400 hover:text-gray-600 transition-colors">X</a>
+            <a href="https://www.tiktok.com/@cvpass4?lang=fr" target="_blank" rel="noopener noreferrer" className="text-[14px] text-gray-400 hover:text-gray-600 transition-colors">TikTok</a>
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="py-16 px-4 text-center">
-        <h2 className="font-display text-[24px] font-extrabold mb-4">Pret a optimiser votre CV ?</h2>
+        <p className="text-gray-500 text-[16px] mb-6">La premi&egrave;re analyse est gratuite. Pas de carte bancaire.</p>
         <Link
           href="/analyze"
           className="inline-flex items-center gap-2 bg-green-500 text-white px-8 py-4 min-h-[52px] rounded-xl text-[16px] font-bold hover:bg-green-600 transition-colors"
         >
-          Analyser mon CV gratuitement
+          Tester mon CV
           <svg width="16" height="16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </Link>
       </section>
