@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "CVpass vs Jobscan vs JobStep — Quel scanner CV ATS choisir ?",
-  description: "Comparatif honnete des scanners CV ATS en 2026. CVpass, Jobscan, JobStep : prix, fonctionnalites, langue. On vous dit tout.",
+  description: "Comparatif honnête des scanners CV ATS en 2026. CVpass, Jobscan, JobStep : prix, fonctionnalités, langue. On vous dit tout.",
   alternates: { canonical: "https://cvpass.fr/comparaison" },
   openGraph: {
     title: "CVpass vs Jobscan vs JobStep — Comparatif 2026",
-    description: "Quel scanner CV ATS choisir ? Comparatif des prix et fonctionnalites.",
+    description: "Quel scanner CV ATS choisir ? Comparatif des prix et fonctionnalités.",
     url: "https://cvpass.fr/comparaison",
   },
   twitter: {
@@ -47,7 +47,7 @@ export default function ComparaisonPage() {
             CVpass vs Jobscan vs JobStep
           </h1>
           <p className="text-gray-500 text-[16px] leading-relaxed max-w-xl">
-            On va pas se mentir : il existe d&apos;autres outils. Voici une comparaison honn&ecirc;te pour que vous puissiez choisir en connaissance de cause.
+            On va pas se mentir : il existe d&apos;autres outils. Voici une comparaison honnête pour que vous puissiez choisir en connaissance de cause.
           </p>
         </div>
       </section>
@@ -78,7 +78,7 @@ export default function ComparaisonPage() {
         </div>
       </section>
 
-      {/* Avis honnete */}
+      {/* Avis honnête */}
       <section className="py-16 px-4 bg-gray-50 border-t border-gray-100">
         <div className="max-w-2xl mx-auto">
           <h2 className="font-display text-[24px] font-extrabold text-gray-900 mb-8 tracking-[-0.5px]">
@@ -87,15 +87,15 @@ export default function ComparaisonPage() {
           <div className="space-y-6 text-[15px] text-gray-600 leading-[1.7]">
             <div>
               <h3 className="font-bold text-gray-900 mb-1">Jobscan</h3>
-              <p>Le plus connu des scanners ATS. Le matching CV + offre est bien fait. Mais tout est en anglais, le prix tourne autour de 20&euro;/mois, et il ne corrige rien. Il vous dit &quot;il manque 8 mots-cl&eacute;s&quot; et c&apos;est &agrave; vous de vous d&eacute;brouiller pour les int&eacute;grer. Si vous postulez en France, c&apos;est pas id&eacute;al.</p>
+              <p>Le plus connu des scanners ATS. Le matching CV + offre est bien fait. Mais tout est en anglais, le prix tourne autour de 20&euro;/mois, et il ne corrige rien. Il vous dit &quot;il manque 8 mots-clés&quot; et c&apos;est à vous de vous débrouiller pour les intégrer. Si vous postulez en France, c&apos;est pas idéal.</p>
             </div>
             <div>
               <h3 className="font-bold text-gray-900 mb-1">JobStep</h3>
-              <p>Un concurrent suisse avec une interface propre. Ils ont des templates et une lettre de motivation. Tarif : 19,99&euro;/mois. Honn&ecirc;tement, c&apos;est un bon produit. Ce qui nous diff&eacute;rencie : la r&eacute;&eacute;criture IA qui corrige directement le CV (eux donnent surtout un score), et on est deux fois moins cher.</p>
+              <p>Un concurrent suisse avec une interface propre. Ils ont des templates et une lettre de motivation. Tarif : 19,99&euro;/mois. Honnêtement, c&apos;est un bon produit. Ce qui nous différencie : la réécriture IA qui corrige directement le CV (eux donnent surtout un score), et on est deux fois moins cher.</p>
             </div>
             <div>
               <h3 className="font-bold text-gray-900 mb-1">CVpass</h3>
-              <p>On va pas pr&eacute;tendre &ecirc;tre objectifs, c&apos;est notre outil. Ce qu&apos;on fait diff&eacute;remment : l&apos;IA ne liste pas juste les probl&egrave;mes, elle propose une correction pour chacun. Vous cliquez Accepter, le score monte. En fran&ccedil;ais, &agrave; 8,90&euro;/mois, et votre CV n&apos;est jamais stock&eacute;.</p>
+              <p>On va pas prétendre être objectifs, c&apos;est notre outil. Ce qu&apos;on fait différemment : l&apos;IA ne liste pas juste les problèmes, elle propose une correction pour chacun. Vous cliquez Accepter, le score monte. En français, à 8,90&euro;/mois, et votre CV n&apos;est jamais stocké.</p>
             </div>
           </div>
         </div>
@@ -109,16 +109,16 @@ export default function ComparaisonPage() {
           </h2>
           <div className="space-y-4 text-[15px] text-gray-600 leading-[1.7]">
             <p>
-              Si vous postulez surtout &agrave; des postes internationaux en anglais, Jobscan peut &ecirc;tre un bon choix.
+              Si vous postulez surtout à des postes internationaux en anglais, Jobscan peut être un bon choix.
             </p>
             <p>
-              Si vous voulez un outil complet avec des templates et que le budget n&apos;est pas un probl&egrave;me, JobStep fait le travail.
+              Si vous voulez un outil complet avec des templates et que le budget n&apos;est pas un problème, JobStep fait le travail.
             </p>
             <p>
-              Si vous cherchez un outil en fran&ccedil;ais qui corrige concr&egrave;tement votre CV pour les recruteurs fran&ccedil;ais, &agrave; un prix correct, c&apos;est pour &ccedil;a qu&apos;on a cr&eacute;&eacute; CVpass.
+              Si vous cherchez un outil en français qui corrige concrètement votre CV pour les recruteurs français, à un prix correct, c&apos;est pour ça qu&apos;on a créé CVpass.
             </p>
             <p className="text-gray-400 text-[13px] mt-8">
-              Comparatif mis &agrave; jour en avril 2026. Les prix et fonctionnalit&eacute;s peuvent changer. Si vous trouvez une erreur, &eacute;crivez-nous &agrave; contact@cvpass.fr.
+              Comparatif mis à jour en avril 2026. Les prix et fonctionnalités peuvent changer. Si vous trouvez une erreur, écrivez-nous à contact@cvpass.fr.
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function ComparaisonPage() {
 
       {/* CTA */}
       <section className="py-16 px-4 bg-gray-50 border-t border-gray-100 text-center">
-        <p className="text-gray-500 text-[16px] mb-6">Testez par vous-m&ecirc;me. La premi&egrave;re analyse est gratuite.</p>
+        <p className="text-gray-500 text-[16px] mb-6">Testez par vous-même. La première analyse est gratuite.</p>
         <Link
           href="/analyze"
           className="inline-flex items-center gap-2 bg-green-500 text-white px-8 py-4 min-h-[52px] rounded-xl text-[16px] font-bold hover:bg-green-600 transition-colors"

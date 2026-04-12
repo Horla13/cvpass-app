@@ -45,13 +45,13 @@ export default function ChallengePage() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { step: "1", title: "Testez votre CV", desc: "Allez sur cvpass.fr, uploadez votre CV et decouvrez votre score ATS.", icon: "📄" },
-              { step: "2", title: "Filmez votre ecran", desc: "Enregistrez votre ecran pendant que le score apparait. Montrez votre reaction.", icon: "📱" },
+              { step: "1", title: "Testez votre CV", desc: "Allez sur cvpass.fr, uploadez votre CV et découvrez votre score ATS.", icon: "📄" },
+              { step: "2", title: "Filmez votre écran", desc: "Enregistrez votre écran pendant que le score apparait. Montrez votre reaction.", icon: "📱" },
               { step: "3", title: "Postez avec #MonScoreATS", desc: "Publiez sur TikTok ou Instagram avec le hashtag #MonScoreATS.", icon: "🎬" },
             ].map((item) => (
               <div key={item.step} className="text-center p-6 rounded-2xl border border-gray-800 bg-gray-900/50">
                 <span className="text-[32px] mb-3 block">{item.icon}</span>
-                <div className="text-[11px] font-bold text-green-400 uppercase tracking-widest mb-2">Etape {item.step}</div>
+                <div className="text-[11px] font-bold text-green-400 uppercase tracking-widest mb-2">Étape {item.step}</div>
                 <h3 className="font-bold text-[18px] mb-2">{item.title}</h3>
                 <p className="text-[14px] text-gray-400 leading-relaxed">{item.desc}</p>
               </div>
@@ -87,7 +87,7 @@ export default function ChallengePage() {
       {/* CTA */}
       <section className="py-16 px-4 border-t border-gray-800 text-center">
         <h2 className="font-display text-[24px] font-extrabold mb-4">
-          Pret a relever le defi ?
+          Prêt a relever le defi ?
         </h2>
         <p className="text-gray-400 text-[16px] mb-8">
           Votre score ATS en 30 secondes. Gratuit. Sans inscription.

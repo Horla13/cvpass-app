@@ -75,7 +75,7 @@ export default function LinkedInPage() {
             Optimiseur LinkedIn
           </h1>
           <p className="text-gray-500 text-[15px] max-w-lg mx-auto">
-            Collez votre profil LinkedIn. L&apos;IA analyse et propose un titre, un resume et des competences optimises pour les recruteurs.
+            Collez votre profil LinkedIn. L&apos;IA analyse et propose un titre, un resume et des competences optimisés pour les recruteurs.
           </p>
         </div>
 
@@ -89,11 +89,11 @@ export default function LinkedInPage() {
               <textarea
                 value={profileText}
                 onChange={(e) => setProfileText(e.target.value)}
-                placeholder={"Collez ici le contenu de votre profil LinkedIn :\n- Titre (headline)\n- A propos (resume)\n- Experiences\n- Competences\n\nAstuce : allez sur votre profil LinkedIn, selectionnez tout (Ctrl+A) et collez ici."}
+                placeholder={"Collez ici le contenu de votre profil LinkedIn :\n- Titre (headline)\n- A propos (resume)\n- Experiences\n- Compétences\n\nAstuce : allez sur votre profil LinkedIn, sélectionnez tout (Ctrl+A) et collez ici."}
                 rows={10}
                 className="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
-              <p className="text-[12px] text-gray-400 mt-1">{profileText.length} caracteres</p>
+              <p className="text-[12px] text-gray-400 mt-1">{profileText.length} caractères</p>
             </div>
 
             <div>
@@ -103,7 +103,7 @@ export default function LinkedInPage() {
               <textarea
                 value={jobOffer}
                 onChange={(e) => setJobOffer(e.target.value)}
-                placeholder="Collez une offre pour adapter votre profil aux mots-cles du poste..."
+                placeholder="Collez une offre pour adapter votre profil aux mots-clés du poste..."
                 rows={4}
                 className="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
@@ -165,7 +165,7 @@ export default function LinkedInPage() {
             {/* Summary */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-gray-900 text-[16px]">Resume / A propos optimise</h3>
+                <h3 className="font-bold text-gray-900 text-[16px]">Résumé / A propos optimise</h3>
                 <button
                   onClick={() => copyToClipboard(result.summary, "summary")}
                   className="text-[13px] text-blue-500 hover:text-blue-700 font-medium min-h-[44px] px-3"
@@ -181,7 +181,7 @@ export default function LinkedInPage() {
             {/* Issues */}
             {result.issues.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                <h3 className="font-bold text-gray-900 text-[16px] mb-4">Problemes detectes</h3>
+                <h3 className="font-bold text-gray-900 text-[16px] mb-4">Problemes détectés</h3>
                 <div className="space-y-3">
                   {result.issues.map((issue, i) => (
                     <div key={i} className="flex gap-3">
@@ -198,7 +198,7 @@ export default function LinkedInPage() {
 
             {/* Experience tips */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 text-[16px] mb-4">Ameliorations experiences</h3>
+              <h3 className="font-bold text-gray-900 text-[16px] mb-4">Améliorations experiences</h3>
               <ul className="space-y-2">
                 {result.experience_tips.map((tip, i) => (
                   <li key={i} className="flex gap-2 text-[14px] text-gray-600">
@@ -212,7 +212,7 @@ export default function LinkedInPage() {
             {/* Skills */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-gray-900 text-[16px]">Competences recommandees</h3>
+                <h3 className="font-bold text-gray-900 text-[16px]">Compétences recommandées</h3>
                 <button
                   onClick={() => copyToClipboard(result.skills.join(", "), "skills")}
                   className="text-[13px] text-blue-500 hover:text-blue-700 font-medium min-h-[44px] px-3"
