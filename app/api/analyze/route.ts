@@ -354,11 +354,26 @@ export async function POST(req: NextRequest) {
 
   const { cvText, jobOffer, analysisType } = parsed.data;
 
+  // Anti-double-spend: si le même CV a été analysé dans les 10 dernières minutes, on ne reconsomme pas
+  
+  const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+
+  const { data: recentAnalysis } = await (await import("@/lib/supabase-admin")).getSupabaseAdmin()
+    .from("credit_transactions")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("reason", analysisType === "jd" ? "jd_analysis" : "ats_analysis")
+    .gte("created_at", tenMinAgo)
+    .limit(1)
+    .maybeSingle();
+
+  const isRepeatAnalysis = !!recentAnalysis;
+
   // Vérifier crédits ou accès illimité — consommer AVANT l'appel OpenAI (optimistic debit)
   const unlimited = await hasUnlimitedAccess(userId, email);
   const cost = analysisType === "jd" ? CREDIT_COSTS.jd_analysis : CREDIT_COSTS.ats_analysis;
   let creditConsumed = false;
-  if (!unlimited) {
+  if (!unlimited && !isRepeatAnalysis) {
     const result = await consumeCredit(userId, cost, analysisType === "jd" ? "jd_analysis" : "ats_analysis");
     if (!result.success) {
       return NextResponse.json(

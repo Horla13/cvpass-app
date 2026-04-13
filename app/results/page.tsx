@@ -1491,25 +1491,33 @@ export default function ResultsPage() {
     setPreviewUrl(null);
 
     try {
-      // If cvJson not ready yet, restructure on the fly
+      // If cvJson not ready yet, restructure on the fly (with 1 retry)
       let jsonData = cvJson;
       if (!jsonData && cvText) {
-        const restructRes = await fetch("/api/restructure-cv", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cvText }),
-        });
-        if (restructRes.ok) {
-          const d = await restructRes.json();
-          if (d.cv_json) {
-            jsonData = d.cv_json;
-            setCvJson(d.cv_json);
+        for (let attempt = 0; attempt < 2; attempt++) {
+          try {
+            const restructRes = await fetch("/api/restructure-cv", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ cvText }),
+            });
+            if (restructRes.ok) {
+              const d = await restructRes.json();
+              if (d.cv_json) {
+                jsonData = d.cv_json;
+                setCvJson(d.cv_json);
+                break;
+              }
+            }
+          } catch {
+            // Retry on network error
+            if (attempt === 0) await new Promise(r => setTimeout(r, 2000));
           }
         }
       }
 
       if (!jsonData) {
-        setDownloadError("Le CV n'a pas pu être structuré. Réessayez dans quelques secondes.");
+        setDownloadError("Le CV n'a pas pu être structuré. Cliquez sur Prévisualiser pour réessayer.");
         return;
       }
 
