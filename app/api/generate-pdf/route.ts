@@ -9,6 +9,8 @@ import { restructureWithGPT, renderCvPdf, CVData } from "@/lib/pdf-builder";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
+import { applyGapsToCvData } from "@/lib/apply-gaps";
+
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
@@ -103,6 +105,11 @@ export async function POST(req: NextRequest) {
           .eq("id", analysisId)
           .eq("user_id", userId);
       }
+    }
+
+    // Apply accepted gaps to cvData (server-side, more reliable than client-side)
+    if (acceptedGaps && acceptedGaps.length > 0) {
+      cvData = applyGapsToCvData(cvData, acceptedGaps);
     }
 
     // Pre-process photo to circular crop (PDF renderers don't support borderRadius)

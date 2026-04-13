@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Trop de prévisualisations. Réessayez dans 1h." }, { status: 429 });
   }
 
-  let body: { cvJson?: CVData; templateId?: string };
+  let body: { cvJson?: CVData; templateId?: string; acceptedGaps?: { texte_original?: string; texte_suggere?: string; category?: string }[] };
   try {
     body = await req.json();
   } catch {
@@ -29,8 +29,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Pre-process photo to circular crop
+    // Apply accepted gaps server-side
     let cvData = body.cvJson;
+    if (body.acceptedGaps && body.acceptedGaps.length > 0) {
+      const { applyGapsToCvData } = await import("@/lib/apply-gaps");
+      cvData = applyGapsToCvData(cvData, body.acceptedGaps);
+    }
+
+    // Pre-process photo to circular crop
     if (cvData.photo) {
       const { circularCrop } = await import("@/lib/photo-circle");
       cvData = { ...cvData, photo: await circularCrop(cvData.photo, 120) };

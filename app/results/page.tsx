@@ -1454,7 +1454,7 @@ export default function ResultsPage() {
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvJson, cvText, analysisId: savedId, templateId }),
+        body: JSON.stringify({ cvJson, cvText, analysisId: savedId, templateId, acceptedGaps: acceptedGaps.map(g => ({ texte_original: g.texte_original, texte_suggere: g.texte_suggere, category: g.category })) }),
       });
 
       if (res.status === 402) {
@@ -1524,7 +1524,7 @@ export default function ResultsPage() {
       const res = await fetch("/api/preview-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvJson: jsonData, templateId }),
+        body: JSON.stringify({ cvJson: jsonData, templateId, acceptedGaps: acceptedGaps.map(g => ({ texte_original: g.texte_original, texte_suggere: g.texte_suggere, category: g.category })) }),
       });
       if (!res.ok) {
         const contentType = res.headers.get("content-type") ?? "";
