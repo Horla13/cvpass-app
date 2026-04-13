@@ -161,8 +161,37 @@ export const useStore = create<CVPassStore>()(
       const suggested = gap.texte_suggere?.trim();
 
       if (orig && suggested) {
-        // CAS 1 — Remplacement : texte original non vide → str.replace()
-        const sub = (text: string) => (text.includes(orig) ? text.replace(orig, suggested) : text);
+        // CAS 1 — Remplacement : texte original non vide
+        // Normalise les espaces et compare de manière souple
+        const normalize = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
+        const origNorm = normalize(orig);
+
+        const sub = (text: string) => {
+          // Match exact
+          if (text.includes(orig)) return text.replace(orig, suggested);
+          // Match normalisé (espaces, casse)
+          if (normalize(text).includes(origNorm)) {
+            // Trouver la position dans le texte original via la version normalisée
+            const idx = normalize(text).indexOf(origNorm);
+            // Reconstruire en comptant les caractères réels
+            let realIdx = 0, normIdx = 0;
+            const textChars = text.split("");
+            while (normIdx < idx && realIdx < textChars.length) {
+              if (!/\s/.test(textChars[realIdx]) || (normIdx > 0 && !/\s/.test(normalize(text)[normIdx - 1]))) normIdx++;
+              realIdx++;
+            }
+            // Fallback simple : si la mission ENTIÈRE est similaire, remplacer tout
+            if (normalize(text) === origNorm) return suggested;
+            return text.replace(text.substring(realIdx, realIdx + orig.length), suggested);
+          }
+          // Dernier recours : si >70% du texte original est contenu, remplacer toute la string
+          const origWords = origNorm.split(" ");
+          const textNorm = normalize(text);
+          const matchCount = origWords.filter(w => w.length > 3 && textNorm.includes(w)).length;
+          if (origWords.length > 0 && matchCount / origWords.length > 0.7) return suggested;
+          return text;
+        };
+
         cvJson = {
           ...cvJson,
           profil: cvJson.profil ? sub(cvJson.profil) : cvJson.profil,
