@@ -163,7 +163,7 @@ export const useStore = create<CVPassStore>()(
       if (orig && suggested) {
         // CAS 1 — Remplacement : texte original non vide
         // Normalise les espaces et compare de manière souple
-        const normalize = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
+        const normalize = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
         const origNorm = normalize(orig);
 
         const sub = (text: string) => {
@@ -184,11 +184,11 @@ export const useStore = create<CVPassStore>()(
             if (normalize(text) === origNorm) return suggested;
             return text.replace(text.substring(realIdx, realIdx + orig.length), suggested);
           }
-          // Dernier recours : si >70% du texte original est contenu, remplacer toute la string
-          const origWords = origNorm.split(" ");
+          // Dernier recours : si >50% des mots significatifs matchent, remplacer
+          const origWords = origNorm.split(" ").filter(w => w.length > 2);
           const textNorm = normalize(text);
-          const matchCount = origWords.filter(w => w.length > 3 && textNorm.includes(w)).length;
-          if (origWords.length > 0 && matchCount / origWords.length > 0.7) return suggested;
+          const matchCount = origWords.filter(w => textNorm.includes(w)).length;
+          if (origWords.length > 0 && matchCount / origWords.length > 0.5) return suggested;
           return text;
         };
 
