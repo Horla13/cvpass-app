@@ -1491,40 +1491,19 @@ export default function ResultsPage() {
     setPreviewUrl(null);
 
     try {
-      // If cvJson not ready yet, restructure on the fly (with 1 retry)
-      let jsonData = cvJson;
-      if (!jsonData && cvText) {
-        for (let attempt = 0; attempt < 2; attempt++) {
-          try {
-            const restructRes = await fetch("/api/restructure-cv", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ cvText }),
-            });
-            if (restructRes.ok) {
-              const d = await restructRes.json();
-              if (d.cv_json) {
-                jsonData = d.cv_json;
-                setCvJson(d.cv_json);
-                break;
-              }
-            }
-          } catch {
-            // Retry on network error
-            if (attempt === 0) await new Promise(r => setTimeout(r, 2000));
-          }
-        }
-      }
-
-      if (!jsonData) {
-        setDownloadError("Le CV n'a pas pu être structuré. Cliquez sur Prévisualiser pour réessayer.");
-        return;
-      }
+      // Send cvJson if available, otherwise send cvText for server-side restructuring
+      const jsonData = cvJson;
+      const gapsPayload = acceptedGaps.map(g => ({ texte_original: g.texte_original, texte_suggere: g.texte_suggere, category: g.category }));
 
       const res = await fetch("/api/preview-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cvJson: jsonData, templateId, acceptedGaps: acceptedGaps.map(g => ({ texte_original: g.texte_original, texte_suggere: g.texte_suggere, category: g.category })) }),
+        body: JSON.stringify({
+          cvJson: jsonData ?? undefined,
+          cvText: !jsonData ? cvText : undefined,
+          templateId,
+          acceptedGaps: gapsPayload,
+        }),
       });
       if (!res.ok) {
         const contentType = res.headers.get("content-type") ?? "";

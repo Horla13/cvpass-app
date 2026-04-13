@@ -5,7 +5,7 @@ import { renderCvPdf } from "@/lib/pdf-templates";
 import type { CVData } from "@/lib/pdf-restructure";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 /** Preview PDF — free, always watermarked, rate-limited */
 export async function POST(req: NextRequest) {
@@ -17,20 +17,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Trop de prévisualisations. Réessayez dans 1h." }, { status: 429 });
   }
 
-  let body: { cvJson?: CVData; templateId?: string; acceptedGaps?: { texte_original?: string; texte_suggere?: string; category?: string }[] };
+  let body: { cvJson?: CVData; cvText?: string; templateId?: string; acceptedGaps?: { texte_original?: string; texte_suggere?: string; category?: string }[] };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Corps invalide" }, { status: 400 });
   }
 
-  if (!body.cvJson) {
-    return NextResponse.json({ error: "CV JSON requis" }, { status: 400 });
+  if (!body.cvJson && !body.cvText) {
+    return NextResponse.json({ error: "CV requis" }, { status: 400 });
   }
 
   try {
-    // Apply accepted gaps server-side
-    let cvData = body.cvJson;
+    // If no cvJson, restructure from cvText server-side
+    let cvData: CVData;
+    if (body.cvJson) {
+      cvData = body.cvJson;
+    } else {
+      const { restructureWithGPT } = await import("@/lib/pdf-restructure");
+      cvData = await restructureWithGPT(body.cvText!, []);
+    }
     if (body.acceptedGaps && body.acceptedGaps.length > 0) {
       const { applyGapsToCvData } = await import("@/lib/apply-gaps");
       cvData = applyGapsToCvData(cvData, body.acceptedGaps);
