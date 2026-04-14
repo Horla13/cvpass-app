@@ -267,7 +267,7 @@ export function LandingPage() {
           <div className="text-center mb-16 fade-up">
             <p className="text-[11px] font-bold uppercase tracking-[2px] text-brand-green mb-3">Comment ça marche</p>
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight mb-3">
-              Comment optimiser votre CV ATS en <span className="text-brand-green">3 étapes</span>
+              Comment optimiser votre CV ATS en <span className="text-brand-green">4 étapes</span>
             </h2>
             <p className="text-brand-gray text-base max-w-[500px] mx-auto">
               De l&apos;upload à l&apos;entretien, suivez le processus complet pour maximiser vos chances.
