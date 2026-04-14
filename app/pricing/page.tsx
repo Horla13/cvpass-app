@@ -9,6 +9,21 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { CTABanner } from "@/components/CTABanner";
 import { usePromoTimer, PromoTimerBadge } from "@/components/PromoTimer";
 
+function usePromo30Days() {
+  const expiresAt = new Date("2026-05-14T23:59:59Z").getTime();
+  const [remaining, setRemaining] = useState(expiresAt - Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setRemaining(expiresAt - Date.now()), 60_000);
+    return () => clearInterval(id);
+  }, [expiresAt]);
+
+  if (remaining <= 0) return null;
+  const days = Math.floor(remaining / 86_400_000);
+  const hours = Math.floor((remaining % 86_400_000) / 3_600_000);
+  return { days, hours };
+}
+
 export default function PricingPage() {
   const router = useRouter();
   const posthog = usePostHog();
@@ -19,6 +34,7 @@ export default function PricingPage() {
   const [createdAt, setCreatedAt] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("free");
   const promo = usePromoTimer(createdAt);
+  const promo30 = usePromo30Days();
 
   useEffect(() => {
     fetch("/api/credits")
@@ -182,10 +198,16 @@ export default function PricingPage() {
               </div>
             )}
             <p className="text-[13px] text-gray-400 mb-2">par mois &middot; sans engagement</p>
-            {promo.isActive && plan === "free" && promo.formatted && (
-              <p className="text-[12px] text-amber-600 font-semibold mb-4">&#9200; Offre 1er mois &agrave; -15% — expire dans {promo.formatted}</p>
+            {promo30 && (
+              <div className="flex items-center justify-center gap-1.5 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-[11px] sm:text-[12px] text-amber-700 font-medium mb-3">
+                <span>&#9200;</span>
+                <span>Code <strong>PRO15</strong> : -15% &middot; encore {promo30.days}j {promo30.hours}h</span>
+              </div>
             )}
-            {!(promo.isActive && plan === "free") && <div className="mb-4" />}
+            {promo.isActive && plan === "free" && promo.formatted && (
+              <p className="text-[12px] text-amber-600 font-semibold mb-4">&#9200; Offre 1er mois &agrave; -15%, expire dans {promo.formatted}</p>
+            )}
+            {!(promo.isActive && plan === "free") && !promo30 && <div className="mb-4" />}
 
             <ul className="space-y-3 mb-7">
               {["Analyses + PDF illimit\u00E9s", "Tous les templates premium", "Lettre de motivation IA", "Tracker candidatures", "R\u00E9siliable \u00E0 tout moment"].map((f) => (
