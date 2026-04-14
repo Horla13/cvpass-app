@@ -19,7 +19,7 @@ const FAQ_TABS = [
     label: "Conditions",
     items: [
       { q: "Quelle est la durée du cookie ?", a: "Le cookie de tracking dure 30 jours. Si un visiteur clique sur votre lien et achète dans les 30 jours, la commission vous est attribuée." },
-      { q: "Sur quels achats je gagne ?", a: "Vous gagnez 30% de commission sur le premier achat de chaque utilisateur parrainé (Pack Coup de pouce ou abonnement Pro). Votre filleul reçoit automatiquement -15% de réduction." },
+      { q: "Sur quels achats je gagne ?", a: "Vous gagnez 30% de commission sur chaque achat et chaque renouvellement de vos filleuls (Pack Coup de pouce ou abonnement Pro). Votre filleul reçoit automatiquement -15% de réduction sur son premier achat." },
       { q: "Puis-je parrainer quelqu'un que je connais ?", a: "Oui, mais vous ne pouvez pas vous parrainer vous-même. Les auto-parrainages sont automatiquement rejetés." },
     ],
   },
@@ -88,7 +88,7 @@ export default function AffiliateJoinPage() {
             Gagnez <span className="text-green-400">30%</span> de commission<br className="hidden md:block" /> en recommandant CVpass
           </h1>
           <p className="text-gray-400 text-[17px] max-w-xl mx-auto mb-10 leading-relaxed">
-            Vos filleuls reçoivent <strong className="text-white">-15% automatiquement</strong> sur leur premier achat. Vous gagnez 30% de commission. Tout le monde y gagne.
+            Vos filleuls reçoivent <strong className="text-white">-15% automatiquement</strong> sur leur premier achat. Vous gagnez 30% de commission sur chaque achat et chaque renouvellement. Tout le monde y gagne.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -152,7 +152,7 @@ export default function AffiliateJoinPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="1.5"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                 ),
                 title: "Gagnez des commissions",
-                desc: "30% de commission sur chaque premier achat. Votre filleul reçoit -15% automatiquement. Tout le monde y gagne.",
+                desc: "30% de commission sur chaque achat et renouvellement. Votre filleul reçoit -15% automatiquement. Tout le monde y gagne.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center p-8 rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-lg transition-all">

@@ -244,6 +244,44 @@ export async function POST(req: NextRequest) {
           reason: "renewal_pro",
           stripe_session_id: invoice.id,
         });
+
+        // Affiliate commission on renewal — find if this user was referred
+        const { data: existingConversion } = await admin
+          .from("affiliate_conversions")
+          .select("affiliate_id")
+          .eq("referred_user_id", renewedRow.user_id)
+          .limit(1)
+          .maybeSingle();
+
+        if (existingConversion?.affiliate_id) {
+          const { data: affiliate } = await admin
+            .from("affiliates")
+            .select("id, commission_rate, user_id, total_earned")
+            .eq("id", existingConversion.affiliate_id)
+            .eq("status", "active")
+            .maybeSingle();
+
+          if (affiliate) {
+            const paidAmount = (invoice.amount_paid ?? 0) / 100;
+            const originalAmount = 8.90;
+            const commission = +(originalAmount * (affiliate.commission_rate ?? 0.3)).toFixed(2);
+
+            await admin.from("affiliate_conversions").insert({
+              affiliate_id: affiliate.id,
+              referred_user_id: renewedRow.user_id,
+              stripe_payment_id: invoice.id,
+              amount: paidAmount,
+              commission,
+              status: "pending",
+            });
+
+            const currentEarned = Number(affiliate.total_earned ?? 0);
+            await admin
+              .from("affiliates")
+              .update({ total_earned: currentEarned + commission })
+              .eq("id", affiliate.id);
+          }
+        }
       }
 
       if (renewedRow?.email) {
