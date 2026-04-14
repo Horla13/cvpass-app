@@ -220,12 +220,6 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Product Hunt badge */}
-          <div className="fade-up mt-8">
-            <a href="https://www.producthunt.com/products/cvpass?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-cvpass" target="_blank" rel="noopener noreferrer">
-              <img alt="CVpass - Find out why recruiters never see your resume | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1116430&theme=light&t=1776177112819" className="mx-auto" />
-            </a>
-          </div>
         </div>
       </section>
 
@@ -981,6 +975,13 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Product Hunt badge */}
+      <div className="py-10 text-center">
+        <a href="https://www.producthunt.com/products/cvpass?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-cvpass" target="_blank" rel="noopener noreferrer">
+          <img alt="CVpass - Find out why recruiters never see your resume | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1116430&theme=light&t=1776177112819" className="mx-auto" />
+        </a>
+      </div>
 
       {/* Footer is in the global layout */}
 
