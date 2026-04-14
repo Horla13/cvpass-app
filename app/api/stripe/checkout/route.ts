@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   if (hasAffiliateRef) {
     discountConfig = { discounts: [{ coupon: "AFFILIATE15" }] };
   } else if (isWithinPromo) {
-    discountConfig = { discounts: [{ coupon: "PRO15" }] };
+    discountConfig = { discounts: [{ coupon: "k8YJ2CCm" }] };
   } else {
     discountConfig = { allow_promotion_codes: true };
   }
