@@ -532,19 +532,26 @@ function InlineField({
   className,
   placeholder,
   multiline = false,
+  autoEdit = false,
 }: {
   value: string;
   onSave: (v: string) => void;
   className?: string;
   placeholder?: string;
   multiline?: boolean;
+  autoEdit?: boolean;
 }) {
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(autoEdit);
   const [draft, setDraft] = useState(value);
   const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   useEffect(() => { setDraft(value); }, [value]);
-  useEffect(() => { if (editing && ref.current) ref.current.focus(); }, [editing]);
+  useEffect(() => {
+    if (editing && ref.current) {
+      ref.current.focus();
+      ref.current.select();
+    }
+  }, [editing]);
 
   const commit = () => {
     setEditing(false);
@@ -554,9 +561,9 @@ function InlineField({
   if (editing) {
     const cls = "w-full bg-white border border-blue-300 rounded px-2 py-1 text-base focus:outline-none focus:ring-2 focus:ring-blue-400";
     return multiline ? (
-      <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); } }} rows={3} className={cn(cls, "resize-none", className)} />
+      <textarea ref={ref as React.RefObject<HTMLTextAreaElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); commit(); } if (e.key === "Escape") { setDraft(value); setEditing(false); } }} rows={3} className={cn(cls, "resize-none", className)} />
     ) : (
-      <input ref={ref as React.RefObject<HTMLInputElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter") commit(); }} className={cn(cls, className)} placeholder={placeholder} />
+      <input ref={ref as React.RefObject<HTMLInputElement>} value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter") commit(); if (e.key === "Escape") { setDraft(value); setEditing(false); } }} className={cn(cls, className)} placeholder={placeholder} />
     );
   }
 
@@ -846,6 +853,7 @@ function CVDocumentEditable({
     });
 
   const cv = cvJson;
+  const [newCompIdx, setNewCompIdx] = useState<number | null>(null);
 
   const updateField = (field: string, value: string) => onUpdate({ ...cv, [field]: value });
   const updateContact = (field: string, value: string) =>
@@ -894,8 +902,10 @@ function CVDocumentEditable({
     const comps = cv.competences.map((c, i) => (i === idx ? value : c));
     onUpdate({ ...cv, competences: comps });
   };
-  const addCompetence = () =>
+  const addCompetence = () => {
+    setNewCompIdx(cv.competences.length);
     onUpdate({ ...cv, competences: [...cv.competences, "Nouvelle compétence"] });
+  };
   const removeCompetence = (idx: number) =>
     onUpdate({ ...cv, competences: cv.competences.filter((_, i) => i !== idx) });
 
@@ -1111,18 +1121,30 @@ function CVDocumentEditable({
         {/* Compétences */}
         <SectionTitle title="Compétences" color={tpl.colors.primary} />
         <div className="flex flex-wrap gap-2 mt-1">
-          {cv.competences.map((c, ci) => (
-            <span key={ci} className="flex items-center gap-1 bg-gray-100 rounded px-2.5 py-1 group/comp">
-              <GapField
-                value={c}
-                onSave={(v) => updateCompetence(ci, v)}
-                className="text-[13px] text-[#111827]"
-              />
-              <span className="opacity-0 group-hover/comp:opacity-100 transition-opacity">
-                <DeleteBtn onClick={() => removeCompetence(ci)} />
+          {cv.competences.map((c, ci) => {
+            const isNew = ci === newCompIdx;
+            return (
+              <span key={`comp-${ci}-${c}`} className="flex items-center gap-1 bg-gray-100 rounded px-2.5 py-1 group/comp">
+                {isNew ? (
+                  <InlineField
+                    value={c}
+                    onSave={(v) => { updateCompetence(ci, v); setNewCompIdx(null); }}
+                    className="text-[13px] text-[#111827]"
+                    autoEdit
+                  />
+                ) : (
+                  <GapField
+                    value={c}
+                    onSave={(v) => updateCompetence(ci, v)}
+                    className="text-[13px] text-[#111827]"
+                  />
+                )}
+                <span className="opacity-0 group-hover/comp:opacity-100 transition-opacity">
+                  <DeleteBtn onClick={() => removeCompetence(ci)} />
+                </span>
               </span>
-            </span>
-          ))}
+            );
+          })}
         </div>
         <AddButton label="Ajouter une compétence" onClick={addCompetence} />
 

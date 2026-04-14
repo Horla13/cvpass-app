@@ -37,7 +37,8 @@ export async function POST(req: NextRequest) {
       const { restructureWithGPT } = await import("@/lib/pdf-restructure");
       cvData = await restructureWithGPT(body.cvText!, []);
     }
-    if (body.acceptedGaps && body.acceptedGaps.length > 0) {
+    // Apply gaps only if cvData was NOT sent by client (already applied in Zustand store)
+    if (body.acceptedGaps && body.acceptedGaps.length > 0 && !body.cvJson) {
       const { applyGapsToCvData } = await import("@/lib/apply-gaps");
       cvData = applyGapsToCvData(cvData, body.acceptedGaps);
     }

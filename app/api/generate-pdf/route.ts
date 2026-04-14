@@ -107,8 +107,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Apply accepted gaps to cvData (server-side, more reliable than client-side)
-    if (acceptedGaps && acceptedGaps.length > 0) {
+    // Apply accepted gaps only if cvData was NOT sent by the client
+    // (client-side Zustand store already applies gaps before sending cvJson)
+    if (acceptedGaps && acceptedGaps.length > 0 && !cvJson) {
       cvData = applyGapsToCvData(cvData, acceptedGaps);
     }
 
