@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité — CVpass",
+  title: "Politique de confidentialité | CVpass",
   robots: { index: false, follow: false },
 };
 
@@ -180,7 +180,7 @@ export default function PolitiqueConfidentialitePage() {
             </li>
             <li style={listItem}>
               <strong>Données de paiement</strong> : gérées exclusivement par
-              Stripe — CVpass ne stocke aucune donnée bancaire (numéro de carte,
+              Stripe, CVpass ne stocke aucune donnée bancaire (numéro de carte,
               CVV, etc.).
             </li>
             <li style={listItem}>
@@ -388,7 +388,7 @@ export default function PolitiqueConfidentialitePage() {
                 CNIL (Commission Nationale de l&apos;Informatique et des
                 Libertés)
               </strong>{" "}
-              —{" "}
+              :{" "}
               <a
                 href="https://www.cnil.fr"
                 target="_blank"
@@ -407,11 +407,11 @@ export default function PolitiqueConfidentialitePage() {
           <ul style={listStyle}>
             <li style={listItem}>
               <strong>Cookies strictement nécessaires</strong> : Clerk
-              (authentification, gestion de session) — ne peuvent pas être
+              (authentification, gestion de session), ne peuvent pas être
               désactivés.
             </li>
             <li style={listItem}>
-              <strong>Cookies analytics</strong> : PostHog — données anonymisées,
+              <strong>Cookies analytics</strong> : PostHog, données anonymisées,
               aucun tracking cross-site, aucune donnée personnelle identifiable
               transmise.
             </li>

@@ -122,7 +122,7 @@ export default function PricingPage() {
           <span>✨</span> Tarification simple et transparente
         </div>
         <h1 className="font-display text-[32px] md:text-[44px] font-extrabold tracking-[-1.5px] text-gray-900 mb-4 leading-tight">
-          Optimisez votre CV pour les ATS<br className="hidden md:block" /> — Choisissez votre formule
+          Optimisez votre CV pour les ATS<br className="hidden md:block" /> et choisissez votre formule
         </h1>
         <p className="text-brand-green font-semibold text-[15px] mb-3">
           1 crédit = Analyse générale &nbsp;|&nbsp; 2 crédits = Match offre d&apos;emploi &nbsp;|&nbsp; 1 crédit = Téléchargement PDF &nbsp;|&nbsp; 1 crédit = Lettre de motivation

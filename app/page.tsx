@@ -42,7 +42,7 @@ const faqJsonLd = {
       name: "Quelle est la différence avec les autres outils ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Les autres scanners ATS vous donnent un score et une liste de problèmes. CVpass va plus loin : pour chaque point faible, l'IA propose une réécriture complète intégrant les mots-clés de votre offre. Vous acceptez ou ignorez — c'est tout.",
+        text: "Les autres scanners ATS vous donnent un score et une liste de problèmes. CVpass va plus loin : pour chaque point faible, l'IA propose une réécriture complète intégrant les mots-clés de votre offre. Vous acceptez ou vous ignorez, c'est tout.",
       },
     },
     {

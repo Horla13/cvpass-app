@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "CVpass vs Jobscan vs JobStep — Quel scanner CV ATS choisir ?",
+  title: "CVpass vs Jobscan vs JobStep : Quel scanner CV ATS choisir ?",
   description: "Comparatif honnête des scanners CV ATS en 2026. CVpass, Jobscan, JobStep : prix, fonctionnalités, langue. On vous dit tout.",
   alternates: { canonical: "https://cvpass.fr/comparaison" },
   openGraph: {
-    title: "CVpass vs Jobscan vs JobStep — Comparatif 2026",
+    title: "CVpass vs Jobscan vs JobStep : Comparatif 2026",
     description: "Quel scanner CV ATS choisir ? Comparatif des prix et fonctionnalités.",
     url: "https://cvpass.fr/comparaison",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CVpass vs Jobscan vs JobStep — Comparatif 2026",
+    title: "CVpass vs Jobscan vs JobStep : Comparatif 2026",
     description: "Quel scanner CV ATS choisir ?",
   },
 };

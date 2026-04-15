@@ -198,7 +198,7 @@ export default function AccountPage() {
                       {plan === "early_access" ? (
                         <div>
                           <p className="text-[32px] font-bold text-green-500 font-display">Illimité</p>
-                          <p className="text-[13px] text-gray-500 mt-1">Accès Early Access — illimité</p>
+                          <p className="text-[13px] text-gray-500 mt-1">Accès Early Access, illimité</p>
                         </div>
                       ) : plan === "pro" && unlimited ? (
                         <div>
@@ -207,7 +207,7 @@ export default function AccountPage() {
                             {cancelled ? "Accès jusqu'au" : "Renouvellement le"} {expiresAt ? new Date(expiresAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "—"}
                           </p>
                           {cancelled && (
-                            <p className="text-[12px] text-amber-500 font-medium mt-1">Résiliation programmée — accès maintenu jusqu&apos;à la fin de la période</p>
+                            <p className="text-[12px] text-amber-500 font-medium mt-1">Résiliation programmée, accès maintenu jusqu&apos;à la fin de la période</p>
                           )}
                           {expiresAt && !cancelled && new Date(expiresAt).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 && (
                             <p className="text-[12px] text-amber-500 font-medium mt-1">Renouvellement bientôt</p>
@@ -285,7 +285,7 @@ export default function AccountPage() {
                       )}
                       {cancelled && (
                         <p className="mt-2 text-center text-[12px] text-gray-400">
-                          Abonnement résilié — accès maintenu jusqu&apos;à la fin de la période
+                          Abonnement résilié, accès maintenu jusqu&apos;à la fin de la période
                         </p>
                       )}
                     </div>

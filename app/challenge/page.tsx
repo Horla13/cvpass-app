@@ -2,10 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Challenge #MonScoreATS — Testez votre CV | CVpass",
+  title: "Challenge #MonScoreATS | Testez votre CV | CVpass",
   description: "Participez au challenge #MonScoreATS. Testez votre CV, partagez votre score et montrez votre progression. Gratuit.",
   openGraph: {
-    title: "Challenge #MonScoreATS — Testez votre CV",
+    title: "Challenge #MonScoreATS | Testez votre CV",
     description: "Quel est votre score ATS ? Testez votre CV gratuitement et partagez votre resultat.",
     url: "https://cvpass.fr/challenge",
   },

@@ -30,7 +30,7 @@ export const BLOG_POSTS: BlogPost[] = [
     content: `
 ## Qu'est-ce qu'un score ATS ?
 
-Quand tu postules à une offre d'emploi, ton CV passe souvent par un logiciel de tri automatisé avant d'atterrir sur le bureau d'un recruteur. Ces logiciels — appelés ATS, pour *Applicant Tracking System* — analysent ton CV et lui attribuent un score.
+Quand tu postules à une offre d'emploi, ton CV passe souvent par un logiciel de tri automatisé avant d'atterrir sur le bureau d'un recruteur. Ces logiciels (appelés ATS, pour *Applicant Tracking System*) analysent ton CV et lui attribuent un score.
 
 Ce score reflète à quel point ton CV correspond à l'offre d'emploi : les mots-clés présents, la structure du document, la lisibilité des informations. Un CV avec un score élevé remonte dans la pile. Un CV avec un score faible reste invisible, même si ton profil est excellent.
 
@@ -38,13 +38,13 @@ Le problème : la plupart des candidats ignorent complètement ce mécanisme. Il
 
 ## Comment est calculé le score ATS ?
 
-Il n'existe pas un seul standard universel — chaque logiciel ATS a sa propre méthode. Mais la plupart analysent les mêmes critères fondamentaux.
+Il n'existe pas un seul standard universel, chaque logiciel ATS a sa propre méthode. Mais la plupart analysent les mêmes critères fondamentaux.
 
 ### 1. La correspondance des mots-clés
 
 C'est le critère le plus déterminant. L'ATS extrait les compétences, outils et qualifications mentionnés dans l'offre d'emploi, puis cherche ces mêmes termes dans ton CV.
 
-Si l'offre demande "gestion de projet Agile" et que ton CV dit "méthode Scrum", l'ATS peut ne pas faire le lien — même si c'est la même chose dans les faits. La formulation exacte compte énormément. Pour aller plus loin sur ce sujet, consulte notre [guide complet sur les mots-clés CV et ATS](/blog/mots-cles-cv-ats).
+Si l'offre demande "gestion de projet Agile" et que ton CV dit "méthode Scrum", l'ATS peut ne pas faire le lien, même si c'est la même chose dans les faits. La formulation exacte compte énormément. Consulte notre [guide complet sur les mots-clés CV et ATS](/blog/mots-cles-cv-ats).
 
 ### 2. La structure du document
 
@@ -52,7 +52,7 @@ Les ATS lisent les CV comme un parser lit du code. Ils cherchent des sections id
 
 ### 3. Le format du fichier
 
-Un CV PDF généré correctement est généralement bien lu. Un CV exporté depuis Canva en PDF image est souvent illisible pour un ATS — le texte n'est pas du texte, c'est une image. Le score tombe à zéro.
+Un CV PDF généré correctement est généralement bien lu. Un CV exporté depuis Canva en PDF image est souvent illisible pour un ATS, le texte n'est pas du texte, c'est une image. Le score tombe à zéro.
 
 ### 4. La densité et la pertinence
 
@@ -66,7 +66,7 @@ Voici les erreurs les plus fréquentes qui font baisser le score :
 
 **Tu as un CV générique non adapté à chaque offre.** Un seul CV pour toutes tes candidatures, c'est l'erreur classique. Les mots-clés varient selon les secteurs, les entreprises, les postes. Un CV non adapté aura un score faible même sur des postes qui te correspondent.
 
-**Ta mise en page nuit à la lisibilité machine.** Colonnes côte à côte, en-têtes fancy, icônes dans les sections — tout ça perturbe la lecture automatisée.
+**Ta mise en page nuit à la lisibilité machine.** Colonnes côte à côte, en-têtes fancy, icônes dans les sections, tout ça perturbe la lecture automatisée.
 
 **Ton résumé de profil est vague.** Des phrases comme "professionnel dynamique et motivé" n'apportent aucun mot-clé utile à l'ATS.
 
@@ -74,7 +74,7 @@ Voici les erreurs les plus fréquentes qui font baisser le score :
 
 ### Étape 1 : Analyse l'offre avant de candidater
 
-Avant de modifier ton CV, lis attentivement l'offre. Identifie les compétences et outils mentionnés plusieurs fois — ce sont les mots-clés prioritaires. Note aussi les qualifications requises et le vocabulaire utilisé par l'entreprise.
+Avant de modifier ton CV, lis attentivement l'offre. Identifie les compétences et outils mentionnés plusieurs fois, ce sont les mots-clés prioritaires. Note aussi les qualifications requises et le vocabulaire utilisé par l'entreprise.
 
 ### Étape 2 : Adapte chaque candidature
 
@@ -86,7 +86,7 @@ Passe à un format simple : une colonne, des sections clairement titrées (Expé
 
 ### Étape 4 : Quantifie tes résultats
 
-Les ATS — et les recruteurs humains — accordent plus de poids aux réalisations chiffrées. "Géré une équipe de 5 personnes" devient "Piloté une équipe de 5 personnes, +30% de productivité sur 6 mois". C'est plus précis, plus mémorable, et plus riche en contexte.
+Les ATS, et les recruteurs humains, accordent plus de poids aux réalisations chiffrées. "Géré une équipe de 5 personnes" devient "Piloté une équipe de 5 personnes, +30% de productivité sur 6 mois". C'est plus précis et plus riche en contexte.
 
 ### Étape 5 : Vérifie avec un outil dédié
 
@@ -130,7 +130,7 @@ Ce n'est pas un défaut de Canva. C'est une incompatibilité fondamentale entre 
 
 ### Le problème du PDF image
 
-Quand tu exportes ton CV depuis Canva, le résultat est souvent un **PDF image** — c'est-à-dire que le texte est converti en pixels. Pour toi, ça ressemble à du texte. Pour un ATS, c'est une photo. Notre article [PDF ou Word : quel format passe mieux les ATS](/blog/cv-pdf-word-ats) détaille cette distinction en profondeur.
+Quand tu exportes ton CV depuis Canva, le résultat est souvent un **PDF image** (c'est-à-dire que le texte est converti en pixels. Pour toi, ça ressemble à du texte. Pour un ATS, c'est une photo. Notre article [PDF ou Word : quel format passe mieux les ATS](/blog/cv-pdf-word-ats) détaille cette distinction en profondeur.
 
 Les ATS ne peuvent pas extraire du texte d'une image. Ils ne peuvent donc pas détecter tes compétences, tes expériences, tes mots-clés. Résultat : ton CV obtient un score proche de zéro, quel que soit ton profil.
 
@@ -144,13 +144,13 @@ Canva place souvent le texte dans des zones indépendantes : un bloc pour le nom
 
 ### Les icônes et les éléments graphiques
 
-Compétences représentées par des barres de progression, sections avec des icônes personnalisées, en-têtes dans des formes colorées — ces éléments graphiques sont riches visuellement, mais muets pour un ATS. Pire : ils peuvent perturber la lecture du texte adjacent.
+Compétences représentées par des barres de progression, sections avec des icônes personnalisées, en-têtes dans des formes colorées, ces éléments graphiques sont riches visuellement, mais muets pour un ATS. Pire : ils peuvent perturber la lecture du texte adjacent.
 
 ## Comment savoir si ton CV Canva a ce problème
 
 ### Test simple : copier-coller
 
-Ouvre ton PDF Canva. Sélectionne tout le texte (Ctrl+A ou Cmd+A), copie-le et colle-le dans un éditeur de texte. Si le résultat est illisible — texte mélangé, mots coupés, lignes dans le désordre — c'est que ton CV ne sera pas bien lu par les ATS.
+Ouvre ton PDF Canva. Sélectionne tout le texte (Ctrl+A ou Cmd+A), copie-le et colle-le dans un éditeur de texte. Si le résultat est illisible, texte mélangé, mots coupés, lignes dans le désordre, c'est que ton CV ne sera pas bien lu par les ATS.
 
 Si tu ne peux pas sélectionner de texte du tout, ton CV est un PDF image. C'est le cas le plus problématique.
 
@@ -162,7 +162,7 @@ Utilise un outil d'analyse de CV pour voir le score que ton CV obtient. Un score
 
 ### Solution 1 : Exporter en PDF texte depuis Canva
 
-Dans Canva, quand tu exportes en PDF, assure-toi de choisir "PDF — Impression" et non "PDF — Standard". Vérifie ensuite que le texte est sélectionnable dans le fichier exporté.
+Dans Canva, quand tu exportes en PDF, assure-toi de choisir "PDF, Impression" et non "PDF, Standard". Vérifie ensuite que le texte est sélectionnable dans le fichier exporté.
 
 Cette solution améliore le problème du PDF image, mais ne résout pas forcément les problèmes de colonnes et de mise en page complexe.
 
@@ -176,7 +176,7 @@ Préfère : une colonne unique, des sections clairement titrées, des puces simp
 
 ### Solution 3 : Passer à un format Word ou Google Docs pour le fond
 
-Si tu tiens à un beau design visuel pour les candidatures directes (LinkedIn, envoi par email à des contacts), garde ton Canva. Mais pour les candidatures via des plateformes ATS — Indeed, Welcome to the Jungle, LinkedIn Applications, APEC — prépare une version Word ou Google Docs avec une mise en page simple.
+Si tu tiens à un beau design visuel pour les candidatures directes (LinkedIn, envoi par email à des contacts), garde ton Canva. Mais pour les candidatures via des plateformes ATS, Indeed, Welcome to the Jungle, LinkedIn Applications, APEC, prépare une version Word ou Google Docs avec une mise en page simple.
 
 Un CV propre et bien structuré dans un format lisible battra presque toujours un CV design illisible pour un ATS.
 
@@ -184,7 +184,7 @@ Un CV propre et bien structuré dans un format lisible battra presque toujours u
 
 CVpass détecte automatiquement si ton CV est au format image ou si le texte pose des problèmes de lecture. L'outil te guide pour exporter correctement ton CV et analyse ensuite chaque section pour calculer ton score ATS par rapport à l'offre que tu vises.
 
-Pour chaque point faible détecté, l'IA propose une reformulation directement utilisable — tu n'as plus qu'à cliquer Accepter.
+Pour chaque point faible détecté, l'IA propose une reformulation directement utilisable, tu n'as plus qu'à cliquer Accepter.
 
 ---
 
@@ -240,7 +240,7 @@ La solution n'est pas de réécrire ton CV entièrement à chaque fois. Il s'agi
 
 ### Erreur 2 : Une mise en page trop complexe
 
-Colonnes multiples, tableaux, zones de texte dans des formes graphiques, en-têtes dans des images — tout ça perturbe la lecture automatisée. Les ATS lisent le texte dans un ordre linéaire et ont du mal avec les structures non conventionnelles.
+Colonnes multiples, tableaux, zones de texte dans des formes graphiques, en-têtes dans des images, tout ça perturbe la lecture automatisée. Les ATS lisent le texte dans un ordre linéaire et ont du mal avec les structures non conventionnelles.
 
 ### Erreur 3 : Des compétences vagues ou non quantifiées
 
@@ -252,7 +252,7 @@ Certains candidats intègrent toutes leurs compétences dans le texte des expér
 
 ### Erreur 5 : Des titres de section non standards
 
-"Mon parcours" au lieu d'"Expérience professionnelle", "Ce que je sais faire" au lieu de "Compétences" — les ATS cherchent des intitulés standards. Sois conventionnel sur les titres de section.
+"Mon parcours" au lieu d'"Expérience professionnelle", "Ce que je sais faire" au lieu de "Compétences", les ATS cherchent des intitulés standards. Sois conventionnel sur les titres de section.
 
 ### Erreur 6 : Un résumé de profil inutile
 
@@ -271,7 +271,7 @@ Avant toute modification, analyse l'offre en profondeur. Identifie :
 - Les **compétences techniques** mentionnées (logiciels, langages, méthodologies)
 - Les **soft skills** explicitement demandés
 - Les **qualifications** requises (diplôme, années d'expérience, certifications)
-- Les **termes répétés** — ce qui revient plusieurs fois est prioritaire
+- Les **termes répétés**, ce qui revient plusieurs fois est prioritaire
 - Le **vocabulaire sectoriel** propre à l'entreprise ou au secteur
 
 ### Étape 2 : Cartographie les correspondances
@@ -283,7 +283,7 @@ Compare l'offre avec ton CV actuel. Pour chaque compétence demandée dans l'off
 
 ### Étape 3 : Adapte les formulations
 
-Pour chaque compétence présente mais mal formulée, ajuste le texte. Ce n'est pas du mensonge — c'est de la traduction de tes expériences réelles dans le vocabulaire attendu.
+Pour chaque compétence présente mais mal formulée, ajuste le texte. Ce n'est pas du mensonge, c'est de la traduction de tes expériences réelles dans le vocabulaire attendu.
 
 ### Étape 4 : Enrichis les bullet points
 
@@ -303,7 +303,7 @@ Analyse ton CV modifié par rapport à l'offre. Le score doit avoir augmenté. S
 
 ## Le gain de temps avec CVpass
 
-Toutes ces étapes prennent du temps — souvent 1 à 2 heures par candidature quand elles sont faites manuellement. CVpass automatise les étapes 2 à 6.
+Toutes ces étapes prennent du temps, souvent 1 à 2 heures par candidature quand elles sont faites manuellement. CVpass automatise les étapes 2 à 6.
 
 Tu colles ton offre, tu uploades ton CV. L'outil identifie les correspondances manquantes, calcule ton score ATS et propose des réécritures pour chaque point faible. Tu cliques Accepter sur les suggestions qui te conviennent. Tu télécharges un PDF propre.
 
@@ -361,7 +361,7 @@ Un ATS moderne analyse non seulement la présence des compétences, mais aussi l
 
 ### 3. Les mots-clés de qualification
 
-Diplômes, certifications, niveaux d'expérience. "Bac+5", "Ingénieur", "Master", "certifié PMP", "certifié Google Ads", "bilingue anglais". Ces éléments sont souvent des filtres absolus dans les ATS — en dessous d'un certain niveau, la candidature est écartée automatiquement.
+Diplômes, certifications, niveaux d'expérience. "Bac+5", "Ingénieur", "Master", "certifié PMP", "certifié Google Ads", "bilingue anglais". Ces éléments sont souvent des filtres absolus dans les ATS, en dessous d'un certain niveau, la candidature est écartée automatiquement.
 
 ## Comment identifier les bons mots-clés pour chaque offre
 
@@ -375,7 +375,7 @@ Lis l'offre d'emploi attentivement. Identifie les termes qui :
 
 ### Méthode 2 : La comparaison avec des offres similaires
 
-Analyse 5 à 10 offres pour le même type de poste. Les mots-clés qui reviennent dans toutes les offres sont les incontournables du secteur — ils doivent absolument figurer dans ton CV si tu possèdes ces compétences.
+Analyse 5 à 10 offres pour le même type de poste. Les mots-clés qui reviennent dans toutes les offres sont les incontournables du secteur, ils doivent absolument figurer dans ton CV si tu possèdes ces compétences.
 
 ### Méthode 3 : L'utilisation d'un outil d'analyse
 
@@ -397,11 +397,11 @@ Intègre les mots-clés dans des phrases qui décrivent des réalisations concr�
 
 ### Négliger les variantes et acronymes
 
-SQL et "Structured Query Language" ne sont pas forcément équivalents pour un ATS. "IA" et "Intelligence Artificielle", "RH" et "Ressources Humaines" — certains systèmes ne font pas le lien. Utilise à la fois l'acronyme et la version développée, au moins une fois chacun.
+SQL et "Structured Query Language" ne sont pas forcément équivalents pour un ATS. "IA" et "Intelligence Artificielle", "RH" et "Ressources Humaines", certains systèmes ne font pas le lien. Utilise à la fois l'acronyme et la version développée, au moins une fois chacun.
 
 ### Ignorer les mots-clés de soft skills
 
-Les ATS modernes analysent aussi les soft skills : "leadership", "gestion d'équipe", "communication", "autonomie", "rigueur". Ces termes apparaissent souvent dans les offres et doivent figurer dans ton CV — mais toujours avec des preuves, pas juste comme des adjectifs.
+Les ATS modernes analysent aussi les soft skills : "leadership", "gestion d'équipe", "communication", "autonomie", "rigueur". Ces termes apparaissent souvent dans les offres et doivent figurer dans ton CV, mais toujours avec des preuves, pas juste comme des adjectifs.
 
 ## La densité idéale de mots-clés
 
@@ -452,7 +452,7 @@ Pour chaque compétence manquante ou mal formulée, l'IA propose une réécritur
     content: `
 ## La question que tout le monde se pose
 
-PDF ou Word ? C'est l'une des questions les plus fréquentes dans la recherche d'emploi. Et la réponse que tu entends le plus souvent — "le PDF, car il conserve la mise en page" — est incomplète et peut te desservir.
+PDF ou Word ? C'est l'une des questions les plus fréquentes dans la recherche d'emploi. Et la réponse que tu entends le plus souvent, "le PDF, car il conserve la mise en page", est incomplète et peut te desservir.
 
 La vraie réponse : **ce n'est pas le format qui compte, c'est comment le fichier est créé et ce qu'il contient**.
 
@@ -465,13 +465,13 @@ Les ATS doivent extraire du texte de ton CV pour l'analyser. Leur capacité à l
 Un PDF peut contenir deux types de données très différents :
 
 - **PDF texte** : le texte est encodé dans le fichier, tu peux le sélectionner et le copier. Un ATS peut l'extraire facilement.
-- **PDF image** : le document est une capture d'écran ou un scan. Le texte est des pixels. Un ATS ne peut pas l'extraire — il ne voit qu'une image.
+- **PDF image** : le document est une capture d'écran ou un scan. Le texte est des pixels. Un ATS ne peut pas l'extraire, il ne voit qu'une image.
 
 Beaucoup de CV créés sur Canva, Photoshop, ou exportés depuis certains logiciels de PAO sont des PDFs images. Résultat : un score ATS proche de zéro, quelle que soit la qualité réelle du candidat. Si tu utilises Canva, consulte notre guide pour [corriger un CV Canva invisible pour les ATS](/blog/cv-canva-ats).
 
 ### Le cas Word (DOCX)
 
-Un fichier Word contient du texte structuré, presque toujours lisible par les ATS. L'extraction est généralement fiable. En revanche, une mise en page Word très complexe — tableaux imbriqués, zones de texte, colonnes côte à côte — peut créer des problèmes similaires à ceux d'un PDF mal construit.
+Un fichier Word contient du texte structuré, presque toujours lisible par les ATS. L'extraction est généralement fiable. En revanche, une mise en page Word très complexe, tableaux imbriqués, zones de texte, colonnes côte à côte, peut créer des problèmes similaires à ceux d'un PDF mal construit.
 
 ## Comparaison pratique des formats
 
@@ -503,7 +503,7 @@ La pratique en France est généralement cohérente : **le PDF est le format de 
 
 Les cabinets de recrutement demandent parfois explicitement un Word pour pouvoir modifier le CV avant de le transmettre à leurs clients (retrait des coordonnées, harmonisation du format). Dans ce cas, fournis un Word simple et propre.
 
-Pour les candidatures directes sur des plateformes comme Welcome to the Jungle, LinkedIn, ou le site d'une entreprise — un PDF texte bien structuré est le meilleur choix.
+Pour les candidatures directes sur des plateformes comme Welcome to the Jungle, LinkedIn, ou le site d'une entreprise, un PDF texte bien structuré est le meilleur choix.
 
 ## Les règles d'or pour chaque format
 
@@ -517,7 +517,7 @@ Pour les candidatures directes sur des plateformes comme Welcome to the Jungle, 
 ### Règle d'or pour le Word
 
 1. Structure simple : une colonne, titres avec styles de titres (Titre 1, Titre 2), pas de tableaux pour la mise en page
-2. Évite les zones de texte — utilise des paragraphes normaux
+2. Évite les zones de texte, utilise des paragraphes normaux
 3. Format DOCX (pas DOC, pas ODT)
 4. Vérifie que le fichier s'ouvre proprement sur une version différente de Word
 
@@ -529,7 +529,7 @@ Ouvre ton PDF. Clique dans le document et essaie de sélectionner du texte. Si t
 
 ### Test 2 : Le copier-coller
 
-Sélectionne tout le texte de ton PDF (Ctrl+A ou Cmd+A) et colle-le dans un éditeur de texte simple (Notepad, TextEdit). Si le résultat ressemble à ton CV — sections dans le bon ordre, texte lisible — c'est bon signe. Si c'est un mélange chaotique de mots, l'ATS aura les mêmes difficultés.
+Sélectionne tout le texte de ton PDF (Ctrl+A ou Cmd+A) et colle-le dans un éditeur de texte simple (Notepad, TextEdit). Si le résultat ressemble à ton CV, sections dans le bon ordre, texte lisible, c'est bon signe. Si c'est un mélange chaotique de mots, l'ATS aura les mêmes difficultés.
 
 ### Test 3 : Un scanner ATS
 
@@ -545,7 +545,7 @@ Si tu cherches activement un emploi, je te recommande d'avoir **deux versions** 
 
 ## CVpass génère le bon format
 
-Quand CVpass optimise ton CV, il produit un PDF sobre et structuré, conçu pour être parfaitement lisible par les ATS. Pas de colonnes, pas d'images, pas de tableaux — juste du contenu bien organisé et optimisé pour l'offre que tu vises.
+Quand CVpass optimise ton CV, il produit un PDF sobre et structuré, conçu pour être parfaitement lisible par les ATS. Pas de colonnes, pas d'images, pas de tableaux, juste du contenu bien organisé et optimisé pour l'offre que tu vises.
 
 Tu gardes ton CV visuel pour l'impression et les contacts humains. Tu utilises le PDF CVpass pour toutes les candidatures qui passent par un système automatisé.
 
@@ -575,7 +575,7 @@ Tu gardes ton CV visuel pour l'impression et les contacts humains. Tu utilises l
 
 La recherche d'emploi en 2026 demande plus qu'un CV bien présenté. Avant qu'un recruteur humain lise ta candidature, un logiciel ATS analyse automatiquement ton document, extrait les mots-clés et calcule un score de pertinence.
 
-Scanner son CV avant de postuler, c'est comprendre ce que l'ATS va trouver — ou ne pas trouver. Si tu ne sais pas encore ce qu'est un [score ATS et comment il est calculé](/blog/score-ats-cv), commence par là. C'est corriger les problèmes avant qu'ils t'empêchent d'avoir un entretien. Et c'est gagner un avantage concret sur les candidats qui ne font pas cette démarche.
+Scanner son CV avant de postuler, c'est comprendre ce que l'ATS va trouver, ou ne pas trouver. Si tu ne sais pas encore ce qu'est un [score ATS et comment il est calculé](/blog/score-ats-cv), commence par là. C'est corriger les problèmes avant qu'ils t'empêchent d'avoir un entretien. Et c'est gagner un avantage concret sur les candidats qui ne font pas cette démarche.
 
 Voici un comparatif honnête des options disponibles.
 
@@ -631,11 +631,11 @@ LinkedIn, Indeed et Welcome to the Jungle ont leurs propres algorithmes de match
 
 ### CVpass
 
-**Principe** : CVpass est conçu spécifiquement pour aller au-delà de l'analyse — jusqu'à la correction automatique. Tu uploades ton CV, tu colles l'offre d'emploi. L'IA analyse la correspondance, calcule un score ATS et propose une réécriture complète pour chaque point faible détecté.
+**Principe** : CVpass est conçu spécifiquement pour aller au-delà de l'analyse, jusqu'à la correction automatique. Tu uploades ton CV, tu colles l'offre d'emploi. L'IA analyse la correspondance, calcule un score ATS et propose une réécriture complète pour chaque point faible détecté.
 
 **Points forts** :
 - Analyse basée sur l'offre précise que tu vises, pas une analyse générique
-- Réécriture IA des bullet points faibles — tu n'as qu'à cliquer Accepter
+- Réécriture IA des bullet points faibles, tu n'as qu'à cliquer Accepter
 - Score qui remonte en temps réel à chaque suggestion acceptée
 - Interface en français, adapté au marché français (APEC, Welcome to the Jungle, LinkedIn FR)
 - Export PDF ATS-compatible
@@ -660,9 +660,9 @@ LinkedIn, Indeed et Welcome to the Jungle ont leurs propres algorithmes de match
 
 La bonne stratégie n'est pas forcément d'utiliser un seul outil. Voici une approche en deux temps :
 
-**Première étape — Analyse générale** : utilise un outil comme Resume Worded ou la fonction d'analyse de CVcrea pour identifier les problèmes structurels de ton CV (formulations faibles, manque de chiffres, sections mal titrées). Fais ces corrections une bonne fois pour toutes.
+**Première étape, Analyse générale** : utilise un outil comme Resume Worded ou la fonction d'analyse de CVcrea pour identifier les problèmes structurels de ton CV (formulations faibles, manque de chiffres, sections mal titrées). Fais ces corrections une bonne fois pour toutes.
 
-**Deuxième étape — Adaptation par offre** : pour chaque candidature importante, utilise CVpass pour analyser la correspondance avec l'offre précise et corriger les mots-clés manquants. C'est là que se gagne ou se perd chaque candidature.
+**Deuxième étape, Adaptation par offre** : pour chaque candidature importante, utilise CVpass pour analyser la correspondance avec l'offre précise et corriger les mots-clés manquants. C'est là que se gagne ou se perd chaque candidature.
 
 ## Ce que j'attends vraiment d'un scanner CV
 
@@ -670,11 +670,11 @@ La plupart des outils te disent quoi corriger. Très peu te montrent comment cor
 
 C'est la différence entre un médecin qui te dit "vous avez un problème au genou" et un kinésithérapeute qui te guide exercice par exercice. Le diagnostic, c'est bien. L'accompagnement jusqu'à la solution, c'est ce qui change vraiment les résultats.
 
-Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et corriger manuellement chaque CV représente plusieurs heures. Automatiser cette étape n'est pas de la paresse — c'est de l'efficacité.
+Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et corriger manuellement chaque CV représente plusieurs heures. Automatiser cette étape n'est pas de la paresse, c'est de l'efficacité.
 
 ---
 
-**Essaie CVpass gratuitement — analyse complète, sans carte de crédit.** [Scanner mon CV sur CVpass →](https://cvpass.fr)
+**Essaie CVpass gratuitement, analyse complète, sans carte de crédit.** [Scanner mon CV sur CVpass →](https://cvpass.fr)
     `.trim(),
   },
 
@@ -696,9 +696,9 @@ Si tu envoies 5 à 10 candidatures par semaine, le temps passé à analyser et c
     content: `
 ## La lettre de motivation face aux ATS : ce que personne ne t'explique
 
-Quand on parle d'optimisation ATS, tout le monde pense au CV. Pourtant, la lettre de motivation passe elle aussi par les filtres automatiques dans de nombreux cas. Les systèmes de gestion des candidatures — les fameux ATS — analysent l'ensemble des documents que tu soumets, y compris la lettre de motivation quand elle est demandée.
+Quand on parle d'optimisation ATS, tout le monde pense au CV. Pourtant, la lettre de motivation passe elle aussi par les filtres automatiques dans de nombreux cas. Les systèmes de gestion des candidatures, les fameux ATS, analysent l'ensemble des documents que tu soumets, y compris la lettre de motivation quand elle est demandée.
 
-Le problème : la plupart des candidats rédigent leur lettre de motivation ATS comme une dissertation littéraire. Des phrases longues, un style soutenu, des formules de politesse à rallonge — mais aucune stratégie de mots-clés. Résultat : la lettre ne renforce pas la candidature. Elle la plombe parfois.
+Le problème : la plupart des candidats rédigent leur lettre de motivation ATS comme une dissertation littéraire. Des phrases longues, un style soutenu, des formules de politesse à rallonge, mais aucune stratégie de mots-clés. Résultat : la lettre ne renforce pas la candidature. Elle la plombe parfois.
 
 Comprendre comment les ATS traitent les lettres de motivation change radicalement la façon dont tu dois les rédiger.
 
@@ -706,13 +706,13 @@ Comprendre comment les ATS traitent les lettres de motivation change radicalemen
 
 ### L'extraction de texte
 
-Comme pour le CV, l'ATS extrait le texte brut de ta lettre. Si tu envoies un PDF image ou un fichier avec une mise en page complexe — colonnes, en-têtes graphiques, zones de texte décoratives — le logiciel peut rater une partie du contenu.
+Comme pour le CV, l'ATS extrait le texte brut de ta lettre. Si tu envoies un PDF image ou un fichier avec une mise en page complexe, colonnes, en-têtes graphiques, zones de texte décoratives, le logiciel peut rater une partie du contenu.
 
 La première règle est donc la même que pour le CV : le texte doit être sélectionnable, dans un format simple et lisible par une machine.
 
 ### L'analyse des mots-clés
 
-L'ATS compare les termes de ta lettre avec ceux de l'offre d'emploi. Une lettre de motivation compatible ATS contient les compétences clés, les outils et le vocabulaire sectoriel mentionnés dans l'offre. Ce n'est pas du bourrage de mots-clés — c'est une correspondance naturelle entre ce que l'entreprise cherche et ce que tu apportes.
+L'ATS compare les termes de ta lettre avec ceux de l'offre d'emploi. Une lettre de motivation compatible ATS contient les compétences clés, les outils et le vocabulaire sectoriel mentionnés dans l'offre. Ce n'est pas du bourrage de mots-clés, c'est une correspondance naturelle entre ce que l'entreprise cherche et ce que tu apportes.
 
 ### Le poids relatif de la lettre
 
@@ -740,7 +740,7 @@ La méthode la plus efficace pour rédiger une lettre de motivation compatible A
 
 - **Identifie les 3-4 compétences principales** de l'offre
 - **Consacre un paragraphe court à chacune**, en décrivant comment tu l'as mise en œuvre dans un contexte professionnel concret
-- **Utilise les termes exacts de l'offre** dans tes descriptions — pas des synonymes approximatifs
+- **Utilise les termes exacts de l'offre** dans tes descriptions, pas des synonymes approximatifs
 - **Ajoute un résultat concret** quand c'est possible : un livrable, une amélioration, un projet abouti
 
 ### La conclusion : disponibilité et appel à l'action
@@ -757,15 +757,15 @@ La conclusion doit rester simple : confirmer ta motivation, mentionner ta dispon
 
 ### La mise en page
 
-- **Pas de colonnes** — une seule colonne de texte, alignée à gauche
-- **Pas d'en-tête graphique** — tes coordonnées en texte simple en haut du document
+- **Pas de colonnes**, une seule colonne de texte, alignée à gauche
+- **Pas d'en-tête graphique**, tes coordonnées en texte simple en haut du document
 - **Pas de tableau** ni de zone de texte flottante
 - **Police standard** : Arial, Calibri, Times New Roman, ou toute police sans empattement classique
-- **Taille 10 à 12 points** — lisible par l'humain, neutre pour la machine
+- **Taille 10 à 12 points**, lisible par l'humain, neutre pour la machine
 
 ### La longueur
 
-Une lettre de motivation ATS doit être concise. Les recruteurs consacrent peu de temps à la lecture de chaque candidature. Trois à quatre paragraphes — soit environ 250 à 400 mots — sont suffisants. Chaque phrase doit apporter une information utile.
+Une lettre de motivation ATS doit être concise. Les recruteurs consacrent peu de temps à la lecture de chaque candidature. Trois à quatre paragraphes, soit environ 250 à 400 mots, sont suffisants. Chaque phrase doit apporter une information utile.
 
 ## Les 5 erreurs qui sabotent ta lettre de motivation ATS
 
@@ -801,7 +801,7 @@ Quand une plateforme indique que la lettre de motivation est facultative, beauco
 
 ## Comment CVpass t'aide à rédiger une lettre de motivation ATS
 
-CVpass ne se limite pas à l'analyse de ton CV. L'outil identifie les mots-clés prioritaires de l'offre d'emploi et t'aide à construire une candidature complète — CV et lettre — qui maximise la correspondance avec les filtres automatiques.
+CVpass ne se limite pas à l'analyse de ton CV. L'outil identifie les mots-clés prioritaires de l'offre d'emploi et t'aide à construire une candidature complète, CV et lettre, qui maximise la correspondance avec les filtres automatiques.
 
 En analysant l'offre et ton profil, CVpass te montre quels termes intégrer dans ta lettre pour compléter les mots-clés déjà présents dans ton CV. Tu obtiens une candidature cohérente où chaque document renforce l'autre.
 
@@ -809,16 +809,16 @@ Le résultat : un score ATS global plus élevé et une candidature qui se démar
 
 ---
 
-**Optimise ta candidature complète — CV et lettre de motivation.** [Commence ton analyse gratuite sur cvpass.fr →](https://cvpass.fr)
+**Optimise ta candidature complète, CV et lettre de motivation.** [Commence ton analyse gratuite sur cvpass.fr →](https://cvpass.fr)
     `.trim(),
   },
 
   {
     slug: "cv-par-secteur-ats",
     title:
-      "CV ATS par secteur : développeur, commercial, cadre — les règles qui changent tout",
+      "CV ATS par secteur : développeur, commercial, cadre, les règles qui changent tout",
     metaTitle:
-      "CV ATS par secteur : développeur, commercial, cadre — guide 2026 | CVpass",
+      "CV ATS par secteur : développeur, commercial, cadre, guide 2026 | CVpass",
     metaDescription:
       "Les règles ATS changent selon ton secteur. CV développeur, commercial, cadre : mots-clés, structure et erreurs spécifiques à éviter.",
     description:
@@ -831,7 +831,7 @@ Le résultat : un score ATS global plus élevé et une candidature qui se démar
     content: `
 ## Pourquoi un CV ATS par secteur change tout
 
-Un ATS ne fonctionne pas de la même façon selon le poste. Plus précisément, c'est l'offre d'emploi qui détermine les critères de filtrage — et chaque secteur a son propre vocabulaire, ses propres attentes et ses propres pièges.
+Un ATS ne fonctionne pas de la même façon selon le poste. Plus précisément, c'est l'offre d'emploi qui détermine les critères de filtrage, et chaque secteur a son propre vocabulaire, ses propres attentes et ses propres pièges.
 
 Un CV ATS développeur n'a rien à voir avec un CV ATS commercial ou un CV ATS cadre dirigeant. Les mots-clés diffèrent. La structure optimale change. Les erreurs fatales ne sont pas les mêmes.
 
@@ -843,7 +843,7 @@ Pour un guide détaillé, consulte notre article dédié : [CV développeur ATS 
 
 ### Les mots-clés qui comptent
 
-Pour un développeur, l'ATS cherche avant tout des **compétences techniques précises**. Les langages de programmation, les frameworks, les outils DevOps, les méthodologies de travail — chaque terme est un filtre potentiel.
+Pour un développeur, l'ATS cherche avant tout des **compétences techniques précises**. Les langages de programmation, les frameworks, les outils DevOps, les méthodologies de travail, chaque terme est un filtre potentiel.
 
 Les mots-clés à surveiller dans les offres développeur :
 
@@ -870,7 +870,7 @@ Pour les expériences, chaque bullet point doit combiner un **verbe d'action tec
 
 **Erreur 2 : Utiliser des versions obsolètes.** Si l'offre demande "React" et que ton CV dit "React.js 16", tu ajoutes une friction inutile. Mentionne la technologie telle qu'elle apparaît dans l'offre, et précise la version uniquement si c'est pertinent.
 
-**Erreur 3 : Omettre les projets open source ou personnels.** Pour les développeurs juniors ou en reconversion, une section "Projets" avec des liens GitHub peut compenser un manque d'expérience professionnelle — et ajouter des mots-clés techniques précieux.
+**Erreur 3 : Omettre les projets open source ou personnels.** Pour les développeurs juniors ou en reconversion, une section "Projets" avec des liens GitHub peut compenser un manque d'expérience professionnelle, et ajouter des mots-clés techniques précieux.
 
 **Erreur 4 : Négliger les soft skills techniques.** Les offres développeur mentionnent souvent "travail en équipe", "code review", "communication avec les équipes produit". Ces termes doivent figurer dans ton CV si tu les pratiques.
 
@@ -904,7 +904,7 @@ Pour chaque expérience, structure tes bullet points autour du modèle **Action 
 
 **Erreur 1 : Des descriptions vagues sans chiffres.** Le monde commercial tourne autour des résultats mesurables. Un CV commercial sans chiffres est un signal faible pour l'ATS et pour le recruteur.
 
-**Erreur 2 : Omettre les outils CRM.** Les offres commerciales mentionnent presque toujours un CRM spécifique. Si tu as utilisé Salesforce, HubSpot ou un autre outil, il doit apparaître explicitement — pas juste "outils CRM".
+**Erreur 2 : Omettre les outils CRM.** Les offres commerciales mentionnent presque toujours un CRM spécifique. Si tu as utilisé Salesforce, HubSpot ou un autre outil, il doit apparaître explicitement, pas juste "outils CRM".
 
 **Erreur 3 : Confondre responsabilités et accomplissements.** "Responsable du développement commercial zone Île-de-France" décrit un rôle, pas un résultat. L'ATS et le recruteur veulent savoir ce que tu as accompli dans ce rôle.
 
@@ -932,7 +932,7 @@ Pour les expériences, chaque bullet point doit illustrer une **décision strat�
 
 **Exemple faible** : "Direction de l'équipe marketing et communication"
 
-**Exemple fort** : "Piloté la refonte de la stratégie marketing digital — recrutement et management d'une équipe de 12 personnes, coordination avec les équipes produit et commerciale"
+**Exemple fort** : "Piloté la refonte de la stratégie marketing digital, recrutement et management d'une équipe de 12 personnes, coordination avec les équipes produit et commerciale"
 
 ### Les erreurs spécifiques au profil cadre
 
@@ -940,13 +940,13 @@ Pour les expériences, chaque bullet point doit illustrer une **décision strat�
 
 **Erreur 2 : Un CV trop long.** Les profils cadres ont souvent 15 à 25 ans d'expérience et produisent des CV de 3-4 pages. La plupart des ATS lisent l'ensemble, mais les recruteurs humains décrochent après 2 pages. Concentre-toi sur les 10 dernières années en détail.
 
-**Erreur 3 : Négliger la section Formation et Certifications.** Pour les postes cadres en France, le diplôme reste un critère de filtrage important dans les ATS — école de commerce, école d'ingénieur, MBA, certifications sectorielles.
+**Erreur 3 : Négliger la section Formation et Certifications.** Pour les postes cadres en France, le diplôme reste un critère de filtrage important dans les ATS, école de commerce, école d'ingénieur, MBA, certifications sectorielles.
 
 **Erreur 4 : Omettre les compétences transversales.** Les offres cadres mentionnent souvent "conduite du changement", "transformation digitale", "management interculturel". Ces termes doivent apparaître dans le CV s'ils font partie de ton expérience.
 
 ## Comment CVpass adapte l'analyse par secteur
 
-CVpass ne fait pas une analyse ATS générique. L'outil compare ton CV à l'offre d'emploi précise que tu vises — ce qui signifie que les mots-clés analysés, les suggestions de réécriture et le score calculé sont toujours adaptés au secteur et au poste.
+CVpass ne fait pas une analyse ATS générique. L'outil compare ton CV à l'offre d'emploi précise que tu vises, ce qui signifie que les mots-clés analysés, les suggestions de réécriture et le score calculé sont toujours adaptés au secteur et au poste.
 
 Que tu sois développeur, commercial ou cadre dirigeant, CVpass identifie les termes spécifiques de ton secteur qui manquent dans ton CV et propose des reformulations adaptées. L'IA comprend la différence entre une suggestion de bullet point pour un développeur ("Implémenté une pipeline CI/CD avec GitHub Actions") et une suggestion pour un cadre ("Piloté la transformation digitale du département avec un budget de 500K€").
 
@@ -976,9 +976,9 @@ Le résultat : un CV ATS par secteur optimisé pour les filtres automatiques de 
     content: `
 ## Pourquoi ton CV est refusé avant même d'être lu
 
-Tu envoies des dizaines de candidatures. Tu es qualifié pour les postes. Pourtant, tu n'obtiens aucun entretien. Le problème n'est probablement pas ton profil — c'est la façon dont ton CV est lu par les machines.
+Tu envoies des dizaines de candidatures. Tu es qualifié pour les postes. Pourtant, tu n'obtiens aucun entretien. Le problème n'est probablement pas ton profil, c'est la façon dont ton CV est lu par les machines.
 
-Les ATS — les logiciels de tri automatique utilisés par les recruteurs — rejettent ou mal classent des candidatures à cause d'erreurs techniques que les candidats ignorent complètement. Ces erreurs CV ATS n'ont rien à voir avec ton expérience ou tes compétences. Elles concernent la façon dont ton CV est construit, formaté et formulé.
+Les ATS, les logiciels de tri automatique utilisés par les recruteurs, rejettent ou mal classent des candidatures à cause d'erreurs techniques que les candidats ignorent complètement. Ces erreurs CV ATS n'ont rien à voir avec ton expérience ou tes compétences. Elles concernent la façon dont ton CV est construit, formaté et formulé.
 
 Voici les 10 erreurs les plus fréquentes qui font planter les ATS, et comment les corriger une par une.
 
@@ -986,7 +986,7 @@ Voici les 10 erreurs les plus fréquentes qui font planter les ATS, et comment l
 
 ### Le problème
 
-Ton CV est un fichier PDF, mais le texte n'est pas sélectionnable. C'est le cas de nombreux CV exportés depuis Canva, Photoshop ou InDesign sans les bons réglages. Pour l'ATS, c'est une image — il ne peut extraire aucun texte, aucun mot-clé, aucune information. Ton score tombe à zéro.
+Ton CV est un fichier PDF, mais le texte n'est pas sélectionnable. C'est le cas de nombreux CV exportés depuis Canva, Photoshop ou InDesign sans les bons réglages. Pour l'ATS, c'est une image, il ne peut extraire aucun texte, aucun mot-clé, aucune information. Ton score tombe à zéro.
 
 ### Comment corriger
 
@@ -1006,7 +1006,7 @@ Passe à un format à **une seule colonne**. Toutes les sections les unes sous l
 
 ### Le problème
 
-Tu as mis ton nom dans un bandeau coloré, tes coordonnées dans une forme ronde, tes titres de section dans des rectangles avec un fond de couleur. L'ATS ne sait pas lire le texte qui se trouve dans ces éléments graphiques. Tes informations de contact, tes titres de section — tout peut être ignoré.
+Tu as mis ton nom dans un bandeau coloré, tes coordonnées dans une forme ronde, tes titres de section dans des rectangles avec un fond de couleur. L'ATS ne sait pas lire le texte qui se trouve dans ces éléments graphiques. Tes informations de contact, tes titres de section, tout peut être ignoré.
 
 ### Comment corriger
 
@@ -1016,17 +1016,17 @@ Utilise du **texte simple** pour toutes les informations. Ton nom en gras et en 
 
 ### Le problème
 
-Tu envoies le même CV pour toutes tes candidatures sans l'adapter à chaque offre. L'ATS compare ton CV à l'offre — si les termes clés de l'annonce ne figurent pas dans ton document, le score de correspondance est faible. Pourquoi ton CV est refusé par les ATS ? Souvent, c'est simplement parce que les bons mots n'y sont pas.
+Tu envoies le même CV pour toutes tes candidatures sans l'adapter à chaque offre. L'ATS compare ton CV à l'offre, si les termes clés de l'annonce ne figurent pas dans ton document, le score de correspondance est faible. Pourquoi ton CV est refusé par les ATS ? Souvent, c'est simplement parce que les bons mots n'y sont pas.
 
 ### Comment corriger
 
-Avant chaque candidature, lis attentivement l'offre. Identifie les **compétences, outils et qualifications** mentionnés. Intègre ces termes dans ton CV — dans le résumé de profil, dans les descriptions d'expérience et dans la section compétences. Utilise les formulations exactes de l'offre.
+Avant chaque candidature, lis attentivement l'offre. Identifie les **compétences, outils et qualifications** mentionnés. Intègre ces termes dans ton CV, dans le résumé de profil, dans les descriptions d'expérience et dans la section compétences. Utilise les formulations exactes de l'offre.
 
 ## Erreur 5 : Un CV générique sans personnalisation
 
 ### Le problème
 
-Ton CV est bien rédigé, mais il est conçu pour être universel. Il couvre toutes tes compétences de façon équitable, sans mettre en avant celles qui correspondent à un poste précis. Pour un ATS qui cherche des correspondances spécifiques, un CV générique obtient un score moyen sur toutes les offres — et un bon score sur aucune.
+Ton CV est bien rédigé, mais il est conçu pour être universel. Il couvre toutes tes compétences de façon équitable, sans mettre en avant celles qui correspondent à un poste précis. Pour un ATS qui cherche des correspondances spécifiques, un CV générique obtient un score moyen sur toutes les offres, et un bon score sur aucune.
 
 ### Comment corriger
 
@@ -1046,7 +1046,7 @@ Ajoute un **résumé de profil de 3 à 5 lignes** en haut de ton CV, juste sous 
 
 ### Le problème
 
-Tu utilises une police originale pour te démarquer — une police calligraphique, une police display, ou une police rare qui n'est pas installée sur tous les systèmes. L'ATS peut mal interpréter les caractères ou ne pas les lire du tout. Certaines polices décoratives encodent les lettres de façon non standard, rendant le texte partiellement ou totalement illisible pour le parser.
+Tu utilises une police originale pour te démarquer, une police calligraphique, une police display, ou une police rare qui n'est pas installée sur tous les systèmes. L'ATS peut mal interpréter les caractères ou ne pas les lire du tout. Certaines polices décoratives encodent les lettres de façon non standard, rendant le texte partiellement ou totalement illisible pour le parser.
 
 ### Comment corriger
 
@@ -1066,7 +1066,7 @@ Utilise un **format de date uniforme** sur tout le CV. Le format "Mois Année �
 
 ### Le problème
 
-Tu écris "CRM", "ERP", "KPI", "ROI", "SEO" en supposant que tout le monde sait ce que ça signifie. L'ATS sait peut-être — mais si l'offre utilise "gestion de la relation client" au lieu de "CRM", le rapprochement ne se fait pas. Les erreurs CV ATS liées aux acronymes sont parmi les plus sournoises : tu penses avoir mis le bon mot-clé, mais l'ATS cherche la version complète.
+Tu écris "CRM", "ERP", "KPI", "ROI", "SEO" en supposant que tout le monde sait ce que ça signifie. L'ATS sait peut-être, mais si l'offre utilise "gestion de la relation client" au lieu de "CRM", le rapprochement ne se fait pas. Les erreurs CV ATS liées aux acronymes sont parmi les plus sournoises : tu penses avoir mis le bon mot-clé, mais l'ATS cherche la version complète.
 
 ### Comment corriger
 
@@ -1080,7 +1080,7 @@ Tes bullet points décrivent ce que tu as fait, mais pas ce que tu as accompli. 
 
 ### Comment corriger
 
-Pour chaque expérience, identifie au moins un **résultat chiffrable**. Pas besoin d'inventer — pense en termes de volume (nombre de projets, taille d'équipe, nombre de clients), de temps (délais réduits, fréquence augmentée) ou d'amélioration (processus optimisé, satisfaction client améliorée). Si tu ne peux pas donner un chiffre exact, décris l'impact de façon concrète : "Refonte du processus d'onboarding, passé de 2 semaines à 3 jours".
+Pour chaque expérience, identifie au moins un **résultat chiffrable**. Pas besoin d'inventer, pense en termes de volume (nombre de projets, taille d'équipe, nombre de clients), de temps (délais réduits, fréquence augmentée) ou d'amélioration (processus optimisé, satisfaction client améliorée). Si tu ne peux pas donner un chiffre exact, décris l'impact de façon concrète : "Refonte du processus d'onboarding, passé de 2 semaines à 3 jours".
 
 ## Le récapitulatif : vérifie ton CV en 5 minutes
 
@@ -1185,7 +1185,7 @@ Utilise les noms exacts des technologies. "JS" ne sera pas toujours reconnu comm
 
 **Mettre un lien vers un portfolio sans texte.** L'ATS ne visite pas les liens. Décris tes projets en texte dans le CV.
 
-**Utiliser un format non standard.** Un site web comme CV, un README GitHub, un PDF Canva — tout ça échoue face aux ATS. Utilise un PDF texte simple.
+**Utiliser un format non standard.** Un site web comme CV, un README GitHub, un PDF Canva, tout ça échoue face aux ATS. Utilise un PDF texte simple.
 
 ## Ce que CVpass fait pour les développeurs
 
@@ -1211,7 +1211,7 @@ CVpass analyse ton CV développeur par rapport à l'offre d'emploi que tu vises.
     content: `
 ## Le CV commercial et les ATS : pourquoi les chiffres comptent double
 
-Dans le monde commercial, les résultats parlent. Et les ATS le savent — ou plutôt, les recruteurs qui configurent les filtres le savent. Un CV commercial sans chiffres est un CV vide pour un ATS configuré pour chercher des indicateurs de performance.
+Dans le monde commercial, les résultats parlent. Et les ATS le savent, ou plutôt, les recruteurs qui configurent les filtres le savent. Un CV commercial sans chiffres est un CV vide pour un ATS configuré pour chercher des indicateurs de performance.
 
 Le problème : beaucoup de commerciaux décrivent leurs missions ("prospection", "gestion de portefeuille") sans jamais quantifier leurs résultats. L'ATS ne trouve pas les signaux qu'il cherche. Pour comparer avec d'autres profils, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
 
@@ -1279,7 +1279,7 @@ CVpass analyse ton CV par rapport à l'offre d'emploi et identifie les métrique
 
 Le chef de projet est un profil transversal. Les recruteurs cherchent un mélange spécifique de compétences techniques, méthodologiques et managériales. Les ATS sont configurés pour filtrer sur des mots-clés très précis : méthodologies, outils, certifications.
 
-Un CV chef de projet générique — "pilotage de projets dans un environnement international" — sera mal classé par l'ATS. Il faut être spécifique. Pour une vue d'ensemble des différences par profil, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
+Un CV chef de projet générique, "pilotage de projets dans un environnement international", sera mal classé par l'ATS. Il faut être spécifique. Pour une vue d'ensemble des différences par profil, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
 
 ## Structure d'un CV chef de projet ATS
 
@@ -1307,9 +1307,9 @@ Pour chaque expérience, décris les projets pilotés :
 
 ## Erreurs fréquentes
 
-**Ne pas mentionner les certifications.** PMP, PSM, ITIL — si tu les as, elles doivent être visibles. Les ATS filtrent dessus.
+**Ne pas mentionner les certifications.** PMP, PSM, ITIL, si tu les as, elles doivent être visibles. Les ATS filtrent dessus.
 
-**Des descriptions sans métriques de projet.** Budget, taille d'équipe, délais respectés, nombre de sprints — les chiffres prouvent ton impact.
+**Des descriptions sans métriques de projet.** Budget, taille d'équipe, délais respectés, nombre de sprints, les chiffres prouvent ton impact.
 
 **Confondre "coordonner" et "piloter".** L'ATS cherche des termes précis. "Piloté" est plus fort que "participé à".
 
@@ -1337,7 +1337,7 @@ CVpass identifie les méthodologies et certifications manquantes dans ton CV par
     content: `
 ## Le CV data analyst : un secteur où les mots-clés techniques sont décisifs
 
-Le marché de la data explose en France. Les postes de data analyst se multiplient dans tous les secteurs — finance, retail, santé, tech. Les recruteurs utilisent les ATS pour filtrer sur des compétences techniques très précises : langages, outils de visualisation, bases de données.
+Le marché de la data explose en France. Les postes de data analyst se multiplient dans tous les secteurs, finance, retail, santé, tech. Les recruteurs utilisent les ATS pour filtrer sur des compétences techniques très précises : langages, outils de visualisation, bases de données.
 
 Un CV data analyst qui dit "analyse de données" sans préciser les outils utilisés sera mal classé. La spécificité est la clé. Pour comparer avec d'autres profils, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
 
@@ -1390,7 +1390,7 @@ CVpass compare ton CV aux mots-clés de l'offre data analyst que tu vises. L'out
     slug: "cv-marketing-digital-ats",
     title: "CV marketing digital : structure ATS et mots-clés pour décrocher en 2026",
     metaTitle: "CV marketing digital ATS : structure et mots-clés 2026 | CVpass",
-    metaDescription: "Comment créer un CV marketing digital optimisé ATS en 2026. SEO, SEA, social media, analytics — les mots-clés et la structure pour passer les filtres.",
+    metaDescription: "Comment créer un CV marketing digital optimisé ATS en 2026. SEO, SEA, social media, analytics : les mots-clés et la structure pour passer les filtres.",
     description: "Optimise ton CV marketing digital pour les ATS avec les bons mots-clés SEO, SEA et analytics.",
     date: "2026-03-24",
     readTime: "7 min",
@@ -1434,7 +1434,7 @@ Pour chaque poste :
 
 **Des responsabilités sans résultats.** "Gestion des réseaux sociaux" ne dit rien. Combien de followers gagnés ? Quel taux d'engagement ? Quel impact sur le CA ?
 
-**Oublier les outils.** Google Analytics 4, HubSpot, SEMrush, Ahrefs — si tu les utilises, écris-les. L'ATS filtre dessus.
+**Oublier les outils.** Google Analytics 4, HubSpot, SEMrush, Ahrefs, si tu les utilises, écris-les. L'ATS filtre dessus.
 
 **Un CV trop généraliste.** "Marketing" est trop vague. Précise ta spécialité : SEO, SEA, growth, content, social media.
 
@@ -1452,7 +1452,7 @@ CVpass identifie les acronymes et outils manquants dans ton CV marketing par rap
     slug: "cv-ressources-humaines-ats",
     title: "CV RH : comment optimiser son CV ressources humaines pour les ATS en 2026",
     metaTitle: "CV RH ATS : optimiser son CV ressources humaines en 2026 | CVpass",
-    metaDescription: "Comment créer un CV ressources humaines optimisé ATS en 2026. Recrutement, paie, droit social — les mots-clés et la structure pour décrocher.",
+    metaDescription: "Comment créer un CV ressources humaines optimisé ATS en 2026. Recrutement, paie, droit social : les mots-clés et la structure pour décrocher.",
     description: "Crée un CV RH optimisé ATS avec les bons mots-clés en recrutement, paie et droit social.",
     date: "2026-03-26",
     readTime: "7 min",
@@ -1462,7 +1462,7 @@ CVpass identifie les acronymes et outils manquants dans ton CV marketing par rap
     content: `
 ## Le CV RH face aux ATS : l'ironie du recruteur recruté
 
-Les professionnels RH connaissent les ATS mieux que personne — ce sont eux qui les utilisent au quotidien. Pourtant, quand ils cherchent eux-mêmes un emploi, leurs CV souffrent souvent des mêmes problèmes que ceux qu'ils rejettent : formulations vagues, mots-clés manquants, structure non optimale. Pour une vue d'ensemble par profil, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
+Les professionnels RH connaissent les ATS mieux que personne, ce sont eux qui les utilisent au quotidien. Pourtant, quand ils cherchent eux-mêmes un emploi, leurs CV souffrent souvent des mêmes problèmes que ceux qu'ils rejettent : formulations vagues, mots-clés manquants, structure non optimale. Pour une vue d'ensemble par profil, consulte notre [guide CV ATS par secteur](/blog/cv-par-secteur-ats).
 
 ## Structure d'un CV RH ATS
 
@@ -1550,9 +1550,9 @@ En comptabilité et finance, les recruteurs cherchent des profils rigoureux et t
 
 ## Erreurs fréquentes
 
-**Ne pas mentionner les normes.** IFRS vs PCG — les ATS filtrent dessus. Précise toujours les référentiels que tu maîtrises.
+**Ne pas mentionner les normes.** IFRS vs PCG, les ATS filtrent dessus. Précise toujours les référentiels que tu maîtrises.
 
-**Oublier les logiciels comptables.** SAP, Sage, Cegid — ce sont des mots-clés critiques. Ne les oublie pas.
+**Oublier les logiciels comptables.** SAP, Sage, Cegid, ce sont des mots-clés critiques. Ne les oublie pas.
 
 **Des descriptions sans volume.** Quel CA ? Combien de factures traitées ? Quel délai de clôture ?
 
@@ -1619,7 +1619,7 @@ Pour les ingénieurs, la formation est souvent un critère de filtrage ATS :
 
 **Lister les logiciels sans contexte.** "CATIA V5" seul ne suffit pas. Dans quel contexte ? Pour quel type de pièces ? Quel résultat ?
 
-**Oublier les normes.** ISO, IATF, EN — les ATS des grands groupes industriels filtrent systématiquement dessus.
+**Oublier les normes.** ISO, IATF, EN, les ATS des grands groupes industriels filtrent systématiquement dessus.
 
 **Ne pas mentionner l'école.** En France, l'école d'ingénieur est un critère de filtrage majeur. Assure-toi qu'elle est bien visible.
 
@@ -1723,7 +1723,7 @@ Et si vous voulez savoir exactement comment votre CV sera lu par ces systemes, t
     tags: ["Guide ATS", "France", "Recrutement"],
     image: "/blog/optimiser-cv-ats-france.svg",
     content: `
-## Welcome to the Jungle, c'est pas juste un joli site
+## Welcome to the Jungle va bien au-delà du design
 
 Je vais etre honnete : quand j'ai decouvert Welcome to the Jungle, j'ai trouve le concept genial. Des pages entreprise bien designees, des photos d'equipe, des valeurs affichees. Ca donne envie de postuler.
 

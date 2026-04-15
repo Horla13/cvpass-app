@@ -51,7 +51,7 @@ export function SuggestionCard({ gap, onAccept, onIgnore }: SuggestionCardProps)
           </p>
         </div>
       ) : (
-        <p className="text-xs text-brand-gray italic">Élément absent du CV — à ajouter</p>
+        <p className="text-xs text-brand-gray italic">Élément absent du CV, à ajouter</p>
       )}
 
       <div>

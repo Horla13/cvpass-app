@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Mentions légales — CVpass",
+  title: "Mentions légales | CVpass",
   robots: { index: false, follow: false },
 };
 

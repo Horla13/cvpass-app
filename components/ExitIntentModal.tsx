@@ -69,7 +69,7 @@ export function ExitIntentModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="font-display text-xl font-bold text-center text-[#111827]">
-          Attendez — votre CV est peut-être invisible aux recruteurs.
+          Votre CV passe peut-être à la trappe sans que vous le sachiez.
         </h2>
         <p className="text-sm text-center mt-2 text-[#6b7280]">
           Testez gratuitement votre score ATS en 30 secondes.

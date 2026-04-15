@@ -15,11 +15,11 @@ export async function generateMetadata(
   const tagName = getTagName(tag);
   if (!tagName) return {};
   return {
-    title: `${tagName} — Articles et guides | Blog CVpass`,
+    title: `${tagName} | Articles et guides | Blog CVpass`,
     description: `Tous les articles CVpass sur le thème ${tagName}. Guides pratiques pour optimiser ton CV et passer les filtres ATS.`,
     alternates: { canonical: `https://cvpass.fr/blog/tag/${tag}` },
     openGraph: {
-      title: `${tagName} — Blog CVpass`,
+      title: `${tagName} | Blog CVpass`,
       description: `Articles et guides sur ${tagName} pour optimiser ton CV ATS.`,
       url: `https://cvpass.fr/blog/tag/${tag}`,
       type: "website",

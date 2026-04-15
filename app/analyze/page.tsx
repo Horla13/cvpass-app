@@ -217,7 +217,7 @@ function AnalyzePage() {
           {step === "upload" && typeof window !== "undefined" && !localStorage.getItem("cvpass_analyzed") && (
             <div className="max-w-[600px] mx-auto mb-6 bg-green-50 border border-green-200 rounded-xl px-5 py-4 text-center">
               <p className="text-[15px] text-green-800 font-semibold">Bienvenue ! Uploadez votre CV et obtenez votre score en 30 secondes.</p>
-              <p className="text-[13px] text-green-600 mt-1">C&apos;est gratuit — 1 analyse offerte, sans carte de cr&eacute;dit.</p>
+              <p className="text-[13px] text-green-600 mt-1">C&apos;est gratuit, 1 analyse offerte, sans carte de cr&eacute;dit.</p>
             </div>
           )}
 

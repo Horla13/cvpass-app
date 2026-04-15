@@ -110,7 +110,7 @@ export default function AffiliateDashboardPage() {
             </button>
           </div>
           <p className="text-[12px] text-gray-400 mt-2">
-            Code : <span className="font-mono font-bold text-gray-600">{affiliate.code}</span> — Commission : {(affiliate.commission_rate * 100).toFixed(0)}% sur le 1er achat
+            Code : <span className="font-mono font-bold text-gray-600">{affiliate.code}</span> · Commission : {(affiliate.commission_rate * 100).toFixed(0)}% sur chaque achat
           </p>
         </div>
 
