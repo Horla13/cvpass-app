@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { z } from "zod";
+
+const BodySchema = z.object({
+  content: z.string().min(50, "Contenu trop court").max(50000, "Contenu trop long"),
+  analyse_id: z.string().uuid().optional(),
+});
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -8,18 +14,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  let body: { content?: string; analyse_id?: string };
+  let body: z.infer<typeof BodySchema>;
   try {
-    body = await req.json();
+    const raw = await req.json();
+    body = BodySchema.parse(raw);
   } catch {
     return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }
 
   const { content, analyse_id } = body;
-
-  if (!content || content.trim().length < 50) {
-    return NextResponse.json({ error: "Contenu de lettre invalide" }, { status: 400 });
-  }
 
   const { data, error } = await getSupabaseAdmin()
     .from("cover_letters")

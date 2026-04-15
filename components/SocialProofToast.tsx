@@ -3,10 +3,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 interface ProofItem {
-  job_title: string;
   score_avant: number;
   score_apres: number;
-  created_at: string;
+  minutes_ago: number;
 }
 
 const FIRST_NAMES = [
@@ -15,8 +14,7 @@ const FIRST_NAMES = [
   "Laura", "Antoine", "Julie", "Alexandre", "Ines", "Romain", "Clara", "Mehdi",
 ];
 
-function timeAgo(iso: string): string {
-  const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+function timeAgo(mins: number): string {
   if (mins < 2) return "a l'instant";
   if (mins < 60) return `il y a ${mins} min`;
   const hrs = Math.floor(mins / 60);
@@ -30,7 +28,6 @@ export function SocialProofToast() {
   const [visible, setVisible] = useState(false);
   const indexRef = useRef(0);
 
-  // Fetch recent analyses on mount
   useEffect(() => {
     fetch("/api/count")
       .then((r) => r.json())
@@ -51,7 +48,6 @@ export function SocialProofToast() {
     setTimeout(() => setVisible(false), 4000);
   }, [items]);
 
-  // Show first toast after 8s, then every 15s
   useEffect(() => {
     if (items.length === 0) return;
     const first = setTimeout(showNext, 8000);
@@ -61,7 +57,8 @@ export function SocialProofToast() {
 
   if (!current) return null;
 
-  const name = FIRST_NAMES[Math.abs(current.job_title.charCodeAt(0)) % FIRST_NAMES.length];
+  const nameIdx = (current.score_avant * 7 + current.score_apres * 3) % FIRST_NAMES.length;
+  const name = FIRST_NAMES[nameIdx];
   const initial = name[0];
 
   return (
@@ -76,10 +73,10 @@ export function SocialProofToast() {
         </div>
         <div className="min-w-0">
           <p className="text-[13px] text-gray-900 font-medium truncate">
-            {name} a optimise son CV
+            {name} a optimisé son CV
           </p>
           <p className="text-[12px] text-gray-400">
-            {current.job_title} &middot; {current.score_avant} → <span className="text-green-600 font-semibold">{current.score_apres}</span> &middot; {timeAgo(current.created_at)}
+            {current.score_avant} → <span className="text-green-600 font-semibold">{current.score_apres}</span> &middot; {timeAgo(current.minutes_ago)}
           </p>
         </div>
       </div>

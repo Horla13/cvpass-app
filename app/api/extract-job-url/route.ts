@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { isSafeUrl } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,7 @@ export async function POST(req: NextRequest) {
 
   const url = body.url?.trim();
   if (!url) return NextResponse.json({ error: "URL requise" }, { status: 400 });
+  if (!isSafeUrl(url)) return NextResponse.json({ error: "URL non autorisée" }, { status: 400 });
 
   try {
     const res = await fetch(url, {

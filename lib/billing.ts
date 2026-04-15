@@ -35,10 +35,13 @@ export async function isEarlyAccess(email: string): Promise<boolean> {
   try {
     const { data } = await getSupabaseAdmin()
       .from("early_access")
-      .select("email")
+      .select("email, expires_at")
       .eq("email", email.toLowerCase())
       .maybeSingle();
-    return !!data;
+    if (!data) return false;
+    // If expires_at is set, check if still valid
+    if (data.expires_at && new Date(data.expires_at) < new Date()) return false;
+    return true;
   } catch {
     return false;
   }

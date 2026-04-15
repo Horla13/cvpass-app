@@ -25,20 +25,24 @@ export async function GET() {
     }
   } catch { /* ignore */ }
 
-  // Fetch recent analyses with score improvement (for social proof)
-  let recent: { job_title: string; score_avant: number; score_apres: number; created_at: string }[] = [];
+  // Fetch recent analyses with score improvement (for social proof, anonymized)
+  let recent: { score_avant: number; score_apres: number; minutes_ago: number }[] = [];
   try {
     const { data } = await getSupabaseAdmin()
       .from("analyses")
-      .select("job_title, score_avant, score_apres, created_at")
+      .select("score_avant, score_apres, created_at")
       .gt("score_apres", 0)
-      .not("job_title", "is", null)
       .order("created_at", { ascending: false })
       .limit(20);
     if (data) {
       recent = data
-        .filter((a) => a.score_apres > a.score_avant && a.job_title)
-        .slice(0, 10);
+        .filter((a) => a.score_apres > a.score_avant)
+        .slice(0, 10)
+        .map((a) => ({
+          score_avant: a.score_avant,
+          score_apres: a.score_apres,
+          minutes_ago: Math.floor((Date.now() - new Date(a.created_at).getTime()) / 60000),
+        }));
     }
   } catch { /* ignore */ }
 

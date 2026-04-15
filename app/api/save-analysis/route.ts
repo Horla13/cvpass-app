@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { z } from "zod";
 
 export const dynamic = "force-dynamic";
+
+const BodySchema = z.object({
+  score_avant: z.number().min(0).max(100).optional(),
+  score_apres: z.number().min(0).max(100).optional(),
+  nb_suggestions: z.number().int().min(0).max(200).optional(),
+  nb_acceptees: z.number().int().min(0).max(200).optional(),
+  job_title: z.string().max(500).optional(),
+});
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -10,15 +19,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  let body: {
-    score_avant?: number;
-    score_apres?: number;
-    nb_suggestions?: number;
-    nb_acceptees?: number;
-    job_title?: string;
-  };
+  let body: z.infer<typeof BodySchema>;
   try {
-    body = await req.json();
+    const raw = await req.json();
+    body = BodySchema.parse(raw);
   } catch {
     return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
   }

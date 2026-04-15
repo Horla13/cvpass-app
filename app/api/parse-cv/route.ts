@@ -28,6 +28,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // MIME type validation
+  const allowedTypes = [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ];
+  const fileName = file.name.toLowerCase();
+  const isValidExt = fileName.endsWith(".pdf") || fileName.endsWith(".docx");
+  const isValidMime = allowedTypes.includes(file.type) || file.type === "application/octet-stream";
+  if (!isValidExt || !isValidMime) {
+    return NextResponse.json({ error: "Format invalide (PDF ou DOCX uniquement)" }, { status: 400 });
+  }
+
   const buffer = Buffer.from(await file.arrayBuffer());
 
   try {

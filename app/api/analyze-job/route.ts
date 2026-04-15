@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
 import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { isSafeUrl } from "@/lib/utils";
 
 export const maxDuration = 30;
 
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   let jobText = body.jobText?.trim() ?? "";
 
-  if (!jobText && body.jobUrl?.trim()) {
+  if (!jobText && body.jobUrl?.trim() && isSafeUrl(body.jobUrl.trim())) {
     try {
       const res = await fetch(body.jobUrl.trim(), {
         headers: { "User-Agent": "Mozilla/5.0 (compatible; CVpass/1.0)" },
