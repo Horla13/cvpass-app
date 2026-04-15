@@ -654,7 +654,7 @@ export function LandingPage() {
               Tous les outils pour <span className="text-brand-green">décrocher le poste</span>
             </h2>
             <p className="text-brand-gray text-base mt-3 max-w-[580px] mx-auto">
-              Du scanner CV à la préparation d&apos;entretien, tout ce qu&apos;il faut pour transformer vos candidatures en entretiens.
+              Du scanner CV à la préparation d&apos;entretien, tout ce qu&apos;il faut pour passer du CV au poste.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
@@ -668,43 +668,43 @@ export function LandingPage() {
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>,
-                title: "Match offre d&apos;emploi",
-                desc: "Collez une offre d&apos;emploi, l&apos;IA compare avec votre CV et réécrit les passages faibles avec les mots-clés de l&apos;offre.",
+                title: "Match offre d'emploi",
+                desc: "Collez une offre d'emploi, l'IA compare avec votre CV et réécrit les passages faibles avec les mots-clés de l'offre.",
                 tag: "2 crédits",
                 href: "/analyze",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
                 title: "Export PDF optimisé",
-                desc: "Téléchargez votre CV corrigé en PDF, prêt à envoyer. Plusieurs templates, structure ATS-friendly, pas de colonnes ni d&apos;images.",
+                desc: "Téléchargez votre CV corrigé en PDF, prêt à envoyer. Plusieurs templates, structure ATS-friendly, pas de colonnes ni d'images.",
                 tag: "1 crédit",
                 href: "/analyze",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>,
                 title: "Lettre de motivation IA",
-                desc: "Générée automatiquement à partir de votre CV et de l&apos;offre. Personnalisée, structurée, avec les mots-clés du poste.",
+                desc: "Générée à partir de votre CV et de l'offre. Personnalisée, structurée, avec les mots-clés du poste.",
                 tag: "1 crédit",
                 href: "/cover-letter",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>,
-                title: "Analyseur d&apos;offre",
-                desc: "Collez une offre et découvrez sa qualité, les mots-clés à mettre dans votre CV, les compétences attendues et les signaux d&apos;alerte.",
+                title: "Analyseur d'offre",
+                desc: "Collez une offre et découvrez sa qualité, les mots-clés à mettre dans votre CV, les compétences attendues et les signaux d'alerte.",
                 tag: "Nouveau",
                 href: "/analyze-job",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
                 title: "Optimiseur LinkedIn",
-                desc: "Collez votre profil LinkedIn, obtenez un score et un titre, un résumé et des compétences optimisés pour les recruteurs.",
+                desc: "Collez votre profil LinkedIn et obtenez un score, un titre, un résumé et des compétences optimisés pour les recruteurs.",
                 tag: "1 crédit",
                 href: "/linkedin",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
                 title: "Coach entretien",
-                desc: "À partir de l&apos;offre, l&apos;IA génère les 6 questions les plus probables avec des pistes de réponses adaptées à votre profil.",
+                desc: "À partir de l'offre, l'IA génère les 6 questions les plus probables avec des pistes de réponses adaptées à votre profil.",
                 tag: "Nouveau",
                 href: "/coach-entretien",
               },
