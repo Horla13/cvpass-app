@@ -1872,6 +1872,441 @@ Ce n'est pas de la magie. Mais j'ai vu des gens passer de 0 reponse en 2 mois a 
 **Testez votre CV Indeed gratuitement.** [Analyse sur CVpass](https://cvpass.fr)
     `.trim(),
   },
+  {
+    slug: "cv-sans-experience-ats",
+    title: "CV sans expérience : comment passer les filtres ATS quand on débute",
+    metaTitle: "CV sans expérience : passer les filtres ATS quand on débute | CVpass",
+    metaDescription: "Pas d'expérience professionnelle ? Votre CV peut quand même passer les filtres ATS. Voici comment structurer un CV débutant qui sera lu par les recruteurs.",
+    description: "Comment construire un CV ATS efficace quand on n'a pas encore d'expérience professionnelle.",
+    date: "2026-04-15",
+    readTime: "7 min",
+    category: "Guide ATS",
+    tags: ["Guide ATS", "CV", "Débutant"],
+    image: "/blog/optimiser-cv-ats.svg",
+    content: `
+## Le paradoxe du premier emploi
+
+On vous demande de l'expérience pour obtenir un emploi, mais il faut un emploi pour avoir de l'expérience. Ce cercle vicieux, tout le monde le connait. Et quand on rajoute les filtres ATS par-dessus, ca peut sembler impossible.
+
+Sauf que non. Les ATS ne cherchent pas uniquement de l'expérience professionnelle. Ils cherchent des mots-clés, des compétences, une structure lisible. Et ca, vous pouvez l'avoir même sans avoir travaillé un seul jour en entreprise.
+
+## Ce que les ATS cherchent vraiment
+
+Un ATS ne sait pas que vous êtes débutant. Il ne regarde pas votre photo, votre âge ou le nombre d'années de votre parcours. Il extrait du texte et compare des termes avec ceux de l'offre d'emploi.
+
+Si votre CV contient les bons mots-clés dans une structure lisible, il passera le filtre. Point.
+
+Le problème des CV débutants, c'est rarement le manque d'expérience. C'est le manque de vocabulaire professionnel.
+
+## Remplacez "Expérience" par "Projets et réalisations"
+
+Le titre de section "Expérience professionnelle" n'est pas obligatoire. Les ATS reconnaissent aussi "Projets", "Réalisations", "Missions". L'important c'est le contenu.
+
+Un projet universitaire, un stage de 2 semaines, un projet associatif, un projet personnel, du bénévolat. Tout ca compte si vous le formulez correctement.
+
+Mauvaise formulation : "Stage d'observation en entreprise pendant 2 semaines"
+
+Bonne formulation : "Stage chez [Entreprise], service marketing. Participation à l'analyse des campagnes publicitaires sur Google Ads et rédaction de 3 rapports de performance"
+
+La deuxième version contient des mots-clés : marketing, Google Ads, analyse, rapports de performance. L'ATS les détecte.
+
+## La section Compétences est votre meilleure arme
+
+Sans expérience, la section Compétences devient la plus importante de votre CV. C'est là que vous concentrez les mots-clés qui matchent avec l'offre.
+
+Lisez attentivement l'offre d'emploi. Relevez chaque compétence mentionnée. Si vous la possédez (même partiellement, grâce à vos études ou projets perso), ajoutez-la dans votre CV.
+
+Exemple pour un poste marketing junior :
+- L'offre mentionne "SEO, Google Analytics, réseaux sociaux, rédaction web"
+- Votre CV devrait contenir ces termes exacts, pas des synonymes
+
+## Formation : donnez du détail
+
+Quand vous avez peu d'expérience, développez votre section Formation. Ne mettez pas juste "Master Marketing, Université de Lyon". Détaillez :
+
+- Mémoire de recherche : "Analyse de l'impact du SEO sur l'acquisition client B2B"
+- Projets de cours : "Création d'une stratégie social media pour une startup locale"
+- Compétences acquises : Google Analytics, WordPress, Canva, Excel
+
+Chaque détail ajoute des mots-clés dans votre CV. Et chaque mot-clé augmente votre score ATS.
+
+## Le piège du CV design
+
+Quand on n'a pas d'expérience, la tentation est forte de compenser avec un beau design. Colonnes, couleurs, icônes, barres de progression.
+
+C'est la pire chose à faire pour un ATS. Un [CV Canva trop graphique](/blog/cv-canva-ats) sera illisible par les filtres automatiques. Votre score tombera à zéro, et personne ne verra votre candidature.
+
+Gardez un design simple. Une seule colonne. Des sections clairement titrées. Du texte brut. C'est moins joli, mais ca passe les filtres.
+
+## Adaptez chaque candidature
+
+C'est le conseil qui demande le plus d'effort, mais c'est celui qui fait la plus grande différence. Surtout quand on débute.
+
+Prenez 10 minutes avant chaque candidature pour relire l'offre et ajuster votre CV. Vérifiez que les [mots-clés de l'offre](/blog/mots-cles-cv-ats) apparaissent dans votre document.
+
+Vous n'avez pas besoin de tout réécrire. Juste d'ajuster les formulations et d'ajouter les termes manquants dans vos descriptions de projets ou compétences.
+
+---
+
+**Testez votre CV débutant gratuitement.** [Scanner mon CV sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+  {
+    slug: "cv-reconversion-professionnelle-ats",
+    title: "CV reconversion professionnelle : passer les ATS quand on change de métier",
+    metaTitle: "CV reconversion professionnelle : passer les filtres ATS | CVpass",
+    metaDescription: "En reconversion ? Votre CV doit convaincre à la fois les ATS et les recruteurs que vous êtes légitime. Voici comment structurer un CV de transition.",
+    description: "Comment adapter son CV pour passer les filtres ATS lors d'une reconversion professionnelle.",
+    date: "2026-04-18",
+    readTime: "8 min",
+    category: "Guide ATS",
+    tags: ["Guide ATS", "CV", "Reconversion"],
+    image: "/blog/scanner-cv-gratuit.svg",
+    content: `
+## Le vrai problème de la reconversion
+
+Vous avez 8 ans d'expérience en comptabilité et vous voulez devenir développeur web. Ou vous quittez la restauration pour le marketing digital. Ou vous passez de l'enseignement au conseil RH.
+
+Le problème : votre CV est rempli de mots-clés d'un secteur, et l'offre en attend d'un autre. L'ATS compare les deux. Le score est faible. Votre candidature disparait.
+
+Ce n'est pas que vous n'êtes pas qualifié. C'est que votre CV ne parle pas le bon langage.
+
+## L'erreur que tout le monde fait
+
+La plupart des candidats en reconversion gardent la structure classique de leur CV : expériences par ordre chronologique, en commençant par la plus récente. Résultat : les 3/4 du CV parlent de l'ancien métier. L'ATS y trouve zéro mot-clé du nouveau secteur.
+
+Il faut inverser l'approche. Au lieu de raconter d'où vous venez, montrez où vous allez.
+
+## Structure recommandée pour un CV reconversion
+
+**1. Titre du CV : le poste visé, pas l'ancien**
+
+Mettez le titre du poste que vous ciblez, pas celui que vous quittez. "Développeur web junior" et non "Ancien comptable en reconversion". L'ATS cherche le titre du poste dans votre CV. Donnez-le-lui.
+
+**2. Profil / Accroche : la passerelle**
+
+3-4 lignes qui font le lien entre votre passé et votre objectif. Pas de justification ("j'ai voulu changer parce que..."), juste les faits.
+
+Exemple : "Professionnel en transition vers le développement web. Formation complète (Le Wagon, 400h). Compétences en JavaScript, React, Ruby on Rails. Ancien gestionnaire de projet avec 6 ans d'expérience en coordination d'équipe et gestion de budget."
+
+Cette accroche contient les mots-clés du nouveau métier ET valorise les compétences transférables.
+
+**3. Section Compétences : les mots-clés du nouveau métier en premier**
+
+Mettez en premier les compétences de votre nouveau domaine. Les compétences transférables ensuite. L'ATS lit de haut en bas, et les premières occurrences comptent plus.
+
+**4. Formation : mettez-la avant l'expérience**
+
+Si vous avez suivi un bootcamp, une formation certifiante ou un diplôme dans le nouveau domaine, mettez cette section avant l'expérience professionnelle. Ca change l'ordre de lecture de l'ATS et augmente la densité de mots-clés pertinents en début de CV.
+
+## Les compétences transférables que les ATS reconnaissent
+
+Certaines compétences traversent les secteurs. Si vous les avez, utilisez-les :
+
+- Gestion de projet, coordination d'équipe, planification
+- Analyse de données, reporting, Excel avancé
+- Relation client, négociation, communication
+- Budget, suivi financier, optimisation des coûts
+- Rédaction, présentation, formation
+
+Reformulez vos anciennes expériences en utilisant le vocabulaire du nouveau secteur. "J'ai géré les plannings du restaurant" devient "Planification opérationnelle d'une équipe de 12 personnes, gestion des priorités en temps réel".
+
+## Le format qui passe
+
+- PDF texte, une seule colonne
+- Titre du poste visé en haut
+- Profil/accroche avec les mots-clés cibles
+- Compétences nouvelles en premier
+- Formation récente avant l'expérience ancienne
+- Expériences reformulées avec du vocabulaire transférable
+
+Vérifiez votre CV avec un [scanner ATS](/blog/scanner-cv-gratuit) avant de postuler. Si votre score est au-dessus de 60 avec les mots-clés de l'offre, vous êtes sur la bonne voie.
+
+---
+
+**Testez votre CV reconversion gratuitement.** [Scanner sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+  {
+    slug: "profil-linkedin-recruteurs",
+    title: "Profil LinkedIn : ce que les recruteurs regardent vraiment en 2026",
+    metaTitle: "Profil LinkedIn : ce que les recruteurs regardent en 2026 | CVpass",
+    metaDescription: "Les recruteurs passent 7 secondes sur votre profil LinkedIn. Voici les 5 éléments qu'ils regardent et comment les optimiser pour être contacté.",
+    description: "Les éléments clés de votre profil LinkedIn qui déterminent si un recruteur vous contacte ou passe au suivant.",
+    date: "2026-04-22",
+    readTime: "6 min",
+    category: "LinkedIn",
+    tags: ["LinkedIn", "Recrutement", "Guide"],
+    image: "/blog/lettre-motivation-ats.svg",
+    content: `
+## 7 secondes
+
+C'est le temps moyen qu'un recruteur passe sur votre profil LinkedIn avant de décider s'il continue ou s'il passe au suivant. Sept secondes. Pas le temps de lire votre "À propos" en entier. Pas le temps de parcourir vos 8 expériences. Juste un coup d'oeil.
+
+Ce coup d'oeil, il se concentre sur 5 éléments. Si ces 5 éléments sont bons, le recruteur reste. Sinon, il part. Ce qui suit explique exactement quoi mettre dans chacun.
+
+## 1. Votre titre (headline)
+
+C'est la première chose visible après votre nom. Et c'est souvent la plus mal utilisée.
+
+Ce que font la plupart des gens : "En recherche d'opportunités" ou "Open to work" ou simplement leur poste actuel ("Comptable chez XYZ").
+
+Ce que les recruteurs veulent voir : votre compétence principale + votre secteur + un résultat ou une spécialité.
+
+Exemples qui fonctionnent :
+- "Chef de projet digital, spécialisé e-commerce B2B, +40 projets livrés"
+- "Développeur React/Node.js, 5 ans d'expérience fintech"
+- "Responsable marketing acquisition, SEO/SEA, ex-startup scale-up"
+
+Le titre LinkedIn est aussi indexé par le moteur de recherche de LinkedIn. Les recruteurs tapent des mots-clés pour trouver des candidats. Si votre titre contient ces mots-clés, vous apparaissez dans les résultats.
+
+## 2. Votre photo
+
+Pas de photo = 14x moins de vues de profil. C'est une statistique LinkedIn officielle.
+
+La photo n'a pas besoin d'être professionnelle au sens studio photo. Elle doit être nette, avec un fond neutre, votre visage bien visible, et un sourire naturel. Pas de photo de vacances recadrée. Pas de selfie. Pas de photo de groupe.
+
+## 3. Votre section "À propos"
+
+Les recruteurs qui restent plus de 7 secondes lisent cette section. C'est votre pitch.
+
+3 à 5 lignes suffisent. Commencez par ce que vous faites concrètement. Ajoutez un ou deux résultats chiffrés. Terminez par ce que vous cherchez.
+
+Mauvais exemple : "Passionné par le digital et le marketing, j'aime relever des défis et travailler en équipe dans un environnement dynamique."
+
+Ca ne dit rien. Aucune information concrète. Aucun mot-clé exploitable.
+
+Bon exemple : "Responsable acquisition chez [startup], j'ai structuré la stratégie SEO/SEA qui a généré 2M de visites en 12 mois. Avant ca, 4 ans en agence sur des comptes e-commerce (budget media 500K/an). Je cherche un poste de Head of Growth dans une scale-up B2B."
+
+## 4. Vos expériences (les deux premières)
+
+Le recruteur ne lit pas tout. Il regarde votre poste actuel et le précédent. Si les intitulés et les descriptions collent avec ce qu'il cherche, il continue.
+
+Pour chaque expérience, ajoutez 2-3 bullet points avec des résultats concrets. Pas des responsabilités vagues. Des résultats.
+
+"Responsable de la stratégie social media" est une responsabilité.
+"Croissance de 0 à 45K followers en 8 mois, taux d'engagement 4.2%" est un résultat.
+
+## 5. Vos compétences
+
+LinkedIn permet d'ajouter jusqu'à 50 compétences. Les recruteurs utilisent ces compétences comme filtres de recherche. Si "Google Analytics" est dans leurs critères et que vous ne l'avez pas listé, vous n'apparaissez pas.
+
+Ajoutez toutes les compétences pertinentes pour votre métier. Faites-les valider par vos contacts. Les compétences validées par d'autres sont mieux classées par l'algorithme LinkedIn.
+
+## Le piège du "Open to Work"
+
+Le bandeau vert "Open to Work" sur votre photo est un sujet qui divise. Certains recruteurs apprécient la transparence. D'autres considèrent que ca donne une image de candidat en difficulté.
+
+Mon conseil : activez la fonctionnalité "Open to Work" dans les paramètres LinkedIn, mais choisissez l'option "Visible uniquement par les recruteurs". Vous apparaissez dans leurs recherches sans afficher le bandeau publiquement.
+
+## Optimisez votre profil avec l'IA
+
+L'[optimiseur LinkedIn de CVpass](/linkedin) analyse votre profil et propose un titre optimisé, un résumé réécrit et des compétences adaptées aux recruteurs de votre secteur.
+
+---
+
+**Analysez votre profil LinkedIn gratuitement.** [Optimiser mon profil](https://cvpass.fr/linkedin)
+    `.trim(),
+  },
+  {
+    slug: "entretien-apres-ats",
+    title: "Votre CV a passé l'ATS : comment préparer l'entretien",
+    metaTitle: "Entretien après filtrage ATS : comment se préparer | CVpass",
+    metaDescription: "Votre CV a passé les filtres ATS et vous avez décroché un entretien. Voici comment transformer cette opportunité en offre d'emploi.",
+    description: "Vous avez passé le filtre ATS. Voici comment convertir l'entretien en offre.",
+    date: "2026-04-25",
+    readTime: "7 min",
+    category: "Recrutement",
+    tags: ["Recrutement", "Entretien", "Guide"],
+    image: "/blog/score-ats-cv.svg",
+    content: `
+## Le filtre est passé. Et maintenant ?
+
+Votre CV a été sélectionné par l'ATS. Un recruteur l'a lu. Il vous a convoqué en entretien. C'est une bonne nouvelle, mais le travail n'est pas terminé.
+
+Ce que beaucoup de candidats oublient : le recruteur a votre CV sous les yeux pendant l'entretien. Il va vous poser des questions basées sur ce que vous avez écrit. Si votre CV a été optimisé pour passer les filtres ATS, vous devez être capable de défendre chaque ligne.
+
+## Relisez votre CV comme un recruteur
+
+Prenez votre CV. Lisez chaque bullet point. Pour chacun, préparez une réponse à la question "Pouvez-vous m'en dire plus ?"
+
+Si vous avez écrit "Augmentation du taux de conversion de 25%", préparez l'histoire complète : quel était le contexte, qu'avez-vous fait concrètement, quel outil avez-vous utilisé, en combien de temps.
+
+La méthode STAR (Situation, Tâche, Action, Résultat) fonctionne bien pour structurer ces réponses. Pas besoin de réciter un script, juste d'avoir les grandes lignes en tête.
+
+## Les questions liées aux mots-clés ATS
+
+Si votre CV contient "Gestion de projet Agile" parce que l'offre le mentionnait, attendez-vous à la question "Parlez-moi de votre expérience avec Agile".
+
+Si vous avez listé "Salesforce" dans vos compétences, on vous demandera probablement à quel niveau vous le maitrisez.
+
+Règle simple : ne mettez rien dans votre CV que vous ne pouvez pas défendre à l'oral. Les [mots-clés de votre CV](/blog/mots-cles-cv-ats) doivent correspondre à des compétences réelles.
+
+## Faites le lien avec l'offre
+
+Avant l'entretien, relisez l'offre d'emploi en détail. Identifiez les 3-4 compétences ou missions principales. Pour chacune, préparez un exemple tiré de votre expérience.
+
+Le recruteur veut savoir si vous pouvez faire le job. Pas si vous êtes "motivé" ou "passionné". Des exemples concrets valent mille adjectifs.
+
+## Les questions que vous devez poser
+
+Un entretien n'est pas un interrogatoire. C'est une conversation. Préparez 3-4 questions pour le recruteur :
+
+- "Comment se passe une journée type à ce poste ?"
+- "Quels sont les objectifs pour les 6 premiers mois ?"
+- "Pourquoi le poste est-il ouvert ?"
+- "Quelle est la taille de l'équipe ?"
+
+Ces questions montrent que vous vous projetez dans le poste. Et elles vous donnent des informations utiles pour décider si le job vous convient.
+
+## Après l'entretien : la relance
+
+Envoyez un email de remerciement dans les 24 heures. Court, personnalisé, professionnel.
+
+"Merci pour l'échange de ce matin. J'ai apprécié d'en apprendre plus sur [sujet discuté]. Le poste correspond à ce que je recherche, et je suis convaincu que mon expérience en [compétence discutée] serait un atout pour votre équipe."
+
+Si vous n'avez pas de nouvelles après 7 jours, relancez une fois. Le [tracker de candidatures CVpass](/tracker) vous aide à suivre les délais et à ne rien oublier.
+
+---
+
+**Optimisez votre CV avant le prochain entretien.** [Scanner sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+  {
+    slug: "cv-apec-cadres-ats",
+    title: "Postuler sur l'APEC : optimiser son CV cadre pour les filtres ATS",
+    metaTitle: "CV APEC cadre : optimiser pour les filtres ATS en 2026 | CVpass",
+    metaDescription: "L'APEC utilise des filtres ATS pour trier les candidatures cadres. Voici comment adapter votre CV pour maximiser vos chances sur la plateforme.",
+    description: "Comment structurer votre CV cadre pour les filtres de l'APEC et augmenter vos chances d'être vu par les recruteurs.",
+    date: "2026-04-29",
+    readTime: "7 min",
+    category: "Guide ATS",
+    tags: ["Guide ATS", "France", "Recrutement"],
+    image: "/blog/entreprises-ats.svg",
+    content: `
+## L'APEC et les ATS
+
+L'APEC (Association pour l'emploi des cadres) est le premier réflexe de beaucoup de cadres en recherche d'emploi en France. Ce que la plupart ne savent pas, c'est que les entreprises qui publient sur l'APEC utilisent leurs propres ATS pour filtrer les candidatures.
+
+Quand vous postulez sur l'APEC, votre CV est transmis au système de l'entreprise. Il passe par les mêmes filtres que sur n'importe quelle autre plateforme. Les règles d'optimisation ATS s'appliquent donc intégralement.
+
+## Le profil APEC : votre premier filtre
+
+L'APEC a aussi son propre système de matching. Quand vous créez votre profil, vous renseignez vos compétences, votre secteur, votre niveau de rémunération. Ces informations sont utilisées pour vous proposer des offres et pour vous rendre visible auprès des recruteurs qui cherchent des profils.
+
+Un profil incomplet = moins de visibilité. Prenez le temps de remplir chaque champ. Utilisez des termes précis pour vos compétences, pas des formulations vagues.
+
+## Les spécificités du CV cadre
+
+Les postes cadres ont des exigences ATS différentes des postes juniors.
+
+**Le titre doit être précis et inclure le niveau hiérarchique.** "Directeur marketing" est mieux que "Marketing". "Responsable financier groupe" est mieux que "Finance". Les recruteurs cadres filtrent souvent sur le niveau de responsabilité.
+
+**Les résultats doivent être chiffrés et à l'échelle.** Un cadre gère des budgets, des équipes, des projets. Les chiffres attendus sont plus ambitieux : "Pilotage d'un budget de 2M", "Management d'une équipe de 25 personnes", "Croissance CA de 35% sur 2 ans".
+
+**Les certifications et formations continues comptent.** MBA, certifications sectorielles (PMP, CFA, ITIL), formations en management. Les ATS des grandes entreprises filtrent souvent sur ces critères pour les postes cadres.
+
+## Erreurs fréquentes des CV cadres sur l'APEC
+
+**CV trop long.** Beaucoup de cadres avec 15-20 ans d'expérience ont des CV de 3-4 pages. Les ATS n'ont pas de problème avec la longueur, mais les recruteurs si. 2 pages maximum, en priorisant les 10 dernières années.
+
+**Descriptions de poste au lieu de résultats.** "Responsable du département commercial" ne dit rien sur votre performance. "Restructuration du département commercial : +45% de CA en 18 mois, recrutement et formation de 8 commerciaux" dit tout.
+
+**Vocabulaire trop interne.** Chaque entreprise a son jargon. "Projet Phénix" ou "Programme Horizon" ne veut rien dire pour un ATS ou un recruteur externe. Traduisez en termes génériques : "Projet de transformation digitale", "Programme d'optimisation des coûts".
+
+## Le bon format
+
+- PDF texte, 2 pages max
+- Titre avec intitulé de poste + secteur + périmètre
+- Accroche de 3 lignes avec résultats clés
+- Expériences : les 3-4 plus récentes détaillées, les anciennes résumées
+- Compétences : techniques + managériales
+- Formation : diplôme principal + certifications
+
+Testez votre CV avec un [scanner ATS](/blog/scanner-cv-gratuit) en le comparant à l'offre APEC visée. Ajustez les mots-clés manquants avant de postuler.
+
+---
+
+**Optimisez votre CV cadre gratuitement.** [Scanner mon CV sur CVpass](https://cvpass.fr)
+    `.trim(),
+  },
+  {
+    slug: "relance-candidature-email",
+    title: "Comment relancer une candidature par email sans être lourd",
+    metaTitle: "Relancer une candidature par email : modèles et conseils | CVpass",
+    metaDescription: "Pas de réponse après votre candidature ? Voici quand et comment envoyer un email de relance efficace, avec des modèles prêts à copier.",
+    description: "Quand et comment relancer une candidature par email pour maximiser vos chances d'obtenir une réponse.",
+    date: "2026-05-02",
+    readTime: "5 min",
+    category: "Recrutement",
+    tags: ["Recrutement", "Guide", "France"],
+    image: "/blog/mots-cles-cv-ats.svg",
+    content: `
+## Quand relancer
+
+La question que tout le monde se pose : combien de temps attendre avant de relancer ?
+
+Trop tôt, vous passez pour quelqu'un d'impatient. Trop tard, le poste est pourvu. Le bon timing dépend du canal de candidature.
+
+**Candidature sur plateforme (Indeed, WTTJ, APEC) :** attendez 7 à 10 jours ouvrés. Les recruteurs recoivent des dizaines de CV et les traitent souvent par lots.
+
+**Candidature spontanée :** attendez 5 à 7 jours. Le recruteur n'avait pas forcément prévu de recruter, donc le délai de traitement est plus imprévisible.
+
+**Après un entretien :** 5 jours ouvrés maximum. Si on vous a donné un délai ("on revient vers vous d'ici vendredi"), attendez ce délai + 2 jours.
+
+## Le ton juste
+
+La relance n'est pas une réclamation. C'est un rappel poli que vous existez et que vous êtes toujours intéressé.
+
+Pas de reproches ("je n'ai toujours pas eu de réponse"). Pas de pression ("j'ai d'autres offres en cours"). Pas de phrases toutes faites ("je me permets de revenir vers vous").
+
+Soyez direct, court et humain.
+
+## Modèle 1 : relance après candidature en ligne
+
+Objet : Suite, candidature [Poste] du [date]
+
+Bonjour [Nom si connu],
+
+J'ai postulé au poste de [intitulé] le [date] via [plateforme]. Je voulais m'assurer que ma candidature vous était bien parvenue et vous confirmer mon intérêt pour ce poste.
+
+Mon profil : [1 phrase résumant votre valeur ajoutée pour ce poste précis].
+
+Je reste disponible pour un échange à votre convenance.
+
+[Prénom Nom]
+
+## Modèle 2 : relance après un entretien
+
+Objet : Suite à notre échange du [date]
+
+Bonjour [Nom],
+
+Je reviens vers vous suite à notre entretien du [date] pour le poste de [intitulé]. L'échange m'a conforté dans mon intérêt pour le poste et pour votre équipe.
+
+Avez-vous pu avancer dans le processus de recrutement ? Je suis disponible si vous avez besoin d'informations complémentaires.
+
+[Prénom Nom]
+
+## Ce qu'il ne faut pas faire
+
+**Relancer plus de 2 fois.** Une relance, c'est normal. Deux relances, c'est persévérant. Trois relances, c'est insistant. Après 2 relances sans réponse, passez à autre chose.
+
+**Relancer par téléphone sans prévenir.** Sauf si l'offre mentionne un numéro de contact, restez sur l'email. Un appel non sollicité met le recruteur dans une position inconfortable.
+
+**Envoyer un message LinkedIn ET un email le même jour.** Choisissez un canal. Si l'email ne marche pas après 5 jours, essayez LinkedIn. Pas les deux en même temps.
+
+## Automatisez le suivi
+
+Le [tracker de candidatures CVpass](/tracker) vous alerte automatiquement quand une candidature postulée n'a pas eu de réponse après 7 jours. Vous pouvez générer un email de relance personnalisé en un clic grâce au coach IA.
+
+Plus besoin de noter les dates dans un tableur. Plus de candidatures oubliées.
+
+---
+
+**Suivez vos candidatures et relancez au bon moment.** [Accéder au tracker CVpass](https://cvpass.fr/tracker)
+    `.trim(),
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
