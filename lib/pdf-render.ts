@@ -25,13 +25,42 @@ const PAGE_INNER = PAGE_W - 2 * M;
 //  SHARED HELPERS
 // ═══════════════════════════════════════════════════════════════
 
+function normalizeLinkedInUrl(raw: string): string {
+  const trimmed = raw.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  if (/^linkedin\.com/i.test(trimmed)) return `https://www.${trimmed}`;
+  return `https://${trimmed}`;
+}
+
+function contactParts(cv: CVData): Array<{ text: string; link?: string }> {
+  const parts: Array<{ text: string; link?: string }> = [];
+  if (cv.contact?.email) parts.push({ text: cv.contact.email, link: `mailto:${cv.contact.email}` });
+  if (cv.contact?.telephone) parts.push({ text: cv.contact.telephone });
+  if (cv.contact?.ville) parts.push({ text: cv.contact.ville });
+  if (cv.contact?.linkedin) {
+    const display = cv.contact.linkedin.replace(/^https?:\/\/(www\.)?/i, "");
+    parts.push({ text: display, link: normalizeLinkedInUrl(cv.contact.linkedin) });
+  }
+  return parts;
+}
+
 function contactLine(cv: CVData): string {
-  const parts: string[] = [];
-  if (cv.contact?.email) parts.push(cv.contact.email);
-  if (cv.contact?.telephone) parts.push(cv.contact.telephone);
-  if (cv.contact?.ville) parts.push(cv.contact.ville);
-  if (cv.contact?.linkedin) parts.push(cv.contact.linkedin.replace(/^https?:\/\/(www\.)?/, ""));
-  return parts.join("  |  ");
+  return contactParts(cv).map((p) => p.text).join("  |  ");
+}
+
+function contactRichLine(cv: CVData, fontSize: number, color: string): unknown {
+  const parts = contactParts(cv);
+  if (parts.length === 0) return null;
+  const textArray: unknown[] = [];
+  parts.forEach((p, i) => {
+    if (i > 0) textArray.push({ text: "  |  ", color });
+    textArray.push(p.link
+      ? { text: p.text, link: p.link, color, decoration: "underline" }
+      : { text: p.text, color }
+    );
+  });
+  return { text: textArray, font: "Helvetica", fontSize, lineHeight: 1.4 };
 }
 
 function bullet(tpl: CvTemplate): string {
@@ -191,8 +220,8 @@ function buildSingleColumn(cv: CVData, tpl: CvTemplate): unknown[] {
       headerStack.push(nameBlock);
       if (cv.titre) headerStack.push({ text: cv.titre, font: "Helvetica", fontSize: tpl.fontSize.title, color: contactColor, margin: [0, 3, 0, 0] });
     }
-    const cl = contactLine(cv);
-    if (cl) headerStack.push({ text: cl, font: "Helvetica", fontSize: tpl.fontSize.small, color: contactColor, margin: [0, 6, 0, 0] });
+    const clRich = contactRichLine(cv, tpl.fontSize.small, contactColor);
+    if (clRich) headerStack.push({ ...clRich as Record<string, unknown>, margin: [0, 6, 0, 0] });
 
     content.push({
       table: { widths: [PAGE_INNER], body: [[{ stack: headerStack, margin: [16, 14, 16, 14] }]] },
@@ -214,8 +243,8 @@ function buildSingleColumn(cv: CVData, tpl: CvTemplate): unknown[] {
       content.push({ ...nameBlock, margin: [0, 0, 0, 4] });
       if (cv.titre) content.push({ text: cv.titre, font: "Helvetica", fontSize: tpl.fontSize.title, color: tpl.colors.text, margin: [0, 0, 0, 4] });
     }
-    const cl = contactLine(cv);
-    if (cl) content.push({ text: cl, font: "Helvetica", fontSize: tpl.fontSize.body, color: tpl.colors.subtext, margin: [0, 0, 0, 4] });
+    const clRich2 = contactRichLine(cv, tpl.fontSize.body, tpl.colors.subtext);
+    if (clRich2) content.push({ ...clRich2 as Record<string, unknown>, margin: [0, 0, 0, 4] });
     content.push({ canvas: [{ type: "line", x1: 0, y1: 0, x2: PAGE_INNER, y2: 0, lineWidth: tpl.sectionStyle === "minimal" ? 0.5 : 1.5, lineColor: tpl.colors.primary }], margin: [0, 2, 0, 4] });
   }
 
@@ -277,8 +306,8 @@ function buildBanner(cv: CVData, tpl: CvTemplate): unknown[] {
     if (cv.titre) headerStack.push({ text: cv.titre, font: "Helvetica", fontSize: tpl.fontSize.title, color: "#d1d5db", margin: [0, 4, 0, 0] });
   }
 
-  const cl = contactLine(cv);
-  if (cl) headerStack.push({ text: cl, font: "Helvetica", fontSize: tpl.fontSize.small, color: "#94a3b8", margin: [0, 8, 0, 0] });
+  const clBanner = contactRichLine(cv, tpl.fontSize.small, "#94a3b8");
+  if (clBanner) headerStack.push({ ...clBanner as Record<string, unknown>, margin: [0, 8, 0, 0] });
 
   content.push({
     table: { widths: [PAGE_INNER + 2 * M], body: [[{ stack: headerStack, margin: [M + 8, 20, M + 8, 20] }]] },
@@ -330,7 +359,7 @@ function buildTimeline(cv: CVData, tpl: CvTemplate): unknown[] {
         stack: [
           { text: cv.nom || "CV", font: "Helvetica", fontSize: tpl.fontSize.name, bold: true, color: tpl.colors.heading, margin: [8, 0, 0, 0] },
           ...(cv.titre ? [{ text: cv.titre, font: "Helvetica", fontSize: tpl.fontSize.title, color: tpl.colors.subtext, margin: [8, 3, 0, 0] }] : []),
-          ...(contactLine(cv) ? [{ text: contactLine(cv), font: "Helvetica", fontSize: tpl.fontSize.small, color: tpl.colors.subtext, margin: [8, 4, 0, 0] }] : []),
+          ...(contactLine(cv) ? [{ ...contactRichLine(cv, tpl.fontSize.small, tpl.colors.subtext) as Record<string, unknown>, margin: [8, 4, 0, 0] }] : []),
         ],
         margin: [0, 4, 0, 4],
       },
