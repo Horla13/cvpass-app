@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
-  let body: { company?: string; job_title?: string; url?: string; status?: string; notes?: string; analysis_id?: string };
+  let body: { company?: string; job_title?: string; url?: string; status?: string; notes?: string; analysis_id?: string; interview_date?: string };
   try {
     body = await req.json();
   } catch {
@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
       notes: body.notes?.trim() || null,
       analysis_id: body.analysis_id || null,
       applied_at: status === "applied" ? new Date().toISOString() : null,
+      interview_date: body.interview_date || null,
     })
     .select("*")
     .single();
@@ -73,7 +74,7 @@ export async function PATCH(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
 
-  let body: { id?: string; company?: string; job_title?: string; url?: string; status?: string; notes?: string };
+  let body: { id?: string; company?: string; job_title?: string; url?: string; status?: string; notes?: string; interview_date?: string | null };
   try {
     body = await req.json();
   } catch {
@@ -89,6 +90,7 @@ export async function PATCH(req: NextRequest) {
   if (body.job_title !== undefined) updates.job_title = body.job_title.trim();
   if (body.url !== undefined) updates.url = body.url.trim() || null;
   if (body.notes !== undefined) updates.notes = body.notes.trim() || null;
+  if (body.interview_date !== undefined) updates.interview_date = body.interview_date || null;
   if (body.status && VALID_STATUSES.includes(body.status)) {
     updates.status = body.status;
     if (body.status === "applied" && !updates.applied_at) {
