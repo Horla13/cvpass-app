@@ -5,7 +5,9 @@ import { AppHeader } from "@/components/AppHeader";
 import { cn } from "@/lib/utils";
 
 interface LinkedInResult {
-  score: number;
+  score?: number;
+  score_avant?: number;
+  score_apres?: number;
   headline: string;
   summary: string;
   experience_tips: string[];
@@ -79,7 +81,9 @@ export default function LinkedInPage() {
     copyToClipboard(all, "all");
   };
 
-  const scoreColor = result ? (result.score < 40 ? "#ef4444" : result.score < 60 ? "#f59e0b" : "#16a34a") : "#6b7280";
+  const scoreBefore = result?.score_avant ?? result?.score ?? 0;
+  const scoreAfter = result?.score_apres ?? (result?.score ? Math.min(100, result.score + 20) : 0);
+  const colorFor = (s: number) => s < 40 ? "#ef4444" : s < 60 ? "#f59e0b" : "#16a34a";
   const canProceedStep1 = profileText.trim().length >= 50;
 
   return (
@@ -293,23 +297,46 @@ export default function LinkedInPage() {
               </button>
             </div>
 
-            {/* Score */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-              <p className="text-[13px] text-gray-400 mb-2">Score LinkedIn</p>
-              <div className="relative w-32 h-32 mx-auto mb-3">
-                <svg className="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
-                  <circle cx="60" cy="60" r="52" fill="none" stroke="#e5e7eb" strokeWidth="8" />
-                  <circle cx="60" cy="60" r="52" fill="none" stroke={scoreColor} strokeWidth="8" strokeLinecap="round"
-                    strokeDasharray={`${(result.score / 100) * 327} 327`}
-                    className="transition-all duration-1000"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[32px] font-extrabold" style={{ color: scoreColor }}>{result.score}</span>
+            {/* Scores avant / après */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-8">
+              <div className="grid grid-cols-2 gap-8">
+                {/* Score avant */}
+                <div className="text-center">
+                  <p className="text-[13px] text-gray-400 mb-2">Score actuel</p>
+                  <div className="relative w-28 h-28 mx-auto mb-3">
+                    <svg className="w-28 h-28 -rotate-90" viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+                      <circle cx="60" cy="60" r="52" fill="none" stroke={colorFor(scoreBefore)} strokeWidth="8" strokeLinecap="round"
+                        strokeDasharray={`${(scoreBefore / 100) * 327} 327`}
+                        className="transition-all duration-1000"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[28px] font-extrabold" style={{ color: colorFor(scoreBefore) }}>{scoreBefore}</span>
+                    </div>
+                  </div>
+                  <p className="text-[13px] text-gray-500">Avant optimisation</p>
+                </div>
+                {/* Score après */}
+                <div className="text-center">
+                  <p className="text-[13px] text-gray-400 mb-2">Score estimé</p>
+                  <div className="relative w-28 h-28 mx-auto mb-3">
+                    <svg className="w-28 h-28 -rotate-90" viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+                      <circle cx="60" cy="60" r="52" fill="none" stroke={colorFor(scoreAfter)} strokeWidth="8" strokeLinecap="round"
+                        strokeDasharray={`${(scoreAfter / 100) * 327} 327`}
+                        className="transition-all duration-1000"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[28px] font-extrabold" style={{ color: colorFor(scoreAfter) }}>{scoreAfter}</span>
+                    </div>
+                  </div>
+                  <p className="text-[13px] text-green-600 font-medium">Après optimisation</p>
                 </div>
               </div>
-              <p className="text-[14px] text-gray-500">
-                {result.score < 40 ? "Votre profil a besoin de travail" : result.score < 60 ? "Des améliorations sont possibles" : result.score < 80 ? "Bon profil, quelques ajustements" : "Excellent profil"}
+              <p className="text-[13px] text-gray-400 text-center mt-4">
+                +{scoreAfter - scoreBefore} points en appliquant les suggestions ci-dessous
               </p>
             </div>
 

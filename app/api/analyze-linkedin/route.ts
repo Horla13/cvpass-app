@@ -25,8 +25,9 @@ PÉNALITÉS :
 - Clichés ("passionné", "dynamique", "force de proposition") : -3 pts chacun
 
 CE QUE TU DOIS FOURNIR :
-1. Un score global (0-100)
-2. Un titre LinkedIn optimisé (headline) — max 120 caractères, intégrant le poste + 2-3 mots-clés du secteur
+1. Un score_avant (0-100) : le score du profil LinkedIn ACTUEL tel que collé par l'utilisateur
+2. Un score_apres (0-100) : le score ESTIMÉ si l'utilisateur applique toutes tes suggestions (titre, résumé, compétences)
+3. Un titre LinkedIn optimisé (headline) — max 120 caractères, intégrant le poste + 2-3 mots-clés du secteur
 3. Un résumé LinkedIn optimisé (à propos) — 3-5 lignes, orienté résultats, avec chiffres si disponibles dans le profil original
 4. 3-5 suggestions pour améliorer les expériences
 5. Une liste de 5-8 compétences à ajouter/modifier
@@ -40,7 +41,8 @@ RÈGLES :
 
 Retourne UNIQUEMENT un JSON valide :
 {
-  "score": number (0-100),
+  "score_avant": number (0-100),
+  "score_apres": number (0-100),
   "headline": string (titre LinkedIn optimisé, max 120 caractères),
   "summary": string (résumé/à propos optimisé, 3-5 lignes),
   "experience_tips": [string, string, ...] (3-5 suggestions pour les expériences),
