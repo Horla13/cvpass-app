@@ -10,10 +10,16 @@ import { useAuth } from "@clerk/nextjs";
 
 const NAV_LINKS_AUTH = [
   { href: "/analyze", label: "Analyser" },
-  { href: "/linkedin", label: "LinkedIn" },
   { href: "/tracker", label: "Candidatures" },
   { href: "/pricing", label: "Tarifs" },
-  { href: "/affiliate", label: "Affiliation" },
+];
+
+const TOOLS_DROPDOWN = [
+  { href: "/analyze-job", label: "Analyseur d'offre", tag: "Nouveau" },
+  { href: "/coach-entretien", label: "Coach entretien", tag: "Nouveau" },
+  { href: "/linkedin", label: "Optimiseur LinkedIn" },
+  { href: "/salaires", label: "Simulateur salaire", tag: "Gratuit" },
+  { href: "/affiliate", label: "Programme affiliation" },
 ];
 
 const NAV_LINKS_PUBLIC = [
@@ -25,6 +31,7 @@ export function AppHeader() {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -69,6 +76,43 @@ export function AppHeader() {
               </Link>
             );
           })}
+          {isSignedIn && (
+            <div className="relative">
+              <button
+                onClick={() => setToolsOpen((v) => !v)}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1",
+                  TOOLS_DROPDOWN.some((t) => pathname === t.href)
+                    ? "text-brand-green font-display"
+                    : "text-brand-gray hover:text-brand-black"
+                )}
+              >
+                Outils
+                <svg className={cn("transition-transform", toolsOpen && "rotate-180")} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              {toolsOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setToolsOpen(false)} />
+                  <div className="absolute left-0 top-full mt-1 z-20 bg-white border border-gray-200 rounded-xl shadow-lg py-2 w-56">
+                    {TOOLS_DROPDOWN.map((tool) => (
+                      <Link
+                        key={tool.href}
+                        href={tool.href}
+                        onClick={() => setToolsOpen(false)}
+                        className={cn(
+                          "flex items-center justify-between px-4 py-2.5 text-[14px] transition-colors",
+                          pathname === tool.href ? "text-brand-green font-semibold bg-green-50" : "text-gray-700 hover:bg-gray-50"
+                        )}
+                      >
+                        {tool.label}
+                        {tool.tag && <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{tool.tag}</span>}
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           {isAdmin && (
             <Link
               href="/admin/affiliates"
@@ -151,6 +195,26 @@ export function AppHeader() {
               </Link>
             );
           })}
+          {isSignedIn && (
+            <>
+              <div className="border-t border-gray-100 my-2" />
+              <p className="px-3 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Outils</p>
+              {TOOLS_DROPDOWN.map((tool) => (
+                <Link
+                  key={tool.href}
+                  href={tool.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                    pathname === tool.href ? "text-brand-green bg-green-50" : "text-brand-gray hover:text-brand-black hover:bg-gray-50"
+                  )}
+                >
+                  {tool.label}
+                  {tool.tag && <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{tool.tag}</span>}
+                </Link>
+              ))}
+            </>
+          )}
           {!isSignedIn && (
             <Link
               href="/signup"
