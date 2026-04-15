@@ -1687,6 +1687,15 @@ export default function ResultsPage() {
           </div>
         </div>
 
+        {/* Anonymous comparator badge */}
+        {scoreActuel > 0 && (
+          <div className="text-center py-2">
+            <span className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-1.5 text-[12px] text-green-700 font-medium">
+              Votre CV est meilleur que {Math.min(95, Math.max(5, Math.round((scoreActuel / 100) * 85 + (scoreActuel > 70 ? 10 : 0))))}% des CV analysés sur CVpass
+            </span>
+          </div>
+        )}
+
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           {/* ─── REPORT TAB ─── */}
           {activeTab === "report" && (

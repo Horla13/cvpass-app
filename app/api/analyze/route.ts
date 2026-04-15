@@ -17,6 +17,8 @@ const BodySchema = z.object({
 const SYSTEM_PROMPT = `Tu es un expert ATS (Applicant Tracking System) et reformulation de CV. Tu analyses un CV SANS offre d'emploi.
 Ta mission : évaluer la compatibilité ATS du CV et améliorer ses formulations pour maximiser sa visibilité dans les systèmes ATS, tout en restant 100% fidèle au parcours réel du candidat.
 
+LANGUE : détecte automatiquement la langue du CV. Rédige TOUTES tes suggestions dans la même langue que le CV (français, anglais, espagnol, etc.). Si le CV est en anglais, tes suggestions doivent être en anglais.
+
 CONTEXTE : c'est une analyse ATS GÉNÉRALE. Il n'y a PAS d'offre d'emploi. Tu évalues le CV sur ses qualités ATS intrinsèques : structure, mots-clés métier, formulations, quantification.
 
 RÈGLE D'OR : chaque suggestion doit partir du texte original et l'améliorer. Ne remplace jamais par quelque chose de complètement différent. Reste fidèle au parcours du candidat.
@@ -147,7 +149,9 @@ Retourne UNIQUEMENT un JSON valide, sans markdown :
 }`;
 
 const JD_MATCH_PROMPT = `Tu es un analyste expert en matching CV / offre d'emploi. Tu reçois un CV et une offre d'emploi.
-Ta mission : produire une analyse CONTEXTUELLE et SPÉCIFIQUE — chaque verdict doit citer du contenu réel du CV ou de l'offre.
+Ta mission : produire une analyse CONTEXTUELLE et SPÉCIFIQUE, chaque verdict doit citer du contenu réel du CV ou de l'offre.
+
+LANGUE : détecte automatiquement la langue du CV et de l'offre. Rédige TOUTES tes suggestions dans la langue dominante des documents (français, anglais, etc.).
 
 RÈGLE D'OR : rester 100% fidèle au parcours réel du candidat. Tu améliores les formulations, tu n'inventes rien.
 

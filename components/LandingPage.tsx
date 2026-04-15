@@ -646,103 +646,93 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── 8. FEATURES (360° style) ── */}
+      {/* ── 8. FEATURES ── */}
       <section id="features" className="py-24">
         <div className="max-w-[1100px] mx-auto px-8">
-          <div className="text-center mb-6 fade-up">
+          <div className="text-center mb-12 fade-up">
             <h2 className="font-display text-[28px] md:text-[36px] lg:text-[40px] font-extrabold tracking-[-1.5px] leading-tight">
-              Analyse <span className="text-brand-green">360&deg;</span> : score ATS, mots-clés et compatibilité recruteur
+              Tous les outils pour <span className="text-brand-green">décrocher le poste</span>
             </h2>
             <p className="text-brand-gray text-base mt-3 max-w-[580px] mx-auto">
-              CVpass identifie chaque mot-clé manquant, corrige les blocages de parsing et quantifie votre impact avec son IA avancée.
+              Du scanner CV à la préparation d&apos;entretien, tout ce qu&apos;il faut pour transformer vos candidatures en entretiens.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
             {[
               {
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
-                  </svg>
-                ),
-                title: "Impact & Quantification",
-                subtitle: "Le pouvoir des chiffres",
-                desc: "Notre IA identifie les bullet points sans métriques et suggère des façons concrètes de quantifier vos réalisations.",
-                checks: [
-                  "Détection des pourcentages, montants et indicateurs temporels",
-                  "Identification des formulations vagues comme \"amélioré la performance\"",
-                  "Suggestions de quantification : %, €, effectifs, délais",
-                ],
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>,
+                title: "Scanner CV ATS",
+                desc: "Uploadez votre CV, obtenez un score sur 100 et des suggestions de réécriture pour chaque point faible. Acceptez en un clic.",
+                tag: "Gratuit",
+                href: "/analyze",
               },
               {
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  </svg>
-                ),
-                title: "Matching ATS par mots-clés",
-                subtitle: "Analyse NLP avancée",
-                desc: "Nous extrayons les mots-clés prioritaires de l'offre d'emploi et les comparons à votre CV en temps réel.",
-                checks: [
-                  "Extraction des mots-clés critiques de l'offre",
-                  "Comparaison croisée avec vos compétences",
-                  "Optimisation de la densité sans keyword stuffing",
-                ],
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>,
+                title: "Match offre d&apos;emploi",
+                desc: "Collez une offre d&apos;emploi, l&apos;IA compare avec votre CV et réécrit les passages faibles avec les mots-clés de l&apos;offre.",
+                tag: "2 crédits",
+                href: "/analyze",
               },
               {
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />
-                  </svg>
-                ),
-                title: "Mise en forme & Lisibilité",
-                subtitle: "Détection des blocages parseur",
-                desc: "Nous détectons les erreurs de formatage qui empêchent les logiciels ATS de lire correctement votre CV.",
-                checks: [
-                  "Vérification de la structure des sections",
-                  "Détection des éléments non lisibles par les ATS",
-                  "Optimisation de la hiérarchie du contenu",
-                ],
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>,
+                title: "Export PDF optimisé",
+                desc: "Téléchargez votre CV corrigé en PDF, prêt à envoyer. Plusieurs templates, structure ATS-friendly, pas de colonnes ni d&apos;images.",
+                tag: "1 crédit",
+                href: "/analyze",
               },
               {
-                icon: (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>
-                ),
-                title: "Verbes d'action & Leadership",
-                subtitle: "Densité de verbes d'impact",
-                desc: "Nous remplaçons le langage passif par des verbes d'autorité adaptés au niveau de séniorité du poste.",
-                checks: [
-                  "Remplacement des formulations passives",
-                  "Adaptation au niveau de séniorité visé",
-                  "Réécriture complète des bullet points faibles",
-                ],
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>,
+                title: "Lettre de motivation IA",
+                desc: "Générée automatiquement à partir de votre CV et de l&apos;offre. Personnalisée, structurée, avec les mots-clés du poste.",
+                tag: "1 crédit",
+                href: "/cover-letter",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>,
+                title: "Analyseur d&apos;offre",
+                desc: "Collez une offre et découvrez sa qualité, les mots-clés à mettre dans votre CV, les compétences attendues et les signaux d&apos;alerte.",
+                tag: "Nouveau",
+                href: "/analyze-job",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
+                title: "Optimiseur LinkedIn",
+                desc: "Collez votre profil LinkedIn, obtenez un score et un titre, un résumé et des compétences optimisés pour les recruteurs.",
+                tag: "1 crédit",
+                href: "/linkedin",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
+                title: "Coach entretien",
+                desc: "À partir de l&apos;offre, l&apos;IA génère les 6 questions les plus probables avec des pistes de réponses adaptées à votre profil.",
+                tag: "Nouveau",
+                href: "/coach-entretien",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
+                title: "Tracker candidatures",
+                desc: "Suivez vos candidatures en kanban. Rappels de relance après 7 jours, email de suivi IA, export CSV, statistiques.",
+                tag: "Inclus",
+                href: "/tracker",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>,
+                title: "Simulateur de salaire",
+                desc: "Estimez votre fourchette salariale selon votre poste, votre ville et votre expérience. 24 métiers, 10 villes françaises.",
+                tag: "Gratuit",
+                href: "/salaires",
               },
             ].map((f, i) => (
-              <div key={i} className={`fade-up d${i + 1} bg-white border border-[#e5e7eb] rounded-[18px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Link key={i} href={f.href} className={`fade-up d${(i % 3) + 1} block bg-white border border-[#e5e7eb] rounded-[16px] p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center shrink-0">
                     {f.icon}
                   </div>
-                  <div>
-                    <h3 className="font-display text-[17px] font-bold text-brand-black">{f.title}</h3>
-                    <p className="text-[13px] text-brand-green font-medium">{f.subtitle}</p>
-                  </div>
+                  <span className="text-[11px] font-bold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">{f.tag}</span>
                 </div>
-                <p className="text-[14px] text-brand-gray leading-relaxed mb-5">{f.desc}</p>
-                <div className="border-t border-gray-100 pt-4">
-                  <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">Vérifications techniques</p>
-                  <ul className="space-y-2.5">
-                    {f.checks.map((check, ci) => (
-                      <li key={ci} className="flex items-start gap-2.5 text-[13px] text-gray-600">
-                        <svg className="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg>
-                        {check}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                <h3 className="font-display text-[16px] font-bold text-brand-black mb-2 group-hover:text-brand-green transition-colors">{f.title}</h3>
+                <p className="text-[13px] text-brand-gray leading-relaxed">{f.desc}</p>
+              </Link>
             ))}
           </div>
         </div>
