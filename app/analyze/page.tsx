@@ -66,24 +66,37 @@ function AnalyzePage() {
       .catch(() => {});
   }, []);
 
+  const [uploadPreview, setUploadPreview] = useState("");
+
   // Upload a new CV
   const handleUpload = useCallback(async (file: File) => {
     setIsUploading(true);
+    setUploadPreview("");
     try {
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/parse-cv", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Erreur upload");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error ?? "Erreur upload");
+      }
       const data = await res.json();
-      setCvText(data.text);
+      const text = data.text ?? "";
+      if (text.trim().length < 20) {
+        setErrorMsg("Le CV semble vide ou illisible. Essayez un autre fichier.");
+        return;
+      }
+      setCvText(text);
       setSelectedFilename(file.name);
+      // Show preview of extracted text
+      setUploadPreview(text.slice(0, 200).trim());
       posthog?.capture("cv_uploaded");
       if (window.innerWidth < 768) {
         posthog?.capture("mobile_upload_started");
       }
       setStep("type");
-    } catch {
-      setErrorMsg("Erreur lors de l'upload du CV. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
+    } catch (e) {
+      setErrorMsg(e instanceof Error ? e.message : "Erreur lors de l'upload. Vérifiez le format (PDF ou DOCX, max 5 Mo).");
     } finally {
       setIsUploading(false);
     }
@@ -263,6 +276,19 @@ function AnalyzePage() {
                   )}
                 </div>
               </button>
+            </div>
+          )}
+
+          {/* Upload preview feedback */}
+          {step === "type" && uploadPreview && (
+            <div className="max-w-[600px] mx-auto mb-4 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+              <div className="flex items-start gap-2">
+                <svg className="shrink-0 mt-0.5 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                <div className="min-w-0">
+                  <p className="text-[13px] text-green-700 font-medium">CV lu avec succès ({selectedFilename})</p>
+                  <p className="text-[12px] text-green-600 mt-1 line-clamp-2 opacity-70">{uploadPreview}...</p>
+                </div>
+              </div>
             </div>
           )}
 

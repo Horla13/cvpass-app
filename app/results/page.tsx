@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { useShallow } from "zustand/react/shallow";
 import { usePostHog } from "posthog-js/react";
@@ -2042,6 +2043,25 @@ export default function ResultsPage() {
                   <p className="text-gray-400 text-[15px]">Le CV n&apos;a pas pu être structuré. Relancez l&apos;analyse.</p>
                 </div>
               )}
+            </div>
+          )}
+          {/* Next steps tunnel */}
+          {pendingGaps.length === 0 && acceptedGaps.length > 0 && (
+            <div className="mt-8 bg-green-50 border border-green-200 rounded-2xl p-5 sm:p-6">
+              <h3 className="text-[15px] font-bold text-green-800 mb-4">Prochaines étapes</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: "Télécharger le PDF", icon: "📄", href: "#", action: "pdf" },
+                  { label: "Lettre de motivation", icon: "✉️", href: "/cover-letter" },
+                  { label: "Préparer l'entretien", icon: "🎯", href: "/coach-entretien" },
+                  { label: "Suivre la candidature", icon: "📋", href: "/tracker" },
+                ].map((s) => (
+                  <Link key={s.label} href={s.href} className="bg-white rounded-xl border border-green-200 p-3 text-center hover:shadow-sm transition-all min-h-[70px] flex flex-col items-center justify-center gap-1">
+                    <span className="text-[18px]">{s.icon}</span>
+                    <span className="text-[12px] font-semibold text-green-700">{s.label}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
         </main>

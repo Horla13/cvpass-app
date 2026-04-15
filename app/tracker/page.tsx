@@ -34,6 +34,10 @@ export default function TrackerPage() {
   const [search, setSearch] = useState("");
   const [showFollowup, setShowFollowup] = useState<Application | null>(null);
   const [showImportUrl, setShowImportUrl] = useState(false);
+  const [weeklyGoal, setWeeklyGoal] = useState(() => {
+    if (typeof window === "undefined") return 10;
+    return parseInt(localStorage.getItem("cvpass_weekly_goal") ?? "10", 10);
+  });
 
   const fetchApps = useCallback(() => {
     fetch("/api/applications")
@@ -64,7 +68,30 @@ export default function TrackerPage() {
       if (a.status !== "applied" || !a.applied_at) return false;
       return (Date.now() - new Date(a.applied_at).getTime()) > 7 * 86400000;
     }).length;
-    return { total, applied, interviews, offers, responseRate, needsFollowup };
+    // Streak: consecutive days with at least one action
+    let streak = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    for (let d = 0; d < 30; d++) {
+      const day = new Date(today);
+      day.setDate(day.getDate() - d);
+      const dayStr = day.toISOString().slice(0, 10);
+      const hasAction = apps.some((a) => {
+        const created = a.created_at?.slice(0, 10);
+        const updated = a.updated_at?.slice(0, 10);
+        return created === dayStr || updated === dayStr;
+      });
+      if (hasAction) streak++;
+      else if (d > 0) break; // streak broken
+    }
+
+    // This week's applications
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
+    weekStart.setHours(0, 0, 0, 0);
+    const thisWeek = apps.filter((a) => a.status !== "wishlist" && new Date(a.created_at) >= weekStart).length;
+
+    return { total, applied, interviews, offers, responseRate, needsFollowup, streak, thisWeek };
   }, [apps]);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
@@ -174,6 +201,29 @@ export default function TrackerPage() {
             </button>
           </div>
         </div>
+
+        {/* Streak + Weekly goal */}
+        {apps.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            {stats.streak > 0 && (
+              <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5">
+                <span className="text-[20px]">🔥</span>
+                <span className="text-[14px] font-bold text-amber-700">{stats.streak} jour{stats.streak > 1 ? "s" : ""} de suite</span>
+              </div>
+            )}
+            <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2.5 flex-1">
+              <span className="text-[13px] text-gray-500">Objectif semaine :</span>
+              <span className="text-[14px] font-bold text-green-600">{stats.thisWeek}/{weeklyGoal}</span>
+              <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden ml-2">
+                <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${Math.min(100, (stats.thisWeek / weeklyGoal) * 100)}%` }} />
+              </div>
+              <select value={weeklyGoal} onChange={(e) => { const v = parseInt(e.target.value); setWeeklyGoal(v); localStorage.setItem("cvpass_weekly_goal", String(v)); }}
+                className="text-[12px] text-gray-400 bg-transparent border-none focus:outline-none cursor-pointer min-h-[32px]">
+                {[5, 10, 15, 20, 30].map((n) => <option key={n} value={n}>{n}/sem</option>)}
+              </select>
+            </div>
+          </div>
+        )}
 
         {/* Stats bar */}
         {apps.length > 0 && (

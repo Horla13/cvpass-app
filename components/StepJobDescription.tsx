@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Props {
   onSubmit: (jobOffer: string) => void;
@@ -10,8 +10,29 @@ interface Props {
   buttonLabel?: string;
 }
 
+const DRAFT_KEY = "cvpass_jd_draft";
+
 export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, title, subtitle, buttonLabel }: Props) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return localStorage.getItem(DRAFT_KEY) ?? "";
+  });
+  const [restored, setRestored] = useState(false);
+
+  // Auto-save draft
+  useEffect(() => {
+    if (text.length > 10) {
+      localStorage.setItem(DRAFT_KEY, text);
+    }
+  }, [text]);
+
+  // Show restored indicator
+  useEffect(() => {
+    if (text.length > 10) setRestored(true);
+    const t = setTimeout(() => setRestored(false), 3000);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="max-w-[700px] mx-auto">
@@ -53,14 +74,17 @@ export default function StepJobDescription({ onSubmit, onBack, isAnalyzing, titl
           >
             Essayer un exemple
           </button>
-          <span className="text-[13px] text-brand-gray">{text.length} caractères</span>
+          <span className="text-[13px] text-brand-gray">
+            {restored && text.length > 10 && <span className="text-green-500 mr-2">Brouillon restauré</span>}
+            {text.length} caractères
+          </span>
         </div>
       </div>
 
       {/* CTA */}
       <div className="flex justify-center">
         <button
-          onClick={() => onSubmit(text)}
+          onClick={() => { localStorage.removeItem(DRAFT_KEY); onSubmit(text); }}
           disabled={text.length < 50 || isAnalyzing}
           className="flex items-center justify-center gap-2 bg-brand-black text-white rounded-xl px-8 py-3 font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 transition-colors"
         >

@@ -6,6 +6,7 @@ import { PostHogProvider } from "@/components/PostHogProvider";
 
 import "./globals.css";
 import { Footer } from "@/components/Footer";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -133,6 +134,7 @@ export default function RootLayout({
           <PostHogProvider>
               {children}
               <Footer />
+              <MobileBottomNav />
           </PostHogProvider>
         </ClerkProvider>
       </body>
