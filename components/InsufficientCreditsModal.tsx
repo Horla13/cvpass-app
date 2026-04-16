@@ -68,9 +68,9 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
           </div>
         ) : (
           <div className="mb-6">
-            <h2 className="font-display text-[22px] font-bold text-gray-900 mb-1">Debloquez cette fonctionnalite</h2>
+            <h2 className="font-display text-[22px] font-bold text-gray-900 mb-1">Vous y &ecirc;tes presque</h2>
             <p className="text-gray-500 text-[14px]">
-              Il vous faut {creditsNeeded} credit{creditsNeeded > 1 ? "s" : ""} pour continuer. Rechargez ou passez en illimite.
+              Il vous faut {creditsNeeded} cr&eacute;dit{creditsNeeded > 1 ? "s" : ""} pour continuer. Chaque cr&eacute;dit vous rapproche d&apos;un entretien.
             </p>
           </div>
         )}
@@ -116,7 +116,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
             <div className="flex items-start justify-between mb-1">
               <div>
                 <h3 className="font-display text-[18px] font-bold text-gray-900">Recherche Active</h3>
-                <p className="text-gray-500 text-[13px]">Tout illimite pendant 30 jours</p>
+                <p className="text-gray-500 text-[13px]">Corrigez tout, re-testez, d&eacute;crochez</p>
               </div>
               <div className="text-right">
                 {promoActive ? (
@@ -135,7 +135,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
             )}
 
             <ul className="space-y-2.5 my-5 text-[13.5px] text-gray-600">
-              {["Analyses + PDF illimites", "Tous les templates premium", "Sans engagement"].map((f) => (
+              {["Analyses + PDF illimit\u00E9s", "Re-testez jusqu'a 90+", "R\u00E9siliable en un clic"].map((f) => (
                 <li key={f} className="flex items-start gap-2">
                   <svg className={`mt-0.5 flex-shrink-0 ${promoActive ? "text-green-500" : "text-blue-500"}`} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   {f}

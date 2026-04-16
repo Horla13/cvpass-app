@@ -298,6 +298,47 @@ export async function sendCvExpiresEmail(
   });
 }
 
+export async function sendPostAnalysisConversionEmail(
+  email: string,
+  firstName: string,
+  scoreAvant: number,
+  nbSuggestions: number
+): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://cvpass.fr";
+  // J+3 email with promo code
+  const scheduledAt = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+  await sendEmail({
+    to: [{ email, name: firstName }],
+    subject: `${nbSuggestions} corrections attendent dans votre CV`,
+    scheduledAt,
+    htmlContent: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#111827;padding:20px;text-align:center;border-radius:8px 8px 0 0;">
+          <span style="color:white;font-weight:bold;font-size:20px;">CV<span style="color:#16a34a">pass</span></span>
+        </div>
+        <div style="padding:28px 24px;color:#111827;">
+          <p>Bonjour ${firstName},</p>
+          <p>Vous avez analyse votre CV il y a quelques jours. Votre score etait de <strong>${scoreAvant}/100</strong> et nous avions identifie <strong>${nbSuggestions} ameliorations</strong>.</p>
+          <p>Les candidats qui appliquent toutes les corrections ont un taux de reponse 3 fois superieur. Avec le plan Recherche Active, vous pouvez corriger, re-tester et telecharger autant de fois que necessaire.</p>
+          <p style="margin:20px 0;padding:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;text-align:center;">
+            <strong style="color:#16a34a;">Code PRO15 : -15% sur votre premier mois</strong><br/>
+            <span style="font-size:13px;color:#6b7280;">8,90 au lieu de 8,90 par mois. Resiliable en un clic.</span>
+          </p>
+          <div style="text-align:center;margin:24px 0;">
+            <a href="${appUrl}/pricing"
+               style="display:inline-block;background:#16a34a;color:white;font-weight:bold;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15px;">
+              Passer en Recherche Active →
+            </a>
+          </div>
+        </div>
+        <div style="color:#6b7280;font-size:12px;padding:16px 24px;border-top:1px solid #f3f4f6;">
+          <a href="${appUrl}" style="color:#16a34a;">cvpass.fr</a>
+        </div>
+      </div>
+    `,
+  }).catch(console.error);
+}
+
 export async function sendPaymentConfirmationEmail(
   email: string,
   plan: "starter" | "pro"

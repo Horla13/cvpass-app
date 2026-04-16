@@ -183,7 +183,7 @@ export default function PricingPage() {
               <span className="text-[20px]">&#128081;</span>
               <h3 className="font-display text-[20px] font-bold text-gray-900">Recherche Active</h3>
             </div>
-            <p className="text-[13px] text-gray-500 mb-5">Analyses illimit&eacute;es pendant 30 jours</p>
+            <p className="text-[13px] text-gray-500 mb-5">D&eacute;crochez un poste en 30 jours. R&eacute;siliez d&egrave;s que c&apos;est fait.</p>
 
             {/* Price — with promo if active */}
             {promo.isActive && plan === "free" ? (
@@ -209,8 +209,8 @@ export default function PricingPage() {
             )}
             {!(promo.isActive && plan === "free") && !promo30 && <div className="mb-4" />}
 
-            <ul className="space-y-3 mb-7">
-              {["Analyses + PDF illimit\u00E9s", "Tous les templates premium", "Lettre de motivation IA", "Tracker candidatures", "R\u00E9siliable \u00E0 tout moment"].map((f) => (
+            <ul className="space-y-3 mb-5">
+              {["Analyses + PDF illimit\u00E9s", "Coach entretien IA", "Lettre de motivation IA", "Tous les templates premium", "R\u00E9siliable en un clic"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -224,7 +224,18 @@ export default function PricingPage() {
             >
               {loading === "pro" ? "Redirection..." : promo.isActive && plan === "free" ? "Passer en illimit\u00E9 \u00E0 7,57\u20AC" : "Passer en illimit\u00E9"}
             </button>
-            <p className="text-[11px] text-gray-400 text-center mt-3">Moins cher que 3 packs Coup de pouce</p>
+            <p className="text-[11px] text-gray-500 text-center mt-3">Moins de 0,30&euro; par candidature optimis&eacute;e</p>
+            {/* Social proof */}
+            <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="text-[11px] mt-0.5">&#11088;</span>
+                <p className="text-[12px] text-gray-500 italic">&laquo; Score pass&eacute; de 42 &agrave; 88 en 2 jours. 3 entretiens la semaine suivante. &raquo; <span className="font-semibold not-italic text-gray-600">Marie C.</span></p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-[11px] mt-0.5">&#11088;</span>
+                <p className="text-[12px] text-gray-500 italic">&laquo; J&apos;ai d&eacute;croch&eacute; le poste en 3 semaines. Le match offre d&apos;emploi fait la diff&eacute;rence. &raquo; <span className="font-semibold not-italic text-gray-600">Thomas L.</span></p>
+              </div>
+            </div>
           </div>
 
           {/* Coup de pouce */}

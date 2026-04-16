@@ -65,8 +65,12 @@ export async function POST(req: NextRequest) {
       }
       // Send J+1 email (only if score improved and email exists)
       if (sub.email && score_apres && score_avant && score_apres > score_avant) {
-        import("@/lib/brevo").then(({ sendCvExpiresEmail }) => {
+        import("@/lib/brevo").then(({ sendCvExpiresEmail, sendPostAnalysisConversionEmail }) => {
           sendCvExpiresEmail(sub.email, "there", score_avant, score_apres).catch(console.error);
+          // J+3 conversion email with promo code (only for free users)
+          if (!sub.has_analyzed) {
+            sendPostAnalysisConversionEmail(sub.email, "there", score_avant, nb_suggestions ?? 0).catch(console.error);
+          }
         });
       }
     });
