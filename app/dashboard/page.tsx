@@ -139,7 +139,7 @@ export default function DashboardPage() {
           <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
             <h2 className="text-[15px] font-bold text-gray-900 mb-3">Évolution de vos scores</h2>
             <div className="flex items-end gap-2 h-24">
-              {d.analyses.slice().reverse().map((a, i) => {
+              {d.analyses.slice().reverse().map((a) => {
                 const height = Math.max(8, (a.score_apres / 100) * 96);
                 return (
                   <div key={a.id} className="flex-1 flex flex-col items-center gap-1">
