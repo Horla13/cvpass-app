@@ -25,6 +25,15 @@ export async function GET() {
     }
   } catch { /* ignore */ }
 
+  // Total analyses count
+  let totalAnalyses = 0;
+  try {
+    const { count: cnt } = await getSupabaseAdmin()
+      .from("analyses")
+      .select("id", { count: "exact", head: true });
+    totalAnalyses = cnt ?? 0;
+  } catch { /* ignore */ }
+
   // Fetch recent analyses with score improvement (for social proof, anonymized)
   let recent: { score_avant: number; score_apres: number; minutes_ago: number }[] = [];
   try {
@@ -47,7 +56,7 @@ export async function GET() {
   } catch { /* ignore */ }
 
   return NextResponse.json(
-    { count, recent },
+    { count, totalAnalyses, recent },
     { headers: { "Cache-Control": "s-maxage=300, stale-while-revalidate=600" } }
   );
 }

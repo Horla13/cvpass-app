@@ -14,8 +14,19 @@ import { useStore } from "@/lib/store";
 export function LandingPage() {
   const router = useRouter();
   const setCvText = useStore((s) => s.setCvText);
-  const counterValue = "+1 200";
+  const [counterValue, setCounterValue] = useState("+1 200");
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/count")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.totalAnalyses && d.totalAnalyses > 0) {
+          setCounterValue(d.totalAnalyses.toLocaleString("fr-FR"));
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
