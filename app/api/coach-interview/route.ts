@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getOpenAI } from "@/lib/openai";
-import { consumeCredit, hasUnlimitedAccess, CREDIT_COSTS } from "@/lib/billing";
+import { hasUnlimitedAccess } from "@/lib/billing";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export const maxDuration = 30;
@@ -27,10 +27,7 @@ export async function POST(req: NextRequest) {
 
   const unlimited = await hasUnlimitedAccess(userId);
   if (!unlimited) {
-    const result = await consumeCredit(userId, CREDIT_COSTS.ats_analysis, "interview_coach");
-    if (!result.success) {
-      return NextResponse.json({ error: "insufficient_credits", creditsNeeded: CREDIT_COSTS.ats_analysis }, { status: 402 });
-    }
+    return NextResponse.json({ error: "pro_required", message: "Le coach entretien est réservé au plan Recherche Active." }, { status: 403 });
   }
 
   const cvContext = body.cvSummary ? `\n\nCV DU CANDIDAT (résumé) :\n${body.cvSummary.slice(0, 3000)}` : "";

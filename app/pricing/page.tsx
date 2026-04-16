@@ -92,7 +92,7 @@ export default function PricingPage() {
     mainEntity: [
       { "@type": "Question", name: "Comment fonctionnent les crédits ?", acceptedAnswer: { "@type": "Answer", text: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." } },
       { "@type": "Question", name: "Que comprend le Pack Coup de pouce ?", acceptedAnswer: { "@type": "Answer", text: "Le Pack Coup de pouce vous donne 4 crédits supplémentaires qui s'ajoutent à votre solde. Pas de renouvellement automatique, les crédits sont à vous et n'expirent jamais. Vous pouvez racheter le pack autant de fois que vous voulez." } },
-      { "@type": "Question", name: "Que comprend Recherche Active ?", acceptedAnswer: { "@type": "Answer", text: "Le plan Recherche Active vous donne un accès illimité à toutes les fonctionnalités pendant 30 jours. C'est un abonnement mensuel résiliable à tout moment, sans engagement." } },
+      { "@type": "Question", name: "Que comprend Recherche Active ?", acceptedAnswer: { "@type": "Answer", text: "Le plan Recherche Active vous donne un accès illimité aux analyses, PDF, lettres de motivation, coach entretien IA, optimiseur LinkedIn et tous les templates premium pendant 30 jours. Résiliable à tout moment, sans engagement." } },
       { "@type": "Question", name: "Puis-je me faire rembourser ?", acceptedAnswer: { "@type": "Answer", text: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." } },
       { "@type": "Question", name: "Mon CV est-il stocké ?", acceptedAnswer: { "@type": "Answer", text: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." } },
       { "@type": "Question", name: "Comment résilier Recherche Active ?", acceptedAnswer: { "@type": "Answer", text: "Vous pouvez résilier à tout moment depuis votre espace personnel. Résiliation immédiate, sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." } },
@@ -162,7 +162,7 @@ export default function PricingPage() {
             </div>
             <div className="mb-6" />
             <ul className="space-y-3 mb-7">
-              {["1 analyse offerte", "Toutes les fonctionnalit\u00E9s accessibles", "Export PDF (1 cr\u00E9dit)", "Cr\u00E9dits sans expiration"].map((f) => (
+              {["1 analyse ATS offerte", "Tracker candidatures", "Simulateur de salaire", "Cr\u00E9dits sans expiration"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -210,7 +210,7 @@ export default function PricingPage() {
             {!(promo.isActive && plan === "free") && !promo30 && <div className="mb-4" />}
 
             <ul className="space-y-3 mb-5">
-              {["Analyses + PDF illimit\u00E9s", "Coach entretien IA", "Lettre de motivation IA", "Tous les templates premium", "R\u00E9siliable en un clic"].map((f) => (
+              {["Analyses + PDF illimit\u00E9s", "Optimiseur LinkedIn", "Coach entretien IA", "Lettre de motivation IA", "Tous les templates premium", "R\u00E9siliable en un clic"].map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-gray-600">
                   <svg className="mt-0.5 flex-shrink-0 text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   <span>{f}</span>
@@ -303,10 +303,16 @@ export default function PricingPage() {
                   </td>
                 </tr>
                 {[
-                  ["Édition", "Éditeur IA", "Éditeur IA", "Éditeur IA"],
+                  ["Analyse ATS générale", "1 crédit", "1 crédit", "Illimité"],
+                  ["Match offre d'emploi", "2 crédits", "2 crédits", "Illimité"],
+                  ["Analyseur d'offre", "1 crédit", "1 crédit", "Illimité"],
                   ["Export PDF", "1 crédit", "1 crédit", "Illimité"],
                   ["Lettre de motivation IA", "1 crédit", "1 crédit", "Illimité"],
-                  ["Validité", "À vie", "Sans expiration", "30 jours/mois"],
+                  ["Optimiseur LinkedIn", "—", "—", "✓"],
+                  ["Coach entretien IA", "—", "—", "✓"],
+                  ["Tracker candidatures", "✓", "✓", "✓"],
+                  ["Simulateur salaire", "✓", "✓", "✓"],
+                  ["Templates premium", "—", "—", "✓"],
                 ].map(([feature, ...vals], i) => (
                   <tr key={feature} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
                     <td className="py-3.5 px-5 font-medium text-gray-800">{feature}</td>
@@ -353,7 +359,7 @@ export default function PricingPage() {
           <FAQAccordion items={[
             { question: "Comment fonctionnent les crédits ?", answer: "Chaque action consomme des crédits : 1 pour une analyse ATS générale, 2 pour un match offre d'emploi. Les crédits achetés n'expirent jamais." },
             { question: "Que comprend le Pack Coup de pouce ?", answer: "Le Pack Coup de pouce vous donne 4 crédits supplémentaires qui s'ajoutent à votre solde. Pas de renouvellement automatique, les crédits sont à vous et n'expirent jamais. Vous pouvez racheter le pack autant de fois que vous voulez." },
-            { question: "Que comprend Recherche Active ?", answer: "Le plan Recherche Active vous donne un accès illimité à toutes les fonctionnalités pendant 30 jours. C'est un abonnement mensuel résiliable à tout moment, sans engagement." },
+            { question: "Que comprend Recherche Active ?", answer: "Le plan Recherche Active vous donne un accès illimité aux analyses, PDF, lettres de motivation, coach entretien IA, optimiseur LinkedIn et tous les templates premium pendant 30 jours. Résiliable à tout moment, sans engagement." },
             { question: "Puis-je me faire rembourser ?", answer: "Oui, tous nos plans payants sont couverts par une garantie satisfait ou remboursé de 7 jours. Contactez-nous simplement par email." },
             { question: "Mon CV est-il stocké ?", answer: "Non. Votre CV est traité en mémoire vive et n'est jamais stocké en base de données. Conforme RGPD." },
             { question: "Comment résilier Recherche Active ?", answer: "Vous pouvez résilier à tout moment depuis votre espace personnel. Résiliation immédiate, sans condition. Vous conservez vos crédits et l'accès jusqu'à la fin de la période payée." },

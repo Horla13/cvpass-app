@@ -51,6 +51,10 @@ export default function LinkedInPage() {
         body: JSON.stringify(payload),
       });
 
+      if (res.status === 403) {
+        setError("L'optimiseur LinkedIn est réservé au plan Recherche Active. Passez en Pro pour y accéder.");
+        return;
+      }
       if (res.status === 402) {
         setError("Crédits insuffisants. Rechargez sur la page Tarifs.");
         return;

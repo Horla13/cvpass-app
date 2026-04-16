@@ -15,9 +15,9 @@ const NAV_LINKS_AUTH = [
 ];
 
 const TOOLS_DROPDOWN = [
-  { href: "/analyze-job", label: "Analyseur d'offre", tag: "Nouveau" },
-  { href: "/coach-entretien", label: "Coach entretien", tag: "Nouveau" },
-  { href: "/linkedin", label: "Optimiseur LinkedIn" },
+  { href: "/analyze-job", label: "Analyseur d'offre", tag: "1 crédit" },
+  { href: "/coach-entretien", label: "Coach entretien", tag: "Pro" },
+  { href: "/linkedin", label: "Optimiseur LinkedIn", tag: "Pro" },
   { href: "/salaires", label: "Simulateur salaire", tag: "Gratuit" },
   { href: "/affiliate", label: "Programme affiliation" },
 ];

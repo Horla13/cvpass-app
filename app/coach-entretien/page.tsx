@@ -42,6 +42,7 @@ export default function CoachEntretienPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobText: jobText.trim(), cvSummary: cvSummary.trim() || undefined }),
       });
+      if (res.status === 403) { setError("Le coach entretien est réservé au plan Recherche Active. Passez en Pro pour y accéder."); return; }
       if (res.status === 402) { setError("Crédits insuffisants."); return; }
       if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? "Erreur"); return; }
       setResult(await res.json());
