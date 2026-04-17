@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Politique de cookies | CVpass",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://cvpass.fr/politique-cookies" },
 };
 
 const sections = [

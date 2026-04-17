@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Conditions g\u00e9n\u00e9rales d\u2019utilisation et de vente \u2014 CVpass",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://cvpass.fr/conditions-generales" },
 };
 
 const sections = [

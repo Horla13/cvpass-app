@@ -109,9 +109,12 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
           </div>
 
           {/* Recherche Active — avec promo si active */}
-          <div className={`border-2 rounded-xl p-6 relative ${promoActive ? "border-green-300 bg-green-50/30" : "border-blue-200 bg-blue-50/30"}`}>
-            <div className={`text-[12px] font-bold uppercase tracking-wider mb-4 ${promoActive ? "text-green-600" : "text-blue-600"}`}>
-              {promoActive ? "Offre limitee -15%" : "Meilleure valeur"}
+          <div className="border-2 border-green-400 bg-green-50/50 rounded-xl p-6 relative shadow-[0_2px_12px_rgba(22,163,74,0.12)]">
+            <div className="absolute -top-2.5 left-4 bg-green-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              Illimit&eacute;
+            </div>
+            <div className="text-green-600 text-[12px] font-bold uppercase tracking-wider mb-4">
+              {promoActive ? "Offre limit\u00E9e -15%" : "Recommand\u00E9"}
             </div>
             <div className="flex items-start justify-between mb-1">
               <div>
@@ -137,7 +140,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
             <ul className="space-y-2.5 my-5 text-[13.5px] text-gray-600">
               {["Analyses + PDF illimit\u00E9s", "Re-testez jusqu'a 90+", "R\u00E9siliable en un clic"].map((f) => (
                 <li key={f} className="flex items-start gap-2">
-                  <svg className={`mt-0.5 flex-shrink-0 ${promoActive ? "text-green-500" : "text-blue-500"}`} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                  <svg className="mt-0.5 flex-shrink-0 text-green-500" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                   {f}
                 </li>
               ))}
@@ -146,11 +149,7 @@ export default function InsufficientCreditsModal({ creditsNeeded, onClose, score
             <button
               onClick={() => handleBuy("pro")}
               disabled={loading === "pro"}
-              className={`w-full min-h-[48px] text-white rounded-xl py-3 font-semibold transition-all disabled:opacity-50 shadow-md flex items-center justify-center gap-2 ${
-                promoActive
-                  ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-200"
-                  : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-blue-200"
-              }`}
+              className="w-full min-h-[48px] text-white rounded-xl py-3 font-semibold transition-all disabled:opacity-50 shadow-md flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-200"
             >
               {loading === "pro" ? (<><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Redirection...</>) : promoActive ? "Passer en illimite a 7,57\u20AC" : "Passer en illimite"}
             </button>

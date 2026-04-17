@@ -218,7 +218,18 @@ export default async function BlogPostPage(
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
-  const allPosts = getAllPosts().filter((p) => p.slug !== slug).slice(0, 3);
+  // Related posts: score by shared tags, then by category, then by date
+  const related = getAllPosts()
+    .filter((p) => p.slug !== slug)
+    .map((p) => {
+      const sharedTags = p.tags.filter((t) => post.tags.includes(t)).length;
+      const sameCategory = p.category === post.category ? 1 : 0;
+      return { post: p, score: sharedTags * 2 + sameCategory };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6)
+    .map((r) => r.post);
+  const allPosts = related;
   const headings = extractHeadings(post.content);
 
   const dateObj = new Date(post.date);
@@ -385,6 +396,11 @@ export default async function BlogPostPage(
           }}>
             Analyser mon CV gratuitement →
           </Link>
+          <p style={{ fontSize: 12, color: "#166534", marginTop: 16 }}>
+            <Link href="/pricing" style={{ color: "#166534", textDecoration: "underline", textUnderlineOffset: 2 }}>Voir les tarifs</Link>
+            {" · "}
+            <Link href="/comparaison" style={{ color: "#166534", textDecoration: "underline", textUnderlineOffset: 2 }}>Comparer avec Jobscan</Link>
+          </p>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Mentions légales | CVpass",
   robots: { index: false, follow: false },
+  alternates: { canonical: "https://cvpass.fr/mentions-legales" },
 };
 
 const sections = [

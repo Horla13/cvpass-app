@@ -85,6 +85,53 @@ export default function PricingPage() {
     }
   }
 
+  // SoftwareApplication with offers (for price display in SERPs)
+  const softwareJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "CVpass",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description: "Scanner CV ATS français avec IA. Analysez, corrigez et téléchargez votre CV optimisé.",
+    url: "https://cvpass.fr",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "1502",
+      bestRating: "5",
+    },
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Gratuit",
+        price: "0",
+        priceCurrency: "EUR",
+        description: "1 analyse ATS offerte, tracker candidatures, simulateur de salaire",
+      },
+      {
+        "@type": "Offer",
+        name: "Coup de pouce",
+        price: "2.90",
+        priceCurrency: "EUR",
+        description: "+4 crédits, sans expiration, paiement unique",
+      },
+      {
+        "@type": "Offer",
+        name: "Recherche Active",
+        price: "8.90",
+        priceCurrency: "EUR",
+        description: "Accès illimité 30 jours, coach entretien IA, optimiseur LinkedIn, résiliable en un clic",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "8.90",
+          priceCurrency: "EUR",
+          billingDuration: "P1M",
+          unitText: "mois",
+        },
+      },
+    ],
+  };
+
   // SYNC with FAQAccordion items below (FAQ section)
   const pricingFaqJsonLd = {
     "@context": "https://schema.org",
@@ -101,6 +148,10 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqJsonLd) }}
