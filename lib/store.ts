@@ -256,13 +256,38 @@ export const useStore = create<CVPassStore>()(
 }),
     {
       name: "cvpass-session",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" ? sessionStorage : {
-          getItem: () => null,
-          setItem: () => {},
-          removeItem: () => {},
+      storage: createJSONStorage(() => {
+        if (typeof window === "undefined") {
+          return { getItem: () => null, setItem: () => {}, removeItem: () => {} };
         }
-      ),
+        // Use localStorage with 24h auto-expiry for analysis persistence
+        return {
+          getItem: (name) => {
+            const item = localStorage.getItem(name);
+            if (!item) return null;
+            try {
+              const parsed = JSON.parse(item);
+              if (parsed._expiresAt && Date.now() > parsed._expiresAt) {
+                localStorage.removeItem(name);
+                return null;
+              }
+              return item;
+            } catch {
+              return item;
+            }
+          },
+          setItem: (name, value) => {
+            try {
+              const parsed = JSON.parse(value);
+              parsed._expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+              localStorage.setItem(name, JSON.stringify(parsed));
+            } catch {
+              localStorage.setItem(name, value);
+            }
+          },
+          removeItem: (name) => localStorage.removeItem(name),
+        };
+      }),
       partialize: (state) => ({
         cvText: state.cvText,
         jobOffer: state.jobOffer,
