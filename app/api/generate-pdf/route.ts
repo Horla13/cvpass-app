@@ -25,13 +25,35 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string; templateId?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
+  }
+
+  const { cvText, acceptedGaps = [], cvJson, analysisId, templateId } = body;
+
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const email = user.emailAddresses[0]?.emailAddress;
-  // Optimistic debit — consommer AVANT la génération PDF
+
+  // Anti-double-spend: si le même user a téléchargé un PDF dans les 10 dernières minutes, on ne refacture pas
+  const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  const { data: recentPdf } = await getSupabaseAdmin()
+    .from("credit_transactions")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("reason", "pdf_export")
+    .gte("created_at", tenMinAgo)
+    .limit(1)
+    .maybeSingle();
+  const isRepeatExport = !!recentPdf;
+
+  // Optimistic debit — consommer AVANT la génération PDF (sauf si re-téléchargement récent)
   const unlimited = await hasUnlimitedAccess(userId, email);
   let creditConsumed = false;
-  if (!unlimited) {
+  if (!unlimited && !isRepeatExport) {
     const result = await consumeCredit(userId, CREDIT_COSTS.pdf_export, "pdf_export");
     if (!result.success) {
       return NextResponse.json(
@@ -41,15 +63,6 @@ export async function POST(req: NextRequest) {
     }
     creditConsumed = true;
   }
-
-  let body: { cvText?: string; acceptedGaps?: Gap[]; cvJson?: CVData; analysisId?: string; templateId?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
-  }
-
-  const { cvText, acceptedGaps = [], cvJson, analysisId, templateId } = body;
 
   // Premium template check: non-free templates require starter or pro plan
   if (templateId) {
